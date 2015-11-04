@@ -7,6 +7,10 @@
     <groupId>kz.hts.ce</groupId>
     <artifactId>Commercial-establishment-client</artifactId>
     <version>1.0-SNAPSHOT</version>
-
-
+    <packaging>pom</packaging>
+    <name>Commercial-establishment-client</name>
+    
+    <modules>
+        <module>Commercial-establishment-common</module>
+    </modules>
 </project>
