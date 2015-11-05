@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+<persistence-unit name="primary" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <class>kz.hts.ce.entity.Admin</class>
+    <class>kz.hts.ce.entity.Gender</class>
+    <class>kz.hts.ce.entity.Role</class>
+    <class>kz.hts.ce.entity.Category</class>
+    <class>kz.hts.ce.entity.City</class>
+    <class>kz.hts.ce.entity.Employee</class>
+    <class>kz.hts.ce.entity.Producer</class>
+    <class>kz.hts.ce.entity.Product</class>
+    <class>kz.hts.ce.entity.ProductProvider</class>
+    <class>kz.hts.ce.entity.Provider</class>
+    <class>kz.hts.ce.entity.Shop</class>
+    <class>kz.hts.ce.entity.ShopProduct</class>
+    <class>kz.hts.ce.entity.ShopProvider</class>
+    <class>kz.hts.ce.entity.Type</class>
+    <class>kz.hts.ce.entity.Warehouse</class>
+    <properties>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+        <property name="hibernate.hbm2ddl.auto" value="update"/>
+        <property name="hibernate.show_sql" value="false"/>
+    </properties>
+</persistence-unit>
+</persistence>
