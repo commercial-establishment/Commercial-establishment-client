@@ -7,14 +7,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import kz.hts.ce.config.PersistenceConfig;
+import kz.hts.ce.config.AppContext;
+import kz.hts.ce.service.GenderService;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main extends Application {
 
+    private ApplicationContext context = AppContext.getInstance();
+
     @Override
     public void start(Stage primaryStage) {
+
         primaryStage.setTitle("Hello World!");
         Button btn = new Button();
         btn.setText("Say 'Hello World'");
@@ -22,7 +25,8 @@ public class Main extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
+                GenderService genderService = (GenderService) context.getBean("genderService");
+                System.out.println("Gender Name from DB: " + genderService.findById((long) 1).getName());
             }
         });
 
@@ -33,7 +37,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext(PersistenceConfig.class);
         launch(args);
     }
 }
