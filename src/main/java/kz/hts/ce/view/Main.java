@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationContext;
 public class Main extends Application {
 
     private ApplicationContext context = AppContext.getInstance();
+    private GenderService genderService = (GenderService) context.getBean("genderService");
 
     @Override
     public void start(Stage primaryStage) {
@@ -25,7 +26,6 @@ public class Main extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-                GenderService genderService = (GenderService) context.getBean("genderService");
                 System.out.println("Gender Name from DB: " + genderService.findById((long) 1).getName());
             }
         });
