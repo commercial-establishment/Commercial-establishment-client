@@ -35,5 +35,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         ApplicationContext context = new AnnotationConfigApplicationContext(PersistenceConfig.class);
         launch(args);
+
     }
 }
