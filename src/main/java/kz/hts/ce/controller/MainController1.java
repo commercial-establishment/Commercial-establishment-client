@@ -25,7 +25,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable{
+public class MainController1 implements Initializable{
 
     @FXML
     private Button button;
@@ -34,7 +34,7 @@ public class MainController implements Initializable{
     @FXML
     private Stage stage;
 
-    public MainController() {
+    public MainController1() {
     }
 
     @FXML
