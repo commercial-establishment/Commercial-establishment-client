@@ -25,7 +25,7 @@ public class AuthenticationService implements UserDetailsService {
 
         GrantedAuthority authority;
         User user;
-        if (employee == null) {
+        if (employee != null) {
             authority = new SimpleGrantedAuthority("ROLE_" + employee.getRole().getName());
             user = new User(employee.getUsername(), employee.getPassword(), Arrays.asList(authority));
         } else throw new UsernameNotFoundException("User " + username + " not found.");
