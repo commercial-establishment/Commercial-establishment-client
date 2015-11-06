@@ -1,8 +1,10 @@
 package kz.hts.ce.util;
 
+import kz.hts.ce.config.ScreensConfiguration;
 import kz.hts.ce.security.AuthenticationService;
 import kz.hts.ce.security.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,5 +36,10 @@ public class SpringUtils {
         Authentication authToken = new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
         Authentication authenticate = customAuthenticationProvider.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(authToken);
+    }
+
+    public static ScreensConfiguration getScreensConfiguration() {
+        ApplicationContext context = AppContextSingleton.getInstance();
+        return context.getBean(ScreensConfiguration.class);
     }
 }

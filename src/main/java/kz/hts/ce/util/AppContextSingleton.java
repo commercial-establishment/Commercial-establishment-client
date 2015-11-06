@@ -1,11 +1,12 @@
-package kz.hts.ce.config;
+package kz.hts.ce.util;
 
+import kz.hts.ce.config.PersistenceConfig;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public class AppContext {
+public class AppContextSingleton {
 
-    public AppContext() {
+    public AppContextSingleton() {
     }
 
     private static class AppContextHolder {

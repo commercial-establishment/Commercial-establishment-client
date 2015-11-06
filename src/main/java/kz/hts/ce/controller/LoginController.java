@@ -2,10 +2,6 @@ package kz.hts.ce.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -39,8 +35,8 @@ public class LoginController implements DialogController {
     private SpringUtils springUtils;
 
     private FXMLDialog dialog;
+    @Autowired
     private ScreensConfiguration screens;
-
 
     public LoginController(ScreensConfiguration screens) {
         this.screens = screens;
@@ -50,13 +46,10 @@ public class LoginController implements DialogController {
     private void btnLoginAction(ActionEvent event) throws IOException {
         try {
             springUtils.authorize(txtUsername.getText(), txtPassword.getText());
-            ((Node)event.getSource()).getScene().getWindow().hide();
-            Parent parent = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
             Stage stage = new Stage();
-            Scene scene = new Scene(parent);
-            stage.setScene(scene);
-            stage.setTitle("Main");
-            stage.show();
+            screens.setPrimaryStage(stage);
+            screens.mainDialog().show();
+            dialog.close();
         }catch (UsernameNotFoundException e) {
             lblMessage.setText("Login failure, please try again:");
         }

@@ -30,6 +30,7 @@ package kz.hts.ce.config;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import kz.hts.ce.controller.LoginController;
+import kz.hts.ce.controller.MainController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -92,12 +93,18 @@ public class ScreensConfiguration {
     @Bean
     @Scope("prototype")
     public FXMLDialog mainDialog() {
-        return new FXMLDialog(loginController(), getClass().getResource("/view/main.fxml"), primaryStage, StageStyle.UNDECORATED);
+        return new FXMLDialog(mainController(), getClass().getResource("/view/main.fxml"), primaryStage, StageStyle.UNDECORATED);
     }
 
     @Bean
     @Scope("prototype")
     public LoginController loginController() {
         return new LoginController(this);
+    }
+
+    @Bean
+    @Scope("prototype")
+    public MainController mainController() {
+        return new MainController(this);
     }
 }

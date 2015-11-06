@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.net.URL;
 
 public class FXMLDialog extends Stage {
+
+    public FXMLDialog() {
+    }
+
     public FXMLDialog(DialogController controller, URL fxml, Window owner) {
         this(controller, fxml, owner, StageStyle.DECORATED);
     }
