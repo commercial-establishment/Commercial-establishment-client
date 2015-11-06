@@ -1,23 +1,19 @@
 //package kz.hts.ce.controller;
 //
-//import javafx.event.EventHandler;
+//import javafx.event.ActionEvent;
 //import javafx.fxml.FXML;
-//import javafx.scene.control.Button;
-//import javafx.scene.input.MouseEvent;
+//import javafx.scene.control.PasswordField;
+//import javafx.scene.control.TextField;
+//import javafx.scene.text.Text;
 //
 //public class MainController {
 //
-//    @FXML
-//    private Button button;
+//    @FXML public PasswordField passwordField;
+//    @FXML public TextField usernameField;
+//    @FXML private Text actionTarget;
 //
 //    @FXML
-//    public void initialize(){
-//        button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent mouseEvent) {
-//                button.setText("Thanks!");
-//            }
-//        });
+//    protected void handleSubmitButtonAction(ActionEvent event) {
+//        actionTarget.setText("Sign in button pressed");
 //    }
-//
 //}
