@@ -28,7 +28,6 @@ public class PersistenceConfig {
         return driverManagerDataSource;
     }
 
-
     @Bean(name = "entityManagerFactory")
     public EntityManagerFactory entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();

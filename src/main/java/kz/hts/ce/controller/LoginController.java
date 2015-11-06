@@ -2,22 +2,25 @@ package kz.hts.ce.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import kz.hts.ce.config.AppContext;
+import kz.hts.ce.config.FXMLDialog;
+import kz.hts.ce.config.ScreensConfiguration;
+import kz.hts.ce.entity.Employee;
+import kz.hts.ce.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class LoginController implements Initializable {
+@Component
+public class LoginController implements DialogController {
 
     @FXML
     public TextField txtUsername;
@@ -28,22 +31,35 @@ public class LoginController implements Initializable {
     @FXML
     public Label lblMessage;
 
+    @Autowired
+    private EmployeeService employeeService;
+
+    private FXMLDialog dialog;
+    private ScreensConfiguration screens;
+
+    public LoginController(ScreensConfiguration screens) {
+        this.screens = screens;
+    }
+
     @FXML
     private void btnLoginAction(ActionEvent event) throws IOException {
-        if (txtUsername.getText().equals("test") && txtPassword.getText().equals("test")) {
+        Employee employee = employeeService.findByUsername(txtUsername.getText());
+        if (employee == null) {
+            lblMessage.setText("Username or Password invalid");
+        }
+        else if (employee.getUsername().equals(txtUsername.getText()) && employee.getPassword().equals(txtPassword.getText())) {
             ((Node)event.getSource()).getScene().getWindow().hide();
-            Parent parent = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
+            ApplicationContext context = AppContext.getInstance();
+            ScreensConfiguration screens = context.getBean(ScreensConfiguration.class);
             Stage stage = new Stage();
-            Scene scene = new Scene(parent);
-            stage.setScene(scene);
-            stage.setTitle("Main");
-            stage.show();
+            screens.setPrimaryStage(stage);
+            screens.mainDialog().show();
         } else {
             lblMessage.setText("Username or Password invalid");
         }
     }
 
-    public void initialize(URL location, ResourceBundle resources) {
-
+    public void setDialog(FXMLDialog dialog) {
+        this.dialog = dialog;
     }
 }

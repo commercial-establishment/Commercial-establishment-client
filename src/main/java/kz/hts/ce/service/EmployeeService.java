@@ -16,4 +16,8 @@ public class EmployeeService extends BaseService<Employee, EmployeeRepository>{
     public Employee findByUsername(String username) {
         return repository.findByUsername(username);
     }
+
+    public Employee findByUsernameAndBlocked(String username, boolean blocked) {
+        return repository.findByUsernameAndBlocked(username, blocked);
+    }
 }
