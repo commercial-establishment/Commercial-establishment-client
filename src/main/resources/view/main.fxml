@@ -1,23 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="308.0"
-            prefWidth="481.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="kz.hts.ce.controller.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.MainController">
     <children>
-        <Label layoutX="108.0" layoutY="119.0" text="Hello">
+        <MenuBar prefHeight="30.0" prefWidth="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <Separator prefWidth="200.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+        <Label fx:id="dateLabel" layoutX="5.0" layoutY="30.0" prefHeight="30.0" prefWidth="429.0" text="Date and Time" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="30.0">
             <font>
-                <Font size="48.0"/>
+                <Font size="17.0" />
             </font>
         </Label>
-        <Label fx:id="lblUsername" layoutX="241.0" layoutY="119.0">
-            <font>
-                <Font size="48.0"/>
-            </font>
-        </Label>
+        <SplitPane dividerPositions="0.21380846325167038" layoutX="14.0" layoutY="60.0" prefHeight="466.0" prefWidth="881.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+                </AnchorPane>
+            </items>
+        </SplitPane>
+        <Button fx:id="button" layoutX="729.0" layoutY="552.0" mnemonicParsing="false"  prefHeight="30.0" prefWidth="154.0" text="Button" />
     </children>
 </AnchorPane>
