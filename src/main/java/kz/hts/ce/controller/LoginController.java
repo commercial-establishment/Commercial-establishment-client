@@ -20,6 +20,7 @@ import java.io.IOException;
 @Component
 public class LoginController implements DialogController {
 
+    private FXMLDialog dialog;
     @FXML
     public TextField txtUsername;
     @FXML
@@ -28,13 +29,8 @@ public class LoginController implements DialogController {
     public Button btnLogin;
     @FXML
     public Label lblMessage;
-
-    @Autowired
-    private EmployeeService employeeService;
     @Autowired
     private SpringUtils springUtils;
-
-    private FXMLDialog dialog;
     @Autowired
     private ScreensConfiguration screens;
 

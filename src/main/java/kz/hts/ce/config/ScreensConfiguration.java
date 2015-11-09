@@ -87,13 +87,13 @@ public class ScreensConfiguration {
     @Bean
     @Scope("prototype")
     public FXMLDialog loginDialog() {
-        return new FXMLDialog(loginController(), getClass().getResource("/view/login.fxml"), primaryStage, StageStyle.UNDECORATED);
+        return new FXMLDialog(loginController(), getClass().getResource("/view/login.fxml"), primaryStage, StageStyle.DECORATED);
     }
 
     @Bean
     @Scope("prototype")
     public FXMLDialog mainDialog() {
-        return new FXMLDialog(mainController(), getClass().getResource("/view/main.fxml"), primaryStage, StageStyle.UNDECORATED);
+        return new FXMLDialog(mainController(), getClass().getResource("/view/main.fxml"), primaryStage, StageStyle.DECORATED);
     }
 
     @Bean
