@@ -20,7 +20,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 @Component
-public class MainController implements DialogController, Initializable{
+public class MainController implements DialogController, Initializable {
 
     public Label dateLabel;
     public Button button;
@@ -29,11 +29,9 @@ public class MainController implements DialogController, Initializable{
     @Autowired
     private ScreensConfiguration screens;
 
-    //region TODO Digital watch realization
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
             "dd-MM-yyyy HH:mm:ss", Locale.getDefault());
-
-    Timeline watch = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+    private Timeline watch = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
             dateLabel.setText(simpleDateFormat.format(Calendar.getInstance().getTime()));
