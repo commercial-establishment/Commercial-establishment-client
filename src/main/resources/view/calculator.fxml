@@ -6,10 +6,26 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="333.0"
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="393.0"
             prefWidth="242.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="kz.hts.ce.main.Calculator">
     <children>
+        <VBox layoutX="19.0" layoutY="330.0" prefHeight="50.0" prefWidth="132.0">
+            <children>
+                <HBox prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <TextField prefHeight="25.0" prefWidth="87.0"/>
+                        <TextField prefHeight="25.0" prefWidth="46.0"/>
+                    </children>
+                </HBox>
+                <HBox prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <ComboBox prefHeight="25.0" prefWidth="92.0"/>
+                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="49.0" text="+"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
         <HBox layoutX="18.0" layoutY="60.0" prefHeight="55.0" prefWidth="152.0">
             <children>
                 <Button mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="50.0" prefWidth="50.0"
@@ -86,5 +102,10 @@
                 </HBox>
             </children>
         </VBox>
+        <HBox layoutX="155.0" layoutY="330.0" prefHeight="62.0" prefWidth="71.0">
+            <children>
+                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="70.0" text="Button"/>
+            </children>
+        </HBox>
     </children>
 </AnchorPane>
