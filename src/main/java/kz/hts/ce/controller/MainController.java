@@ -20,38 +20,37 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 @Component
-public class MainController implements DialogController, Initializable{
+public class MainController implements DialogController, Initializable {
 
-    //    public Label lblUsername;
+    private FXMLDialog dialog;
     public Label dateLabel;
     public Button button;
-    private FXMLDialog dialog;
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
 
     @Autowired
     private ScreensConfiguration screens;
-
-    //region TODO Digital watch realization
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-            "dd-MM-yyyy HH:mm:ss", Locale.getDefault());
-
-    Timeline watch = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            dateLabel.setText(simpleDateFormat.format(Calendar.getInstance().getTime()));
-        }
-    }));
 
     public MainController(ScreensConfiguration screens) {
         this.screens = screens;
     }
 
-    public void setDialog(FXMLDialog dialog) {
-        this.dialog = dialog;
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        getWatch();
+    }
+
+    public void getWatch() {
+        Timeline watch = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                dateLabel.setText(simpleDateFormat.format(Calendar.getInstance().getTime()));
+            }
+        }));
         watch.setCycleCount(Timeline.INDEFINITE);
         watch.play();
+    }
+
+    public void setDialog(FXMLDialog dialog) {
+        this.dialog = dialog;
     }
 }
