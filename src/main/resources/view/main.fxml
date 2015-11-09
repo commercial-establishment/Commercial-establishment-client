@@ -6,7 +6,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <VBox prefHeight="700.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.MainController">
    <children>
         <Label fx:id="dateLabel" prefHeight="30.0" prefWidth="429.0" text="Date and Time">
@@ -16,10 +15,20 @@
         </Label>
       <HBox prefHeight="631.0" prefWidth="1200.0">
          <children>
-            <StackPane opacity="0.38" prefHeight="631.0" prefWidth="385.0" style="-fx-background-color: indigo;" />
-            <StackPane opacity="0.33" prefHeight="631.0" prefWidth="996.0" style="-fx-background-color: maroon;" />
-            <StackPane opacity="0.48" prefHeight="631.0" prefWidth="556.0" style="-fx-background-color: green;" />
+            <StackPane opacity="0.38" prefHeight="631.0" prefWidth="194.0" style="-fx-background-color: indigo;" />
+            <VBox prefHeight="631.0" prefWidth="1087.0">
+               <children>
+                  <HBox prefHeight="376.0" prefWidth="1087.0">
+                     <children>
+                        <StackPane opacity="0.33" prefHeight="469.0" prefWidth="1003.0" style="-fx-background-color: maroon;" />
+                        <StackPane opacity="0.48" prefHeight="469.0" prefWidth="510.0" style="-fx-background-color: green;" />
+                     </children>
+                  </HBox>
+                  <StackPane opacity="0.33" prefHeight="261.0" prefWidth="1087.0" style="-fx-background-color: BLUE;" />
+               </children>
+            </VBox>
          </children>
       </HBox>
+      <Label text="Label" />
    </children>
 </VBox>
