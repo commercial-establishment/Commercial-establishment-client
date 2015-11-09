@@ -22,7 +22,6 @@ import java.util.ResourceBundle;
 @Component
 public class MainController implements DialogController, Initializable{
 
-    //    public Label lblUsername;
     public Label dateLabel;
     public Button button;
     private FXMLDialog dialog;
