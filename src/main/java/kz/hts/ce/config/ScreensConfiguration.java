@@ -27,10 +27,7 @@
 
 package kz.hts.ce.config;
 
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import kz.hts.ce.controller.CalculatorController;
 import kz.hts.ce.controller.LoginController;
 import kz.hts.ce.controller.MainController;
@@ -38,6 +35,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
+
+import static kz.hts.ce.util.SpringFxmlLoader.showStage;
 
 @Configuration
 @Lazy
@@ -49,32 +48,30 @@ public class ScreensConfiguration {
         this.primaryStage = primaryStage;
     }
 
-    public Stage getPrimaryStage() {
-        return primaryStage;
-    }
-
     @Bean
     @Scope("prototype")
     public Stage main() {
-        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
-        Object loader = springFxmlLoader.load("/view/main.fxml");
-//            Parent loader = FXMLLoader.load();
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene((Parent) loader));
-        primaryStage.show();
+        showStage(primaryStage, "/view/main.fxml");
         return primaryStage;
     }
 
     @Bean
     @Scope("prototype")
-    public FXMLDialog loginDialog() {
-        return new FXMLDialog(loginController(), getClass().getResource("/view/login.fxml"), primaryStage, StageStyle.DECORATED);
+    public Stage login() {
+        showStage(primaryStage, "/view/login.fxml");
+        return primaryStage;
     }
+
+//    @Bean
+//    @Scope("prototype")
+//    public FXMLDialog loginDialog() {
+//        return new FXMLDialog(loginController(), getClass().getResource("/view/login.fxml"), primaryStage, StageStyle.DECORATED);
+//    }
 
     @Bean
     @Scope("prototype")
     public LoginController loginController() {
-        return new LoginController(this);
+        return new LoginController();
     }
 
     @Bean

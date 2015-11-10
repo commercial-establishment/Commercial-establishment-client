@@ -1,7 +1,11 @@
-package kz.hts.ce.config;
+package kz.hts.ce.util;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import javafx.util.Callback;
+import kz.hts.ce.config.PersistenceConfig;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -26,5 +30,12 @@ public class SpringFxmlLoader {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void showStage(Stage stage, String url){
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        Object loader = springFxmlLoader.load(url);
+        stage.setScene(new Scene((Parent) loader));
+        stage.show();
     }
 }

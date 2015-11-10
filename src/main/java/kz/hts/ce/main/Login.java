@@ -13,6 +13,6 @@ public class Login extends Application {
         ApplicationContext context = AppContextSingleton.getInstance();
         ScreensConfiguration screens = context.getBean(ScreensConfiguration.class);
         screens.setPrimaryStage(stage);
-        screens.loginDialog().show();
+        screens.login();
     }
 }

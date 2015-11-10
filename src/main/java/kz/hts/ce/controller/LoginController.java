@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import kz.hts.ce.config.FXMLDialog;
 import kz.hts.ce.config.ScreensConfiguration;
 import kz.hts.ce.util.AppContextSingleton;
 import kz.hts.ce.util.SpringUtils;
@@ -22,9 +21,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-public class LoginController implements DialogController, Initializable {
+public class LoginController implements Initializable {
 
-    private FXMLDialog dialog;
     @FXML
     public TextField txtUsername;
     @FXML
@@ -35,12 +33,6 @@ public class LoginController implements DialogController, Initializable {
     public Label lblMessage;
     @Autowired
     private SpringUtils springUtils;
-    @Autowired
-    private ScreensConfiguration screens;
-
-    public LoginController(ScreensConfiguration screens) {
-        this.screens = screens;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -56,13 +48,8 @@ public class LoginController implements DialogController, Initializable {
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
             screens.main();
-            dialog.close();
         }catch (UsernameNotFoundException e) {
             lblMessage.setText("Login failure, please try again:");
         }
-    }
-
-    public void setDialog(FXMLDialog dialog) {
-        this.dialog = dialog;
     }
 }
