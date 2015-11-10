@@ -3,9 +3,6 @@ package kz.hts.ce.controller;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import kz.hts.ce.config.UrlConfiguration;
-import kz.hts.ce.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
@@ -18,12 +15,6 @@ public class MainController implements Initializable {
 
     public Label dateLabel;
     public Button button;
-    @Autowired
-    private UrlConfiguration screens;
-    @Autowired
-    private CalculatorController calculatorController;
-    @Autowired
-    private CategoryService categoryService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
