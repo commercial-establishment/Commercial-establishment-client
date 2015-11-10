@@ -19,7 +19,7 @@
                 <HBox prefHeight="100.0" prefWidth="200.0">
                     <children>
                         <ComboBox prefHeight="25.0" prefWidth="92.0" />
-                        <Button mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="25.0" prefWidth="49.0" text="+" />
+                        <Button mnemonicParsing="false" onAction="#addProductPage" prefHeight="25.0" prefWidth="49.0" text="+" />
                     </children>
                 </HBox>
             </children>
@@ -44,7 +44,7 @@
         </HBox>
         <VBox layoutX="176.0" layoutY="88.0" prefHeight="200.0" prefWidth="50.0">
             <children>
-                <Button mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="100.0" prefWidth="50.0" text="＋" />
+                <Button mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="100.0" prefWidth="50.0" text="AAA" />
                 <Button mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="100.0" prefWidth="50.0" text="=" />
             </children>
         </VBox>

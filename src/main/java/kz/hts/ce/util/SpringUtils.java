@@ -1,6 +1,6 @@
 package kz.hts.ce.util;
 
-import kz.hts.ce.config.UrlConfiguration;
+import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.security.AuthenticationService;
 import kz.hts.ce.security.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +38,8 @@ public class SpringUtils {
         SecurityContextHolder.getContext().setAuthentication(authToken);
     }
 
-    public static UrlConfiguration getScreensConfiguration() {
+    public static PagesConfiguration getScreensConfiguration() {
         ApplicationContext context = AppContextSingleton.getInstance();
-        return context.getBean(UrlConfiguration.class);
+        return context.getBean(PagesConfiguration.class);
     }
 }

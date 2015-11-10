@@ -49,7 +49,7 @@ public class JavaFxUtil {
             display.appendText(buttonText);
             return;
         }
-        if (buttonText.matches("[＋－×÷]")) {
+        if (buttonText.matches("[－×÷]")) {
             left = new BigDecimal(display.getText());
             selectedOperator = buttonText;
             numberInputting = false;
@@ -66,8 +66,8 @@ public class JavaFxUtil {
 
     public static BigDecimal calculate(String operator, BigDecimal left, BigDecimal right) {
         switch (operator) {
-            case "＋":
-                return left.add(right);
+//            case "＋":
+//                return left.add(right);
             case "－":
                 return left.subtract(right);
             case "×":

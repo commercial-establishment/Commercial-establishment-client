@@ -40,7 +40,7 @@ import static kz.hts.ce.util.SpringFxmlLoader.showStage;
 
 @Configuration
 @Lazy
-public class UrlConfiguration {
+public class PagesConfiguration {
 
     private Stage primaryStage;
 
@@ -59,6 +59,13 @@ public class UrlConfiguration {
     @Scope("prototype")
     public Stage login() {
         showStage(primaryStage, "/view/login.fxml");
+        return primaryStage;
+    }
+
+    @Bean
+    @Scope("prototype")
+    public Stage addProduct() {
+        showStage(primaryStage, "/view/add-product.fxml");
         return primaryStage;
     }
 
