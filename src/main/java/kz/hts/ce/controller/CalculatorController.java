@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.util.AppContextSingleton;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
@@ -19,6 +20,8 @@ public class CalculatorController {
     public TextField txtAdditionalDisplay;
     @FXML
     private TextField txtDisplay;
+    @Autowired
+    private AddProductController addProductController;
 
     @FXML
     public void handleOnAnyButtonClicked(ActionEvent evt) {
@@ -38,6 +41,14 @@ public class CalculatorController {
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
             screens.addProduct();
+
+            addProductController.price.setText(txtDisplay.getText());
+            String additionalDisplayText = txtAdditionalDisplay.getText();
+            String[] splittedAdditionalDisplay = additionalDisplayText.split("×");
+            addProductController.amount.setText(splittedAdditionalDisplay[1]);
+            addProductController.vat.setText("10");
+            addProductController.priceWithVat.setText(String.valueOf(0.1 * 88 * 9));
+            addProductController.totalPrice.setText(String.valueOf(0.1 * 88 * 9));
         }
     }
 }

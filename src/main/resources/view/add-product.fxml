@@ -40,7 +40,7 @@
                         <Font size="15.0"/>
                     </font>
                 </Label>
-                <Label text="НДС" GridPane.rowIndex="3">
+                <Label text="НДС (%)" GridPane.rowIndex="3">
                     <font>
                         <Font size="15.0"/>
                     </font>
@@ -70,7 +70,7 @@
                         <Font size="14.0"/>
                     </font>
                 </TextField>
-                <TextField fx:id="vat" alignment="CENTER_RIGHT" editable="false" promptText="10%" GridPane.columnIndex="1"
+                <TextField fx:id="vat" alignment="CENTER_RIGHT" editable="false" GridPane.columnIndex="1"
                            GridPane.rowIndex="3">
                     <font>
                         <Font size="14.0"/>

@@ -23,7 +23,6 @@ public class AddProductController {
 
     @FXML
     public void success(ActionEvent event) {
-
     }
 
     @FXML
