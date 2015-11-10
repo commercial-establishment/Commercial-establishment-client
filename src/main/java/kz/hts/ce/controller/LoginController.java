@@ -8,7 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import kz.hts.ce.config.ScreensConfiguration;
+import kz.hts.ce.config.UrlConfiguration;
 import kz.hts.ce.util.AppContextSingleton;
 import kz.hts.ce.util.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Hello!");
+        System.out.println("Initialize method of LoginController.class!");
     }
 
     @FXML
@@ -46,7 +46,7 @@ public class LoginController implements Initializable {
         try {
             springUtils.authorize(txtUsername.getText(), txtPassword.getText());
             ApplicationContext context = AppContextSingleton.getInstance();
-            ScreensConfiguration screens = context.getBean(ScreensConfiguration.class);
+            UrlConfiguration screens = context.getBean(UrlConfiguration.class);
             screens.login().close();
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);

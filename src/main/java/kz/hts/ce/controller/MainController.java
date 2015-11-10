@@ -3,7 +3,7 @@ package kz.hts.ce.controller;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import kz.hts.ce.config.ScreensConfiguration;
+import kz.hts.ce.config.UrlConfiguration;
 import kz.hts.ce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ public class MainController implements Initializable {
     public Label dateLabel;
     public Button button;
     @Autowired
-    private ScreensConfiguration screens;
+    private UrlConfiguration screens;
     @Autowired
     private CalculatorController calculatorController;
     @Autowired

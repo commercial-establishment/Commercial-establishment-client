@@ -40,7 +40,7 @@ import static kz.hts.ce.util.SpringFxmlLoader.showStage;
 
 @Configuration
 @Lazy
-public class ScreensConfiguration {
+public class UrlConfiguration {
 
     private Stage primaryStage;
 
@@ -61,12 +61,6 @@ public class ScreensConfiguration {
         showStage(primaryStage, "/view/login.fxml");
         return primaryStage;
     }
-
-//    @Bean
-//    @Scope("prototype")
-//    public FXMLDialog loginDialog() {
-//        return new FXMLDialog(loginController(), getClass().getResource("/view/login.fxml"), primaryStage, StageStyle.DECORATED);
-//    }
 
     @Bean
     @Scope("prototype")
