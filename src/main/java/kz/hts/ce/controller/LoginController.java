@@ -45,6 +45,7 @@ public class LoginController implements Initializable {
             springUtils.authorize(txtUsername.getText(), txtPassword.getText());
             ApplicationContext context = AppContextSingleton.getInstance();
             ScreensConfiguration screens = context.getBean(ScreensConfiguration.class);
+            screens.login().close();
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
             screens.main();
