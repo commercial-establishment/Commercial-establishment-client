@@ -16,21 +16,23 @@ import static kz.hts.ce.util.JavaFxUtil.calculator;
 public class CalculatorController {
 
     @FXML
-    private TextField display;
+    public TextField txtAdditionalDisplay;
+    @FXML
+    private TextField txtDisplay;
 
     @FXML
     public void handleOnAnyButtonClicked(ActionEvent evt) {
         Button button = (Button) evt.getSource();
         final String buttonText = button.getText();
         if (buttonText.matches("^[0-9C\\s[×+－=.]\\s]*$")) {
-            calculator(buttonText, display);
+            calculator(buttonText, txtDisplay, txtAdditionalDisplay);
         }
     }
 
     @FXML
     public void addProductPage() {
-        String displayText = display.getText();
-        if (!displayText.equals("") && displayText.matches("^[0-9C\\s[.]\\s]*$")) {
+        String displayText = txtDisplay.getText();
+        if (!displayText.equals("") && displayText.matches("^[1-9C\\s[.]\\s]*$")) {
             ApplicationContext context = AppContextSingleton.getInstance();
             PagesConfiguration screens = context.getBean(PagesConfiguration.class);
             Stage stage = new Stage();

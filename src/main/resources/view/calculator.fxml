@@ -12,8 +12,8 @@
             <children>
                 <HBox prefHeight="25.0" prefWidth="174.0">
                     <children>
-                        <TextField fx:id="display" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="118.0" />
-                        <TextField prefHeight="25.0" prefWidth="59.0" />
+                        <TextField fx:id="txtDisplay" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="118.0" />
+                        <TextField fx:id="txtAdditionalDisplay" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="59.0" />
                     </children>
                 </HBox>
                 <HBox prefHeight="100.0" prefWidth="200.0">

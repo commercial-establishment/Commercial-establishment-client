@@ -31,41 +31,64 @@ public class JavaFxUtil {
         watch.play();
     }
 
-    public static void calculator(String buttonText, TextField display) {
+    public static void calculator(String buttonText, TextField txtDisplay, TextField txtAdditionalDisplay) {
         if (buttonText.equals("C")) {
             selectedOperator = "";
             numberInputting = false;
-            display.setText("0");
+            txtDisplay.setText("0");
+            txtAdditionalDisplay.setText("");
             return;
         }
         if (buttonText.matches("[0-9]")) {
-            if (!numberInputting) {
-                numberInputting = true;
-                display.clear();
-            }
-            display.appendText(buttonText);
-            return;
-        }
-        if (buttonText.matches("[\\.]")) {
-            if (!display.getText().contains(".")) {
+            if (txtAdditionalDisplay.getText().equals("")) {
                 if (!numberInputting) {
                     numberInputting = true;
-                    display.clear();
+                    txtDisplay.clear();
                 }
-                display.appendText(buttonText);
+                txtDisplay.appendText(buttonText);
+                return;
+            } else {
+                String text = txtAdditionalDisplay.getText();
+                text += buttonText;
+                txtAdditionalDisplay.setText(text);
                 return;
             }
         }
+        if (buttonText.matches("[\\.]")) {
+            if (txtAdditionalDisplay.getText().equals("")) {
+                if (!txtDisplay.getText().contains(".")) {
+                    if (!numberInputting) {
+                        numberInputting = true;
+                        txtDisplay.clear();
+                    }
+                    txtDisplay.appendText(buttonText);
+                    return;
+                }
+            } else {
+                if (!txtAdditionalDisplay.getText().contains(".")) {
+                    String text = txtAdditionalDisplay.getText();
+                    text += buttonText;
+                    txtAdditionalDisplay.setText(text);
+                    return;
+                }
+            }
+        }
         if (buttonText.matches("[－×]")) {
-            left = new BigDecimal(display.getText());
+            if (buttonText.matches("[×]")) {
+                if (txtDisplay.getText().equals("")) {
+                    txtDisplay.setText("0");
+                }
+                txtAdditionalDisplay.setText(buttonText);
+            }
+            left = new BigDecimal(txtDisplay.getText());
             selectedOperator = buttonText;
             numberInputting = false;
             return;
         }
         if (buttonText.equals("=")) {
-            final BigDecimal right = numberInputting ? new BigDecimal(display.getText()) : left;
+            final BigDecimal right = numberInputting ? new BigDecimal(txtDisplay.getText()) : left;
             left = calculate(selectedOperator, left, right);
-            display.setText(left.toString());
+            txtDisplay.setText(left.toString());
             numberInputting = false;
             return;
         }
