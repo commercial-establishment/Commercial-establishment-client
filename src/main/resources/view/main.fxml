@@ -15,16 +15,36 @@
         </Label>
       <HBox prefHeight="631.0" prefWidth="1200.0">
          <children>
-            <StackPane opacity="0.38" prefHeight="631.0" prefWidth="194.0" style="-fx-background-color: indigo;" />
+            <StackPane opacity="0.38" prefHeight="631.0" prefWidth="194.0" style="-fx-background-color: indigo;">
+               <children>
+                  <Button fx:id="button" mnemonicParsing="false" text="Button" />
+               </children></StackPane>
             <VBox prefHeight="631.0" prefWidth="1087.0">
                <children>
-                  <HBox prefHeight="376.0" prefWidth="1087.0">
+                  <HBox>
                      <children>
-                        <StackPane opacity="0.33" prefHeight="469.0" prefWidth="1003.0" style="-fx-background-color: maroon;" />
-                        <StackPane opacity="0.48" prefHeight="469.0" prefWidth="510.0" style="-fx-background-color: green;" />
+                        <HBox prefHeight="376.0" prefWidth="1087.0">
+                           <children>
+                              <StackPane opacity="0.33" prefHeight="469.0" prefWidth="1003.0" style="-fx-background-color: maroon;" />
+                              <StackPane fx:id="calculatorContainer" opacity="0.48" prefHeight="469.0" prefWidth="510.0" style="-fx-background-color: green;">
+                                 <children>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                                    <fx:include source="calculator.fxml"></fx:include>
+                                 </children>
+                              </StackPane>
+
+                           </children>
+                        </HBox>
                      </children>
                   </HBox>
-                  <StackPane opacity="0.33" prefHeight="261.0" prefWidth="1087.0" style="-fx-background-color: BLUE;" />
+                  <StackPane opacity="0.33" prefHeight="261.0" prefWidth="1087.0" style="-fx-background-color: BLUE;">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </StackPane>
                </children>
             </VBox>
          </children>

@@ -4,9 +4,13 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import kz.hts.ce.config.FXMLDialog;
 import kz.hts.ce.config.ScreensConfiguration;
@@ -29,6 +33,8 @@ public class MainController implements DialogController, Initializable {
 
     @Autowired
     private ScreensConfiguration screens;
+    @Autowired
+    private CalculatorController calculatorController;
 
     public MainController(ScreensConfiguration screens) {
         this.screens = screens;
@@ -48,8 +54,8 @@ public class MainController implements DialogController, Initializable {
         }));
         watch.setCycleCount(Timeline.INDEFINITE);
         watch.play();
-    }
 
+    }
     public void setDialog(FXMLDialog dialog) {
         this.dialog = dialog;
     }
