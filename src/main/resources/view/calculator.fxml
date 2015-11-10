@@ -28,9 +28,9 @@
         </VBox>
         <HBox layoutX="18.0" layoutY="60.0" prefHeight="55.0" prefWidth="152.0">
             <children>
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="C"/>
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="÷"/>
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="×"/>
+                <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="C"/>
+                <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="÷"/>
+                <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="×"/>
             </children>
         </HBox>
         <HBox layoutX="18.0" layoutY="14.0" prefHeight="42.0" prefWidth="252.0">

@@ -40,6 +40,11 @@ public class LoginController implements DialogController, Initializable {
         this.screens = screens;
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("Hello!");
+    }
+
     @FXML
     private void btnLoginAction(ActionEvent event) throws IOException {
         try {
@@ -59,10 +64,5 @@ public class LoginController implements DialogController, Initializable {
 
     public void setDialog(FXMLDialog dialog) {
         this.dialog = dialog;
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Hello!");
     }
 }

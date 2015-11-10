@@ -51,47 +51,7 @@ public class ScreensConfiguration {
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
-//
-//    public void showScreen(Parent screen) {
-//        primaryStage.setScene(new Scene(screen, 777, 500));
-//        primaryStage.show();
-//    }
 
-//    @Bean
-//    CustomerDataScreen customerDataScreen() {
-//        return new CustomerDataScreen(customerDataScreenController());
-//    }
-//
-//    @Bean
-//    CustomerDataScreenController customerDataScreenController() {
-//        return new CustomerDataScreenController(this);
-//    }
-//
-//    @Bean
-//    @Scope("prototype")
-//    FXMLDialog errorDialog() {
-//        return new FXMLDialog(errorController(), getClass().getResource("Error.fxml"), primaryStage, StageStyle.UNDECORATED);
-//    }
-//
-//    @Bean
-//    @Scope("prototype")
-//    ErrorController errorController() {
-//        return new ErrorController();
-//    }
-//
-//    @Bean
-//    @Scope("prototype")
-//    FXMLDialog addCustomerDialog() {
-//        return new FXMLDialog(addCustomerController(), getClass().getResource("AddCustomer.fxml"), primaryStage);
-//    }
-//
-//    @Bean
-//    @Scope("prototype")
-//    AddCustomerController addCustomerController() {
-//        return new AddCustomerController();
-//    }
-
-    //
     @Bean
     @Scope("prototype")
     public Stage main() {
@@ -111,12 +71,6 @@ public class ScreensConfiguration {
     public FXMLDialog loginDialog() {
         return new FXMLDialog(loginController(), getClass().getResource("/view/login.fxml"), primaryStage, StageStyle.DECORATED);
     }
-//
-//    @Bean
-//    @Scope("prototype")
-//    public FXMLDialog mainDialog() {
-//        return new FXMLDialog(mainController(), getClass().getResource("/view/main.fxml"), primaryStage, StageStyle.DECORATED);
-//    }
 
     @Bean
     @Scope("prototype")
