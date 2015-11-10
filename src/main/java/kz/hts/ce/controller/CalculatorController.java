@@ -5,23 +5,28 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import kz.hts.ce.config.FXMLDialog;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static kz.hts.ce.util.JavaFxUtil.calculate;
+
 @Component
 public class CalculatorController implements Initializable {
 
-    private FXMLDialog dialog;
     private BigDecimal left;
     private String selectedOperator;
     private boolean numberInputting;
 
     @FXML
     private TextField display;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        display.setText("See the controller");
+    }
 
     @FXML
     public void handleOnAnyButtonClicked(ActionEvent evt) {
@@ -54,32 +59,5 @@ public class CalculatorController implements Initializable {
             numberInputting = false;
             return;
         }
-    }
-
-    static BigDecimal calculate(String operator, BigDecimal left, BigDecimal right) {
-        switch (operator) {
-            case "＋":
-                return left.add(right);
-            case "－":
-                return left.subtract(right);
-            case "×":
-                return left.multiply(right);
-            case "÷":
-                return left.divide(right);
-            default:
-        }
-        return right;
-    }
-    @Override
-       public void initialize(URL location, ResourceBundle resources) {
-        display.setText("See the controller");
-    }
-    @FXML
-    private void change(ActionEvent e){
-        display.setText("asda");
-    }
-
-    public void setDialog(FXMLDialog dialog) {
-        this.dialog = dialog;
     }
 }

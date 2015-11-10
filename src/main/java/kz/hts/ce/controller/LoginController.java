@@ -10,8 +10,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import kz.hts.ce.config.FXMLDialog;
 import kz.hts.ce.config.ScreensConfiguration;
+import kz.hts.ce.util.AppContextSingleton;
 import kz.hts.ce.util.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -49,12 +51,10 @@ public class LoginController implements DialogController, Initializable {
     private void btnLoginAction(ActionEvent event) throws IOException {
         try {
             springUtils.authorize(txtUsername.getText(), txtPassword.getText());
-//            ApplicationContext context = AppContextSingleton.getInstance();
-//            ScreensConfiguration screens = context.getBean(ScreensConfiguration.class);
+            ApplicationContext context = AppContextSingleton.getInstance();
+            ScreensConfiguration screens = context.getBean(ScreensConfiguration.class);
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
-//            screens.loginDialog().show();
-//            screens.setPrimaryStage(stage);
             screens.main();
             dialog.close();
         }catch (UsernameNotFoundException e) {

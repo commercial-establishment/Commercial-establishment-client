@@ -20,7 +20,6 @@ public class MainController implements DialogController, Initializable {
     private FXMLDialog dialog;
     public Label dateLabel;
     public Button button;
-
     @Autowired
     private ScreensConfiguration screens;
     @Autowired

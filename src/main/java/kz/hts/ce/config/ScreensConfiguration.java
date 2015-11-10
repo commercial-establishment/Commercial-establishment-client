@@ -27,7 +27,6 @@
 
 package kz.hts.ce.config;
 
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -40,8 +39,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
-import java.io.IOException;
-
 @Configuration
 @Lazy
 public class ScreensConfiguration {
@@ -52,17 +49,19 @@ public class ScreensConfiguration {
         this.primaryStage = primaryStage;
     }
 
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
     @Bean
     @Scope("prototype")
     public Stage main() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
-            primaryStage.setTitle("Hello World");
-            primaryStage.setScene(new Scene(root));
-            primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        Object loader = springFxmlLoader.load("/view/main.fxml");
+//            Parent loader = FXMLLoader.load();
+        primaryStage.setTitle("Hello World");
+        primaryStage.setScene(new Scene((Parent) loader));
+        primaryStage.show();
         return primaryStage;
     }
 
