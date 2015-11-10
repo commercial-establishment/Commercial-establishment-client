@@ -4,14 +4,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import static kz.hts.ce.util.JavaFxUtil.calculator;
 
-@Component
+@Controller
 public class CalculatorController implements Initializable {
 
     @FXML

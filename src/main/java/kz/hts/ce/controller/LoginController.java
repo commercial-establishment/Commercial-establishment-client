@@ -14,14 +14,14 @@ import kz.hts.ce.util.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@Component
+@Controller
 public class LoginController implements Initializable {
 
     @FXML

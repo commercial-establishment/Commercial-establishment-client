@@ -1,23 +1,16 @@
 package kz.hts.ce.controller;
 
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import org.springframework.stereotype.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static kz.hts.ce.util.JavaFxUtil.getWatch;
-
 @Controller
-public class MainController implements Initializable {
-
-    public Label dateLabel;
-    public Button button;
+public class AddProductController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        getWatch(dateLabel);
+
     }
 }
