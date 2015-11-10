@@ -50,51 +50,51 @@
                         <Font size="15.0"/>
                     </font>
                 </Label>
-                <Label text="Label" GridPane.rowIndex="5">
+                <Label text="Итоговая цена" GridPane.rowIndex="5">
                     <font>
                         <Font size="15.0"/>
                     </font>
                 </Label>
-                <TextField alignment="CENTER_RIGHT" prefWidth="157.0" GridPane.columnIndex="1">
+                <TextField fx:id="name" alignment="CENTER_RIGHT" prefWidth="157.0" GridPane.columnIndex="1">
                     <font>
                         <Font size="14.0"/>
                     </font>
                 </TextField>
-                <TextField alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <TextField fx:id="price" alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <font>
                         <Font size="14.0"/>
                     </font>
                 </TextField>
-                <TextField alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <TextField  fx:id="amount" alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <font>
                         <Font size="14.0"/>
                     </font>
                 </TextField>
-                <TextField alignment="CENTER_RIGHT" editable="false" promptText="10%" GridPane.columnIndex="1"
+                <TextField fx:id="vat" alignment="CENTER_RIGHT" editable="false" promptText="10%" GridPane.columnIndex="1"
                            GridPane.rowIndex="3">
                     <font>
                         <Font size="14.0"/>
                     </font>
                 </TextField>
-                <TextField alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                <TextField fx:id="priceWithVat" alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="4">
                     <font>
                         <Font size="14.0"/>
                     </font>
                 </TextField>
-                <TextField alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                <TextField fx:id="totalPrice" alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="5">
                     <font>
                         <Font size="14.0"/>
                     </font>
                 </TextField>
             </children>
         </GridPane>
-        <Button layoutX="227.0" layoutY="296.0" mnemonicParsing="false" opacity="0.83" prefHeight="30.0"
+        <Button onAction="#success" layoutX="227.0" layoutY="296.0" mnemonicParsing="false" opacity="0.83" prefHeight="30.0"
                 prefWidth="104.0" text="Принять">
             <font>
                 <Font name="System Bold" size="12.0"/>
             </font>
         </Button>
-        <Button layoutX="106.0" layoutY="296.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0"
+        <Button onAction="#cancel" layoutX="106.0" layoutY="296.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0"
                 text="Отменить"/>
     </children>
 </AnchorPane>

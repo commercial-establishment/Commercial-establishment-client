@@ -1,18 +1,33 @@
 package kz.hts.ce.controller;
 
-import javafx.fxml.Initializable;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import org.springframework.stereotype.Controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 @Controller
-public class AddProductController implements Initializable {
+public class AddProductController {
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public TextField name;
+    @FXML
+    public TextField price;
+    @FXML
+    public TextField amount;
+    @FXML
+    public TextField vat;
+    @FXML
+    public TextField priceWithVat;
+    @FXML
+    public TextField totalPrice;
+
+    @FXML
+    public void success(ActionEvent event) {
 
     }
 
+    @FXML
+    public void cancel(ActionEvent event) {
 
+    }
 }
