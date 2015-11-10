@@ -77,8 +77,6 @@ public class JavaFxUtil {
                 return left.subtract(right);
             case "×":
                 return left.multiply(right);
-//            case "÷":
-//                return left.divide(right);
             default:
         }
         return right;

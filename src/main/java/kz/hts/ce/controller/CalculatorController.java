@@ -22,7 +22,7 @@ public class CalculatorController {
     public void handleOnAnyButtonClicked(ActionEvent evt) {
         Button button = (Button) evt.getSource();
         final String buttonText = button.getText();
-        if (buttonText.matches("^[0-9C\\s*[×+－=.]\\s*]*$")) {
+        if (buttonText.matches("^[0-9C\\s[×+－=.]\\s]*$")) {
             calculator(buttonText, display);
         }
     }
@@ -30,7 +30,7 @@ public class CalculatorController {
     @FXML
     public void addProductPage() {
         String displayText = display.getText();
-        if (!displayText.equals("") && !displayText.equals("0")) {
+        if (!displayText.equals("") && displayText.matches("^[0-9C\\s[.]\\s]*$")) {
             ApplicationContext context = AppContextSingleton.getInstance();
             PagesConfiguration screens = context.getBean(PagesConfiguration.class);
             Stage stage = new Stage();
