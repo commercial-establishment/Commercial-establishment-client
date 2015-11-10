@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,11 +41,13 @@ public class LoginController implements Initializable {
     }
 
     @FXML
+    @Transactional
     private void btnLoginAction(ActionEvent event) throws IOException {
         try {
             springUtils.authorize(txtUsername.getText(), txtPassword.getText());
             ApplicationContext context = AppContextSingleton.getInstance();
             ScreensConfiguration screens = context.getBean(ScreensConfiguration.class);
+            screens.login().close();
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
             screens.main();
