@@ -1,14 +1,11 @@
 package kz.hts.ce.controller;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import kz.hts.ce.config.FXMLDialog;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -18,19 +15,13 @@ import java.util.ResourceBundle;
 @Component
 public class CalculatorController implements Initializable {
 
+    private FXMLDialog dialog;
     private BigDecimal left;
     private String selectedOperator;
     private boolean numberInputting;
 
     @FXML
     private TextField display;
-
-
-    public CalculatorController() {
-        this.left = BigDecimal.ZERO;
-        this.selectedOperator = "";
-        this.numberInputting = false;
-    }
 
     @FXML
     public void handleOnAnyButtonClicked(ActionEvent evt) {
@@ -88,4 +79,7 @@ public class CalculatorController implements Initializable {
         display.setText("asda");
     }
 
+    public void setDialog(FXMLDialog dialog) {
+        this.dialog = dialog;
+    }
 }

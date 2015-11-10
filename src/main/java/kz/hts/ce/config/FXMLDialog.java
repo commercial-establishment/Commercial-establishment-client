@@ -1,7 +1,6 @@
 package kz.hts.ce.config;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -35,7 +34,7 @@ public class FXMLDialog extends Stage {
                 }
             });
             controller.setDialog(this);
-            setScene(new Scene((Parent) loader.load()));
+            setScene(new Scene(loader.load()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

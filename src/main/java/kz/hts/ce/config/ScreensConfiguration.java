@@ -27,8 +27,12 @@
 
 package kz.hts.ce.config;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import kz.hts.ce.controller.CalculatorController;
 import kz.hts.ce.controller.LoginController;
 import kz.hts.ce.controller.MainController;
 import org.springframework.context.annotation.Bean;
@@ -36,9 +40,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
+import java.io.IOException;
+
 @Configuration
 @Lazy
 public class ScreensConfiguration {
+
     private Stage primaryStage;
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -84,17 +91,32 @@ public class ScreensConfiguration {
 //        return new AddCustomerController();
 //    }
 
+    //
+    @Bean
+    @Scope("prototype")
+    public Stage main() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
+            primaryStage.setTitle("Hello World");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return primaryStage;
+    }
+
     @Bean
     @Scope("prototype")
     public FXMLDialog loginDialog() {
         return new FXMLDialog(loginController(), getClass().getResource("/view/login.fxml"), primaryStage, StageStyle.DECORATED);
     }
-
-    @Bean
-    @Scope("prototype")
-    public FXMLDialog mainDialog() {
-        return new FXMLDialog(mainController(), getClass().getResource("/view/main.fxml"), primaryStage, StageStyle.DECORATED);
-    }
+//
+//    @Bean
+//    @Scope("prototype")
+//    public FXMLDialog mainDialog() {
+//        return new FXMLDialog(mainController(), getClass().getResource("/view/main.fxml"), primaryStage, StageStyle.DECORATED);
+//    }
 
     @Bean
     @Scope("prototype")
@@ -105,6 +127,12 @@ public class ScreensConfiguration {
     @Bean
     @Scope("prototype")
     public MainController mainController() {
-        return new MainController(this);
+        return new MainController();
+    }
+
+    @Bean
+    @Scope("prototype")
+    public CalculatorController calculatorController() {
+        return new CalculatorController();
     }
 }

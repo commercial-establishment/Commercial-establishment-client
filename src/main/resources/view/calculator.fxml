@@ -6,85 +6,88 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="393.0" prefWidth="242.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="393.0"
+            prefWidth="242.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="kz.hts.ce.controller.CalculatorController">
     <children>
         <VBox layoutX="19.0" layoutY="330.0" prefHeight="50.0" prefWidth="132.0">
             <children>
                 <HBox prefHeight="100.0" prefWidth="200.0">
                     <children>
-                        <TextField prefHeight="25.0" prefWidth="87.0" />
-                        <TextField prefHeight="25.0" prefWidth="46.0" />
+                        <TextField prefHeight="25.0" prefWidth="87.0"/>
+                        <TextField prefHeight="25.0" prefWidth="46.0"/>
                     </children>
                 </HBox>
                 <HBox prefHeight="100.0" prefWidth="200.0">
                     <children>
-                        <ComboBox prefHeight="25.0" prefWidth="92.0" />
-                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="49.0" text="+" />
+                        <ComboBox prefHeight="25.0" prefWidth="92.0"/>
+                        <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="25.0" prefWidth="49.0" text="+"/>
                     </children>
                 </HBox>
             </children>
         </VBox>
         <HBox layoutX="18.0" layoutY="60.0" prefHeight="55.0" prefWidth="152.0">
             <children>
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="C" />
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="÷" />
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="×" />
+                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="C"/>
+                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="÷"/>
+                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="×"/>
             </children>
         </HBox>
         <HBox layoutX="18.0" layoutY="14.0" prefHeight="42.0" prefWidth="252.0">
             <children>
-                <TextField fx:id="display" alignment="BOTTOM_RIGHT" editable="false" prefHeight="35.0" prefWidth="208.0" text="0">
+                <TextField fx:id="display" alignment="BOTTOM_RIGHT" editable="false" prefHeight="35.0" prefWidth="208.0"
+                           text="0">
                     <font>
-                        <Font name="Lucida Console" size="20.0" />
+                        <Font name="Lucida Console" size="20.0"/>
                     </font>
                 </TextField>
             </children>
         </HBox>
         <HBox layoutX="176.0" layoutY="60.0" prefHeight="55.0" prefWidth="50.0">
             <children>
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="－" />
+                <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="－"/>
             </children>
         </HBox>
         <HBox layoutX="19.0" layoutY="272.0" prefHeight="50.0" prefWidth="152.0">
             <children>
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="0" />
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="." />
+                <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="0"/>
+                <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="."/>
             </children>
         </HBox>
         <VBox layoutX="176.0" layoutY="122.0" prefHeight="200.0" prefWidth="50.0">
             <children>
-                <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="50.0" text="＋" />
-                <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="50.0" text="=" />
+                <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="100.0" prefWidth="50.0" text="＋"/>
+                <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="100.0" prefWidth="50.0" text="="/>
             </children>
         </VBox>
         <VBox layoutX="19.0" layoutY="122.0" prefHeight="150.0" prefWidth="150.0">
             <children>
                 <HBox prefHeight="100.0" prefWidth="150.0">
                     <children>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="7" />
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="8" />
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="9" />
+                        <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="7"/>
+                        <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="8"/>
+                        <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="9"/>
                     </children>
                 </HBox>
                 <HBox prefHeight="100.0" prefWidth="150.0">
                     <children>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="4" />
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="5" />
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="6" />
+                        <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="4"/>
+                        <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="5"/>
+                        <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="6"/>
                     </children>
                 </HBox>
                 <HBox prefHeight="100.0" prefWidth="200.0">
                     <children>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="1" />
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="2" />
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="3" />
+                        <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="1"/>
+                        <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="2"/>
+                        <Button onAction="#handleOnAnyButtonClicked" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="3"/>
                     </children>
                 </HBox>
             </children>
         </VBox>
         <HBox layoutX="155.0" layoutY="330.0" prefHeight="62.0" prefWidth="71.0">
             <children>
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="70.0" text="Button" />
+                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="70.0" text="Button"/>
             </children>
         </HBox>
     </children>
