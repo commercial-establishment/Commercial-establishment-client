@@ -4,7 +4,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
@@ -32,16 +31,14 @@ public class JavaFxUtil {
         watch.play();
     }
 
-    public static void calculator(ActionEvent evt, TextField display){
-        Button button = (Button)evt.getSource();
-        final String buttonText = button.getText();
+    public static void calculator(String buttonText, TextField display) {
         if (buttonText.equals("C")) {
             selectedOperator = "";
             numberInputting = false;
             display.setText("0");
             return;
         }
-        if (buttonText.matches("[0-9\\.]")) {
+        if (buttonText.matches("[0-9]")) {
             if (!numberInputting) {
                 numberInputting = true;
                 display.clear();
@@ -49,7 +46,17 @@ public class JavaFxUtil {
             display.appendText(buttonText);
             return;
         }
-        if (buttonText.matches("[－×÷]")) {
+        if (buttonText.matches("[\\.]")) {
+            if (!display.getText().contains(".")) {
+                if (!numberInputting) {
+                    numberInputting = true;
+                    display.clear();
+                }
+                display.appendText(buttonText);
+                return;
+            }
+        }
+        if (buttonText.matches("[－×]")) {
             left = new BigDecimal(display.getText());
             selectedOperator = buttonText;
             numberInputting = false;
@@ -66,14 +73,12 @@ public class JavaFxUtil {
 
     public static BigDecimal calculate(String operator, BigDecimal left, BigDecimal right) {
         switch (operator) {
-//            case "＋":
-//                return left.add(right);
             case "－":
                 return left.subtract(right);
             case "×":
                 return left.multiply(right);
-            case "÷":
-                return left.divide(right);
+//            case "÷":
+//                return left.divide(right);
             default:
         }
         return right;

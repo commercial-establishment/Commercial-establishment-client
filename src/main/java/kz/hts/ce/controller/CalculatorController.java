@@ -2,6 +2,7 @@ package kz.hts.ce.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
@@ -19,15 +20,22 @@ public class CalculatorController {
 
     @FXML
     public void handleOnAnyButtonClicked(ActionEvent evt) {
-        calculator(evt, display);
+        Button button = (Button) evt.getSource();
+        final String buttonText = button.getText();
+        if (buttonText.matches("^[0-9C\\s*[×+－=.]\\s*]*$")) {
+            calculator(buttonText, display);
+        }
     }
 
     @FXML
-    public void addProductPage(ActionEvent event) {
-        ApplicationContext context = AppContextSingleton.getInstance();
-        PagesConfiguration screens = context.getBean(PagesConfiguration.class);
-        Stage stage = new Stage();
-        screens.setPrimaryStage(stage);
-        screens.addProduct();
+    public void addProductPage() {
+        String displayText = display.getText();
+        if (!displayText.equals("") && !displayText.equals("0")) {
+            ApplicationContext context = AppContextSingleton.getInstance();
+            PagesConfiguration screens = context.getBean(PagesConfiguration.class);
+            Stage stage = new Stage();
+            screens.setPrimaryStage(stage);
+            screens.addProduct();
+        }
     }
 }
