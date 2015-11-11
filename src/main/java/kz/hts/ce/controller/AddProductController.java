@@ -15,10 +15,6 @@ public class AddProductController {
     @FXML
     private TextField amount;
     @FXML
-    private TextField vat;
-    @FXML
-    private TextField priceWithVat;
-    @FXML
     private TextField totalPrice;
 
     @FXML
@@ -40,14 +36,6 @@ public class AddProductController {
 
     public TextField getAmount() {
         return amount;
-    }
-
-    public TextField getVat() {
-        return vat;
-    }
-
-    public TextField getPriceWithVat() {
-        return priceWithVat;
     }
 
     public TextField getTotalPrice() {

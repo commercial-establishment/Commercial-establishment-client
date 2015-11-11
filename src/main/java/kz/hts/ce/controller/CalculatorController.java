@@ -11,13 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
 import static kz.hts.ce.util.JavaFxUtil.calculator;
-import static kz.hts.ce.util.JavaUtil.StringToBigDecimal;
-import static kz.hts.ce.util.JavaUtil.calculateCost;
+import static kz.hts.ce.util.JavaFxUtil.readProductFields;
 
 @Controller
 public class CalculatorController {
@@ -48,26 +43,8 @@ public class CalculatorController {
             screens.setPrimaryStage(stage);
             screens.addProduct();
 
-            TextField txtVat = addProductController.getVat();
-            TextField txtAmount = addProductController.getAmount();
-            TextField txtPrice = addProductController.getPrice();
-
-            txtPrice.setText(txtDisplay.getText());
-            String additionalDisplayText = txtAdditionalDisplay.getText();
-            String[] splittedAdditionalDisplay = additionalDisplayText.split("×");
-            txtAmount.setText(splittedAdditionalDisplay[1]);
-
-            txtVat.setText("10");
-            int vat = Integer.parseInt(txtVat.getText());
-            int amount = Integer.parseInt(txtAmount.getText());
-            BigDecimal price = StringToBigDecimal(txtPrice.getText());
-
-            List<Integer> integerParameters = new ArrayList<>();
-            integerParameters.add(vat / 100);
-            integerParameters.add(amount);
-            BigDecimal total = calculateCost(integerParameters, price);
-            addProductController.getPriceWithVat().setText(String.valueOf(total));
-            addProductController.getTotalPrice().setText(String.valueOf(total));
+            readProductFields(addProductController, txtDisplay, txtAdditionalDisplay);
         }
     }
+
 }

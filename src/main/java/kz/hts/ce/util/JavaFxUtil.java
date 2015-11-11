@@ -7,11 +7,17 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
+import kz.hts.ce.controller.AddProductController;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+
+import static kz.hts.ce.util.JavaUtil.StringToBigDecimal;
+import static kz.hts.ce.util.JavaUtil.calculateCost;
 
 public class JavaFxUtil {
 
@@ -35,7 +41,7 @@ public class JavaFxUtil {
         if (buttonText.equals("C")) {
             selectedOperator = "";
             numberInputting = false;
-            txtDisplay.setText("0");
+            txtDisplay.setText("");
             txtAdditionalDisplay.setText("");
             return;
         }
@@ -118,5 +124,32 @@ public class JavaFxUtil {
             default:
         }
         return right;
+    }
+
+
+    public static void readProductFields(AddProductController addProductController, TextField txtDisplay, TextField txtAdditionalDisplay) {
+//        TextField txtVat = addProductController.getVat();
+        TextField txtAmount = addProductController.getAmount();
+        TextField txtPrice = addProductController.getPrice();
+
+        txtPrice.setText(txtDisplay.getText());
+        if (txtAdditionalDisplay.getText().equals("")) {
+            txtAdditionalDisplay.setText("×1");
+        }
+        String additionalDisplayText = txtAdditionalDisplay.getText();
+        String[] splittedAdditionalDisplay = additionalDisplayText.split("×");
+        txtAmount.setText(splittedAdditionalDisplay[1]);
+
+//        txtVat.setText("12");
+//        int vat = Integer.parseInt(txtVat.getText());
+        int amount = Integer.parseInt(txtAmount.getText());
+        BigDecimal price = StringToBigDecimal(txtPrice.getText());
+
+        List<Integer> integerParameters = new ArrayList<>();
+//        integerParameters.add(vat / 100);
+        integerParameters.add(amount);
+        BigDecimal total = calculateCost(integerParameters, price);
+//        addProductController.getPriceWithVat().setText(String.valueOf(total));
+        addProductController.getTotalPrice().setText(String.valueOf(total));
     }
 }
