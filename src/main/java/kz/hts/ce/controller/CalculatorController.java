@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
+import kz.hts.ce.entity.ShopProduct;
+import kz.hts.ce.service.ShopProductService;
 import kz.hts.ce.util.AppContextSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -23,6 +25,10 @@ public class CalculatorController {
     private TextField txtDisplay;
     @Autowired
     private AddProductController addProductController;
+    @Autowired
+    private ShopProductService shopProductService;
+    @Autowired
+    private ProductsController productsController;
 
     @FXML
     public void handleOnAnyButtonClicked(ActionEvent evt) {
@@ -56,4 +62,11 @@ public class CalculatorController {
         screens.payment();
     }
 
+    public void findAndAddProductByBarcode(ActionEvent event) {
+        String barcode = txtDisplay.getText();
+        ShopProduct shopProduct = shopProductService.findByProductBarcode(Long.parseLong(barcode));
+        System.out.println(productsController.getProductTable());
+        productsController.setShopProductToShopProducts(shopProduct);
+        productsController.setProductsToTable();
+    }
 }

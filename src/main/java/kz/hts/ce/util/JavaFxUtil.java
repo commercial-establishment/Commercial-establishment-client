@@ -128,7 +128,6 @@ public class JavaFxUtil {
 
 
     public static void readProductFields(AddProductController addProductController, TextField txtDisplay, TextField txtAdditionalDisplay) {
-//        TextField txtVat = addProductController.getVat();
         TextField txtAmount = addProductController.getAmount();
         TextField txtPrice = addProductController.getPrice();
 
@@ -140,16 +139,12 @@ public class JavaFxUtil {
         String[] splittedAdditionalDisplay = additionalDisplayText.split("×");
         txtAmount.setText(splittedAdditionalDisplay[1]);
 
-//        txtVat.setText("12");
-//        int vat = Integer.parseInt(txtVat.getText());
         int amount = Integer.parseInt(txtAmount.getText());
         BigDecimal price = stringToBigDecimal(txtPrice.getText());
 
         List<Integer> integerParameters = new ArrayList<>();
-//        integerParameters.add(vat / 100);
         integerParameters.add(amount);
         BigDecimal total = calculateCost(integerParameters, price);
-//        addProductController.getPriceWithVat().setText(String.valueOf(total));
         addProductController.getTotalPrice().setText(String.valueOf(total));
     }
 }

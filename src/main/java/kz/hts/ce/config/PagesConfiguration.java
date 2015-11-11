@@ -28,10 +28,7 @@
 package kz.hts.ce.config;
 
 import javafx.stage.Stage;
-import kz.hts.ce.controller.CalculatorController;
-import kz.hts.ce.controller.LoginController;
-import kz.hts.ce.controller.MainController;
-import kz.hts.ce.controller.PaymentController;
+import kz.hts.ce.controller.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -76,6 +73,14 @@ public class PagesConfiguration {
         showStage(primaryStage, "/view/payment.fxml");
         return primaryStage;
     }
+
+    @Bean
+    @Scope("prototype")
+    public Stage products() {
+        showStage(primaryStage, "/view/products.fxml");
+        return primaryStage;
+    }
+
     @Bean
     @Scope("prototype")
     public LoginController loginController() {
@@ -98,5 +103,11 @@ public class PagesConfiguration {
     @Scope("prototype")
     public PaymentController paymentController() {
         return new PaymentController();
+    }
+
+    @Bean
+    @Scope("prototype")
+    public ProductsController productsController() {
+        return new ProductsController();
     }
 }

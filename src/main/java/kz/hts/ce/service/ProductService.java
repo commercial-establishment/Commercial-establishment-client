@@ -26,4 +26,8 @@ public class ProductService extends BaseService<Product, ProductRepository>{
     public void reestablishById(long id) {
         repository.reestablishById(id);
     }
+
+    public Product findByBarcode(long barcode) {
+       return repository.findByBarcode(barcode);
+    }
 }

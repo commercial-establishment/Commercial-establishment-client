@@ -19,4 +19,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Modifying
     @Query("UPDATE Product p set p.blocked = FALSE where p.id = ?1")
     void reestablishById(long id);
+
+    Product findByBarcode(long barcode);
 }
