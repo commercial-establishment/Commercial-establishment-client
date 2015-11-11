@@ -38,7 +38,7 @@ public class AddProductController {
     }
 
     @FXML
-    private void initialize() {
+    private void listener() {
         amount.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {

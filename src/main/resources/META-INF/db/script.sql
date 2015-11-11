@@ -16,8 +16,10 @@ INSERT INTO category (id, name) VALUES (1, 'Напитки');
 INSERT INTO type (id, name) VALUES (1, 'A');
 INSERT INTO type (id, name) VALUES (2, 'B');
 
-INSERT INTO product (id, is_blocked, name, category_id) VALUES (1, FALSE, 'Coca-Cola', 1);
-INSERT INTO product (id, is_blocked, name, category_id) VALUES (2, FALSE, 'NeCoca-Cola', 1);
+INSERT INTO product (id, BARCODE, is_blocked, name, category_id) VALUES (1, 123123123123, FALSE, 'Coca-Cola', 1);
+INSERT INTO product (id, BARCODE, is_blocked, name, category_id) VALUES (2, 321321321321, FALSE, 'NeCoca-Cola', 1);
+
+INSERT INTO SHOP_PRODUCT (ID, IS_BLOCKED, INITIAL_PRICE, PRICE, PRODUCT_ID, SHOP_ID) VALUES (1, FALSE, 100, 200, 1, 1);
 
 INSERT INTO warehouse (id, arrival, import_date, residue, produt_id) VALUES (1, 100, NULL, 50, 1);
 INSERT INTO warehouse (id, arrival, import_date, residue, produt_id) VALUES (2, 100, NULL, 50, 2);
