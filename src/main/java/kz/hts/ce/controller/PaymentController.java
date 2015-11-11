@@ -38,8 +38,11 @@ public class PaymentController {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 BigDecimal totalBD = stringToBigDecimal(getTotal().getText());
-                BigDecimal changeBD = new BigDecimal(Long.parseLong(newValue)).subtract(totalBD);
-                change.setText(String.valueOf(changeBD));
+                BigDecimal newVal = new BigDecimal(Long.parseLong(newValue));
+                BigDecimal changeBD = newVal.subtract(totalBD);
+                if(newVal.compareTo(totalBD)==1) {
+                    change.setText(String.valueOf(changeBD));
+                }
             }
         });
     }
