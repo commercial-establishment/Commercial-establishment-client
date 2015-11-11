@@ -16,8 +16,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
 import static kz.hts.ce.util.JavaUtil.calculateCost;
+import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
 
 public class JavaFxUtil {
 
