@@ -5,9 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="396.0" prefWidth="569.0"
-            xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="kz.hts.ce.controller.PaymentController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="396.0" prefWidth="569.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.PaymentController">
     <children>
         <Button fx:id="accept" layoutX="451.0" layoutY="347.0" mnemonicParsing="false" opacity="0.83" prefHeight="30.0" prefWidth="104.0" text="Принять">
             <font>
@@ -31,12 +29,12 @@
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="given" layoutX="230.0" layoutY="88.0" prefHeight="37.0" prefWidth="175.0">
+                        <TextField fx:id="given" alignment="CENTER_RIGHT" layoutX="230.0" layoutY="88.0" prefHeight="37.0" prefWidth="175.0">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="change" editable="false" layoutX="231.0" layoutY="138.0" prefHeight="37.0" prefWidth="174.0">
+                        <TextField fx:id="change" alignment="CENTER_RIGHT" editable="false" layoutX="231.0" layoutY="138.0" prefHeight="37.0" prefWidth="174.0">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
@@ -64,7 +62,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <TextField alignment="CENTER_RIGHT" editable="false" layoutX="118.0" layoutY="8.0" prefHeight="25.0" prefWidth="142.0" text="850 тг">
+      <TextField fx:id="total" alignment="CENTER_RIGHT" editable="false" layoutX="118.0" layoutY="8.0" prefHeight="25.0" prefWidth="142.0" text="850">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>

@@ -12,6 +12,9 @@ import kz.hts.ce.util.AppContextSingleton;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
+import java.math.BigDecimal;
+
+import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
 
 
 @Controller
@@ -21,18 +24,32 @@ public class PaymentController {
     @FXML
     private TextField change;
     @FXML
-    private Button accept, cancel, print;
+    private TextField total;
+    @FXML
+    private Button accept;
+    @FXML
+    private Button cancel;
+    @FXML
+    private Button print;
 
     @FXML
     private void initialize(){
-        given.textProperty().addListener(new ChangeListener<Object>() {
+        given.textProperty().addListener(new ChangeListener<String>() {
             @Override
-            public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
-                System.out.println("TextField Text Changed (newValue: " + newValue + ")\n");
-
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                BigDecimal totalBD = stringToBigDecimal(getTotal().getText());
+                BigDecimal changeBD = new BigDecimal(Long.parseLong(newValue)).subtract(totalBD);
+                change.setText(String.valueOf(changeBD));
             }
         });
     }
 
 
+    public TextField getTotal() {
+        return total;
+    }
+
+    public TextField getGiven() {
+        return given;
+    }
 }
