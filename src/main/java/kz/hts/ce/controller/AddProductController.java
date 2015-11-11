@@ -29,11 +29,11 @@ public class AddProductController {
 
     @FXML
     private void initialize(){
-        amount.textProperty().addListener(new ChangeListener<String>() {
+        amount.textProperty().addListener(new ChangeListener<Object>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable,
-                                String oldValue, String newValue) {
+            public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
                 System.out.println("TextField Text Changed (newValue: " + newValue + ")\n");
+
             }
         });
 
