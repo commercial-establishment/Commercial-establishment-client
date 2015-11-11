@@ -16,8 +16,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import static kz.hts.ce.util.JavaUtil.StringToBigDecimal;
 import static kz.hts.ce.util.JavaUtil.calculateCost;
+import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
 
 public class JavaFxUtil {
 
@@ -143,7 +143,7 @@ public class JavaFxUtil {
 //        txtVat.setText("12");
 //        int vat = Integer.parseInt(txtVat.getText());
         int amount = Integer.parseInt(txtAmount.getText());
-        BigDecimal price = StringToBigDecimal(txtPrice.getText());
+        BigDecimal price = stringToBigDecimal(txtPrice.getText());
 
         List<Integer> integerParameters = new ArrayList<>();
 //        integerParameters.add(vat / 100);

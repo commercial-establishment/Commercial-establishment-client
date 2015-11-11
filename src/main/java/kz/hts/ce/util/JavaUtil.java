@@ -11,7 +11,7 @@ public class JavaUtil {
     private static BigDecimal itemCost = BigDecimal.ZERO;
     private static BigDecimal totalCost = BigDecimal.ZERO;
 
-    public static BigDecimal StringToBigDecimal(String value) {
+    public static BigDecimal stringToBigDecimal(String value) {
         try {
             DecimalFormatSymbols symbols = new DecimalFormatSymbols();
             symbols.setGroupingSeparator(',');
@@ -20,7 +20,6 @@ public class JavaUtil {
             DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
             decimalFormat.setParseBigDecimal(true);
 
-            // parse the string
             return (BigDecimal) decimalFormat.parse(value);
         } catch (ParseException e) {
             throw new RuntimeException(e);/*TODO add exception*/
@@ -34,4 +33,10 @@ public class JavaUtil {
         }
         return totalCost;
     }
+
+//    public static BigDecimal calculatesAmountAndPrice(Long amount, BigDecimal itemPrice) {
+//        itemCost = itemPrice.multiply(new BigDecimal(amount));
+//        totalCost = totalCost.add(itemCost);
+//        return totalCost;
+//    }
 }

@@ -47,4 +47,13 @@ public class CalculatorController {
         }
     }
 
+    @FXML
+    public void paymentPage() {
+        ApplicationContext context = AppContextSingleton.getInstance();
+        PagesConfiguration screens = context.getBean(PagesConfiguration.class);
+        Stage stage = new Stage();
+        screens.setPrimaryStage(stage);
+        screens.payment();
+    }
+
 }

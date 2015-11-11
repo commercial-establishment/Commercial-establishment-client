@@ -31,6 +31,7 @@ import javafx.stage.Stage;
 import kz.hts.ce.controller.CalculatorController;
 import kz.hts.ce.controller.LoginController;
 import kz.hts.ce.controller.MainController;
+import kz.hts.ce.controller.PaymentController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -71,6 +72,12 @@ public class PagesConfiguration {
 
     @Bean
     @Scope("prototype")
+    public Stage payment() {
+        showStage(primaryStage, "/view/payment.fxml");
+        return primaryStage;
+    }
+    @Bean
+    @Scope("prototype")
     public LoginController loginController() {
         return new LoginController();
     }
@@ -85,5 +92,11 @@ public class PagesConfiguration {
     @Scope("prototype")
     public CalculatorController calculatorController() {
         return new CalculatorController();
+    }
+
+    @Bean
+    @Scope("prototype")
+    public PaymentController paymentController() {
+        return new PaymentController();
     }
 }
