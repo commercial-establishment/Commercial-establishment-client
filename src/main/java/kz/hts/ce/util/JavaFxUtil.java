@@ -39,19 +39,34 @@ public class JavaFxUtil {
             txtAdditionalDisplay.setText("");
             return;
         }
-        if (buttonText.matches("[0-9]")) {
-            if (txtAdditionalDisplay.getText().equals("")) {
-                if (!numberInputting) {
-                    numberInputting = true;
-                    txtDisplay.clear();
-                }
+        if (buttonText.matches("[0]")) {
+            if (!numberInputting) {
+                numberInputting = true;
+                txtDisplay.clear();
+            }
+            if (!txtDisplay.getText().startsWith("0")) {
                 txtDisplay.appendText(buttonText);
                 return;
-            } else {
-                String text = txtAdditionalDisplay.getText();
-                text += buttonText;
-                txtAdditionalDisplay.setText(text);
+            } else if (txtDisplay.getText().startsWith("0.")) {
+                txtDisplay.appendText(buttonText);
                 return;
+            }
+        }
+        if (buttonText.matches("[1-9]")) {
+            if (!txtDisplay.getText().startsWith("0") || txtDisplay.getText().startsWith("0.")) {
+                if (txtAdditionalDisplay.getText().equals("")) {
+                    if (!numberInputting) {
+                        numberInputting = true;
+                        txtDisplay.clear();
+                    }
+                    txtDisplay.appendText(buttonText);
+                    return;
+                } else {
+                    String text = txtAdditionalDisplay.getText();
+                    text += buttonText;
+                    txtAdditionalDisplay.setText(text);
+                    return;
+                }
             }
         }
         if (buttonText.matches("[\\.]")) {

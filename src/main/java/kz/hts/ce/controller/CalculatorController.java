@@ -11,7 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import static kz.hts.ce.util.JavaFxUtil.calculator;
+import static kz.hts.ce.util.JavaUtil.StringToBigDecimal;
+import static kz.hts.ce.util.JavaUtil.calculateCost;
 
 @Controller
 public class CalculatorController {
@@ -42,13 +48,26 @@ public class CalculatorController {
             screens.setPrimaryStage(stage);
             screens.addProduct();
 
-            addProductController.getPrice().setText(txtDisplay.getText());
+            TextField txtVat = addProductController.getVat();
+            TextField txtAmount = addProductController.getAmount();
+            TextField txtPrice = addProductController.getPrice();
+
+            txtPrice.setText(txtDisplay.getText());
             String additionalDisplayText = txtAdditionalDisplay.getText();
             String[] splittedAdditionalDisplay = additionalDisplayText.split("×");
-            addProductController.getAmount().setText(splittedAdditionalDisplay[1]);
-            addProductController.getVat().setText("10");
-            addProductController.getPriceWithVat().setText(String.valueOf(0.1 * 88 * 9));
-            addProductController.getTotalPrice().setText(String.valueOf(0.1 * 88 * 9));
+            txtAmount.setText(splittedAdditionalDisplay[1]);
+
+            txtVat.setText("10");
+            int vat = Integer.parseInt(txtVat.getText());
+            int amount = Integer.parseInt(txtAmount.getText());
+            BigDecimal price = StringToBigDecimal(txtPrice.getText());
+
+            List<Integer> integerParameters = new ArrayList<>();
+            integerParameters.add(vat / 100);
+            integerParameters.add(amount);
+            BigDecimal total = calculateCost(integerParameters, price);
+            addProductController.getPriceWithVat().setText(String.valueOf(total));
+            addProductController.getTotalPrice().setText(String.valueOf(total));
         }
     }
 }

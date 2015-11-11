@@ -9,7 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.util.AppContextSingleton;
-import kz.hts.ce.util.SpringUtils;
+import kz.hts.ce.util.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,7 +30,7 @@ public class LoginController {
     @FXML
     public Label lblMessage;
     @Autowired
-    private SpringUtils springUtils;
+    private SpringUtil springUtils;
 
     @FXML
     @Transactional
