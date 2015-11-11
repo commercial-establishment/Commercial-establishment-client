@@ -5,29 +5,60 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="396.0" prefWidth="569.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.AddProductController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="396.0" prefWidth="569.0"
+            xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="kz.hts.ce.controller.PaymentController">
     <children>
-        <Button layoutX="451.0" layoutY="347.0" mnemonicParsing="false" onAction="#success" opacity="0.83" prefHeight="30.0" prefWidth="104.0" text="Принять">
+        <Button fx:id="accept" layoutX="451.0" layoutY="347.0" mnemonicParsing="false" opacity="0.83" prefHeight="30.0" prefWidth="104.0" text="Принять">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
         </Button>
-        <Button layoutX="330.0" layoutY="347.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="104.0" text="Отменить" />
+        <Button fx:id="cancel" layoutX="330.0" layoutY="347.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Отменить" />
       <TabPane layoutX="4.0" layoutY="55.0" prefHeight="292.0" prefWidth="561.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Наличные">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="263.0" prefWidth="227.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="263.0" prefWidth="227.0">
+                     <children>
+                        <Label layoutX="157.0" layoutY="96.0" text="Внесено">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="157.0" layoutY="144.0" text="Сдача">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="given" layoutX="230.0" layoutY="88.0" prefHeight="37.0" prefWidth="175.0">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="change" editable="false" layoutX="231.0" layoutY="138.0" prefHeight="37.0" prefWidth="174.0">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </TextField>
+                     </children></AnchorPane>
             </content>
           </Tab>
           <Tab text="Card">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="194.0" layoutY="119.0" text="Временно недоступен">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
             </content>
           </Tab>
         </tabs>
       </TabPane>
-      <Button layoutX="14.0" layoutY="347.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="104.0" text="Печать" />
+      <Button fx:id="print" layoutX="14.0" layoutY="347.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Печать" />
       <Label layoutX="65.0" layoutY="14.0" text="Итого">
          <font>
             <Font name="System Bold" size="16.0" />
