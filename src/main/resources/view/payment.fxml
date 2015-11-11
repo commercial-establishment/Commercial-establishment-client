@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="396.0" prefWidth="569.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.AddProductController">
+    <children>
+        <Button layoutX="451.0" layoutY="347.0" mnemonicParsing="false" onAction="#success" opacity="0.83" prefHeight="30.0" prefWidth="104.0" text="Принять">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Button>
+        <Button layoutX="330.0" layoutY="347.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="104.0" text="Отменить" />
+      <TabPane layoutX="4.0" layoutY="55.0" prefHeight="292.0" prefWidth="561.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Наличные">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="263.0" prefWidth="227.0" />
+            </content>
+          </Tab>
+          <Tab text="Card">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <Button layoutX="14.0" layoutY="347.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="104.0" text="Печать" />
+      <Label layoutX="65.0" layoutY="14.0" text="Итого">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextField alignment="CENTER_RIGHT" editable="false" layoutX="118.0" layoutY="8.0" prefHeight="25.0" prefWidth="142.0" text="850 тг">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </TextField>
+      <Label layoutX="284.0" layoutY="14.0" text="Осталось">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextField alignment="CENTER_RIGHT" editable="false" layoutX="363.0" layoutY="8.0" prefHeight="25.0" prefWidth="142.0" text="850 тг">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </TextField>
+    </children>
+</AnchorPane>
