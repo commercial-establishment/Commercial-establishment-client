@@ -5,6 +5,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import kz.hts.ce.config.PagesConfiguration;
+import kz.hts.ce.util.AppContextSingleton;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
@@ -29,6 +32,9 @@ public class AddProductController {
 
     @FXML
     public void cancel(ActionEvent event) {
+        ApplicationContext context = AppContextSingleton.getInstance();
+        PagesConfiguration screens = context.getBean(PagesConfiguration.class);
+        screens.addProduct().close();
     }
 
     @FXML
