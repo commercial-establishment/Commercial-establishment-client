@@ -46,6 +46,12 @@ public class PaymentController {
             }
         });
     }
+    @FXML
+    private void cancel(){
+        ApplicationContext context = AppContextSingleton.getInstance();
+        PagesConfiguration screens = context.getBean(PagesConfiguration.class);
+        screens.payment().close();
+    }
 
 
     public TextField getTotal() {

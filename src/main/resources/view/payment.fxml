@@ -12,7 +12,7 @@
                 <Font name="System Bold" size="12.0" />
             </font>
         </Button>
-        <Button fx:id="cancel" layoutX="330.0" layoutY="347.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Отменить" />
+        <Button fx:id="cancel" layoutX="330.0" layoutY="347.0" onAction="#cancel" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Отменить" />
       <TabPane layoutX="4.0" layoutY="55.0" prefHeight="292.0" prefWidth="561.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Наличные">
