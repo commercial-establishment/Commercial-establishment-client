@@ -1,9 +1,15 @@
 package kz.hts.ce.controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import org.springframework.stereotype.Controller;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 @Controller
 public class AddProductController {
@@ -23,6 +29,17 @@ public class AddProductController {
 
     @FXML
     public void cancel(ActionEvent event) {
+    }
+
+    @FXML
+    private void initialize(){
+        amount.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+                System.out.println("TextField Text Changed (newValue: " + newValue + ")\n");
+            }
+        });
 
     }
 
@@ -41,4 +58,5 @@ public class AddProductController {
     public TextField getTotalPrice() {
         return totalPrice;
     }
+
 }
