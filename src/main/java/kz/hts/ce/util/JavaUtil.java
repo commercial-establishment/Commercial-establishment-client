@@ -33,4 +33,10 @@ public class JavaUtil {
         }
         return totalCost;
     }
+
+//    public static BigDecimal calculatesAmountAndPrice(Long amount, BigDecimal itemPrice) {
+//        itemCost = itemPrice.multiply(new BigDecimal(amount));
+//        totalCost = totalCost.add(itemCost);
+//        return totalCost;
+//    }
 }

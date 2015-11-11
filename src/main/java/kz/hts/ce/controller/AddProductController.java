@@ -7,6 +7,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import org.springframework.stereotype.Controller;
 
+import java.math.BigDecimal;
+
+import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
+
 @Controller
 public class AddProductController {
 
@@ -28,15 +32,28 @@ public class AddProductController {
     }
 
     @FXML
-    private void initialize(){
-        amount.textProperty().addListener(new ChangeListener<Object>() {
+    private void initialize() {
+        amount.textProperty().addListener(new ChangeListener<String>() {
             @Override
-            public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
-                System.out.println("TextField Text Changed (newValue: " + newValue + ")\n");
-
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                BigDecimal priceBD = stringToBigDecimal(getPrice().getText());
+                BigDecimal totalPriceBD = priceBD.multiply(new BigDecimal(Long.parseLong(newValue)));
+                totalPrice.setText(String.valueOf(totalPriceBD));
             }
         });
 
+        price.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (amount.getText().equals("")) {
+                    amount.setText("1");
+                }
+                long amountLong = Long.parseLong(amount.getText());
+                BigDecimal priceBD = stringToBigDecimal(newValue);
+                BigDecimal totalPriceBD = priceBD.multiply(new BigDecimal(amountLong));
+                totalPrice.setText(String.valueOf(totalPriceBD));
+            }
+        });
     }
 
     public TextField getName() {
@@ -55,4 +72,19 @@ public class AddProductController {
         return totalPrice;
     }
 
+    public void setName(TextField name) {
+        this.name = name;
+    }
+
+    public void setPrice(TextField price) {
+        this.price = price;
+    }
+
+    public void setAmount(TextField amount) {
+        this.amount = amount;
+    }
+
+    public void setTotalPrice(TextField totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 }
