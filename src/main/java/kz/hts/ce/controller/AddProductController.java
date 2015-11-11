@@ -31,7 +31,7 @@ public class AddProductController {
     }
 
     @FXML
-    public void cancel(ActionEvent event) {
+    public void cancel() {
         ApplicationContext context = AppContextSingleton.getInstance();
         PagesConfiguration screens = context.getBean(PagesConfiguration.class);
         screens.addProduct().close();
