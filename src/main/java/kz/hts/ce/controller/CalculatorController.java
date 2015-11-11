@@ -42,13 +42,13 @@ public class CalculatorController {
             screens.setPrimaryStage(stage);
             screens.addProduct();
 
-            addProductController.price.setText(txtDisplay.getText());
+            addProductController.getPrice().setText(txtDisplay.getText());
             String additionalDisplayText = txtAdditionalDisplay.getText();
             String[] splittedAdditionalDisplay = additionalDisplayText.split("×");
-            addProductController.amount.setText(splittedAdditionalDisplay[1]);
-            addProductController.vat.setText("10");
-            addProductController.priceWithVat.setText(String.valueOf(0.1 * 88 * 9));
-            addProductController.totalPrice.setText(String.valueOf(0.1 * 88 * 9));
+            addProductController.getAmount().setText(splittedAdditionalDisplay[1]);
+            addProductController.getVat().setText("10");
+            addProductController.getPriceWithVat().setText(String.valueOf(0.1 * 88 * 9));
+            addProductController.getTotalPrice().setText(String.valueOf(0.1 * 88 * 9));
         }
     }
 }

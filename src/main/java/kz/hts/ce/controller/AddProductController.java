@@ -9,17 +9,17 @@ import org.springframework.stereotype.Controller;
 public class AddProductController {
 
     @FXML
-    public TextField name;
+    private TextField name;
     @FXML
-    public TextField price;
+    private TextField price;
     @FXML
-    public TextField amount;
+    private TextField amount;
     @FXML
-    public TextField vat;
+    private TextField vat;
     @FXML
-    public TextField priceWithVat;
+    private TextField priceWithVat;
     @FXML
-    public TextField totalPrice;
+    private TextField totalPrice;
 
     @FXML
     public void success(ActionEvent event) {
@@ -28,5 +28,29 @@ public class AddProductController {
     @FXML
     public void cancel(ActionEvent event) {
 
+    }
+
+    public TextField getName() {
+        return name;
+    }
+
+    public TextField getPrice() {
+        return price;
+    }
+
+    public TextField getAmount() {
+        return amount;
+    }
+
+    public TextField getVat() {
+        return vat;
+    }
+
+    public TextField getPriceWithVat() {
+        return priceWithVat;
+    }
+
+    public TextField getTotalPrice() {
+        return totalPrice;
     }
 }
