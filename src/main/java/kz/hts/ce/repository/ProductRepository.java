@@ -1,6 +1,6 @@
 package kz.hts.ce.repository;
 
-import kz.hts.ce.entity.Product;
+import kz.hts.ce.model.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -42,7 +42,7 @@ public class AddProductController {
         amount.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                BigDecimal priceBD = stringToBigDecimal(getPrice().getText());
+                BigDecimal priceBD = stringToBigDecimal(price.getText());
                 BigDecimal totalPriceBD = priceBD.multiply(new BigDecimal(Long.parseLong(newValue)));
                 totalPrice.setText(String.valueOf(totalPriceBD));
             }
@@ -66,28 +66,28 @@ public class AddProductController {
         return name;
     }
 
-    public TextField getPrice() {
-        return price;
-    }
-
-    public TextField getAmount() {
-        return amount;
-    }
-
-    public TextField getTotalPrice() {
-        return totalPrice;
-    }
-
     public void setName(TextField name) {
         this.name = name;
+    }
+
+    public TextField getPrice() {
+        return price;
     }
 
     public void setPrice(TextField price) {
         this.price = price;
     }
 
+    public TextField getAmount() {
+        return amount;
+    }
+
     public void setAmount(TextField amount) {
         this.amount = amount;
+    }
+
+    public TextField getTotalPrice() {
+        return totalPrice;
     }
 
     public void setTotalPrice(TextField totalPrice) {

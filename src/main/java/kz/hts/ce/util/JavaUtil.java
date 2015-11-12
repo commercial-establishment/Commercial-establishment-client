@@ -1,5 +1,8 @@
 package kz.hts.ce.util;
 
+import kz.hts.ce.model.entity.ShopProduct;
+import kz.hts.ce.model.dto.ProductDto;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -34,9 +37,19 @@ public class JavaUtil {
         return totalCost;
     }
 
-//    public static BigDecimal calculatesAmountAndPrice(Long amount, BigDecimal itemPrice) {
-//        itemCost = itemPrice.multiply(new BigDecimal(amount));
-//        totalCost = totalCost.add(itemCost);
-//        return totalCost;
-//    }
+    public static BigDecimal multiplyIntegerAndBigDecimal(Integer integer, BigDecimal itemPrice) {
+        itemCost = itemPrice.multiply(new BigDecimal(integer));
+        totalCost = totalCost.add(itemCost);
+        return totalCost;
+    }
+
+    public static ProductDto createProductDtoFromShopProduct(ShopProduct shopProduct, int amount) {
+        ProductDto productDto = new ProductDto();
+        productDto.setName(shopProduct.getProduct().getName());
+        productDto.setAmount(0);
+        productDto.setAmount(amount);
+        productDto.setPrice(new BigDecimal(0));
+        productDto.setPrice(shopProduct.getPrice());
+        return productDto;
+    }
 }

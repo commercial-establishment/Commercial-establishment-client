@@ -2,25 +2,31 @@ package kz.hts.ce.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
-import kz.hts.ce.entity.ShopProduct;
+import kz.hts.ce.model.dto.ProductDto;
+import kz.hts.ce.model.entity.ShopProduct;
 import kz.hts.ce.service.ShopProductService;
 import kz.hts.ce.util.AppContextSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import static kz.hts.ce.util.JavaFxUtil.calculator;
 import static kz.hts.ce.util.JavaFxUtil.readProductFields;
+import static kz.hts.ce.util.JavaUtil.createProductDtoFromShopProduct;
 
 @Controller
-public class CalculatorController {
+public class CalculatorController implements Initializable {
 
     @FXML
-    public TextField txtAdditionalDisplay;
+    private TextField txtAdditionalDisplay;
     @FXML
     private TextField txtDisplay;
     @Autowired
@@ -29,6 +35,16 @@ public class CalculatorController {
     private ShopProductService shopProductService;
     @Autowired
     private ProductsController productsController;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("asdas");
+//        productsController.setProductTable(new TableView<>());
+//        productsController.setName(new TableColumn());
+//        productsController.setAmount(new TableColumn());
+//        productsController.setPrice(new TableColumn());
+//        productsController.setTotalPrice(new TableColumn());
+    }
 
     @FXML
     public void handleOnAnyButtonClicked(ActionEvent evt) {
@@ -62,11 +78,15 @@ public class CalculatorController {
         screens.payment();
     }
 
-    public void findAndAddProductByBarcode(ActionEvent event) {
+    public void findAndAddProductByBarcode() {
         String barcode = txtDisplay.getText();
         ShopProduct shopProduct = shopProductService.findByProductBarcode(Long.parseLong(barcode));
-        System.out.println(productsController.getProductTable());
-        productsController.setShopProductToShopProducts(shopProduct);
-        productsController.setProductsToTable();
+        if (txtAdditionalDisplay.getText().equals("")) {
+            txtAdditionalDisplay.setText("×1");
+        }
+        String[] splittedAmount = txtAdditionalDisplay.getText().split("×");
+        ProductDto productDto = createProductDtoFromShopProduct(shopProduct, Integer.parseInt(splittedAmount[1]));
+        productsController.setProductDtoToProductsDto(productDto);
+        productsController.addProductsToTable();
     }
 }
