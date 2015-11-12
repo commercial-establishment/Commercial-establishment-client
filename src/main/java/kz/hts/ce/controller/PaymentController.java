@@ -6,16 +6,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import kz.hts.ce.config.PagesConfiguration;
-import kz.hts.ce.util.AppContextSingleton;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
 
 import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
+import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
 public class PaymentController {
+
     @FXML
     private TextField given;
     @FXML
@@ -45,19 +45,15 @@ public class PaymentController {
                     else
                         change.setText("");
                 }
-                System.out.println(newValue);
-
-
             }
         });
     }
+
     @FXML
     private void cancel(){
-        ApplicationContext context = AppContextSingleton.getInstance();
-        PagesConfiguration screens = context.getBean(PagesConfiguration.class);
+        PagesConfiguration screens = getPagesConfiguration();
         screens.payment().close();
     }
-
 
     public TextField getTotal() {
         return total;

@@ -23,7 +23,7 @@ import static kz.hts.ce.util.JavaFxUtil.readProductFields;
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromShopProduct;
 
 @Controller
-public class CalculatorController implements Initializable {
+public class CalculatorController {
 
     @FXML
     private TextField txtAdditionalDisplay;
@@ -35,16 +35,6 @@ public class CalculatorController implements Initializable {
     private ShopProductService shopProductService;
     @Autowired
     private ProductsController productsController;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("asdas");
-//        productsController.setProductTable(new TableView<>());
-//        productsController.setName(new TableColumn());
-//        productsController.setAmount(new TableColumn());
-//        productsController.setPrice(new TableColumn());
-//        productsController.setTotalPrice(new TableColumn());
-    }
 
     @FXML
     public void handleOnAnyButtonClicked(ActionEvent evt) {

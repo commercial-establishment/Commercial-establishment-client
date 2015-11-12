@@ -4,7 +4,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
@@ -12,13 +11,11 @@ import kz.hts.ce.model.dto.ProductDto;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 @Controller
-public class ProductsController implements Initializable {
+public class ProductsController {
 
     @FXML
     private TableView<ProductDto> productTable;
@@ -34,13 +31,8 @@ public class ProductsController implements Initializable {
     private List<ProductDto> productsDto = new ArrayList<>();
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-//        totalPrice.setText("Total Price");
-    }
-
     public void addProductsToTable() {
+        productsData.clear();
         for (ProductDto productDto : productsDto) {
             productsData.add(productDto);
         }
@@ -70,45 +62,5 @@ public class ProductsController implements Initializable {
 
     public void setProductDtoToProductsDto(ProductDto productDto) {
         productsDto.add(productDto);
-    }
-
-    public TableView<ProductDto> getProductTable() {
-        return productTable;
-    }
-
-    public void setProductTable(TableView<ProductDto> productTable) {
-        this.productTable = productTable;
-    }
-
-    public TableColumn getName() {
-        return name;
-    }
-
-    public void setName(TableColumn name) {
-        this.name = name;
-    }
-
-    public TableColumn getAmount() {
-        return amount;
-    }
-
-    public void setAmount(TableColumn amount) {
-        this.amount = amount;
-    }
-
-    public TableColumn getPrice() {
-        return price;
-    }
-
-    public void setPrice(TableColumn price) {
-        this.price = price;
-    }
-
-    public TableColumn getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(TableColumn totalPrice) {
-        this.totalPrice = totalPrice;
     }
 }

@@ -6,13 +6,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import kz.hts.ce.config.PagesConfiguration;
-import kz.hts.ce.util.AppContextSingleton;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
 
 import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
+import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
 public class AddProductController {
@@ -32,8 +31,7 @@ public class AddProductController {
 
     @FXML
     public void cancel() {
-        ApplicationContext context = AppContextSingleton.getInstance();
-        PagesConfiguration screens = context.getBean(PagesConfiguration.class);
+        PagesConfiguration screens = getPagesConfiguration();
         screens.addProduct().close();
     }
 
