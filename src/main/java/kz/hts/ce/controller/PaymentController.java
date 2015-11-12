@@ -4,9 +4,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.util.AppContextSingleton;
 import org.springframework.context.ApplicationContext;
@@ -38,11 +36,19 @@ public class PaymentController {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 BigDecimal totalBD = stringToBigDecimal(getTotal().getText());
-                BigDecimal newVal = new BigDecimal(Long.parseLong(newValue));
-                BigDecimal changeBD = newVal.subtract(totalBD);
-                if(newVal.compareTo(totalBD)==1) {
-                    change.setText(String.valueOf(changeBD));
+
+                if(!newValue.equals("")) {
+                    BigDecimal newVal = stringToBigDecimal(newValue);
+                    if(newVal.compareTo(totalBD)==1) {
+                        BigDecimal changeBD = newVal.subtract(totalBD);
+                        change.setText(String.valueOf(changeBD));
+                    }
+                    else
+                        change.setText("");
                 }
+                System.out.println(newValue);
+
+
             }
         });
     }

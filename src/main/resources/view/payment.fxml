@@ -12,33 +12,46 @@
                 <Font name="System Bold" size="12.0" />
             </font>
         </Button>
-        <Button fx:id="cancel" layoutX="330.0" layoutY="347.0" onAction="#cancel" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Отменить" />
+        <Button fx:id="cancel" layoutX="330.0" layoutY="347.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="104.0" text="Отменить" />
       <TabPane layoutX="4.0" layoutY="55.0" prefHeight="292.0" prefWidth="561.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Наличные">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="263.0" prefWidth="227.0">
                      <children>
-                        <Label layoutX="157.0" layoutY="96.0" text="Внесено">
+                        <Label layoutX="14.0" layoutY="96.0" text="Внесено">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label layoutX="157.0" layoutY="144.0" text="Сдача">
+                        <Label layoutX="14.0" layoutY="144.0" text="Сдача">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="given" alignment="CENTER_RIGHT" layoutX="230.0" layoutY="88.0" prefHeight="37.0" prefWidth="175.0">
+                        <TextField fx:id="given" alignment="CENTER_RIGHT" layoutX="87.0" layoutY="88.0" prefHeight="37.0" prefWidth="175.0">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="change" alignment="CENTER_RIGHT" editable="false" layoutX="231.0" layoutY="138.0" prefHeight="37.0" prefWidth="174.0">
+                        <TextField fx:id="change" alignment="CENTER_RIGHT" editable="false" layoutX="88.0" layoutY="138.0" prefHeight="37.0" prefWidth="174.0">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </TextField>
+                        <Button layoutX="355.0" layoutY="11.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="121.0" text="CE" />
+                        <Button layoutX="477.0" layoutY="11.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="-" />
+                        <Button layoutX="477.0" layoutY="57.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="9" />
+                        <Button layoutX="477.0" layoutY="103.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="6" />
+                        <Button layoutX="477.0" layoutY="149.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="3" />
+                        <Button layoutX="477.0" layoutY="195.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="." />
+                        <Button layoutX="355.0" layoutY="57.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="7" />
+                        <Button layoutX="416.0" layoutY="57.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="8" />
+                        <Button layoutX="355.0" layoutY="195.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="121.0" text="0" />
+                        <Button layoutX="355.0" layoutY="103.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="4" />
+                        <Button layoutX="416.0" layoutY="103.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="5" />
+                        <Button layoutX="355.0" layoutY="149.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="1" />
+                        <Button layoutX="416.0" layoutY="149.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="2" />
                      </children></AnchorPane>
             </content>
           </Tab>
