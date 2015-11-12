@@ -43,7 +43,7 @@
                         <Group layoutX="166.0" layoutY="13.0" AnchorPane.bottomAnchor="13.0"
                                AnchorPane.rightAnchor="10.0">
                             <children>
-                                <TextField alignment="CENTER" editable="false" layoutX="135.0" layoutY="20.0"
+                                <TextField fx:id="priceResult" alignment="CENTER" editable="false" layoutX="135.0" layoutY="20.0"
                                            prefHeight="25.0" prefWidth="125.0"/>
                                 <Label layoutX="180.0" text="Итого">
                                     <font>

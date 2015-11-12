@@ -68,7 +68,10 @@ public class ProductDto {
     }
 
     public BigDecimal getTotalPrice() {
-        return totalPrice.get();
+        BigDecimal price = getPrice();
+        int amount = getAmount();
+        BigDecimal totalPrice = multiplyIntegerAndBigDecimal(amount, price);
+        return totalPrice;
     }
 
     public void setTotalPrice(BigDecimal totalPrice) {

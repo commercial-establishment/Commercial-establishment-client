@@ -8,7 +8,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.MainController">
     <children>
-        <Label fx:id="dateLabel" alignment="CENTER" prefHeight="30.0" prefWidth="429.0" text="Date and Time">
+        <Label fx:id="dateLabel" alignment="CENTER" prefHeight="30.0" prefWidth="178.0" text="Date and Time">
             <font>
                 <Font size="17.0" />
             </font>
