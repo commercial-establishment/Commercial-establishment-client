@@ -4,6 +4,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
@@ -45,20 +46,7 @@ public class JavaFxUtil {
             txtAdditionalDisplay.setText("");
             return;
         }
-        if (buttonText.matches("[0]")) {
-            if (!numberInputting) {
-                numberInputting = true;
-                txtDisplay.clear();
-            }
-            if (!txtDisplay.getText().startsWith("0")) {
-                txtDisplay.appendText(buttonText);
-                return;
-            } else if (txtDisplay.getText().startsWith("0.")) {
-                txtDisplay.appendText(buttonText);
-                return;
-            }
-        }
-        if (buttonText.matches("[1-9]")) {
+        if (buttonText.matches("[0-9]")) {
             if (!txtDisplay.getText().startsWith("0") || txtDisplay.getText().startsWith("0.")) {
                 if (txtAdditionalDisplay.getText().equals("")) {
                     if (!numberInputting) {
@@ -201,5 +189,16 @@ public class JavaFxUtil {
         integerParameters.add(amount);
         BigDecimal total = calculateCost(integerParameters, price);
         addProductController.getTotalPrice().setText(String.valueOf(total));
+    }
+
+    public static void alertWarning(Alert.AlertType alertType, String title, String headerText, String contentText) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+
+        if (headerText == null) alert.setHeaderText(null);
+        else alert.setHeaderText(headerText);
+
+        alert.setContentText(contentText);
+        alert.showAndWait();
     }
 }

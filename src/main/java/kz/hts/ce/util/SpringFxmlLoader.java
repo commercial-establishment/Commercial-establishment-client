@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.config.PersistenceConfig;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -37,5 +38,10 @@ public class SpringFxmlLoader {
         Object loader = springFxmlLoader.load(url);
         stage.setScene(new Scene((Parent) loader));
         stage.show();
+    }
+
+    public static PagesConfiguration getPagesConfiguration() {
+        ApplicationContext context = AppContextSingleton.getInstance();
+        return context.getBean(PagesConfiguration.class);
     }
 }

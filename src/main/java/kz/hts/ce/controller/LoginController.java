@@ -8,15 +8,15 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
-import kz.hts.ce.util.AppContextSingleton;
 import kz.hts.ce.util.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+
+import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
 public class LoginController {
@@ -37,8 +37,7 @@ public class LoginController {
     private void btnLoginAction(ActionEvent event) throws IOException {
         try {
             springUtils.authorize(txtUsername.getText(), txtPassword.getText());
-            ApplicationContext context = AppContextSingleton.getInstance();
-            PagesConfiguration screens = context.getBean(PagesConfiguration.class);
+            PagesConfiguration screens = getPagesConfiguration();
             screens.login().close();
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
