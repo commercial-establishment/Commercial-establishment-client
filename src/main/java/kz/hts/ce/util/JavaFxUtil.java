@@ -115,6 +115,61 @@ public class JavaFxUtil {
         }
     }
 
+    public static void additionalCalculator(String buttonText, TextField txtDisplay) {
+        if (buttonText.equals("CE")) {
+            selectedOperator = "";
+            numberInputting = false;
+            txtDisplay.setText("");
+            return;
+        }
+        if (buttonText.matches("[0]")) {
+            if (!numberInputting) {
+                numberInputting = true;
+                txtDisplay.clear();
+            }
+            if (!txtDisplay.getText().startsWith("0")) {
+                txtDisplay.appendText(buttonText);
+                return;
+            } else if (txtDisplay.getText().startsWith("0.")) {
+                txtDisplay.appendText(buttonText);
+                return;
+            }
+        }
+        if (buttonText.matches("[1-9]")) {
+            if (!txtDisplay.getText().startsWith("0") || txtDisplay.getText().startsWith("0.")) {
+                    if (!numberInputting) {
+                        numberInputting = true;
+                        txtDisplay.clear();
+                    }
+                    txtDisplay.appendText(buttonText);
+                    return;
+            }
+
+
+
+        }
+        if (buttonText.matches("[\\.]")) {
+                if (!txtDisplay.getText().contains(".")) {
+                    if (!numberInputting) {
+                        numberInputting = true;
+                        txtDisplay.clear();
+                    }
+                    txtDisplay.appendText(buttonText);
+                    return;
+                }
+
+        }
+        if (buttonText.matches("[－]")) {
+            if (txtDisplay.getText().equals("")) {
+                txtDisplay.setText("0");
+            }
+            left = new BigDecimal(txtDisplay.getText());
+            selectedOperator = buttonText;
+            numberInputting = false;
+            return;
+        }
+    }
+
     public static BigDecimal calculate(String operator, BigDecimal left, BigDecimal right) {
         switch (operator) {
             case "－":

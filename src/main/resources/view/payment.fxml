@@ -39,19 +39,9 @@
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </TextField>
-                        <Button layoutX="355.0" layoutY="11.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="121.0" text="CE" />
-                        <Button layoutX="477.0" layoutY="11.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="-" />
-                        <Button layoutX="477.0" layoutY="57.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="9" />
-                        <Button layoutX="477.0" layoutY="103.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="6" />
-                        <Button layoutX="477.0" layoutY="149.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="3" />
-                        <Button layoutX="477.0" layoutY="195.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="." />
-                        <Button layoutX="355.0" layoutY="57.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="7" />
-                        <Button layoutX="416.0" layoutY="57.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="8" />
-                        <Button layoutX="355.0" layoutY="195.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="121.0" text="0" />
-                        <Button layoutX="355.0" layoutY="103.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="4" />
-                        <Button layoutX="416.0" layoutY="103.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="5" />
-                        <Button layoutX="355.0" layoutY="149.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="1" />
-                        <Button layoutX="416.0" layoutY="149.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="60.0" text="2" />
+                        <AnchorPane layoutX="339.0" layoutY="13.0" prefHeight="225.0" prefWidth="195.0">
+                            <fx:include source="additional-calculator.fxml" />
+                        </AnchorPane>
                      </children></AnchorPane>
             </content>
           </Tab>

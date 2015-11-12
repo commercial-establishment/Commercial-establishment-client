@@ -100,7 +100,7 @@ public class PagesConfiguration {
     }
 
     @Bean
-    @Scope("prototype")
+    @Scope("singleton")
     public PaymentController paymentController() {
         return new PaymentController();
     }
