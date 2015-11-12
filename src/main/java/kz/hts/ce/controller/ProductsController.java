@@ -26,7 +26,7 @@ public class ProductsController {
     @FXML
     private TableColumn<ProductDto, BigDecimal> price;
     @FXML
-    private TableColumn totalPrice;
+    private TableColumn<ProductDto, BigDecimal> totalPrice;
 
     private List<ProductDto> productsDto = new ArrayList<>();
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
@@ -55,8 +55,14 @@ public class ProductsController {
                 return cellData.getValue().priceProperty();
             }
         });
+        totalPrice.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ProductDto, BigDecimal>, ObservableValue<BigDecimal>>() {
+            @Override
+            public ObservableValue<BigDecimal> call(TableColumn.CellDataFeatures<ProductDto, BigDecimal> cellData) {
+                return cellData.getValue().totalPriceProperty();
+            }
+        });
 
-        productTable.setEditable(true);
+//        productTable.setEditable(true);
         productTable.setItems(productsData);
     }
 

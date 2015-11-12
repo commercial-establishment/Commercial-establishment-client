@@ -11,8 +11,7 @@ import java.util.List;
 
 public class JavaUtil {
 
-    private static BigDecimal itemCost = BigDecimal.ZERO;
-    private static BigDecimal totalCost = BigDecimal.ZERO;
+
 
     public static BigDecimal stringToBigDecimal(String value) {
         try {
@@ -30,15 +29,17 @@ public class JavaUtil {
     }
 
     public static BigDecimal calculateCost(List<Integer> integers, BigDecimal itemPrice) {
+        BigDecimal totalCost = BigDecimal.ZERO;
         for (Integer integer : integers) {
-            itemCost = itemPrice.multiply(new BigDecimal(integer));
+            BigDecimal itemCost = itemPrice.multiply(new BigDecimal(integer));
             totalCost = totalCost.add(itemCost);
         }
         return totalCost;
     }
 
     public static BigDecimal multiplyIntegerAndBigDecimal(Integer integer, BigDecimal itemPrice) {
-        itemCost = itemPrice.multiply(new BigDecimal(integer));
+        BigDecimal totalCost = BigDecimal.ZERO;
+        BigDecimal itemCost = itemPrice.multiply(new BigDecimal(integer));
         totalCost = totalCost.add(itemCost);
         return totalCost;
     }

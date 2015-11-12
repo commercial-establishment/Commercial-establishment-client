@@ -4,6 +4,8 @@ import javafx.beans.property.*;
 
 import java.math.BigDecimal;
 
+import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
+
 public class ProductDto {
 
     private StringProperty name;
@@ -56,15 +58,22 @@ public class ProductDto {
         this.price.set(price);
     }
 
-    public ObjectProperty<BigDecimal> totalPriceProperty() {
-        return totalPrice;
+    public BigDecimal getTotalPrice() {
+        return totalPrice.get();
     }
 
     public void setTotalPrice(BigDecimal totalPrice) {
+        if (this.totalPrice == null) {
+            this.totalPrice = new SimpleObjectProperty<BigDecimal>();
+        }
         this.totalPrice.set(totalPrice);
     }
-//
-//    public BigDecimal getTotalPrice() {
-//        return multiplyIntegerAndBigDecimal(amount, price);
-//    }
+
+    public ObjectProperty<BigDecimal> totalPriceProperty() {
+        BigDecimal price = getPrice();
+        int amount = getAmount();
+        BigDecimal totalPriceBD = multiplyIntegerAndBigDecimal(amount, price);
+        setTotalPrice(totalPriceBD);
+        return totalPrice;
+    }
 }
