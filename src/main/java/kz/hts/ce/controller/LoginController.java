@@ -42,7 +42,7 @@ public class LoginController {
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
             screens.main();
-        }catch (UsernameNotFoundException e) {
+        } catch (NullPointerException | UsernameNotFoundException e) {
             lblMessage.setText("Login failure, please try again:");
         }
     }

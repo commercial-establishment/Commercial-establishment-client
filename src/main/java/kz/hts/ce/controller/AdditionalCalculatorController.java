@@ -17,7 +17,6 @@ public class AdditionalCalculatorController {
     @Autowired
     private PaymentController paymentController;
 
-
     @FXML
     public void handleOnAnyButtonClicked(ActionEvent evt) {
         Button button = (Button) evt.getSource();

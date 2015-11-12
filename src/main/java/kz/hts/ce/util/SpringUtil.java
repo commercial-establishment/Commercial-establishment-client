@@ -9,11 +9,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SpringUtil {
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationService authenticationService;
     @Autowired
@@ -33,9 +36,11 @@ public class SpringUtil {
 
     public void authorize(String username, String password) {
         UserDetails user = authenticationService.loadUserByUsername(username);
-        Authentication authToken = new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
-        Authentication authenticate = customAuthenticationProvider.authenticate(authToken);
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+        if (passwordEncoder.matches(password, user.getPassword())) {
+            Authentication authToken = new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
+            Authentication authenticate = customAuthenticationProvider.authenticate(authToken);
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        } else throw new NullPointerException();
     }
 
     public static PagesConfiguration getScreensConfiguration() {

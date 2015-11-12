@@ -26,17 +26,17 @@ public class CalculatorController {
     @FXML
     private TextField txtDisplay;
     @Autowired
-    private AddProductController addProductController;
-    @Autowired
     private ShopProductService shopProductService;
     @Autowired
-    private ProductsController productsController;
+    private AddProductController addProductController;/*TODO working via services*/
+    @Autowired
+    private ProductsController productsController;/*TODO working via services*/
 
     @FXML
     public void handleOnAnyButtonClicked(ActionEvent evt) {
         Button button = (Button) evt.getSource();
         final String buttonText = button.getText();
-        if (buttonText.matches("^[0-9C\\s[×+－=.]\\s]*$")) {
+        if (buttonText.matches("^[0-9CE\\s[×+－=.]\\s]*$")) {
             calculator(buttonText, txtDisplay, txtAdditionalDisplay);
         }
     }
@@ -44,7 +44,7 @@ public class CalculatorController {
     @FXML
     public void addProductPage() {
         String displayText = txtDisplay.getText();
-        if (!displayText.equals("") && displayText.matches("^[1-9C\\s[.]\\s]*$")) {
+        if (!displayText.equals("") && displayText.matches("^[1-9CE\\s[.]\\s]*$")) {
             ApplicationContext context = AppContextSingleton.getInstance();
             PagesConfiguration screens = context.getBean(PagesConfiguration.class);
             Stage stage = new Stage();
@@ -76,7 +76,8 @@ public class CalculatorController {
                 ProductDto productDto = createProductDtoFromShopProduct(shopProduct, Integer.parseInt(splittedAmount[1]));
                 productsController.setProductDtoToProductsDto(productDto);
                 productsController.addProductsToTable();
-            } else alertWarning(Alert.AlertType.WARNING, "Товар не найден", null, "Товар с данным штрих-кодом отсутствует!");
+            } else
+                alertWarning(Alert.AlertType.WARNING, "Товар не найден", null, "Товар с данным штрих-кодом отсутствует!");
         } catch (NumberFormatException e) {
             alertWarning(Alert.AlertType.WARNING, "Неверный штрих-код", null, "Штрих-код введён неверно!");
         }

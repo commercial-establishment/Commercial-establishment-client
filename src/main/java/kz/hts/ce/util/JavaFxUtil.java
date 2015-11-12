@@ -39,7 +39,7 @@ public class JavaFxUtil {
     }
 
     public static void calculator(String buttonText, TextField txtDisplay, TextField txtAdditionalDisplay) {
-        if (buttonText.equals("C")) {
+        if (buttonText.equals("CE")) {
             selectedOperator = "";
             numberInputting = false;
             txtDisplay.setText("");
