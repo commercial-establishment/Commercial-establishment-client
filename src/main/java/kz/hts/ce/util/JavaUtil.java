@@ -12,7 +12,6 @@ import java.util.List;
 public class JavaUtil {
 
 
-
     public static BigDecimal stringToBigDecimal(String value) {
         try {
             DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -46,6 +45,7 @@ public class JavaUtil {
 
     public static ProductDto createProductDtoFromShopProduct(ShopProduct shopProduct, int amount) {
         ProductDto productDto = new ProductDto();
+        productDto.setId(shopProduct.getId());
         productDto.setName(shopProduct.getProduct().getName());
         productDto.setAmount(0);
         productDto.setAmount(amount);

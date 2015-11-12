@@ -2,6 +2,7 @@ package kz.hts.ce.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -14,8 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
-import static kz.hts.ce.util.JavaFxUtil.calculator;
-import static kz.hts.ce.util.JavaFxUtil.readProductFields;
+import static kz.hts.ce.util.JavaFxUtil.*;
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromShopProduct;
 
 @Controller
@@ -65,14 +65,20 @@ public class CalculatorController {
     }
 
     public void findAndAddProductByBarcode() {
-        String barcode = txtDisplay.getText();
-        ShopProduct shopProduct = shopProductService.findByProductBarcode(Long.parseLong(barcode));
-        if (txtAdditionalDisplay.getText().equals("")) {
-            txtAdditionalDisplay.setText("×1");
+        try {
+            String barcode = txtDisplay.getText();
+            ShopProduct shopProduct = shopProductService.findByProductBarcode(Long.parseLong(barcode));
+            if (shopProduct != null) {
+                if (txtAdditionalDisplay.getText().equals("")) {
+                    txtAdditionalDisplay.setText("×1");
+                }
+                String[] splittedAmount = txtAdditionalDisplay.getText().split("×");
+                ProductDto productDto = createProductDtoFromShopProduct(shopProduct, Integer.parseInt(splittedAmount[1]));
+                productsController.setProductDtoToProductsDto(productDto);
+                productsController.addProductsToTable();
+            } else alertWarning(Alert.AlertType.WARNING, "Товар не найден", null, "Товар с данным штрих-кодом отсутствует!");
+        } catch (NumberFormatException e) {
+            alertWarning(Alert.AlertType.WARNING, "Неверный штрих-код", null, "Штрих-код введён неверно!");
         }
-        String[] splittedAmount = txtAdditionalDisplay.getText().split("×");
-        ProductDto productDto = createProductDtoFromShopProduct(shopProduct, Integer.parseInt(splittedAmount[1]));
-        productsController.setProductDtoToProductsDto(productDto);
-        productsController.addProductsToTable();
     }
 }

@@ -8,10 +8,19 @@ import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
 
 public class ProductDto {
 
+    private long id;
     private StringProperty name;
     private IntegerProperty amount;
     private ObjectProperty<BigDecimal> price;
     private ObjectProperty<BigDecimal> totalPrice;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name.get();
