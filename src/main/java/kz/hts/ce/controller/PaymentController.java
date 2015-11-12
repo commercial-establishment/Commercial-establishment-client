@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 
 import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
 
-
 @Controller
 public class PaymentController {
     @FXML
