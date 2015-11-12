@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import static kz.hts.ce.util.JavaFxUtil.additionalCalculator;
-import static kz.hts.ce.util.JavaFxUtil.calculator;
 
 @Controller
 public class AdditionalCalculatorController {
+
     @FXML
     private Button button;
 
