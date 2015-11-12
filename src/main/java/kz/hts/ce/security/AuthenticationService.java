@@ -1,6 +1,6 @@
 package kz.hts.ce.security;
 
-import kz.hts.ce.entity.Employee;
+import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

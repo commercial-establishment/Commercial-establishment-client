@@ -1,6 +1,6 @@
 package kz.hts.ce.service;
 
-import kz.hts.ce.entity.BaseEntity;
+import kz.hts.ce.model.entity.BaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 

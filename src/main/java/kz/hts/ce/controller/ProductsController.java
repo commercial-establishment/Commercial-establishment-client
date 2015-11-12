@@ -1,54 +1,114 @@
 package kz.hts.ce.controller;
 
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import kz.hts.ce.entity.ShopProduct;
+import javafx.util.Callback;
+import kz.hts.ce.model.dto.ProductDto;
 import org.springframework.stereotype.Controller;
 
+import java.math.BigDecimal;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 @Controller
-public class ProductsController {
+public class ProductsController implements Initializable {
 
     @FXML
-    private TableView<ShopProduct> productTable = new TableView<>();
+    private TableView<ProductDto> productTable;
     @FXML
-    public TableColumn name;
+    private TableColumn<ProductDto, String> name;
     @FXML
-    public TableColumn amount;
+    private TableColumn<ProductDto, Number> amount;
     @FXML
-    public TableColumn price;
+    private TableColumn<ProductDto, BigDecimal> price;
     @FXML
-    public TableColumn totalPrice;
+    private TableColumn totalPrice;
 
-    private List<ShopProduct> shopProducts = new ArrayList<>();
+    private List<ProductDto> productsDto = new ArrayList<>();
+    private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
 
-    public void setProductsToTable() {
-//        ObservableList<ShopProduct> data = FXCollections.observableArrayList(getShopProducts());
-//        productTable.setEditable(true);
-//
-//        TableColumn priceColumn = new TableColumn("Price");
-//        priceColumn.setMinWidth(100);
-//        priceColumn.setCellValueFactory(new PropertyValueFactory<ShopProduct, String>("priceColumn"));
-//        productTable.setItems(data);
-//        productTable.getColumns().addAll(priceColumn);
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+//        totalPrice.setText("Total Price");
     }
 
-    public List<ShopProduct> getShopProducts() {
-        return shopProducts;
+    public void addProductsToTable() {
+        for (ProductDto productDto : productsDto) {
+            productsData.add(productDto);
+        }
+
+        name.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ProductDto, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<ProductDto, String> cellData) {
+                return cellData.getValue().nameProperty();
+            }
+        });
+        amount.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ProductDto, Number>, ObservableValue<Number>>() {
+            @Override
+            public ObservableValue<Number> call(TableColumn.CellDataFeatures<ProductDto, Number> cellData) {
+                return cellData.getValue().amountProperty();
+            }
+        });
+        price.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ProductDto, BigDecimal>, ObservableValue<BigDecimal>>() {
+            @Override
+            public ObservableValue<BigDecimal> call(TableColumn.CellDataFeatures<ProductDto, BigDecimal> cellData) {
+                return cellData.getValue().priceProperty();
+            }
+        });
+
+        productTable.setEditable(true);
+        productTable.setItems(productsData);
     }
 
-    public void setShopProductToShopProducts(ShopProduct product) {
-        shopProducts.add(product);
+    public void setProductDtoToProductsDto(ProductDto productDto) {
+        productsDto.add(productDto);
     }
 
-    public TableView<ShopProduct> getProductTable() {
+    public TableView<ProductDto> getProductTable() {
         return productTable;
     }
 
-    public void setProductTable(TableView<ShopProduct> productTable) {
+    public void setProductTable(TableView<ProductDto> productTable) {
         this.productTable = productTable;
+    }
+
+    public TableColumn getName() {
+        return name;
+    }
+
+    public void setName(TableColumn name) {
+        this.name = name;
+    }
+
+    public TableColumn getAmount() {
+        return amount;
+    }
+
+    public void setAmount(TableColumn amount) {
+        this.amount = amount;
+    }
+
+    public TableColumn getPrice() {
+        return price;
+    }
+
+    public void setPrice(TableColumn price) {
+        this.price = price;
+    }
+
+    public TableColumn getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(TableColumn totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

@@ -106,7 +106,7 @@ public class PagesConfiguration {
     }
 
     @Bean
-    @Scope("prototype")
+    @Scope("singleton")
     public ProductsController productsController() {
         return new ProductsController();
     }

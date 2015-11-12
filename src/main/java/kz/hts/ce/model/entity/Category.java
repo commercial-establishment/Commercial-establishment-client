@@ -1,4 +1,4 @@
-package kz.hts.ce.entity;
+package kz.hts.ce.model.entity;
 
 import javax.persistence.Entity;
 

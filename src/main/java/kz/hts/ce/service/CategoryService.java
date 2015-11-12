@@ -1,6 +1,6 @@
 package kz.hts.ce.service;
 
-import kz.hts.ce.entity.Category;
+import kz.hts.ce.model.entity.Category;
 import kz.hts.ce.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

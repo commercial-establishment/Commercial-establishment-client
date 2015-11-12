@@ -22,11 +22,10 @@
                                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <columns>
-                                <TableColumn fx:id="name" prefWidth="75.0" text="Наименование"/>
-                                <TableColumn fx:id="amount" prefWidth="75.0" text="Количество"/>
-                                <TableColumn fx:id="price" prefWidth="75.0" text="Цена"/>
-                                <!--<TableColumn fx:id="vat" prefWidth="75.0" text="НДС"/>-->
-                                <TableColumn fx:id="totalPrice" prefWidth="75.0" text="Стоимость"/>
+                                <TableColumn fx:id="name" prefWidth="75.0" text="Name"/>
+                                <TableColumn fx:id="amount" prefWidth="75.0" text="Amount"/>
+                                <TableColumn fx:id="price" prefWidth="75.0" text="Price"/>
+                                <!--<TableColumn fx:id="totalPrice" prefWidth="75.0" text="Стоимость"/>-->
                             </columns>
                             <columnResizePolicy>
                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

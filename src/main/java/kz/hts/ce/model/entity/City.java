@@ -1,9 +1,9 @@
-package kz.hts.ce.entity;
+package kz.hts.ce.model.entity;
 
 import javax.persistence.Entity;
 
 @Entity
-public class Type extends BaseEntity {
+public class City extends BaseEntity {
 
     private String name;
 

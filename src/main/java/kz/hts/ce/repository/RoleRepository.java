@@ -1,6 +1,6 @@
 package kz.hts.ce.repository;
 
-import kz.hts.ce.entity.Role;
+import kz.hts.ce.model.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
