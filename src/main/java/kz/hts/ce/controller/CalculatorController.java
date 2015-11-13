@@ -30,6 +30,8 @@ import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 @Controller
 public class CalculatorController implements Initializable {
 
+    private StringBuilder buttonState;
+
     @FXML
     private TextField txtAdditionalDisplay;
     @FXML
@@ -95,11 +97,14 @@ public class CalculatorController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         PagesConfiguration screens = getPagesConfiguration();
-
+        buttonState = new StringBuilder("");
         EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                System.out.println(event.getText() + " " + this.hashCode());
+                buttonState.setLength(0);
+                buttonState.append(event.getText());
+//                buttonState = event.getText();
+                System.out.println("buttonText: " + buttonState + ". buttonText.hash: " + buttonState.hashCode());
             }
         };
         ChangeListener<Boolean> changeListener = new ChangeListener<Boolean>() {
