@@ -27,12 +27,12 @@
                 <Button mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="50.0" prefWidth="118.0"
                         text="CE"/>
                 <Button mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="50.0" prefWidth="59.0"
-                        text="×"/>
+                        text="*"/>
             </children>
         </HBox>
         <HBox layoutX="181.0" prefHeight="50.0" prefWidth="60.0">
             <children>
-                <Button mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="50.0" prefWidth="59.0"
+                <Button mnemonicParsing="false" onAction="#deleteSelectedProductFromTable" prefHeight="50.0" prefWidth="59.0"
                         text="－"/>
             </children>
         </HBox>

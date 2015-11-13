@@ -53,4 +53,11 @@ public class ProductsController {
     public void setProductDtoToProductsDto(ProductDto productDto) {
         productsDto.add(productDto);
     }
+
+    public void deleteSelectedProductFromTable(){
+        ProductDto productDto = productTable.getSelectionModel().getSelectedItem();
+        productsDto.remove(productDto);
+        productsData.remove(productDto);
+        productTable.setItems(productsData);
+    }
 }

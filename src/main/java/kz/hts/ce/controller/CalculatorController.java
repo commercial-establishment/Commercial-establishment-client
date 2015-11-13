@@ -1,7 +1,6 @@
 package kz.hts.ce.controller;
 
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -31,6 +30,7 @@ import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 public class CalculatorController implements Initializable {
 
     private StringBuilder buttonState;
+    private Button button = new Button();
 
     @FXML
     private TextField txtAdditionalDisplay;
@@ -43,12 +43,48 @@ public class CalculatorController implements Initializable {
     @Autowired
     private ProductsController productsController;/*TODO working via services*/
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        PagesConfiguration screens = getPagesConfiguration();
+        buttonState = new StringBuilder("");
+        EventHandler<KeyEvent> eventHandler = evt -> {
+            buttonState.setLength(0);
+            buttonState.append(evt.getCode().toString());
+            handleOnAnyButtonFromKeypad();
+        };
+        ChangeListener<Boolean> changeListener = (observable, oldValue, newValue) -> {
+            if (newValue) {
+                screens.getPrimaryStage().getScene().addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
+            }
+        };
+
+        screens.getPrimaryStage().focusedProperty().addListener(changeListener);
+    }
+
     @FXML
     public void handleOnAnyButtonClicked(ActionEvent evt) {
         Button button = (Button) evt.getSource();
         final String buttonText = button.getText();
-        if (buttonText.matches("^[0-9CE\\s[×+－=.]\\s]*$")) {
+        if (buttonText.matches("^[0-9CE\\s[*+－=.]\\s]*$")) {
             calculator(buttonText, txtDisplay, txtAdditionalDisplay);
+        }
+    }
+
+    public void handleOnAnyButtonFromKeypad() {
+        button.setText(String.valueOf(buttonState));
+        String buttonText = button.getText();
+        if (buttonText.startsWith("NUMPAD")) {
+            String[] splittedButtonText = buttonText.split("NUMPAD");
+            buttonText = splittedButtonText[1];
+        } else if (button.getText().equals("DECIMAL")) {
+            buttonText = ".";
+        } else if (button.getText().equals("MULTIPLY")) {
+            buttonText = "*";
+        }
+        if (buttonText.matches("^[0-9CE\\s[*+－=.]\\s]*$")) {
+            calculator(buttonText, txtDisplay, txtAdditionalDisplay);
+        } else if (buttonText.matches("ADD")) {
+            addProductPage();
         }
     }
 
@@ -81,9 +117,9 @@ public class CalculatorController implements Initializable {
             ShopProduct shopProduct = shopProductService.findByProductBarcode(Long.parseLong(barcode));
             if (shopProduct != null) {
                 if (txtAdditionalDisplay.getText().equals("")) {
-                    txtAdditionalDisplay.setText("×1");
+                    txtAdditionalDisplay.setText("*1");
                 }
-                String[] splittedAmount = txtAdditionalDisplay.getText().split("×");
+                String[] splittedAmount = txtAdditionalDisplay.getText().split("\\*");
                 ProductDto productDto = createProductDtoFromShopProduct(shopProduct, Integer.parseInt(splittedAmount[1]));
                 productsController.setProductDtoToProductsDto(productDto);
                 productsController.addProductsToTable();
@@ -94,29 +130,7 @@ public class CalculatorController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        PagesConfiguration screens = getPagesConfiguration();
-        buttonState = new StringBuilder("");
-        EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                buttonState.setLength(0);
-                buttonState.append(event.getText());
-//                buttonState = event.getText();
-                System.out.println("buttonText: " + buttonState + ". buttonText.hash: " + buttonState.hashCode());
-            }
-        };
-        ChangeListener<Boolean> changeListener = new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                System.out.println("focused?" + newValue + " " + this.hashCode());
-                if (newValue) {
-                    screens.getPrimaryStage().getScene().addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
-                }
-            }
-        };
-
-        screens.getPrimaryStage().focusedProperty().addListener(changeListener);
+    public void deleteSelectedProductFromTable() {
+        productsController.deleteSelectedProductFromTable();
     }
 }

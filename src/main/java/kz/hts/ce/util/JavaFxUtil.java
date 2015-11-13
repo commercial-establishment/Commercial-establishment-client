@@ -82,8 +82,8 @@ public class JavaFxUtil {
                 }
             }
         }
-        if (buttonText.matches("[－×]")) {
-            if (buttonText.matches("[×]")) {
+        if (buttonText.matches("[－*]")) {
+            if (buttonText.matches("[*]")) {
                 if (txtDisplay.getText().equals("")) {
                     txtDisplay.setText("0");
                 }
@@ -162,7 +162,7 @@ public class JavaFxUtil {
         switch (operator) {
             case "－":
                 return left.subtract(right);
-            case "×":
+            case "*":
                 return left.multiply(right);
             default:
         }
@@ -176,10 +176,10 @@ public class JavaFxUtil {
 
         txtPrice.setText(txtDisplay.getText());
         if (txtAdditionalDisplay.getText().equals("")) {
-            txtAdditionalDisplay.setText("×1");
+            txtAdditionalDisplay.setText("*1");
         }
         String additionalDisplayText = txtAdditionalDisplay.getText();
-        String[] splittedAdditionalDisplay = additionalDisplayText.split("×");
+        String[] splittedAdditionalDisplay = additionalDisplayText.split("\\*");
         txtAmount.setText(splittedAdditionalDisplay[1]);
 
         int amount = Integer.parseInt(txtAmount.getText());
