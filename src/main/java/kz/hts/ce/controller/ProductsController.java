@@ -60,4 +60,8 @@ public class ProductsController {
         productsData.remove(productDto);
         productTable.setItems(productsData);
     }
+
+    public TextField getPriceResult() {
+        return priceResult;
+    }
 }
