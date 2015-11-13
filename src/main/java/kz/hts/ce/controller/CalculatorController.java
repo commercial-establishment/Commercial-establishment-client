@@ -65,7 +65,7 @@ public class CalculatorController implements Initializable {
     public void handleOnAnyButtonClicked(ActionEvent evt) {
         Button button = (Button) evt.getSource();
         final String buttonText = button.getText();
-        if (buttonText.matches("^[0-9CE\\s[*+－=.]\\s]*$")) {
+        if (buttonText.matches("^[0-9CE\\s[*+.]\\s]*$")) {
             calculator(buttonText, txtDisplay, txtAdditionalDisplay);
         }
     }
@@ -80,11 +80,17 @@ public class CalculatorController implements Initializable {
             buttonText = ".";
         } else if (button.getText().equals("MULTIPLY")) {
             buttonText = "*";
+        } else if (button.getText().equals("BACK_SPACE")) {
+            buttonText = "CE";
         }
-        if (buttonText.matches("^[0-9CE\\s[*+－=.]\\s]*$")) {
+        if (buttonText.matches("^[0-9CE\\s[*+.]\\s]*$")) {
             calculator(buttonText, txtDisplay, txtAdditionalDisplay);
         } else if (buttonText.matches("ADD")) {
             addProductPage();
+        } else if (buttonText.matches("ENTER")) {
+            findAndAddProductByBarcode();
+        } else if (buttonText.matches("SUBTRACT")) {
+            deleteSelectedProductFromTable();
         }
     }
 
@@ -116,7 +122,7 @@ public class CalculatorController implements Initializable {
             String barcode = txtDisplay.getText();
             ShopProduct shopProduct = shopProductService.findByProductBarcode(Long.parseLong(barcode));
             if (shopProduct != null) {
-                if (txtAdditionalDisplay.getText().equals("")) {
+                if (txtAdditionalDisplay.getText().equals("") || txtAdditionalDisplay.getText().equals("*")) {
                     txtAdditionalDisplay.setText("*1");
                 }
                 String[] splittedAmount = txtAdditionalDisplay.getText().split("\\*");

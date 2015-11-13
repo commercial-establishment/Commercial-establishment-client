@@ -33,7 +33,7 @@
         <HBox layoutX="181.0" prefHeight="50.0" prefWidth="60.0">
             <children>
                 <Button mnemonicParsing="false" onAction="#deleteSelectedProductFromTable" prefHeight="50.0" prefWidth="59.0"
-                        text="－"/>
+                        text="-"/>
             </children>
         </HBox>
         <VBox layoutX="181.0" layoutY="55.0" prefHeight="200.0" prefWidth="60.0">

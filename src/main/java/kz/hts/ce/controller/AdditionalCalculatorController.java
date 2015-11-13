@@ -21,7 +21,7 @@ public class AdditionalCalculatorController {
     public void handleOnAnyButtonClicked(ActionEvent evt) {
         Button button = (Button) evt.getSource();
         final String buttonText = button.getText();
-        if (buttonText.matches("^[0-9CE\\s[*+－=.]\\s]*$")) {
+        if (buttonText.matches("^[0-9CE\\s[*+=.]\\s]*$")) {
             additionalCalculator(buttonText, paymentController.getGiven());
         }
 

@@ -2,8 +2,6 @@ package kz.hts.ce.util;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -28,12 +26,8 @@ public class JavaFxUtil {
     private static boolean numberInputting;
 
     public static void getWatch(Label dateLabel) {
-        Timeline watch = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                dateLabel.setText(simpleDateFormat.format(Calendar.getInstance().getTime()));
-            }
-        }));
+        Timeline watch = new Timeline(new KeyFrame(Duration.seconds(1), event ->
+                dateLabel.setText(simpleDateFormat.format(Calendar.getInstance().getTime()))));
         watch.setCycleCount(Timeline.INDEFINITE);
         watch.play();
     }
@@ -82,22 +76,13 @@ public class JavaFxUtil {
                 }
             }
         }
-        if (buttonText.matches("[－*]")) {
-            if (buttonText.matches("[*]")) {
-                if (txtDisplay.getText().equals("")) {
-                    txtDisplay.setText("0");
-                }
-                txtAdditionalDisplay.setText(buttonText);
+        if (buttonText.matches("[*]")) {
+            if (txtDisplay.getText().equals("")) {
+                txtDisplay.setText("0");
             }
+            txtAdditionalDisplay.setText(buttonText);
             left = new BigDecimal(txtDisplay.getText());
             selectedOperator = buttonText;
-            numberInputting = false;
-            return;
-        }
-        if (buttonText.equals("=")) {
-            final BigDecimal right = numberInputting ? new BigDecimal(txtDisplay.getText()) : left;
-            left = calculate(selectedOperator, left, right);
-            txtDisplay.setText(left.toString());
             numberInputting = false;
             return;
         }
@@ -110,65 +95,28 @@ public class JavaFxUtil {
             txtDisplay.setText("");
             return;
         }
-        if (buttonText.matches("[0]")) {
-            if (!numberInputting) {
-                numberInputting = true;
-                txtDisplay.clear();
-            }
-            if (!txtDisplay.getText().startsWith("0")) {
-                txtDisplay.appendText(buttonText);
-                return;
-            } else if (txtDisplay.getText().startsWith("0.")) {
-                txtDisplay.appendText(buttonText);
-                return;
-            }
-        }
-        if (buttonText.matches("[1-9]")) {
+        if (buttonText.matches("[0-9]")) {
             if (!txtDisplay.getText().startsWith("0") || txtDisplay.getText().startsWith("0.")) {
-                    if (!numberInputting) {
-                        numberInputting = true;
-                        txtDisplay.clear();
-                    }
-                    txtDisplay.appendText(buttonText);
-                    return;
+                if (!numberInputting) {
+                    numberInputting = true;
+                    txtDisplay.clear();
+                }
+                txtDisplay.appendText(buttonText);
+                return;
             }
-
-
-
         }
         if (buttonText.matches("[\\.]")) {
-                if (!txtDisplay.getText().contains(".")) {
-                    if (!numberInputting) {
-                        numberInputting = true;
-                        txtDisplay.clear();
-                    }
-                    txtDisplay.appendText(buttonText);
-                    return;
+            if (!txtDisplay.getText().contains(".")) {
+                if (!numberInputting) {
+                    numberInputting = true;
+                    txtDisplay.clear();
                 }
-
-        }
-        if (buttonText.matches("[－]")) {
-            if (txtDisplay.getText().equals("")) {
-                txtDisplay.setText("0");
+                txtDisplay.appendText(buttonText);
+                return;
             }
-            left = new BigDecimal(txtDisplay.getText());
-            selectedOperator = buttonText;
-            numberInputting = false;
-            return;
+
         }
     }
-
-    public static BigDecimal calculate(String operator, BigDecimal left, BigDecimal right) {
-        switch (operator) {
-            case "－":
-                return left.subtract(right);
-            case "*":
-                return left.multiply(right);
-            default:
-        }
-        return right;
-    }
-
 
     public static void readProductFields(AddProductController addProductController, TextField txtDisplay, TextField txtAdditionalDisplay) {
         TextField txtAmount = addProductController.getAmount();
