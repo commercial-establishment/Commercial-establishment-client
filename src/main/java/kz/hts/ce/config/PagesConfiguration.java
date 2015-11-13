@@ -46,6 +46,10 @@ public class PagesConfiguration {
         this.primaryStage = primaryStage;
     }
 
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
     @Bean
     @Scope("prototype")
     public Stage main() {
