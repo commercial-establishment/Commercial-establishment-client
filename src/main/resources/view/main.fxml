@@ -1,59 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.MainController">
-    <children>
-        <Label fx:id="dateLabel" alignment="CENTER" prefHeight="30.0" prefWidth="178.0" text="Date and Time">
-            <font>
-                <Font size="17.0" />
-            </font>
-        </Label>
-        <HBox prefHeight="631.0" prefWidth="1200.0">
-            <children>
-                <StackPane opacity="0.38" prefHeight="631.0" prefWidth="194.0" style="-fx-background-color: indigo;">
-                    <children>
-                        <Button fx:id="button" mnemonicParsing="false" text="Button" />
-                    </children>
-                </StackPane>
-                <VBox prefHeight="631.0" prefWidth="1087.0">
-                    <children>
-                        <HBox>
-                            <children>
-                                <HBox prefHeight="376.0" prefWidth="1087.0">
-                                    <children>
-                              <AnchorPane prefHeight="400.0" prefWidth="796.0">
-                                 <children>
-                                             <fx:include source="products.fxml" />
-                                 </children>
-                              </AnchorPane>
-                                        <StackPane fx:id="calculatorContainer" opacity="0.48" prefHeight="469.0" prefWidth="510.0" style="-fx-background-color: green;">
-                                            <children>
-                                                <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                                                <fx:include source="calculator.fxml" />
-                                            </children>
-                                        </StackPane>
-
-                                    </children>
-                                </HBox>
-                            </children>
-                        </HBox>
-                        <StackPane opacity="0.33" prefHeight="261.0" prefWidth="1087.0" style="-fx-background-color: BLUE;">
-                            <opaqueInsets>
-                                <Insets />
-                            </opaqueInsets>
-                            <VBox.margin>
-                                <Insets />
-                            </VBox.margin>
-                        </StackPane>
-                    </children>
-                </VBox>
-            </children>
-        </HBox>
-        <Label text="Label" />
-    </children>
-</VBox>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1200.0"
+            xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.MainController">
+   <children>
+      <SplitPane dividerPositions="0.05457227138643068, 0.943952802359882" layoutX="14.0" layoutY="14.0" orientation="VERTICAL" prefHeight="680.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <Label fx:id="dateLabel" layoutX="47.0" layoutY="4.0" text="Date and Time">
+                     <font>
+                        <Font size="17.0" />
+                     </font></Label>
+               </children>
+          </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <SplitPane dividerPositions="0.15468227424749165" layoutX="14.0" layoutY="21.0" prefHeight="574.0" prefWidth="1198.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                           <children>
+                              <SplitPane dividerPositions="0.6155143338954469" orientation="VERTICAL" prefHeight="572.0" prefWidth="981.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <items>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.75" layoutX="528.0" layoutY="91.0" prefHeight="342.0" prefWidth="979.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                              <AnchorPane fx:id="productsContainer" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                   <children>
+                                                      <StackPane layoutX="116.0" layoutY="94.0" prefHeight="387.0" prefWidth="486.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                          <fx:include source="products.fxml" />
+                                                      </StackPane>
+                                                   </children></AnchorPane>
+                                              <AnchorPane fx:id="calculatorContainer" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                   <children>
+                                                      <StackPane prefHeight="387.0" prefWidth="485.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                          <fx:include source="calculator.fxml" />
+                                                      </StackPane>
+                                                   </children></AnchorPane>
+                                            </items>
+                                          </SplitPane>
+                                       </children>
+                                    </AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                                </items>
+                              </SplitPane>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
