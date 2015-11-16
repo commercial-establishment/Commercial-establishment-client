@@ -5,21 +5,20 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<TitledPane contentDisplay="CENTER" expanded="false" prefHeight="233.0" prefWidth="190.0" text="       Категории" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<TitledPane contentDisplay="CENTER" prefHeight="233.0" prefWidth="228.0" text="       Категории" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <ScrollPane hbarPolicy="NEVER" prefHeight="206.0" prefWidth="206.0" vbarPolicy="ALWAYS">
          <content>
-            <VBox maxWidth="-Infinity" prefHeight="325.0">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="232.0" prefWidth="206.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Напитки" />
-                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Алкоголь" />
-                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Сигареты" />
-                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Овощи" />
-                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Молочные продукты" />
-                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Консервы" />
-                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" />
-                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Button" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Напитки" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Алкоголь" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Сигареты" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Овощи" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Молочные продукты" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Консервы" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Button" />
                </children>
             </VBox>
          </content>
