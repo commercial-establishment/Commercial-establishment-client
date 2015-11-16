@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<TitledPane contentDisplay="CENTER" expanded="false" prefHeight="233.0" prefWidth="190.0" text="       Категории" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <ScrollPane hbarPolicy="NEVER" prefHeight="206.0" prefWidth="206.0" vbarPolicy="ALWAYS">
+         <content>
+            <VBox maxWidth="-Infinity" prefHeight="325.0">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Напитки" />
+                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Алкоголь" />
+                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Сигареты" />
+                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Овощи" />
+                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Молочные продукты" />
+                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Консервы" />
+                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" />
+                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Button" />
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </content>
+   <font>
+      <Font size="16.0" />
+   </font>
+</TitledPane>
