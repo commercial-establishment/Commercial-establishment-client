@@ -139,7 +139,7 @@ public class JavaFxUtil {
         addProductController.getTotalPrice().setText(String.valueOf(total));
     }
 
-    public static void alertWarning(Alert.AlertType alertType, String title, String headerText, String contentText) {
+    public static void alert(Alert.AlertType alertType, String title, String headerText, String contentText) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
 

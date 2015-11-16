@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import static kz.hts.ce.util.JavaFxUtil.alertWarning;
+import static kz.hts.ce.util.JavaFxUtil.alert;
 import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
 import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
 import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
@@ -107,12 +107,15 @@ public class PaymentController implements Initializable {
 
                 warehouseProduct.setVersion(warehouseProduct.getVersion() + 1);
                 warehouseProductService.save(warehouseProduct);
-                System.out.println(warehouseProduct.getResidue());
             }
+            alert(Alert.AlertType.INFORMATION, "Товар успешно продан", null, "Сдача: " + change.getText() + " тенге");
+            productsController.deleteAllProductsFromTable();
+            productsController.getProductsDto().clear();
+            PagesConfiguration screens = getPagesConfiguration();
+            screens.payment().close();
         } else {
-            alertWarning(Alert.AlertType.WARNING, "Недостаточно средств", null, "Недостаточно средств для оплаты товара");
+            alert(Alert.AlertType.WARNING, "Недостаточно средств", null, "Недостаточно средств для оплаты товара");
         }
-
     }
 
     @FXML

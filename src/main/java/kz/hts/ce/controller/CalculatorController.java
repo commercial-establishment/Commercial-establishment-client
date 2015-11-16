@@ -130,9 +130,9 @@ public class CalculatorController implements Initializable {
                 productsController.setProductDtoToProductsDto(productDto);
                 productsController.addProductsToTable();
             } else
-                alertWarning(Alert.AlertType.WARNING, "Товар не найден", null, "Товар с данным штрих-кодом отсутствует!");
+                alert(Alert.AlertType.WARNING, "Товар не найден", null, "Товар с данным штрих-кодом отсутствует!");
         } catch (NumberFormatException e) {
-            alertWarning(Alert.AlertType.WARNING, "Неверный штрих-код", null, "Штрих-код введён неверно!");
+            alert(Alert.AlertType.WARNING, "Неверный штрих-код", null, "Штрих-код введён неверно!");
         }
     }
 

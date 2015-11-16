@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
-public class ProductsController implements Initializable{
+public class ProductsController implements Initializable {
 
     @FXML
     private TableView<ProductDto> productTable;
@@ -44,6 +44,20 @@ public class ProductsController implements Initializable{
     private List<ProductDto> productsDto = new ArrayList<>();
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
     private boolean flag;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        PagesConfiguration screens = getPagesConfiguration();
+        screens.getPrimaryStage().addEventHandler(EventType.ROOT, new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                splitPane.lookupAll(".split-pane-divider").stream().forEach(div -> div.setMouseTransparent(true));
+                if (flag)
+                    screens.getPrimaryStage().removeEventHandler(EventType.ROOT, this);
+                flag = true;
+            }
+        });
+    }
 
     public void addProductsToTable() {
         productsData.clear();
@@ -67,11 +81,16 @@ public class ProductsController implements Initializable{
         productsDto.add(productDto);
     }
 
-    public void deleteSelectedProductFromTable(){
+    public void deleteSelectedProductFromTable() {
         ProductDto productDto = productTable.getSelectionModel().getSelectedItem();
         productsDto.remove(productDto);
         productsData.remove(productDto);
         productTable.setItems(productsData);
+    }
+
+    public void deleteAllProductsFromTable(){
+        ObservableList<ProductDto> productDto = productTable.getSelectionModel().getTableView().getItems();
+        productDto.clear();
     }
 
     public TextField getPriceResult() {
@@ -82,17 +101,15 @@ public class ProductsController implements Initializable{
         return productsData;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        PagesConfiguration screens = getPagesConfiguration();
-        screens.getPrimaryStage().addEventHandler(EventType.ROOT, new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                splitPane.lookupAll(".split-pane-divider").stream().forEach(div->div.setMouseTransparent(true));
-                if(flag)
-                    screens.getPrimaryStage().removeEventHandler(EventType.ROOT, this);
-                flag=true;
-            }
-        });
+    public void setProductsData(ObservableList<ProductDto> productsData) {
+        this.productsData = productsData;
+    }
+
+    public List<ProductDto> getProductsDto() {
+        return productsDto;
+    }
+
+    public void setProductsDto(List<ProductDto> productsDto) {
+        this.productsDto = productsDto;
     }
 }
