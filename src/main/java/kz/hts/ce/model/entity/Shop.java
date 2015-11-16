@@ -70,5 +70,4 @@ public class Shop extends BaseEntity {
     public void setCity(City city) {
         this.city = city;
     }
-
 }

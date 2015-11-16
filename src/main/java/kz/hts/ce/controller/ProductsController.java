@@ -64,4 +64,8 @@ public class ProductsController {
     public TextField getPriceResult() {
         return priceResult;
     }
+
+    public ObservableList<ProductDto> getProductsData() {
+        return productsData;
+    }
 }
