@@ -15,7 +15,7 @@
                      <font>
                         <Font size="17.0" />
                      </font></Label>
-                  <Button layoutX="1123.0" layoutY="2.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="61.0" text="Выход" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="2.0">
+                  <Button onAction="#logout" layoutX="1130.0" layoutY="-2.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="61.0" text="Выход" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="3.0">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -62,7 +62,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Label layoutX="1075.0" layoutY="4.0" text="Administrator" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="4.0">
+                  <Label fx:id="role" layoutX="1075.0" layoutY="4.0" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="4.0">
                      <font>
                         <Font size="18.0" />
                      </font>
