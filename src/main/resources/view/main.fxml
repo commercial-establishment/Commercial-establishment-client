@@ -5,8 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1200.0"
-            xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.MainController">
    <children>
       <SplitPane dividerPositions="0.05457227138643068, 0.943952802359882" layoutX="14.0" layoutY="14.0" orientation="VERTICAL" prefHeight="680.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -16,6 +15,11 @@
                      <font>
                         <Font size="17.0" />
                      </font></Label>
+                  <Button layoutX="1123.0" layoutY="2.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="61.0" text="Выход" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="2.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
                </children>
           </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -56,7 +60,14 @@
                   </SplitPane>
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label layoutX="1075.0" layoutY="4.0" text="Administrator" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="4.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children></AnchorPane>
         </items>
       </SplitPane>
    </children>
