@@ -1,7 +1,7 @@
 package kz.hts.ce.util;
 
-import kz.hts.ce.model.entity.ShopProduct;
 import kz.hts.ce.model.dto.ProductDto;
+import kz.hts.ce.model.entity.WarehouseProduct;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -43,14 +43,14 @@ public class JavaUtil {
         return totalCost;
     }
 
-    public static ProductDto createProductDtoFromShopProduct(ShopProduct shopProduct, int amount) {
+    public static ProductDto createProductDtoFromWarehouseProduct(WarehouseProduct warehouseProduct, int amount) {
         ProductDto productDto = new ProductDto();
-        productDto.setId(shopProduct.getId());
-        productDto.setName(shopProduct.getProduct().getName());
+        productDto.setId(warehouseProduct.getId());
+        productDto.setName(warehouseProduct.getProduct().getName());
         productDto.setAmount(0);
         productDto.setAmount(amount);
         productDto.setPrice(new BigDecimal(0));
-        productDto.setPrice(shopProduct.getPrice());
+        productDto.setPrice(warehouseProduct.getPrice());
         return productDto;
     }
 }

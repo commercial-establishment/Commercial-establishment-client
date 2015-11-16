@@ -12,8 +12,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.ProductDto;
-import kz.hts.ce.model.entity.ShopProduct;
-import kz.hts.ce.service.ShopProductService;
+import kz.hts.ce.model.entity.WarehouseProduct;
+import kz.hts.ce.service.WarehouseProductService;
 import kz.hts.ce.util.AppContextSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static kz.hts.ce.util.JavaFxUtil.*;
-import static kz.hts.ce.util.JavaUtil.createProductDtoFromShopProduct;
+import static kz.hts.ce.util.JavaUtil.createProductDtoFromWarehouseProduct;
 import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
@@ -37,7 +37,7 @@ public class CalculatorController implements Initializable {
     @FXML
     private TextField txtDisplay;
     @Autowired
-    private ShopProductService shopProductService;
+    private WarehouseProductService warehouseProductService;
     @Autowired
     private AddProductController addProductController;/*TODO working via services*/
     @Autowired
@@ -120,13 +120,13 @@ public class CalculatorController implements Initializable {
     public void findAndAddProductByBarcode() {
         try {
             String barcode = txtDisplay.getText();
-            ShopProduct shopProduct = shopProductService.findByProductBarcode(Long.parseLong(barcode));
-            if (shopProduct != null) {
+            WarehouseProduct warehouseProduct = warehouseProductService.findByProductBarcode(Long.parseLong(barcode));
+            if (warehouseProduct != null) {
                 if (txtAdditionalDisplay.getText().equals("") || txtAdditionalDisplay.getText().equals("*")) {
                     txtAdditionalDisplay.setText("*1");
                 }
                 String[] splittedAmount = txtAdditionalDisplay.getText().split("\\*");
-                ProductDto productDto = createProductDtoFromShopProduct(shopProduct, Integer.parseInt(splittedAmount[1]));
+                ProductDto productDto = createProductDtoFromWarehouseProduct(warehouseProduct, Integer.parseInt(splittedAmount[1]));
                 productsController.setProductDtoToProductsDto(productDto);
                 productsController.addProductsToTable();
             } else

@@ -78,6 +78,10 @@ public class ProductsController implements Initializable{
         return priceResult;
     }
 
+    public ObservableList<ProductDto> getProductsData() {
+        return productsData;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         PagesConfiguration screens = getPagesConfiguration();
