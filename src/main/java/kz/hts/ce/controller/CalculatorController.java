@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.WarehouseProduct;
@@ -101,6 +102,8 @@ public class CalculatorController implements Initializable {
             ApplicationContext context = AppContextSingleton.getInstance();
             PagesConfiguration screens = context.getBean(PagesConfiguration.class);
             Stage stage = new Stage();
+            stage.initStyle(StageStyle.UTILITY);
+            stage.resizableProperty().setValue(Boolean.FALSE);
             screens.setPrimaryStage(stage);
             screens.addProduct();
 
@@ -113,6 +116,8 @@ public class CalculatorController implements Initializable {
         ApplicationContext context = AppContextSingleton.getInstance();
         PagesConfiguration screens = context.getBean(PagesConfiguration.class);
         Stage stage = new Stage();
+        stage.initStyle(StageStyle.UTILITY);
+        stage.resizableProperty().setValue(Boolean.FALSE);
         screens.setPrimaryStage(stage);
         screens.payment();
     }
