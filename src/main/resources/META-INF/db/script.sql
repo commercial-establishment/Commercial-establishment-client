@@ -44,3 +44,5 @@ INSERT INTO product_provider (id, is_blocked, product_id, provider_id, amount, p
 
 INSERT INTO EMPLOYEE (ID, IS_BLOCKED, FIRST_NAME, PASSWORD, SURNAME, USERNAME, ROLE_ID, SHOP_ID) VALUES
   (1, FALSE, 'FIRSTNAME', '$2a$10$5/0IiLwNrICc3Dmq/7AWKO08qK13AKH2tWIytGe9a2.WZHIj2WwPa', 'surname', 'owner', 3, 1);
+
+
