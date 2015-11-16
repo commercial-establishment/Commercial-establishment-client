@@ -13,21 +13,17 @@
             <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                     <children>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="300.0" prefWidth="748.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <content>
-                                <TableView fx:id="productTable">
-                                    <columns>
-                                        <TableColumn fx:id="name" prefWidth="75.0" text="Name" />
-                                        <TableColumn fx:id="amount" prefWidth="75.0" text="Amount" />
-                                        <TableColumn fx:id="price" prefWidth="75.0" text="Price" />
-                                        <TableColumn fx:id="totalPrice" prefWidth="75.0" text="Стоимость" />
-                                    </columns>
-                                    <columnResizePolicy>
-                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                    </columnResizePolicy>
-                                </TableView>
-                            </content>
-                        </ScrollPane>
+                          <TableView fx:id="productTable" prefHeight="300.0" prefWidth="748.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <columns>
+                                  <TableColumn fx:id="name" prefWidth="75.0" text="Name" />
+                                  <TableColumn fx:id="amount" prefWidth="75.0" text="Amount" />
+                                  <TableColumn fx:id="price" prefWidth="75.0" text="Price" />
+                                  <TableColumn fx:id="totalPrice" prefWidth="75.0" text="Стоимость" />
+                              </columns>
+                              <columnResizePolicy>
+                                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                              </columnResizePolicy>
+                          </TableView>
                     </children>
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
