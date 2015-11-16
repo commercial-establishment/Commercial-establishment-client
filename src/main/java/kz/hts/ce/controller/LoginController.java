@@ -29,6 +29,7 @@ public class LoginController {
     public Button btnLogin;
     @FXML
     public Label lblMessage;
+
     @Autowired
     private SpringUtil springUtils;
 

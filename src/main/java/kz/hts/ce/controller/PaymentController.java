@@ -3,10 +3,10 @@ package kz.hts.ce.controller;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.ProductDto;
@@ -42,15 +42,9 @@ public class PaymentController implements Initializable {
     private TextField change;
     @FXML
     private TextField total;
-    @FXML
-    private Button accept;
-    @FXML
-    private Button cancel;
-    @FXML
-    private Button print;
 
     @Autowired
-    private ProductsController productsController;
+    private PagesConfiguration pagesConfiguration;
     @Autowired
     private WarehouseProductService warehouseProductService;
     @Autowired
@@ -60,7 +54,7 @@ public class PaymentController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        total.setText(productsController.getPriceResult().getText());
+        total.setText(pagesConfiguration.productsController().getPriceResult().getText());
         shortage.setText(total.getText());
         given.setText(ZERO);
         change.setText(ZERO);
@@ -79,7 +73,7 @@ public class PaymentController implements Initializable {
                         shortage.setText(String.valueOf(shortageBD));
                         change.setText(ZERO);
                     }
-                } else given.setText(ZERO);
+                } else given.setText("");
             }
         });
     }
@@ -87,7 +81,7 @@ public class PaymentController implements Initializable {
     @FXML
     public void success() {
         if (shortage.getText().equals(ZERO)) {
-            ObservableList<ProductDto> productsData = productsController.getProductsData();
+            ObservableList<ProductDto> productsData = pagesConfiguration.productsController().getProductsData();
             for (ProductDto productDto : productsData) {
                 long warehouseProductId = productDto.getId();
                 WarehouseProduct warehouseProduct = warehouseProductService.findById(warehouseProductId);
@@ -109,8 +103,8 @@ public class PaymentController implements Initializable {
                 warehouseProductService.save(warehouseProduct);
             }
             alert(Alert.AlertType.INFORMATION, "Товар успешно продан", null, "Сдача: " + change.getText() + " тенге");
-            productsController.deleteAllProductsFromTable();
-            productsController.getProductsDto().clear();
+            pagesConfiguration.productsController().deleteAllProductsFromTable();
+            pagesConfiguration.productsController().getProductsDto().clear();
             PagesConfiguration screens = getPagesConfiguration();
             screens.payment().close();
         } else {
@@ -119,12 +113,21 @@ public class PaymentController implements Initializable {
     }
 
     @FXML
-    private void cancel() {
+    public void print(ActionEvent event) {
+
+    }
+
+    @FXML
+    public void cancel() {
         PagesConfiguration screens = getPagesConfiguration();
         screens.payment().close();
     }
 
     public TextField getGiven() {
         return given;
+    }
+
+    public void setGiven(TextField given) {
+        this.given = given;
     }
 }

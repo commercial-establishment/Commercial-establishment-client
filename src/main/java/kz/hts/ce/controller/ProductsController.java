@@ -26,6 +26,10 @@ import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 @Controller
 public class ProductsController implements Initializable {
 
+    private List<ProductDto> productsDto = new ArrayList<>();
+    private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
+    private boolean flag;
+
     @FXML
     private TableView<ProductDto> productTable;
     @FXML
@@ -40,10 +44,6 @@ public class ProductsController implements Initializable {
     private TextField priceResult;
     @FXML
     private SplitPane splitPane;
-
-    private List<ProductDto> productsDto = new ArrayList<>();
-    private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
-    private boolean flag;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

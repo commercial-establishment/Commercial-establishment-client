@@ -1,6 +1,5 @@
 package kz.hts.ce.controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -35,7 +34,7 @@ public class MainController implements Initializable {
         role.setText(employee.getRole().getName());
     }
 
-    public void logout(ActionEvent event) {
+    public void logout() {
         PagesConfiguration screens = getPagesConfiguration();
         screens.main().close();
         screens.login().show();

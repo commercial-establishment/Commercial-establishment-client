@@ -36,12 +36,11 @@ public class CalculatorController implements Initializable {
     private TextField txtAdditionalDisplay;
     @FXML
     private TextField txtDisplay;
+
     @Autowired
     private WarehouseProductService warehouseProductService;
     @Autowired
-    private AddProductController addProductController;/*TODO working via services*/
-    @Autowired
-    private ProductsController productsController;/*TODO working via services*/
+    private PagesConfiguration pagesConfiguration;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -50,12 +49,10 @@ public class CalculatorController implements Initializable {
         EventHandler<KeyEvent> eventHandler = evt -> {
             buttonState.setLength(0);
             buttonState.append(evt.getCode().toString());
-            handleOnAnyButtonFromKeypad();
+            CalculatorController.this.handleOnAnyButtonFromKeypad();
         };
         ChangeListener<Boolean> changeListener = (observable, oldValue, newValue) -> {
-            if (newValue) {
-                screens.getPrimaryStage().getScene().addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
-            }
+            if (newValue) screens.getPrimaryStage().getScene().addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
         };
 
         screens.getPrimaryStage().focusedProperty().addListener(changeListener);
@@ -91,6 +88,8 @@ public class CalculatorController implements Initializable {
             findAndAddProductByBarcode();
         } else if (buttonText.matches("SUBTRACT")) {
             deleteSelectedProductFromTable();
+        } else if (buttonText.matches("EQUALS")) {
+            paymentPage();
         }
     }
 
@@ -104,17 +103,19 @@ public class CalculatorController implements Initializable {
             screens.setPrimaryStage(stage);
             screens.addProduct();
 
-            readProductFields(addProductController, txtDisplay, txtAdditionalDisplay);
+            readProductFields(pagesConfiguration.addProductsController(), txtDisplay, txtAdditionalDisplay);
         }
     }
 
     @FXML
     public void paymentPage() {
-        ApplicationContext context = AppContextSingleton.getInstance();
-        PagesConfiguration screens = context.getBean(PagesConfiguration.class);
-        Stage stage = new Stage();
-        screens.setPrimaryStage(stage);
-        screens.payment();
+        if (!pagesConfiguration.productsController().getPriceResult().getText().equals("")) {
+            ApplicationContext context = AppContextSingleton.getInstance();
+            PagesConfiguration screens = context.getBean(PagesConfiguration.class);
+            Stage stage = new Stage();
+            screens.setPrimaryStage(stage);
+            screens.payment();
+        } else alert(Alert.AlertType.WARNING, "Товар не выбран", null, "Извините, список товаров пуст.");
     }
 
     public void findAndAddProductByBarcode() {
@@ -127,8 +128,8 @@ public class CalculatorController implements Initializable {
                 }
                 String[] splittedAmount = txtAdditionalDisplay.getText().split("\\*");
                 ProductDto productDto = createProductDtoFromWarehouseProduct(warehouseProduct, Integer.parseInt(splittedAmount[1]));
-                productsController.setProductDtoToProductsDto(productDto);
-                productsController.addProductsToTable();
+                pagesConfiguration.productsController().setProductDtoToProductsDto(productDto);
+                pagesConfiguration.productsController().addProductsToTable();
             } else
                 alert(Alert.AlertType.WARNING, "Товар не найден", null, "Товар с данным штрих-кодом отсутствует!");
         } catch (NumberFormatException e) {
@@ -137,6 +138,6 @@ public class CalculatorController implements Initializable {
     }
 
     public void deleteSelectedProductFromTable() {
-        productsController.deleteSelectedProductFromTable();
+        pagesConfiguration.productsController().deleteSelectedProductFromTable();
     }
 }
