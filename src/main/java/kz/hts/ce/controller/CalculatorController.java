@@ -113,11 +113,13 @@ public class CalculatorController implements Initializable {
     @FXML
     public void paymentPage() {
         if (!pagesConfiguration.productsController().getPriceResult().getText().equals("")) {
-            ApplicationContext context = AppContextSingleton.getInstance();
-            PagesConfiguration screens = context.getBean(PagesConfiguration.class);
-            Stage stage = new Stage();
-            screens.setPrimaryStage(stage);
-            screens.payment();
+                ApplicationContext context = AppContextSingleton.getInstance();
+                PagesConfiguration screens = context.getBean(PagesConfiguration.class);
+                Stage stage = new Stage();
+                stage.initStyle(StageStyle.UTILITY);
+                stage.resizableProperty().setValue(Boolean.FALSE);
+                screens.setPrimaryStage(stage);
+                screens.payment();
         } else alert(Alert.AlertType.WARNING, "Товар не выбран", null, "Извините, список товаров пуст.");
     }
 
