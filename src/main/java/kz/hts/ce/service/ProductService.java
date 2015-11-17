@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProductService extends BaseService<Product, ProductRepository>{
+public class ProductService extends BaseService<Product, ProductRepository> {
 
     @Autowired
     protected ProductService(ProductRepository repository) {
@@ -28,6 +28,10 @@ public class ProductService extends BaseService<Product, ProductRepository>{
     }
 
     public Product findByBarcode(long barcode) {
-       return repository.findByBarcode(barcode);
+        return repository.findByBarcode(barcode);
+    }
+
+    public List<Product> findByCategoryName(String name) {
+        return repository.findByCategory_Name(name);
     }
 }
