@@ -56,6 +56,9 @@ public class ProductsController {
 
     public void deleteSelectedProductFromTable() {
         ProductDto productDto = productTable.getSelectionModel().getSelectedItem();
+        BigDecimal priceResultBD = new BigDecimal(priceResult.getText());
+        priceResultBD = priceResultBD.subtract(productDto.getTotalPrice());
+        priceResult.setText(String.valueOf(priceResultBD));
         productsDto.remove(productDto);
         productsData.remove(productDto);
         productTable.setItems(productsData);
@@ -64,6 +67,7 @@ public class ProductsController {
     public void deleteAllProductsFromTable() {
         ObservableList<ProductDto> productDto = productTable.getSelectionModel().getTableView().getItems();
         productDto.clear();
+        priceResult.setText("0.00");
     }
 
     public TextField getPriceResult() {

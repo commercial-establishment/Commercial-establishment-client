@@ -74,7 +74,10 @@ public class PaymentController implements Initializable {
                         shortage.setText(String.valueOf(shortageBD));
                         change.setText(ZERO);
                     }
-                } else given.setText("");
+                } else {
+                    given.setText("");
+                    shortage.setText(total.getText());
+                }
             }
         });
     }
