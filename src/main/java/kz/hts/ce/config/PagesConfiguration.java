@@ -1,6 +1,7 @@
 package kz.hts.ce.config;
 
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import kz.hts.ce.controller.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,35 +25,41 @@ public class PagesConfiguration {
     }
 
     @Bean
-    @Scope("prototype")
+    @Scope("singleton")
     public Stage main() {
         showStage(primaryStage, "/view/main.fxml");
         return primaryStage;
     }
 
     @Bean
-    @Scope("prototype")
+    @Scope("singleton")
     public Stage login() {
+        primaryStage.initStyle(StageStyle.UTILITY);
+        primaryStage.setResizable(false);
         showStage(primaryStage, "/view/login.fxml");
         return primaryStage;
     }
 
     @Bean
-    @Scope("prototype")
+    @Scope("singleton")
     public Stage addProduct() {
+        primaryStage.initStyle(StageStyle.UTILITY);
+        primaryStage.setResizable(false);
         showStage(primaryStage, "/view/add-product.fxml");
         return primaryStage;
     }
 
     @Bean
-    @Scope("prototype")
+    @Scope("singleton")
     public Stage payment() {
+        primaryStage.initStyle(StageStyle.UTILITY);
+        primaryStage.setResizable(false);
         showStage(primaryStage, "/view/payment.fxml");
         return primaryStage;
     }
 
     @Bean
-    @Scope("prototype")
+    @Scope("singleton")
     public Stage products() {
         showStage(primaryStage, "/view/products.fxml");
         return primaryStage;
