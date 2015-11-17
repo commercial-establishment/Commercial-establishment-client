@@ -70,9 +70,9 @@ public class ProductCategoryController implements Initializable {
             if (flag) {
                 productsData.clear();
                 Category category = categoryService.findByName(newVal);
-                List<WarehouseProduct> products = warehouseProductService.
+                List<WarehouseProduct> warehouseProducts = warehouseProductService.
                         findByCategoryIdAndShopId(category.getId(), employee.getShop().getId());
-                for (WarehouseProduct productWarehouse : products) {
+                for (WarehouseProduct productWarehouse : warehouseProducts) {
                     ProductDto productDto = new ProductDto();
                     productDto.setName(productWarehouse.getProduct().getName());
                     productDto.setPrice(productWarehouse.getPrice());
