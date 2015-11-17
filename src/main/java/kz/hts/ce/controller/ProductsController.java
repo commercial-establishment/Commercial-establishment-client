@@ -2,29 +2,22 @@ package kz.hts.ce.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.ProductDto;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
-
-import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
 public class ProductsController {
+
+    private List<ProductDto> productsDto = new ArrayList<>();
+    private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
 
     @FXML
     private TableView<ProductDto> productTable;
@@ -38,13 +31,6 @@ public class ProductsController {
     private TableColumn<ProductDto, BigDecimal> totalPrice;
     @FXML
     private TextField priceResult;
-    @FXML
-    private SplitPane splitPane;
-
-    private List<ProductDto> productsDto = new ArrayList<>();
-    private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
-
-
 
     public void addProductsToTable() {
         productsData.clear();
