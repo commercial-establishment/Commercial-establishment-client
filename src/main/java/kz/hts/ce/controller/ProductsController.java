@@ -24,11 +24,7 @@ import java.util.ResourceBundle;
 import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
-public class ProductsController implements Initializable {
-
-    private List<ProductDto> productsDto = new ArrayList<>();
-    private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
-    private boolean flag;
+public class ProductsController {
 
     @FXML
     private TableView<ProductDto> productTable;
@@ -45,19 +41,10 @@ public class ProductsController implements Initializable {
     @FXML
     private SplitPane splitPane;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        PagesConfiguration screens = getPagesConfiguration();
-        screens.getPrimaryStage().addEventHandler(EventType.ROOT, new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                splitPane.lookupAll(".split-pane-divider").stream().forEach(div -> div.setMouseTransparent(true));
-                if (flag)
-                    screens.getPrimaryStage().removeEventHandler(EventType.ROOT, this);
-                flag = true;
-            }
-        });
-    }
+    private List<ProductDto> productsDto = new ArrayList<>();
+    private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
+
+
 
     public void addProductsToTable() {
         productsData.clear();
