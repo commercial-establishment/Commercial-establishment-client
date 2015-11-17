@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
-public class ProductsController implements Initializable{
+public class ProductsController implements Initializable {
 
     @FXML
     private TableView<ProductDto> productTable;
