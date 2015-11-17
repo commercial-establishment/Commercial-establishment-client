@@ -61,7 +61,7 @@ public class ProductsController {
         productTable.setItems(productsData);
     }
 
-    public void deleteAllProductsFromTable(){
+    public void deleteAllProductsFromTable() {
         ObservableList<ProductDto> productDto = productTable.getSelectionModel().getTableView().getItems();
         productDto.clear();
     }
@@ -84,5 +84,9 @@ public class ProductsController {
 
     public void setProductsDto(List<ProductDto> productsDto) {
         this.productsDto = productsDto;
+    }
+
+    public void addProductIntProductDto(ProductDto productDto) {
+        productsDto.add(productDto);
     }
 }

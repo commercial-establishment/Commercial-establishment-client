@@ -1,12 +1,16 @@
 package kz.hts.ce.controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Category;
 import kz.hts.ce.model.entity.Employee;
@@ -32,7 +36,6 @@ public class ProductCategoryController implements Initializable {
     private boolean flag;
     private ObservableList<String> categoriesData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
-    private List<ProductDto> productsDto = new ArrayList<>();
 
     @FXML
     private TableColumn<ProductDto, String> name;
@@ -52,6 +55,9 @@ public class ProductCategoryController implements Initializable {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private ProductsController productsController;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         categoriesData.clear();
@@ -66,25 +72,42 @@ public class ProductCategoryController implements Initializable {
         categories.setItems(categoriesData);
 
         Employee employee = employeeService.findByUsername(getPrincipal());
-        categories.getSelectionModel().selectedItemProperty().addListener((ov, oldVal, newVal) -> {
-            if (flag) {
-                productsData.clear();
-                Category category = categoryService.findByName(newVal);
-                List<WarehouseProduct> warehouseProducts = warehouseProductService.
-                        findByCategoryIdAndShopId(category.getId(), employee.getShop().getId());
-                for (WarehouseProduct productWarehouse : warehouseProducts) {
-                    ProductDto productDto = new ProductDto();
-                    productDto.setName(productWarehouse.getProduct().getName());
-                    productDto.setPrice(productWarehouse.getPrice());
-                    productDto.setResidue(productWarehouse.getResidue());
-                    productsData.add(productDto);
+        categories.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String oldVal, String newVal) {
+                if (flag) {
+                    productsData.clear();
+                    Category category = categoryService.findByName(newVal);
+                    List<WarehouseProduct> warehouseProducts = warehouseProductService.
+                            findByCategoryIdAndShopId(category.getId(), employee.getShop().getId());
+                    for (WarehouseProduct productWarehouse : warehouseProducts) {
+                        ProductDto productDto = new ProductDto();
+                        productDto.setName(productWarehouse.getProduct().getName());
+                        productDto.setPrice(productWarehouse.getPrice());
+                        productDto.setResidue(productWarehouse.getResidue());
+                        productsData.add(productDto);
+                    }
+                    name.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+                    price.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
+                    residue.setCellValueFactory(cellData -> cellData.getValue().residueProperty());
+                    categoryProductsTable.setItems(productsData);
                 }
-                name.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-                price.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
-                residue.setCellValueFactory(cellData -> cellData.getValue().residueProperty());
-                categoryProductsTable.setItems(productsData);
+                flag = true;
             }
-            flag = true;
         });
+
+        if (categoryProductsTable != null) {
+            categoryProductsTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                        ProductDto productDto = categoryProductsTable.getSelectionModel().getSelectedItem();
+                        productDto.setAmount(1);
+                        productsController.addProductIntProductDto(productDto);
+                        productsController.addProductsToTable();
+                    }
+                }
+            });
+        }
     }
 }
