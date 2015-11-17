@@ -22,6 +22,7 @@ public class ProductHistory extends BaseEntity {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date saleDate;
 
+    @Column(name = "total_price", nullable = false)
     private BigDecimal totalPrice;
     private int amount;
     private int version;

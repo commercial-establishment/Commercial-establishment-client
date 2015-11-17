@@ -96,14 +96,15 @@ public class JavaFxUtil {
             return;
         }
         if (buttonText.matches("[0-9]")) {
-            if (!txtDisplay.getText().startsWith("0") || txtDisplay.getText().startsWith("0.")) {
-                if (!numberInputting) {
-                    numberInputting = true;
-                    txtDisplay.clear();
-                }
-                txtDisplay.appendText(buttonText);
-                return;
+            if (txtDisplay.getText().equals("0.00")) {
+                txtDisplay.clear();
             }
+            if (!numberInputting) {
+                numberInputting = true;
+                txtDisplay.clear();
+            }
+            txtDisplay.appendText(buttonText);
+            return;
         }
         if (buttonText.matches("[\\.]")) {
             if (!txtDisplay.getText().contains(".")) {
@@ -139,7 +140,7 @@ public class JavaFxUtil {
         addProductController.getTotalPrice().setText(String.valueOf(total));
     }
 
-    public static void alertWarning(Alert.AlertType alertType, String title, String headerText, String contentText) {
+    public static void alert(Alert.AlertType alertType, String title, String headerText, String contentText) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
 

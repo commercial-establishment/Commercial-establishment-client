@@ -3,10 +3,10 @@ package kz.hts.ce.controller;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.ProductDto;
@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import static kz.hts.ce.util.JavaFxUtil.alertWarning;
+import static kz.hts.ce.util.JavaFxUtil.alert;
 import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
 import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
 import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
@@ -42,21 +42,15 @@ public class PaymentController implements Initializable {
     private TextField change;
     @FXML
     private TextField total;
-    @FXML
-    private Button accept;
-    @FXML
-    private Button cancel;
-    @FXML
-    private Button print;
 
-    @Autowired
-    private ProductsController productsController;
     @Autowired
     private WarehouseProductService warehouseProductService;
     @Autowired
     private ProductHistoryService productHistoryService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private ProductsController productsController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -79,7 +73,7 @@ public class PaymentController implements Initializable {
                         shortage.setText(String.valueOf(shortageBD));
                         change.setText(ZERO);
                     }
-                } else given.setText(ZERO);
+                } else given.setText("");
             }
         });
     }
@@ -107,21 +101,33 @@ public class PaymentController implements Initializable {
 
                 warehouseProduct.setVersion(warehouseProduct.getVersion() + 1);
                 warehouseProductService.save(warehouseProduct);
-                System.out.println(warehouseProduct.getResidue());
             }
+            alert(Alert.AlertType.INFORMATION, "Товар успешно продан", null, "Сдача: " + change.getText() + " тенге");
+            productsController.deleteAllProductsFromTable();
+            productsController.getProductsDto().clear();
+            PagesConfiguration screens = getPagesConfiguration();
+            screens.payment().close();
         } else {
-            alertWarning(Alert.AlertType.WARNING, "Недостаточно средств", null, "Недостаточно средств для оплаты товара");
+            alert(Alert.AlertType.WARNING, "Недостаточно средств", null, "Недостаточно средств для оплаты товара");
         }
+    }
+
+    @FXML
+    public void print(ActionEvent event) {
 
     }
 
     @FXML
-    private void cancel() {
+    public void cancel() {
         PagesConfiguration screens = getPagesConfiguration();
         screens.payment().close();
     }
 
     public TextField getGiven() {
         return given;
+    }
+
+    public void setGiven(TextField given) {
+        this.given = given;
     }
 }

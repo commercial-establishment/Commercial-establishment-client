@@ -13,6 +13,7 @@ public class ProductDto {
     private IntegerProperty amount;
     private ObjectProperty<BigDecimal> price;
     private ObjectProperty<BigDecimal> totalPrice;
+    private IntegerProperty residue;
 
     public long getId() {
         return id;
@@ -50,6 +51,21 @@ public class ProductDto {
             this.amount = new SimpleIntegerProperty();
         }
         this.amount.set(amount);
+    }
+
+    public int getResidue() {
+        return residue.get();
+    }
+
+    public IntegerProperty residueProperty() {
+        return residue;
+    }
+
+    public void setResidue(int residue) {
+        if (this.residue == null) {
+            this.residue = new SimpleIntegerProperty();
+        }
+        this.residue.set(residue);
     }
 
     public BigDecimal getPrice() {

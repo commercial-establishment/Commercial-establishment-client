@@ -2,29 +2,22 @@ package kz.hts.ce.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.ProductDto;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
-
-import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
-public class ProductsController implements Initializable {
+public class ProductsController {
+
+    private List<ProductDto> productsDto = new ArrayList<>();
+    private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
 
     @FXML
     private TableView<ProductDto> productTable;
@@ -38,12 +31,6 @@ public class ProductsController implements Initializable {
     private TableColumn<ProductDto, BigDecimal> totalPrice;
     @FXML
     private TextField priceResult;
-    @FXML
-    private SplitPane splitPane;
-
-    private List<ProductDto> productsDto = new ArrayList<>();
-    private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
-    private boolean flag;
 
     public void addProductsToTable() {
         productsData.clear();
@@ -67,11 +54,16 @@ public class ProductsController implements Initializable {
         productsDto.add(productDto);
     }
 
-    public void deleteSelectedProductFromTable(){
+    public void deleteSelectedProductFromTable() {
         ProductDto productDto = productTable.getSelectionModel().getSelectedItem();
         productsDto.remove(productDto);
         productsData.remove(productDto);
         productTable.setItems(productsData);
+    }
+
+    public void deleteAllProductsFromTable(){
+        ObservableList<ProductDto> productDto = productTable.getSelectionModel().getTableView().getItems();
+        productDto.clear();
     }
 
     public TextField getPriceResult() {
@@ -82,17 +74,15 @@ public class ProductsController implements Initializable {
         return productsData;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        PagesConfiguration screens = getPagesConfiguration();
-        screens.getPrimaryStage().addEventHandler(EventType.ROOT, new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                splitPane.lookupAll(".split-pane-divider").stream().forEach(div->div.setMouseTransparent(true));
-                if(flag)
-                    screens.getPrimaryStage().removeEventHandler(EventType.ROOT, this);
-                flag=true;
-            }
-        });
+    public void setProductsData(ObservableList<ProductDto> productsData) {
+        this.productsData = productsData;
+    }
+
+    public List<ProductDto> getProductsDto() {
+        return productsDto;
+    }
+
+    public void setProductsDto(List<ProductDto> productsDto) {
+        this.productsDto = productsDto;
     }
 }

@@ -1,20 +1,21 @@
 package kz.hts.ce.controller;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import kz.hts.ce.config.PagesConfiguration;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
 import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
-public class AddProductController {
+public class AddProductController implements Initializable {
 
     @FXML
     private TextField name;
@@ -25,6 +26,25 @@ public class AddProductController {
     @FXML
     private TextField totalPrice;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        amount.textProperty().addListener((observable, oldValue, newValue) -> {
+            BigDecimal priceBD = stringToBigDecimal(price.getText());
+            BigDecimal totalPriceBD = priceBD.multiply(new BigDecimal(Long.parseLong(newValue)));
+            totalPrice.setText(String.valueOf(totalPriceBD));
+        });
+
+        price.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (amount.getText().equals("")) {
+                amount.setText("1");
+            }
+            long amountLong = Long.parseLong(amount.getText());
+            BigDecimal priceBD = stringToBigDecimal(newValue);
+            BigDecimal totalPriceBD = priceBD.multiply(new BigDecimal(amountLong));
+            totalPrice.setText(String.valueOf(totalPriceBD));
+        });
+    }
+
     @FXML
     public void success(ActionEvent event) {
     }
@@ -33,31 +53,6 @@ public class AddProductController {
     public void cancel() {
         PagesConfiguration screens = getPagesConfiguration();
         screens.addProduct().close();
-    }
-
-    @FXML
-    private void listener() {
-        amount.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                BigDecimal priceBD = stringToBigDecimal(price.getText());
-                BigDecimal totalPriceBD = priceBD.multiply(new BigDecimal(Long.parseLong(newValue)));
-                totalPrice.setText(String.valueOf(totalPriceBD));
-            }
-        });
-
-        price.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (amount.getText().equals("")) {
-                    amount.setText("1");
-                }
-                long amountLong = Long.parseLong(amount.getText());
-                BigDecimal priceBD = stringToBigDecimal(newValue);
-                BigDecimal totalPriceBD = priceBD.multiply(new BigDecimal(amountLong));
-                totalPrice.setText(String.valueOf(totalPriceBD));
-            }
-        });
     }
 
     public TextField getName() {

@@ -11,9 +11,6 @@ import static kz.hts.ce.util.JavaFxUtil.additionalCalculator;
 @Controller
 public class AdditionalCalculatorController {
 
-    @FXML
-    private Button button;
-
     @Autowired
     private PaymentController paymentController;
 
@@ -24,10 +21,10 @@ public class AdditionalCalculatorController {
         if (buttonText.matches("^[0-9CE\\s[*+=.]\\s]*$")) {
             additionalCalculator(buttonText, paymentController.getGiven());
         }
-
     }
+
     @FXML
-    public void handeleOnKeyPressed(ActionEvent event){
+    public void handeleOnKeyPressed(ActionEvent event) {
 
     }
 }

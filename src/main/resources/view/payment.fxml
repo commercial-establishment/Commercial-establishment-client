@@ -9,13 +9,13 @@
             prefWidth="569.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="kz.hts.ce.controller.PaymentController">
     <children>
-        <Button fx:id="accept" onAction="#success" layoutX="451.0" layoutY="347.0" mnemonicParsing="false" opacity="0.83" prefHeight="30.0"
+        <Button onAction="#success" layoutX="451.0" layoutY="347.0" mnemonicParsing="false" opacity="0.83" prefHeight="30.0"
                 prefWidth="104.0" text="Принять">
             <font>
                 <Font name="System Bold" size="12.0"/>
             </font>
         </Button>
-        <Button fx:id="cancel" layoutX="330.0" layoutY="347.0" mnemonicParsing="false" onAction="#cancel"
+        <Button layoutX="330.0" layoutY="347.0" mnemonicParsing="false" onAction="#cancel"
                 prefHeight="30.0" prefWidth="104.0" text="Отменить"/>
         <TabPane layoutX="4.0" layoutY="55.0" prefHeight="292.0" prefWidth="561.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
@@ -67,7 +67,7 @@
                 </Tab>
             </tabs>
         </TabPane>
-        <Button fx:id="print" layoutX="14.0" layoutY="347.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0"
+        <Button onAction="#print" layoutX="14.0" layoutY="347.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0"
                 text="Печать"/>
         <Label layoutX="65.0" layoutY="14.0" text="Итого">
             <font>

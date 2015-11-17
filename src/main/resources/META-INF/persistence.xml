@@ -12,7 +12,6 @@
     <class>kz.hts.ce.model.entity.ProductProvider</class>
     <class>kz.hts.ce.model.entity.Provider</class>
     <class>kz.hts.ce.model.entity.Shop</class>
-    <!--<class>kz.hts.ce.model.entity.ShopProduct</class>-->
     <class>kz.hts.ce.model.entity.ShopProvider</class>
     <class>kz.hts.ce.model.entity.Type</class>
     <class>kz.hts.ce.model.entity.Warehouse</class>

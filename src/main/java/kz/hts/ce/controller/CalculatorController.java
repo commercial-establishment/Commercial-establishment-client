@@ -14,9 +14,7 @@ import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.service.WarehouseProductService;
-import kz.hts.ce.util.AppContextSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
 import java.net.URL;
@@ -36,12 +34,13 @@ public class CalculatorController implements Initializable {
     private TextField txtAdditionalDisplay;
     @FXML
     private TextField txtDisplay;
+
     @Autowired
     private WarehouseProductService warehouseProductService;
     @Autowired
-    private AddProductController addProductController;/*TODO working via services*/
+    private AddProductController addProductController;
     @Autowired
-    private ProductsController productsController;/*TODO working via services*/
+    private ProductsController productsController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -50,12 +49,10 @@ public class CalculatorController implements Initializable {
         EventHandler<KeyEvent> eventHandler = evt -> {
             buttonState.setLength(0);
             buttonState.append(evt.getCode().toString());
-            handleOnAnyButtonFromKeypad();
+            CalculatorController.this.handleOnAnyButtonFromKeypad();
         };
         ChangeListener<Boolean> changeListener = (observable, oldValue, newValue) -> {
-            if (newValue) {
-                screens.getPrimaryStage().getScene().addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
-            }
+            if (newValue) screens.getPrimaryStage().getScene().addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
         };
 
         screens.getPrimaryStage().focusedProperty().addListener(changeListener);
@@ -91,6 +88,8 @@ public class CalculatorController implements Initializable {
             findAndAddProductByBarcode();
         } else if (buttonText.matches("SUBTRACT")) {
             deleteSelectedProductFromTable();
+        } else if (buttonText.matches("EQUALS")) {
+            paymentPage();
         }
     }
 
@@ -98,8 +97,7 @@ public class CalculatorController implements Initializable {
     public void addProductPage() {
         String displayText = txtDisplay.getText();
         if (!displayText.equals("") && displayText.matches("^[1-9CE\\s[.]\\s]*$")) {
-            ApplicationContext context = AppContextSingleton.getInstance();
-            PagesConfiguration screens = context.getBean(PagesConfiguration.class);
+            PagesConfiguration screens = getPagesConfiguration();
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
             screens.addProduct();
@@ -110,11 +108,12 @@ public class CalculatorController implements Initializable {
 
     @FXML
     public void paymentPage() {
-        ApplicationContext context = AppContextSingleton.getInstance();
-        PagesConfiguration screens = context.getBean(PagesConfiguration.class);
-        Stage stage = new Stage();
-        screens.setPrimaryStage(stage);
-        screens.payment();
+        if (!productsController.getPriceResult().getText().equals("")) {
+            PagesConfiguration screens = getPagesConfiguration();
+            Stage stage = new Stage();
+            screens.setPrimaryStage(stage);
+            screens.payment();
+        } else alert(Alert.AlertType.WARNING, "Товар не выбран", null, "Извините, список товаров пуст.");
     }
 
     public void findAndAddProductByBarcode() {
@@ -130,9 +129,9 @@ public class CalculatorController implements Initializable {
                 productsController.setProductDtoToProductsDto(productDto);
                 productsController.addProductsToTable();
             } else
-                alertWarning(Alert.AlertType.WARNING, "Товар не найден", null, "Товар с данным штрих-кодом отсутствует!");
+                alert(Alert.AlertType.WARNING, "Товар не найден", null, "Товар с данным штрих-кодом отсутствует!");
         } catch (NumberFormatException e) {
-            alertWarning(Alert.AlertType.WARNING, "Неверный штрих-код", null, "Штрих-код введён неверно!");
+            alert(Alert.AlertType.WARNING, "Неверный штрих-код", null, "Штрих-код введён неверно!");
         }
     }
 
