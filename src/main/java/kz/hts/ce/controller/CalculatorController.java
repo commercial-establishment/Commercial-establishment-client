@@ -37,6 +37,7 @@ public class CalculatorController implements Initializable {
 
     @Autowired
     private WarehouseProductService warehouseProductService;
+
     @Autowired
     private AddProductController addProductController;
     @Autowired

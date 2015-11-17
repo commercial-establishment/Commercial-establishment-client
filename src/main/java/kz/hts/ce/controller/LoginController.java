@@ -22,13 +22,13 @@ import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 public class LoginController {
 
     @FXML
-    public TextField txtUsername;
+    private TextField username;
     @FXML
-    public PasswordField txtPassword;
+    private PasswordField password;
     @FXML
-    public Button btnLogin;
+    private Button login;
     @FXML
-    public Label lblMessage;
+    private Label message;
 
     @Autowired
     private SpringUtil springUtils;
@@ -37,14 +37,14 @@ public class LoginController {
     @Transactional
     private void btnLoginAction(ActionEvent event) throws IOException {
         try {
-            springUtils.authorize(txtUsername.getText(), txtPassword.getText());
+            springUtils.authorize(username.getText(), password.getText());
             PagesConfiguration screens = getPagesConfiguration();
             screens.login().close();
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
             screens.main();
         } catch (NullPointerException | UsernameNotFoundException e) {
-            lblMessage.setText("Login failure, please try again:");
+            message.setText("Ошибка авторизации. Пожалуйста, попробуйте ещё раз:");
         }
     }
 }
