@@ -14,9 +14,7 @@ import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.service.WarehouseProductService;
-import kz.hts.ce.util.AppContextSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
 import java.net.URL;
@@ -99,8 +97,7 @@ public class CalculatorController implements Initializable {
     public void addProductPage() {
         String displayText = txtDisplay.getText();
         if (!displayText.equals("") && displayText.matches("^[1-9CE\\s[.]\\s]*$")) {
-            ApplicationContext context = AppContextSingleton.getInstance();
-            PagesConfiguration screens = context.getBean(PagesConfiguration.class);
+            PagesConfiguration screens = getPagesConfiguration();
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
             screens.addProduct();
@@ -112,8 +109,7 @@ public class CalculatorController implements Initializable {
     @FXML
     public void paymentPage() {
         if (!productsController.getPriceResult().getText().equals("")) {
-            ApplicationContext context = AppContextSingleton.getInstance();
-            PagesConfiguration screens = context.getBean(PagesConfiguration.class);
+            PagesConfiguration screens = getPagesConfiguration();
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
             screens.payment();
