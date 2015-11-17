@@ -44,17 +44,17 @@ public class PaymentController implements Initializable {
     private TextField total;
 
     @Autowired
-    private PagesConfiguration pagesConfiguration;
-    @Autowired
     private WarehouseProductService warehouseProductService;
     @Autowired
     private ProductHistoryService productHistoryService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private ProductsController productsController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        total.setText(pagesConfiguration.productsController().getPriceResult().getText());
+        total.setText(productsController.getPriceResult().getText());
         shortage.setText(total.getText());
         given.setText(ZERO);
         change.setText(ZERO);
@@ -81,7 +81,7 @@ public class PaymentController implements Initializable {
     @FXML
     public void success() {
         if (shortage.getText().equals(ZERO)) {
-            ObservableList<ProductDto> productsData = pagesConfiguration.productsController().getProductsData();
+            ObservableList<ProductDto> productsData = productsController.getProductsData();
             for (ProductDto productDto : productsData) {
                 long warehouseProductId = productDto.getId();
                 WarehouseProduct warehouseProduct = warehouseProductService.findById(warehouseProductId);
@@ -103,8 +103,8 @@ public class PaymentController implements Initializable {
                 warehouseProductService.save(warehouseProduct);
             }
             alert(Alert.AlertType.INFORMATION, "Товар успешно продан", null, "Сдача: " + change.getText() + " тенге");
-            pagesConfiguration.productsController().deleteAllProductsFromTable();
-            pagesConfiguration.productsController().getProductsDto().clear();
+            productsController.deleteAllProductsFromTable();
+            productsController.getProductsDto().clear();
             PagesConfiguration screens = getPagesConfiguration();
             screens.payment().close();
         } else {

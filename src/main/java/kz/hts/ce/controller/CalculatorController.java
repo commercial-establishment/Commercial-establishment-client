@@ -40,7 +40,9 @@ public class CalculatorController implements Initializable {
     @Autowired
     private WarehouseProductService warehouseProductService;
     @Autowired
-    private PagesConfiguration pagesConfiguration;
+    private AddProductController addProductController;
+    @Autowired
+    private ProductsController productsController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -103,13 +105,13 @@ public class CalculatorController implements Initializable {
             screens.setPrimaryStage(stage);
             screens.addProduct();
 
-            readProductFields(pagesConfiguration.addProductsController(), txtDisplay, txtAdditionalDisplay);
+            readProductFields(addProductController, txtDisplay, txtAdditionalDisplay);
         }
     }
 
     @FXML
     public void paymentPage() {
-        if (!pagesConfiguration.productsController().getPriceResult().getText().equals("")) {
+        if (!productsController.getPriceResult().getText().equals("")) {
             ApplicationContext context = AppContextSingleton.getInstance();
             PagesConfiguration screens = context.getBean(PagesConfiguration.class);
             Stage stage = new Stage();
@@ -128,8 +130,8 @@ public class CalculatorController implements Initializable {
                 }
                 String[] splittedAmount = txtAdditionalDisplay.getText().split("\\*");
                 ProductDto productDto = createProductDtoFromWarehouseProduct(warehouseProduct, Integer.parseInt(splittedAmount[1]));
-                pagesConfiguration.productsController().setProductDtoToProductsDto(productDto);
-                pagesConfiguration.productsController().addProductsToTable();
+                productsController.setProductDtoToProductsDto(productDto);
+                productsController.addProductsToTable();
             } else
                 alert(Alert.AlertType.WARNING, "Товар не найден", null, "Товар с данным штрих-кодом отсутствует!");
         } catch (NumberFormatException e) {
@@ -138,6 +140,6 @@ public class CalculatorController implements Initializable {
     }
 
     public void deleteSelectedProductFromTable() {
-        pagesConfiguration.productsController().deleteSelectedProductFromTable();
+        productsController.deleteSelectedProductFromTable();
     }
 }

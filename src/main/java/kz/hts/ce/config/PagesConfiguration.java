@@ -90,7 +90,7 @@ public class PagesConfiguration {
 
     @Bean
     @Scope("singleton")
-    public AddProductController addProductsController() {
+    public AddProductController addProductController() {
         return new AddProductController();
     }
 }
