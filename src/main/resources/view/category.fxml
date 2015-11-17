@@ -6,25 +6,10 @@
 <?import javafx.scene.layout.*?>
 
 <TitledPane contentDisplay="CENTER" prefHeight="233.0" prefWidth="228.0" text="       Категории" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
-   <content>
-      <ScrollPane hbarPolicy="NEVER" prefHeight="206.0" prefWidth="206.0" vbarPolicy="ALWAYS">
-         <content>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="232.0" prefWidth="206.0">
-               <children>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Напитки" />
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Алкоголь" />
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Сигареты" />
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Овощи" />
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Молочные продукты" />
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Консервы" />
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" />
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" text="Button" />
-               </children>
-            </VBox>
-         </content>
-      </ScrollPane>
-   </content>
    <font>
       <Font size="16.0" />
    </font>
+   <content>
+      <ListView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
+   </content>
 </TitledPane>
