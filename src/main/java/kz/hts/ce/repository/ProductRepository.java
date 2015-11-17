@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
@@ -21,4 +23,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     void reestablishById(long id);
 
     Product findByBarcode(long barcode);
+
+    List<Product> findByCategory_Name(String name);
 }
