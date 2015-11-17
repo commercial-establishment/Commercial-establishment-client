@@ -33,7 +33,7 @@ public class AdditionalCalculatorController implements Initializable {
         EventHandler<KeyEvent> eventHandler = evt -> {
             buttonState.setLength(0);
             buttonState.append(evt.getCode().toString());
-            AdditionalCalculatorController.this.handleOnAnyButtonFromKeypad();
+            this.handleOnAnyButtonFromKeypad();
         };
         ChangeListener<Boolean> changeListener = (observable, oldValue, newValue) -> {
             if (newValue) screens.getPrimaryStage().getScene().addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);

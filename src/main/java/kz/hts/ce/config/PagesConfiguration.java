@@ -25,7 +25,7 @@ public class PagesConfiguration {
     }
 
     @Bean
-    @Scope("singleton")
+    @Scope("prototype")
     public Stage main() {
         showStage(primaryStage, "/view/main.fxml");
         return primaryStage;
@@ -41,7 +41,7 @@ public class PagesConfiguration {
     }
 
     @Bean
-    @Scope("singleton")
+    @Scope("prototype")
     public Stage addProduct() {
         primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.setResizable(false);
@@ -50,7 +50,7 @@ public class PagesConfiguration {
     }
 
     @Bean
-    @Scope("singleton")
+    @Scope("prototype")
     public Stage payment() {
         primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.setResizable(false);

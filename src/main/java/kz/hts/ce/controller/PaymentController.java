@@ -1,7 +1,5 @@
 package kz.hts.ce.controller;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -59,25 +57,22 @@ public class PaymentController implements Initializable {
         shortage.setText(total.getText());
         given.setText(ZERO);
         change.setText(ZERO);
-        given.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                BigDecimal totalBD = stringToBigDecimal(total.getText());
-                if (!newValue.equals("")) {
-                    BigDecimal newVal = stringToBigDecimal(newValue);
-                    if (newVal.compareTo(totalBD) == 1) {
-                        BigDecimal changeBD = newVal.subtract(totalBD);
-                        change.setText(String.valueOf(changeBD));
-                        shortage.setText(ZERO);
-                    } else {
-                        BigDecimal shortageBD = totalBD.subtract(newVal);
-                        shortage.setText(String.valueOf(shortageBD));
-                        change.setText(ZERO);
-                    }
+        given.textProperty().addListener((observable, oldValue, newValue) -> {
+            BigDecimal totalBD = stringToBigDecimal(total.getText());
+            if (!newValue.equals("")) {
+                BigDecimal newVal = stringToBigDecimal(newValue);
+                if (newVal.compareTo(totalBD) == 1) {
+                    BigDecimal changeBD = newVal.subtract(totalBD);
+                    change.setText(String.valueOf(changeBD));
+                    shortage.setText(ZERO);
                 } else {
-                    given.setText("");
-                    shortage.setText(total.getText());
+                    BigDecimal shortageBD = totalBD.subtract(newVal);
+                    shortage.setText(String.valueOf(shortageBD));
+                    change.setText(ZERO);
                 }
+            } else {
+                given.setText("");
+                shortage.setText(total.getText());
             }
         });
     }
