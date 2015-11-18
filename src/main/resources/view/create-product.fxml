@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button layoutX="342.0" layoutY="181.0" mnemonicParsing="false" text="Button" />
+      <Label layoutX="93.0" layoutY="55.0" text="Наименование товара" />
+      <TextField layoutX="243.0" layoutY="51.0" />
+      <Label layoutX="94.0" layoutY="90.0" text="Штрих код" />
+      <TextField layoutX="244.0" layoutY="86.0" />
+      <Label layoutX="94.0" layoutY="130.0" text="Категория товара" />
+      <ComboBox layoutX="244.0" layoutY="126.0" prefWidth="150.0" />
+   </children>
+</AnchorPane>
