@@ -14,7 +14,9 @@ import java.io.IOException;
 public class MenuController {
 
     @FXML
-    private Button btnStock;
+    private Button btnCreateProduct;
+    @FXML
+    private Button btnSales;
     @FXML
     private Node node;
 
@@ -23,7 +25,13 @@ public class MenuController {
 
     @FXML
     private void show(ActionEvent event) throws IOException {
-        node = (Node) FXMLLoader.load(getClass().getResource("/view/sidebar-menu.fxml"));
-        mainController.getPaneContainer().getChildren().setAll(node);
+        if (event.getSource() == btnCreateProduct) {
+            node = (Node) FXMLLoader.load(getClass().getResource("/view/create-product.fxml"));
+            mainController.getPaneContainer().getChildren().setAll(node);
+        }
+        else if(event.getSource() == btnSales){
+            node = (Node) FXMLLoader.load(getClass().getResource("/view/sales.fxml"));
+            mainController.getPaneContainer().getChildren().setAll(node);
+        }
     }
 }
