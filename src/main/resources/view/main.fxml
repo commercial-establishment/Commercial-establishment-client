@@ -31,60 +31,13 @@
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                            <StackPane fx:id="sidebarMenuContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                               <children>
-                                    <fx:include source="sidebar-menu.fxml" />
+                                    <fx:include source="menu.fxml" />
                               </children>
                            </StackPane>
                                 </AnchorPane>
                                 <AnchorPane fx:id="paneContainer" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                     <children>
-                                        <SplitPane dividerPositions="0.5986509274873525" orientation="VERTICAL" prefHeight="572.0" prefWidth="981.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                            <items>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                                    <children>
-                                                        <SplitPane dividerPositions="0.75" layoutX="528.0" layoutY="91.0" prefHeight="342.0" prefWidth="979.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                            <items>
-                                                                <AnchorPane fx:id="productsContainer" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                                    <children>
-                                                                        <StackPane layoutX="116.0" layoutY="94.0" prefHeight="387.0" prefWidth="486.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                            <fx:include source="products.fxml" />
-                                                                        </StackPane>
-                                                                    </children>
-                                                                </AnchorPane>
-                                                                <AnchorPane fx:id="calculatorContainer" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                                    <children>
-                                                                        <StackPane prefHeight="387.0" prefWidth="485.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                            <fx:include source="calculator.fxml" />
-                                                                        </StackPane>
-                                                                    </children>
-                                                                </AnchorPane>
-                                                            </items>
-                                                        </SplitPane>
-                                                    </children>
-                                                </AnchorPane>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                                    <children>
-                                                        <SplitPane dividerPositions="0.19123505976095617" layoutX="21.0" layoutY="-8.0" prefHeight="225.0" prefWidth="1006.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                            <items>
-                                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                                    <children>
-                                                                        <StackPane fx:id="categoryContainer" layoutY="21.0" prefHeight="233.0" prefWidth="189.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                            <fx:include source="categories.fxml" />
-                                                                        </StackPane>
-                                                                    </children>
-                                                                </AnchorPane>
-                                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                                    <children>
-                                                                        <StackPane fx:id="productTableContainer" prefHeight="233.0" prefWidth="809.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                            <fx:include source="products-by-categories.fxml" />
-                                                                        </StackPane>
-                                                                    </children>
-                                                                </AnchorPane>
-                                                            </items>
-                                                        </SplitPane>
-                                                    </children>
-                                                </AnchorPane>
-                                            </items>
-                                        </SplitPane>
+                                        <fx:include source="sales.fxml"/>
                                     </children>
                                 </AnchorPane>
                             </items>
