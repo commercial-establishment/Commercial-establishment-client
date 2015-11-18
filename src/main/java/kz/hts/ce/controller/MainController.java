@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
+import javafx.scene.layout.AnchorPane;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.service.EmployeeService;
@@ -31,6 +32,8 @@ public class MainController implements Initializable {
     private Label role;
     @FXML
     private SplitPane splitPane;
+    @FXML
+    private AnchorPane paneContainer;
 
     @Autowired
     private EmployeeService employeeService;
@@ -56,5 +59,13 @@ public class MainController implements Initializable {
         PagesConfiguration screens = getPagesConfiguration();
         screens.main().close();
         screens.login().show();
+    }
+
+    public AnchorPane getPaneContainer() {
+        return paneContainer;
+    }
+
+    public void setPaneContainer(AnchorPane paneContainer) {
+        this.paneContainer = paneContainer;
     }
 }
