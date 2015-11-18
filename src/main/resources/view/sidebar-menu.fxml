@@ -4,8 +4,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-
-<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="182.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="182.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.MenuController">
    <children>
       <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="100.0">
          <children>
@@ -28,7 +27,7 @@
                      <children>
                         <VBox prefHeight="74.0" prefWidth="286.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Stock(Инвентарь)" />
+                              <Button fx:id="btnStock" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#show" text="Stock(Инвентарь)" />
                            </children>
                         </VBox>
                      </children>
