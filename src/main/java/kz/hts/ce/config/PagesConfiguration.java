@@ -1,12 +1,17 @@
 package kz.hts.ce.config;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import kz.hts.ce.controller.*;
+import kz.hts.ce.util.SpringFxmlLoader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
+
+import java.io.IOException;
 
 import static kz.hts.ce.util.SpringFxmlLoader.showStage;
 
@@ -60,9 +65,15 @@ public class PagesConfiguration {
 
     @Bean
     @Scope("singleton")
-    public Stage products() {
-        showStage(primaryStage, "/view/products.fxml");
-        return primaryStage;
+    public Node sales() throws IOException {
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        return (Node) springFxmlLoader.load("/view/sales.fxml");
+    }
+    @Bean
+    @Scope("singleton")
+    public Node createProducts() throws IOException {
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        return (Node) springFxmlLoader.load("/view/create-product.fxml");
     }
 
     @Bean
@@ -99,5 +110,11 @@ public class PagesConfiguration {
     @Scope("singleton")
     public AddProductController addProductController() {
         return new AddProductController();
+    }
+
+    @Bean
+    @Scope("singleton")
+    public ProductCategoryController productCategoryController() {
+        return new ProductCategoryController();
     }
 }
