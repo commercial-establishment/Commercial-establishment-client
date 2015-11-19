@@ -35,11 +35,14 @@ public class MenuController {
         Node node;
         PagesConfiguration screens = getPagesConfiguration();
         if (event.getSource() == btnCreateProduct) {
+            node = pagesConfiguration.sales();
+            mainController.getContentContainer().getChildren().removeAll(node);
             node = pagesConfiguration.createProducts();
             mainController.getContentContainer().getChildren().setAll(node);
             screens.getPrimaryStage().focusedProperty().removeListener(calculatorController.getChangeListener());
-            calculatorController.stopListening();
         } else if (event.getSource() == btnSales) {
+            node = pagesConfiguration.createProducts();
+            mainController.getContentContainer().getChildren().removeAll(node);
             node = pagesConfiguration.sales();
             mainController.getContentContainer().getChildren().setAll(node);
         }

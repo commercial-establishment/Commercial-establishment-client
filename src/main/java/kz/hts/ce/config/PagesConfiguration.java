@@ -64,13 +64,13 @@ public class PagesConfiguration {
     }
 
     @Bean
-    @Scope("singleton")
+    @Scope("prototype")
     public Node sales() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (Node) springFxmlLoader.load("/view/sales.fxml");
     }
     @Bean
-    @Scope("singleton")
+    @Scope("prototype")
     public Node createProducts() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (Node) springFxmlLoader.load("/view/create-product.fxml");
