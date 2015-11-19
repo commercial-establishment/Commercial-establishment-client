@@ -12,4 +12,6 @@ public interface ProductProviderRepository extends JpaRepository<ProductProvider
     List<ProductProvider> findByProvider_Id(long id);
 
     ProductProvider findByProvider_IdAndProduct_Id(long providerId, long productId);
+
+    List<ProductProvider> findByProvider_IdAndProduct_Category_Id(long providerId, long categoryId);
 }

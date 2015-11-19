@@ -10,7 +10,7 @@ public class Product extends BaseEntity {
 
     private String name;
     private long barcode;
-
+//    private String unit;
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
@@ -33,6 +33,14 @@ public class Product extends BaseEntity {
     public void setBarcode(long barcode) {
         this.barcode = barcode;
     }
+
+//    public String getUnit() {
+//        return unit;
+//    }
+//
+//    public void setUnit(String unit) {
+//        this.unit = unit;
+//    }
 
     public Category getCategory() {
         return category;

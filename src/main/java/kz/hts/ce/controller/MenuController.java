@@ -28,10 +28,10 @@ public class MenuController {
         Node node;
         if (event.getSource() == btnCreateProduct) {
             node = pagesConfiguration.createProducts();
-            mainController.getcontentContainer().getChildren().setAll(node);
+            mainController.getContentContainer().getChildren().setAll(node);
         } else if (event.getSource() == btnSales) {
             node = pagesConfiguration.sales();
-            mainController.getcontentContainer().getChildren().setAll(node);
+            mainController.getContentContainer().getChildren().setAll(node);
         }
     }
 }

@@ -30,4 +30,8 @@ public class ShopProviderService extends BaseService<ShopProvider, ShopProviderR
     public void reestablishById(long id) {
         repository.reestablishById(id);
     }
+
+    public List<ShopProvider> findByShopId(long shopId) {
+       return repository.findByShop_Id(shopId);
+    }
 }

@@ -25,4 +25,6 @@ public interface ShopProviderRepository extends JpaRepository<ShopProvider, Long
     @Modifying
     @Query("UPDATE ShopProvider sp set sp.blocked = FALSE where sp.id = ?1")
     void reestablishById(long id);
+
+    List<ShopProvider> findByShop_Id(long shopId);
 }

@@ -62,11 +62,7 @@ public class MainController implements Initializable {
         screens.login().show();
     }
 
-    public StackPane getcontentContainer() {
+    public StackPane getContentContainer() {
         return contentContainer;
-    }
-
-    public void setcontentContainer(StackPane contentContainer) {
-        this.contentContainer = contentContainer;
     }
 }

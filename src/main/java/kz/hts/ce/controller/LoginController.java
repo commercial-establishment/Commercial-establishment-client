@@ -26,8 +26,6 @@ public class LoginController {
     @FXML
     private PasswordField password;
     @FXML
-    private Button login;
-    @FXML
     private Label message;
 
     @Autowired
@@ -44,7 +42,7 @@ public class LoginController {
             screens.setPrimaryStage(stage);
             screens.main();
         } catch (NullPointerException | UsernameNotFoundException e) {
-            message.setText("Ошибка авторизации. Пожалуйста, попробуйте ещё раз:");
+            message.setText("Неверное имя пользователя или пароль:");
         }
     }
 }

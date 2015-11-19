@@ -1,6 +1,5 @@
 package kz.hts.ce.config;
 
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -64,13 +63,13 @@ public class PagesConfiguration {
     }
 
     @Bean
-    @Scope("singleton")
+    @Scope("prototype")
     public Node sales() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (Node) springFxmlLoader.load("/view/sales.fxml");
     }
     @Bean
-    @Scope("singleton")
+    @Scope("prototype")
     public Node createProducts() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (Node) springFxmlLoader.load("/view/create-product.fxml");
@@ -116,5 +115,11 @@ public class PagesConfiguration {
     @Scope("singleton")
     public ProductCategoryController productCategoryController() {
         return new ProductCategoryController();
+    }
+
+    @Bean
+    @Scope("singleton")
+    public CreateProductController createProductController() {
+        return new CreateProductController();
     }
 }

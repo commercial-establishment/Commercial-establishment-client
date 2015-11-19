@@ -1,5 +1,6 @@
 package kz.hts.ce.controller;
 
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,6 +9,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import kz.hts.ce.model.dto.ProductDto;
+import kz.hts.ce.model.entity.BaseEntity;
 import kz.hts.ce.model.entity.Category;
 import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.WarehouseProduct;
@@ -27,8 +29,9 @@ import java.util.stream.Collectors;
 import static kz.hts.ce.util.SpringUtil.getPrincipal;
 
 @Controller
-public class ProductCategoryController implements Initializable {
+public class ProductCategoryController<T extends BaseEntity> implements Initializable {
 
+    private boolean listenerFlag;
     private boolean flag;
     private ObservableList<String> categoriesData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
@@ -68,7 +71,22 @@ public class ProductCategoryController implements Initializable {
         categories.setItems(categoriesData);
 
         Employee employee = employeeService.findByUsername(getPrincipal());
-        categories.getSelectionModel().selectedItemProperty().addListener((ov, oldVal, newVal) -> {
+        categories.getSelectionModel().selectedItemProperty().addListener(productsEmployeeListener(employee));
+
+        if (categoryProductsTable != null) {
+            categoryProductsTable.setOnMousePressed(event -> {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    ProductDto productDto = categoryProductsTable.getSelectionModel().getSelectedItem();
+                    productDto.setAmount(1);
+                    productsController.addProductIntProductDto(productDto);
+                    productsController.addProductsToTable();
+                }
+            });
+        }
+    }
+
+    public ChangeListener<String> productsEmployeeListener(Employee employee) {
+        return (ov, oldVal, newVal) -> {
             if (flag) {
                 productsData.clear();
                 Category category = categoryService.findByName(newVal);
@@ -87,17 +105,46 @@ public class ProductCategoryController implements Initializable {
                 categoryProductsTable.setItems(productsData);
             }
             flag = true;
-        });
+        };
+    }
 
-        if (categoryProductsTable != null) {
-            categoryProductsTable.setOnMousePressed(event -> {
-                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                    ProductDto productDto = categoryProductsTable.getSelectionModel().getSelectedItem();
-                    productDto.setAmount(1);
-                    productsController.addProductIntProductDto(productDto);
-                    productsController.addProductsToTable();
-                }
-            });
-        }
+    public ListView<String> getCategories() {
+        return categories;
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
+    public ObservableList<ProductDto> getProductsData() {
+        return productsData;
+    }
+
+    public TableColumn<ProductDto, String> getName() {
+        return name;
+    }
+
+    public void setName(TableColumn<ProductDto, String> name) {
+        this.name = name;
+    }
+
+    public TableColumn<ProductDto, BigDecimal> getPrice() {
+        return price;
+    }
+
+    public void setPrice(TableColumn<ProductDto, BigDecimal> price) {
+        this.price = price;
+    }
+
+    public TableColumn<ProductDto, Number> getResidue() {
+        return residue;
+    }
+
+    public TableView<ProductDto> getCategoryProductsTable() {
+        return categoryProductsTable;
     }
 }
