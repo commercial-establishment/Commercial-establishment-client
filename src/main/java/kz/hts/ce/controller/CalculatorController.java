@@ -1,6 +1,8 @@
 package kz.hts.ce.controller;
 
+import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,6 +16,8 @@ import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.service.WarehouseProductService;
+import org.codefx.libfx.listener.handle.ListenerHandle;
+import org.codefx.libfx.listener.handle.ListenerHandles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -42,22 +46,40 @@ public class CalculatorController implements Initializable {
     private AddProductController addProductController;
     @Autowired
     private ProductsController productsController;
+    private ChangeListener<Boolean> changeListener;
+    private PagesConfiguration screens;
+    private EventHandler<KeyEvent> eventHandler;
+    private ListenerHandle listenerHandle;
+    private Object observable;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        PagesConfiguration screens = getPagesConfiguration();
+        screens = getPagesConfiguration();
         buttonState = new StringBuilder("");
-        EventHandler<KeyEvent> eventHandler = evt -> {
+        eventHandler = evt -> {
             buttonState.setLength(0);
             buttonState.append(evt.getCode().toString());
             CalculatorController.this.handleOnAnyButtonFromKeypad();
         };
-        ChangeListener<Boolean> changeListener = (observable, oldValue, newValue) -> {
-            if (newValue) screens.getPrimaryStage().getScene().addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
-        };
-
-        screens.getPrimaryStage().focusedProperty().addListener(changeListener);
+        startListening();
     }
+    public void startListening(){
+        changeListener = new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (newValue) screens.getPrimaryStage().getScene().addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
+            }
+        };
+        screens.getPrimaryStage().focusedProperty().addListener(changeListener);
+
+        System.out.println(changeListener+"ASD");
+
+    }
+    public void stopListening(){
+        screens.getPrimaryStage().focusedProperty().removeListener(changeListener);
+        System.out.println(changeListener);
+    }
+
 
     @FXML
     public void handleOnAnyButtonClicked(ActionEvent evt) {
@@ -138,5 +160,9 @@ public class CalculatorController implements Initializable {
 
     public void deleteSelectedProductFromTable() {
         productsController.deleteSelectedProductFromTable();
+    }
+
+    public ChangeListener<Boolean> getChangeListener() {
+        return changeListener;
     }
 }
