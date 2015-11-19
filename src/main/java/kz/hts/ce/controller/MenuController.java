@@ -2,9 +2,9 @@ package kz.hts.ce.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import kz.hts.ce.config.PagesConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -14,16 +14,24 @@ import java.io.IOException;
 public class MenuController {
 
     @FXML
-    private Button btnStock;
+    private Button btnCreateProduct;
     @FXML
-    private Node node;
+    private Button btnSales;
 
     @Autowired
     private MainController mainController;
+    @Autowired
+    private PagesConfiguration pagesConfiguration;
 
     @FXML
     private void show(ActionEvent event) throws IOException {
-        node = (Node) FXMLLoader.load(getClass().getResource("/view/sidebar-menu.fxml"));
-        mainController.getPaneContainer().getChildren().setAll(node);
+        Node node;
+        if (event.getSource() == btnCreateProduct) {
+            node = pagesConfiguration.createProducts();
+            mainController.getcontentContainer().getChildren().setAll(node);
+        } else if (event.getSource() == btnSales) {
+            node = pagesConfiguration.sales();
+            mainController.getcontentContainer().getChildren().setAll(node);
+        }
     }
 }
