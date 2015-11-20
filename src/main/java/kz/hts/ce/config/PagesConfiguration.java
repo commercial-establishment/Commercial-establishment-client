@@ -29,7 +29,6 @@ public class PagesConfiguration {
     }
 
     @Bean
-    @Scope("singleton")
     public Stage main() {
         showStage(primaryStage, "/view/main.fxml");
         return primaryStage;
@@ -59,12 +58,6 @@ public class PagesConfiguration {
         showStage(primaryStage, "/view/payment.fxml");
         return primaryStage;
     }
-//
-//    @Bean
-//    public Node sales() throws IOException {
-//        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
-//        return (Node) springFxmlLoader.load("/view/sales.fxml");
-//    }
 
     @Bean
     public Node createProducts() throws IOException {
