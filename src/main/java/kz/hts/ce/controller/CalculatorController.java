@@ -28,7 +28,7 @@ import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 public class CalculatorController implements Initializable {
 
     private StringBuilder buttonState;
-    private Button button = new Button();
+    private Button button;
 
     @FXML
     private TextField txtAdditionalDisplay;
@@ -45,6 +45,7 @@ public class CalculatorController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        button =  new Button();
         buttonState = new StringBuilder("");
         startListening();
     }

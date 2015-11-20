@@ -9,10 +9,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import kz.hts.ce.model.dto.ProductDto;
-import kz.hts.ce.model.entity.BaseEntity;
-import kz.hts.ce.model.entity.Category;
-import kz.hts.ce.model.entity.Employee;
-import kz.hts.ce.model.entity.WarehouseProduct;
+import kz.hts.ce.model.entity.*;
 import kz.hts.ce.service.CategoryService;
 import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.WarehouseProductService;
@@ -21,9 +18,7 @@ import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.SpringUtil.getPrincipal;
@@ -31,7 +26,6 @@ import static kz.hts.ce.util.SpringUtil.getPrincipal;
 @Controller
 public class ProductCategoryController implements Initializable {
 
-    private ChangeListener<String> productListener;
     private boolean flag;
     private ObservableList<String> categoriesData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
@@ -71,18 +65,33 @@ public class ProductCategoryController implements Initializable {
         categories.setItems(categoriesData);
 
         Employee employee = employeeService.findByUsername(getPrincipal());
+
+        Map<String, List<WarehouseProduct>> productMap = new HashMap<>();
+        List<Category> categoriesFromDB = categoryService.findAll();
+        for (Category category : categoriesFromDB) {
+            List<WarehouseProduct> warehouseProducts = warehouseProductService.
+                    findByCategoryIdAndShopId(category.getId(), employee.getShop().getId());
+            productMap.put(category.getName(), warehouseProducts);
+        }
+
         categories.getSelectionModel().selectedItemProperty().addListener((ov, oldVal, newVal) -> {
             if (flag) {
                 productsData.clear();
-                Category category = categoryService.findByName(newVal);
-                List<WarehouseProduct> warehouseProducts = warehouseProductService.
-                        findByCategoryIdAndShopId(category.getId(), employee.getShop().getId());
+
+                List<WarehouseProduct> warehouseProducts = null;
+                for (Map.Entry<String, List<WarehouseProduct>> productMapEntry : productMap.entrySet()) {
+                    if (newVal.equals(productMapEntry.getKey())) {
+                        warehouseProducts = productMapEntry.getValue();
+                    }
+                }
                 ProductDto productDto = new ProductDto();
-                for (WarehouseProduct productWarehouse : warehouseProducts) {
-                    productDto.setName(productWarehouse.getProduct().getName());
-                    productDto.setPrice(productWarehouse.getPrice());
-                    productDto.setResidue(productWarehouse.getResidue());
-                    productsData.add(productDto);
+                if (warehouseProducts != null) {
+                    for (WarehouseProduct productWarehouse : warehouseProducts) {
+                        productDto.setName(productWarehouse.getProduct().getName());
+                        productDto.setPrice(productWarehouse.getPrice());
+                        productDto.setResidue(productWarehouse.getResidue());
+                        productsData.add(productDto);
+                    }
                 }
                 name.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
                 price.setCellValueFactory(cellData -> cellData.getValue().priceProperty());

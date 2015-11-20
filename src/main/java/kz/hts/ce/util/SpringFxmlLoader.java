@@ -18,12 +18,7 @@ public class SpringFxmlLoader {
 
     public Object load(String url) {
         FXMLLoader loader = new FXMLLoader();
-        loader.setControllerFactory(new Callback<Class<?>, Object>() {
-            @Override
-            public Object call(Class<?> clazz) {
-                return applicationContext.getBean(clazz);
-            }
-        });
+        loader.setControllerFactory(clazz -> applicationContext.getBean(clazz));
         loader.setLocation(getClass().getResource(url));
         try {
             return loader.load();
