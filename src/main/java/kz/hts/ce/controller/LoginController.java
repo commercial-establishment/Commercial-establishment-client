@@ -39,7 +39,7 @@ public class LoginController {
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
             screens.login().close();
-            screens.main();
+            screens.main().show();
         } catch (NullPointerException | UsernameNotFoundException e) {
             message.setText("Ошибка авторизации. Пожалуйста, попробуйте ещё раз:");
         }
