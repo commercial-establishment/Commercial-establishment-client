@@ -17,12 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-//
-//    @Autowired
-//    private AuthenticationService authenticationService;
-//
-//    @Autowired
-//    private CustomSuccessHandler successHandler;
 
     @Autowired
     @Qualifier("authenticationService")
@@ -31,17 +25,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     @Qualifier("customAuthenticationProvider")
     AuthenticationProvider authenticationProvider;
-//
-//    @Bean
-//    public DaoAuthenticationProvider authProvider() {
-//        DaoAuthenticationProvider dao = new DaoAuthenticationProvider();
-//        dao.setUserDetailsService(authenticationService);
-//        dao.setPasswordEncoder(passwordEncoder());
-//        return dao;
-//    }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         return new CustomAuthenticationProvider();
     }
 
@@ -61,23 +47,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-//
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/login/form", "/recovery").anonymous()
-//                .antMatchers("/", "/home", "/home/**").hasRole("OWNER")
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin().loginPage("/login/form").successHandler(successHandler)
-//                .usernameParameter("username")
-//                .passwordParameter("password")
-//                .failureUrl("/login?error")
-//                .and().logout().logoutSuccessUrl("/login?logout")
-//                .and()
-//                .exceptionHandling().accessDeniedPage("/403");
-//    }
 }

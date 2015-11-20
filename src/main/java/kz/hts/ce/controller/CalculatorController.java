@@ -1,8 +1,6 @@
 package kz.hts.ce.controller;
 
-import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -42,14 +40,19 @@ public class CalculatorController implements Initializable {
     private AddProductController addProductController;
     @Autowired
     private ProductsController productsController;
-    private ChangeListener<Boolean> changeListener;
-    private PagesConfiguration pagesConfiguration;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        button =  new Button();
+        PagesConfiguration screens = getPagesConfiguration();
+        button = new Button();
         buttonState = new StringBuilder("");
-        startListening();
+        screens.getPrimaryStage().focusedProperty().addListener((observable1, oldValue, newValue) -> {
+            if (newValue) screens.getPrimaryStage().getScene().addEventHandler(KeyEvent.KEY_PRESSED, evt -> {
+                buttonState.setLength(0);
+                buttonState.append(evt.getCode().toString());
+                CalculatorController.this.handleOnAnyButtonFromKeypad();
+            });
+        });
     }
 
     @FXML
@@ -131,21 +134,5 @@ public class CalculatorController implements Initializable {
 
     public void deleteSelectedProductFromTable() {
         productsController.deleteSelectedProductFromTable();
-    }
-
-    public void startListening() {
-        pagesConfiguration = getPagesConfiguration();
-        changeListener = (observable1, oldValue, newValue) -> {
-            if (newValue) pagesConfiguration.getPrimaryStage().getScene().addEventHandler(KeyEvent.KEY_PRESSED, evt -> {
-                buttonState.setLength(0);
-                buttonState.append(evt.getCode().toString());
-                CalculatorController.this.handleOnAnyButtonFromKeypad();
-            });
-        };
-        pagesConfiguration.getPrimaryStage().focusedProperty().addListener(changeListener);
-    }
-    public void stopListening(){
-        pagesConfiguration.getPrimaryStage().focusedProperty().removeListener(changeListener);
-        System.out.println("stopped");
     }
 }

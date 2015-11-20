@@ -48,7 +48,7 @@ public class PaymentController implements Initializable {
     @Autowired
     private EmployeeService employeeService;
 
-    @Autowired
+//    @Autowired
     private ProductsController productsController;
 
     @Override

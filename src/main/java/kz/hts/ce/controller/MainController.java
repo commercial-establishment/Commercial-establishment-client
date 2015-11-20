@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.service.EmployeeService;
@@ -25,6 +26,8 @@ import static kz.hts.ce.util.SpringUtil.getPrincipal;
 @Controller
 public class MainController implements Initializable {
 
+    @FXML
+    private StackPane sales;
     private boolean flag;
 
     @FXML
@@ -41,8 +44,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        getWatch(dateLabel);
         PagesConfiguration screens = getPagesConfiguration();
+        getWatch(dateLabel);
         screens.getPrimaryStage().addEventHandler(EventType.ROOT, new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
@@ -64,5 +67,9 @@ public class MainController implements Initializable {
 
     public StackPane getContentContainer() {
         return contentContainer;
+    }
+
+    public StackPane getSales() {
+        return sales;
     }
 }

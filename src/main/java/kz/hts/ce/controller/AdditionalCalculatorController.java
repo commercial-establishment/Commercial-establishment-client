@@ -21,13 +21,14 @@ import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 public class AdditionalCalculatorController implements Initializable {
 
     private StringBuilder buttonState;
-    private Button button = new Button();
+    private Button button;
 
     @Autowired
     private PaymentController paymentController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        button = new Button();
         PagesConfiguration screens = getPagesConfiguration();
         buttonState = new StringBuilder("");
         EventHandler<KeyEvent> eventHandler = evt -> {

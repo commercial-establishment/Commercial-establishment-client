@@ -39,7 +39,7 @@
                                     <children>
                                          <StackPane fx:id="contentContainer" prefHeight="595.0" prefWidth="1008.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                    <fx:include source="sales.fxml"/>
+                                                    <fx:include fx:id="sales" source="sales.fxml"/>
                                              </children>
                                          </StackPane>
                                     </children>

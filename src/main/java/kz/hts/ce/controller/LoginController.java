@@ -2,7 +2,6 @@ package kz.hts.ce.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -34,15 +33,15 @@ public class LoginController {
     @FXML
     @Transactional
     private void btnLoginAction(ActionEvent event) throws IOException {
+        PagesConfiguration screens = getPagesConfiguration();
         try {
             springUtils.authorize(username.getText(), password.getText());
-            PagesConfiguration screens = getPagesConfiguration();
-            screens.login().close();
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
+            screens.login().close();
             screens.main();
         } catch (NullPointerException | UsernameNotFoundException e) {
-            message.setText("Неверное имя пользователя или пароль:");
+            message.setText("Ошибка авторизации. Пожалуйста, попробуйте ещё раз:");
         }
     }
 }

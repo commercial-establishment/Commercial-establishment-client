@@ -74,7 +74,22 @@ public class ProductCategoryController implements Initializable {
             productMap.put(category.getName(), warehouseProducts);
         }
 
-        categories.getSelectionModel().selectedItemProperty().addListener((ov, oldVal, newVal) -> {
+        categories.getSelectionModel().selectedItemProperty().addListener(categoriesListener(productMap));
+
+        if (categoryProductsTable != null) {
+            categoryProductsTable.setOnMousePressed(event -> {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    ProductDto productDto = categoryProductsTable.getSelectionModel().getSelectedItem();
+                    productDto.setAmount(1);
+                    productsController.addProductIntProductDto(productDto);
+                    productsController.addProductsToTable();
+                }
+            });
+        }
+    }
+
+    public ChangeListener<String> categoriesListener( Map<String, List<WarehouseProduct>> productMap){
+       return (ov, oldVal, newVal) -> {
             if (flag) {
                 productsData.clear();
 
@@ -99,18 +114,7 @@ public class ProductCategoryController implements Initializable {
                 categoryProductsTable.setItems(productsData);
             }
             flag = true;
-        });
-
-        if (categoryProductsTable != null) {
-            categoryProductsTable.setOnMousePressed(event -> {
-                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                    ProductDto productDto = categoryProductsTable.getSelectionModel().getSelectedItem();
-                    productDto.setAmount(1);
-                    productsController.addProductIntProductDto(productDto);
-                    productsController.addProductsToTable();
-                }
-            });
-        }
+        };
     }
 
     public ObservableList<ProductDto> getProductsData() {
