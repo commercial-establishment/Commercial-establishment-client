@@ -1,21 +1,19 @@
 package kz.hts.ce.controller;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
-import kz.hts.ce.model.dto.ProductDto;
-import kz.hts.ce.model.entity.*;
+import kz.hts.ce.model.entity.Category;
+import kz.hts.ce.model.entity.ProductProvider;
+import kz.hts.ce.model.entity.Provider;
+import kz.hts.ce.model.entity.ShopProvider;
 import kz.hts.ce.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.SpringUtil.getPrincipal;
@@ -23,6 +21,12 @@ import static kz.hts.ce.util.SpringUtil.getPrincipal;
 @Controller
 public class CreateProductController implements Initializable {
 
+    private Provider provider;
+
+    @FXML
+    private ComboBox<String> categories;
+    @FXML
+    private ComboBox<String> products;
     @FXML
     private ComboBox<String> providers;
 
@@ -31,11 +35,11 @@ public class CreateProductController implements Initializable {
     @Autowired
     private EmployeeService employeeService;
     @Autowired
+    private ProviderService providerService;
+    @Autowired
     private ProductProviderService productProviderService;
     @Autowired
     private CategoryService categoryService;
-    @Autowired
-    private ProviderService providerService;
 
     @Autowired
     private ProductCategoryController productCategoryController;
@@ -65,33 +69,37 @@ public class CreateProductController implements Initializable {
         }
 
         Provider provider = providerService.findById(shopProvider.getProvider().getId());
+        this.provider = provider;
+
+        List<ProductProvider> productsProvider = productProviderService.findByProviderId(provider.getId());
+
+        Set<String> uniqueCategories = new HashSet<>();
+        for (ProductProvider productProvider : productsProvider) {
+            String categoryName = productProvider.getProduct().getCategory().getName();
+            uniqueCategories.add(categoryName);
+        }
+
+        categories.getItems().addAll(uniqueCategories);
+        categories.setDisable(false);
     }
-//
-//    public ChangeListener<String> productsProviderListener(Provider provider) {
-//            return new ChangeListener<String>() {
-//                @Override
-//                public void changed(ObservableValue<? extends String> ov, String oldVal, String newVal) {
-//                    if (productCategoryController.isFlag()) {
-//                        productCategoryController.getProductsData().clear();
-//                        Category category = categoryService.findByName(newVal);
-//                        List<ProductProvider> productsProvider = productProviderService.
-//                                findByProviderIdAndProductCategoryId(provider.getId(), category.getId());
-//                        for (ProductProvider productProvider : productsProvider) {
-//                            ProductDto productDto = new ProductDto();
-//                            productDto.setName(productProvider.getProduct().getName());
-//                            productDto.setPrice(productProvider.getPrice());
-//                            productDto.setResidue(0);
-//                            productCategoryController.getProductsData().add(productDto);
-//                        }
-//                        productCategoryController.getName().setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-//                        productCategoryController.getPrice().setCellValueFactory(cellData -> cellData.getValue().priceProperty());
-//                        productCategoryController.getResidue().setCellValueFactory(cellData -> cellData.getValue().residueProperty());
-//                        productCategoryController.getCategoryProductsTable().setItems(productCategoryController.getProductsData());
-//                    }
-//                    productCategoryController.setFlag(true);
-//                }
-//            };
-//    }
+
+    public void findProductsByCategoriesAndProvider(ActionEvent event) {
+        ComboBox<String> source = (ComboBox<String>) event.getSource();
+        String categoryName = source.getValue();
+        Category category = categoryService.findByName(categoryName);
+
+        List<ProductProvider> productsProvider = productProviderService.findByProviderIdAndProductCategoryId(provider.getId(), category.getId());
+
+        Map<Long, String> productMap = new HashMap<>();
+        for (ProductProvider productProvider : productsProvider) {
+            long productProviderId = productProvider.getId();
+            String productName = productProvider.getProduct().getName();
+            productMap.put(productProviderId, productName);
+        }
+
+        products.getItems().addAll(productMap.values());
+        products.setDisable(false);
+    }
 
     public List<ShopProvider> findShopProvidersByEmployeeUsername() {
         long shopId = employeeService.findByUsername(getPrincipal()).getShop().getId();

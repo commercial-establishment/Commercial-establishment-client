@@ -6,75 +6,118 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0"
+            prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="kz.hts.ce.controller.MainController">
     <children>
-        <SplitPane fx:id="splitPane" dividerPositions="0.05457227138643068, 0.943952802359882" layoutX="14.0" layoutY="14.0" orientation="VERTICAL" prefHeight="680.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <SplitPane fx:id="splitPane" dividerPositions="0.05457227138643068, 0.943952802359882" layoutX="14.0"
+                   layoutY="14.0" orientation="VERTICAL" prefHeight="680.0" prefWidth="1200.0"
+                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                   AnchorPane.topAnchor="0.0">
             <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                     <children>
                         <Label fx:id="dateLabel" layoutX="47.0" layoutY="4.0" text="Date and Time">
                             <font>
-                                <Font size="17.0" />
+                                <Font size="17.0"/>
                             </font>
                         </Label>
-                        <Button layoutX="1130.0" layoutY="-2.0" mnemonicParsing="false" onAction="#logout" prefHeight="34.0" prefWidth="61.0" text="Выход" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="3.0">
+                        <Button layoutX="1130.0" layoutY="-2.0" mnemonicParsing="false" onAction="#logout"
+                                prefHeight="34.0" prefWidth="61.0" text="Выход" AnchorPane.bottomAnchor="2.0"
+                                AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="3.0">
                             <font>
-                                <Font size="14.0" />
+                                <Font size="14.0"/>
                             </font>
                         </Button>
                     </children>
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                     <children>
-                        <SplitPane dividerPositions="0.15468227424749165" layoutX="14.0" layoutY="21.0" prefHeight="574.0" prefWidth="1198.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <SplitPane dividerPositions="0.15468227424749165" layoutX="14.0" layoutY="21.0"
+                                   prefHeight="574.0" prefWidth="1198.0" AnchorPane.bottomAnchor="0.0"
+                                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <items>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                    <StackPane fx:id="sidebarMenuContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                      <children>
-                                            <fx:include source="menu.fxml" />
-                                      </children>
-                                   </StackPane>
-                                </AnchorPane>
-                                <AnchorPane fx:id="paneContainer" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                    <StackPane fx:id="sidebarMenuContainer" maxHeight="1.7976931348623157E308"
+                                               maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0"
+                                               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                         <children>
-                                            <SplitPane dividerPositions="0.5986509274873525" orientation="VERTICAL" prefHeight="595.0" prefWidth="1008.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
-                                                <items>
-                                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                       <StackPane fx:id="contentContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                          <children>
-                                                              <fx:include source="sales.fxml" />
-                                          </children>
-                                       </StackPane>
-                                                    </AnchorPane>
-                                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                                        <children>
-                                                            <SplitPane dividerPositions="0.19123505976095617" layoutX="21.0" layoutY="-8.0" prefHeight="225.0" prefWidth="1006.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                <items>
-                                                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                                        <children>
-                                                                            <StackPane fx:id="categoryContainer" layoutY="21.0" prefHeight="233.0" prefWidth="189.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                                <children>
-                                                                                    <fx:include source="categories.fxml" />
-                                                                                </children>
-                                                                            </StackPane>
-                                                                        </children>
-                                                                    </AnchorPane>
-                                                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                                        <children>
-                                                                            <StackPane fx:id="productTableContainer" prefHeight="233.0" prefWidth="809.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                                <children>
-                                                                                    <fx:include source="products-by-categories.fxml" />
-                                                                                </children>
-                                                                            </StackPane>
-                                                                        </children>
-                                                                    </AnchorPane>
-                                                                </items>
-                                                            </SplitPane>
-                                                        </children>
-                                                    </AnchorPane>
-                                                </items>
-                                            </SplitPane>
+                                            <fx:include source="menu.fxml"/>
                                         </children>
+                                    </StackPane>
+                                </AnchorPane>
+                                <AnchorPane fx:id="paneContainer" minHeight="0.0" minWidth="0.0" prefHeight="160.0"
+                                            prefWidth="100.0">
+                                    <children>
+                                        <SplitPane dividerPositions="0.5986509274873525" orientation="VERTICAL"
+                                                   prefHeight="595.0" prefWidth="1008.0" AnchorPane.bottomAnchor="0.0"
+                                                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                   AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.40"
+                                                   xmlns:fx="http://javafx.com/fxml/1">
+                                            <items>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0"
+                                                            prefWidth="160.0">
+                                                    <StackPane fx:id="contentContainer"
+                                                               maxHeight="1.7976931348623157E308"
+                                                               maxWidth="1.7976931348623157E308" prefHeight="150.0"
+                                                               prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
+                                                               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                               AnchorPane.topAnchor="0.0">
+                                                        <children>
+                                                            <fx:include source="sales.fxml"/>
+                                                        </children>
+                                                    </StackPane>
+                                                </AnchorPane>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0"
+                                                            prefWidth="160.0">
+                                                    <children>
+                                                        <SplitPane dividerPositions="0.19123505976095617" layoutX="21.0"
+                                                                   layoutY="-8.0" prefHeight="225.0" prefWidth="1006.0"
+                                                                   AnchorPane.bottomAnchor="0.0"
+                                                                   AnchorPane.leftAnchor="0.0"
+                                                                   AnchorPane.rightAnchor="0.0"
+                                                                   AnchorPane.topAnchor="0.0">
+                                                            <items>
+                                                                <AnchorPane minHeight="0.0" minWidth="0.0"
+                                                                            prefHeight="160.0" prefWidth="100.0">
+                                                                    <children>
+                                                                        <StackPane fx:id="categoryContainer"
+                                                                                   layoutY="21.0" prefHeight="233.0"
+                                                                                   prefWidth="189.0"
+                                                                                   AnchorPane.bottomAnchor="0.0"
+                                                                                   AnchorPane.leftAnchor="0.0"
+                                                                                   AnchorPane.rightAnchor="0.0"
+                                                                                   AnchorPane.topAnchor="0.0">
+                                                                            <children>
+                                                                                <fx:include source="categories.fxml"/>
+                                                                            </children>
+                                                                        </StackPane>
+                                                                    </children>
+                                                                </AnchorPane>
+                                                                <AnchorPane minHeight="0.0" minWidth="0.0"
+                                                                            prefHeight="160.0" prefWidth="100.0">
+                                                                    <children>
+                                                                        <StackPane fx:id="productTableContainer"
+                                                                                   prefHeight="233.0" prefWidth="809.0"
+                                                                                   AnchorPane.bottomAnchor="0.0"
+                                                                                   AnchorPane.leftAnchor="0.0"
+                                                                                   AnchorPane.rightAnchor="0.0"
+                                                                                   AnchorPane.topAnchor="0.0">
+                                                                            <children>
+                                                                                <fx:include
+                                                                                        source="products-by-categories.fxml"/>
+                                                                            </children>
+                                                                        </StackPane>
+                                                                    </children>
+                                                                </AnchorPane>
+                                                            </items>
+                                                        </SplitPane>
+                                                    </children>
+                                                </AnchorPane>
+                                            </items>
+                                        </SplitPane>
+                                    </children>
                                 </AnchorPane>
                             </items>
                         </SplitPane>
@@ -82,9 +125,10 @@
                 </AnchorPane>
                 <AnchorPane prefHeight="200.0" prefWidth="200.0">
                     <children>
-                        <Label fx:id="role" layoutX="1075.0" layoutY="4.0" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="4.0">
+                        <Label fx:id="role" layoutX="1075.0" layoutY="4.0" AnchorPane.bottomAnchor="4.0"
+                               AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="4.0">
                             <font>
-                                <Font size="18.0" />
+                                <Font size="18.0"/>
                             </font>
                         </Label>
                     </children>

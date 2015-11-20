@@ -22,44 +22,11 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
-                <Label text="Наименование товара" GridPane.rowIndex="1">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </Label>
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </TextField>
-                <Label text="Количество" GridPane.rowIndex="4">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </Label>
-                <Label text="Стоимость" GridPane.rowIndex="2">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </Label>
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="2">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </TextField>
-                <Spinner editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                         prefHeight="25.0" prefWidth="195.0" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-                <Label text="Поставщик">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </Label>
-                <ComboBox onAction="#findCategoriesByProvider" fx:id="providers" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                          prefHeight="25.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.halignment="CENTER"
-                          GridPane.valignment="CENTER"/>
-                <Label text="Стоимость с наценкой" GridPane.rowIndex="3">
+                <Label text="Наименование товара" GridPane.rowIndex="3">
                     <font>
                         <Font size="16.0"/>
                     </font>
@@ -69,7 +36,32 @@
                         <Font size="16.0"/>
                     </font>
                 </TextField>
-                <Label text="Итого" GridPane.rowIndex="5">
+                <Label text="Количество" GridPane.rowIndex="6">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </Label>
+                <Label text="Стоимость" GridPane.rowIndex="4">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </Label>
+                <TextField GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </TextField>
+                <Spinner editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                         prefHeight="25.0" prefWidth="195.0" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                <Label text="Поставщик">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </Label>
+                <ComboBox fx:id="providers" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                          onAction="#findCategoriesByProvider" prefHeight="25.0" prefWidth="189.0"
+                          GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+                <Label text="Стоимость с наценкой" GridPane.rowIndex="5">
                     <font>
                         <Font size="16.0"/>
                     </font>
@@ -79,6 +71,31 @@
                         <Font size="16.0"/>
                     </font>
                 </TextField>
+                <Label text="Итого" GridPane.rowIndex="7">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </Label>
+                <TextField GridPane.columnIndex="1" GridPane.rowIndex="7">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </TextField>
+                <Label text="Категория" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </Label>
+                <Label text="Товар" GridPane.rowIndex="2">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </Label>
+                <ComboBox fx:id="categories" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                          onAction="#findProductsByCategoriesAndProvider" prefHeight="25.0" prefWidth="189.0"
+                          GridPane.columnIndex="1" GridPane.rowIndex="1" disable="true"/>
+                <ComboBox fx:id="products" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                          prefHeight="25.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="2" disable="true"/>
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>

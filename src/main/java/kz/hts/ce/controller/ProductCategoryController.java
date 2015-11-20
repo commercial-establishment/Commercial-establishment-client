@@ -29,9 +29,9 @@ import java.util.stream.Collectors;
 import static kz.hts.ce.util.SpringUtil.getPrincipal;
 
 @Controller
-public class ProductCategoryController<T extends BaseEntity> implements Initializable {
+public class ProductCategoryController implements Initializable {
 
-    private boolean listenerFlag;
+    private ChangeListener<String> productListener;
     private boolean flag;
     private ObservableList<String> categoriesData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
@@ -71,29 +71,14 @@ public class ProductCategoryController<T extends BaseEntity> implements Initiali
         categories.setItems(categoriesData);
 
         Employee employee = employeeService.findByUsername(getPrincipal());
-        categories.getSelectionModel().selectedItemProperty().addListener(productsEmployeeListener(employee));
-
-        if (categoryProductsTable != null) {
-            categoryProductsTable.setOnMousePressed(event -> {
-                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                    ProductDto productDto = categoryProductsTable.getSelectionModel().getSelectedItem();
-                    productDto.setAmount(1);
-                    productsController.addProductIntProductDto(productDto);
-                    productsController.addProductsToTable();
-                }
-            });
-        }
-    }
-
-    public ChangeListener<String> productsEmployeeListener(Employee employee) {
-        return (ov, oldVal, newVal) -> {
+        categories.getSelectionModel().selectedItemProperty().addListener((ov, oldVal, newVal) -> {
             if (flag) {
                 productsData.clear();
                 Category category = categoryService.findByName(newVal);
                 List<WarehouseProduct> warehouseProducts = warehouseProductService.
                         findByCategoryIdAndShopId(category.getId(), employee.getShop().getId());
+                ProductDto productDto = new ProductDto();
                 for (WarehouseProduct productWarehouse : warehouseProducts) {
-                    ProductDto productDto = new ProductDto();
                     productDto.setName(productWarehouse.getProduct().getName());
                     productDto.setPrice(productWarehouse.getPrice());
                     productDto.setResidue(productWarehouse.getResidue());
@@ -105,19 +90,18 @@ public class ProductCategoryController<T extends BaseEntity> implements Initiali
                 categoryProductsTable.setItems(productsData);
             }
             flag = true;
-        };
-    }
+        });
 
-    public ListView<String> getCategories() {
-        return categories;
-    }
-
-    public boolean isFlag() {
-        return flag;
-    }
-
-    public void setFlag(boolean flag) {
-        this.flag = flag;
+        if (categoryProductsTable != null) {
+            categoryProductsTable.setOnMousePressed(event -> {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    ProductDto productDto = categoryProductsTable.getSelectionModel().getSelectedItem();
+                    productDto.setAmount(1);
+                    productsController.addProductIntProductDto(productDto);
+                    productsController.addProductsToTable();
+                }
+            });
+        }
     }
 
     public ObservableList<ProductDto> getProductsData() {
@@ -138,13 +122,5 @@ public class ProductCategoryController<T extends BaseEntity> implements Initiali
 
     public void setPrice(TableColumn<ProductDto, BigDecimal> price) {
         this.price = price;
-    }
-
-    public TableColumn<ProductDto, Number> getResidue() {
-        return residue;
-    }
-
-    public TableView<ProductDto> getCategoryProductsTable() {
-        return categoryProductsTable;
     }
 }

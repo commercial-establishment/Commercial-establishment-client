@@ -16,6 +16,7 @@ import static kz.hts.ce.util.SpringFxmlLoader.showStage;
 
 @Lazy
 @Configuration
+@Scope("singleton")
 public class PagesConfiguration {
 
     private Stage primaryStage;
@@ -29,7 +30,7 @@ public class PagesConfiguration {
     }
 
     @Bean
-    @Scope("prototype")
+    @Scope("singleton")
     public Stage main() {
         showStage(primaryStage, "/view/main.fxml");
         return primaryStage;
@@ -68,6 +69,7 @@ public class PagesConfiguration {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (Node) springFxmlLoader.load("/view/sales.fxml");
     }
+
     @Bean
     @Scope("prototype")
     public Node createProducts() throws IOException {
