@@ -22,6 +22,8 @@ public class MenuController {
     private MainController mainController;
     @Autowired
     private PagesConfiguration pagesConfiguration;
+    @Autowired
+    private CalculatorController calculatorController;
 
     @FXML
     private void show(ActionEvent event) throws IOException {
@@ -29,6 +31,8 @@ public class MenuController {
         if (event.getSource() == btnCreateProduct) {
             node = pagesConfiguration.createProducts();
             mainController.getContentContainer().getChildren().setAll(node);
+            calculatorController.stopListening();
+
         } else if (event.getSource() == btnSales) {
             node = pagesConfiguration.sales();
             mainController.getContentContainer().getChildren().setAll(node);

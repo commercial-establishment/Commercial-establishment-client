@@ -42,6 +42,8 @@ public class CalculatorController implements Initializable {
     private AddProductController addProductController;
     @Autowired
     private ProductsController productsController;
+    private ChangeListener<Boolean> changeListener;
+    private PagesConfiguration pagesConfiguration;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -132,8 +134,8 @@ public class CalculatorController implements Initializable {
     }
 
     public void startListening() {
-        PagesConfiguration pagesConfiguration = getPagesConfiguration();
-        ChangeListener<Boolean> changeListener = (observable1, oldValue, newValue) -> {
+        pagesConfiguration = getPagesConfiguration();
+        changeListener = (observable1, oldValue, newValue) -> {
             if (newValue) pagesConfiguration.getPrimaryStage().getScene().addEventHandler(KeyEvent.KEY_PRESSED, evt -> {
                 buttonState.setLength(0);
                 buttonState.append(evt.getCode().toString());
@@ -141,5 +143,9 @@ public class CalculatorController implements Initializable {
             });
         };
         pagesConfiguration.getPrimaryStage().focusedProperty().addListener(changeListener);
+    }
+    public void stopListening(){
+        pagesConfiguration.getPrimaryStage().focusedProperty().removeListener(changeListener);
+        System.out.println("stopped");
     }
 }

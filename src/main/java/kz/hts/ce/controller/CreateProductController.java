@@ -25,8 +25,8 @@ public class CreateProductController implements Initializable {
 
     @FXML
     private ComboBox<String> categories;
-    @FXML
-    private ComboBox<String> products;
+//    @FXML
+//    private ComboBox<String> products;
     @FXML
     private ComboBox<String> providers;
 
@@ -97,8 +97,8 @@ public class CreateProductController implements Initializable {
             productMap.put(productProviderId, productName);
         }
 
-        products.getItems().addAll(productMap.values());
-        products.setDisable(false);
+//        products.getItems().addAll(productMap.values());
+//        products.setDisable(false);
     }
 
     public List<ShopProvider> findShopProvidersByEmployeeUsername() {
