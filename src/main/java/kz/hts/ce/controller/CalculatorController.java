@@ -50,7 +50,7 @@ public class CalculatorController implements Initializable {
             if (newValue) screens.getPrimaryStage().getScene().addEventHandler(KeyEvent.KEY_PRESSED, evt -> {
                 buttonState.setLength(0);
                 buttonState.append(evt.getCode().toString());
-                CalculatorController.this.handleOnAnyButtonFromKeypad();
+                handleOnAnyButtonFromKeypad();
             });
         });
     }

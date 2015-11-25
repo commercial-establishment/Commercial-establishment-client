@@ -10,10 +10,14 @@ public class Product extends BaseEntity {
 
     private String name;
     private long barcode;
-//    private String unit;
+
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "unit_id", nullable = false)
+    private Unit unit;
 
     @Column(name = "is_blocked")
     private boolean blocked;
@@ -34,20 +38,20 @@ public class Product extends BaseEntity {
         this.barcode = barcode;
     }
 
-//    public String getUnit() {
-//        return unit;
-//    }
-//
-//    public void setUnit(String unit) {
-//        this.unit = unit;
-//    }
-
     public Category getCategory() {
         return category;
     }
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 
     public boolean isBlocked() {
