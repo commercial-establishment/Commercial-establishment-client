@@ -86,7 +86,6 @@ public class PagesConfiguration {
     }
 
     @Bean
-    @Scope("prototype")
     public ProductsController productsController() {
         return new ProductsController();
     }
