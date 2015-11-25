@@ -136,7 +136,7 @@ public class CreateProductController implements Initializable {
         for (ProductProvider productProvider : productsProvider) {
             ProductDto productDto = new ProductDto();
             productDto.setName(productProvider.getProduct().getName());
-            productDto.setPrice(productProvider.getPrice());
+//            productDto.setPrice(productProvider.getPrice());
             productDto.setBarcode(productProvider.getProduct().getBarcode());
             productDto.setUnit(productProvider.getProduct().getUnit().getSymbol());
             productsData.add(productDto);
