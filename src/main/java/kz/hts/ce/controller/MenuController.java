@@ -22,6 +22,8 @@ public class MenuController {
     private Button createProduct;
     @FXML
     private Button sales;
+    @FXML
+    private Button receipts;
 
     @Autowired
     private MainController mainController;
@@ -35,6 +37,10 @@ public class MenuController {
             mainController.getContentContainer().getChildren().setAll(node);
         } else if (event.getSource() == sales) {
             mainController.getContentContainer().getChildren().setAll(mainController.getSales());
+        } else if (event.getSource() == receipts){
+            node = screens.receipts();
+            mainController.getContentContainer().getChildren().setAll(node);
         }
+
     }
 }

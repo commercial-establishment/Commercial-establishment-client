@@ -58,9 +58,23 @@ public class PagesConfiguration {
     }
 
     @Bean
+    public Stage addReceipt() {
+        primaryStage.initStyle(StageStyle.UTILITY);
+        primaryStage.setResizable(false);
+        showStage(primaryStage, "/view/add-receipt.fxml");
+        return primaryStage;
+    }
+
+    @Bean
     public Node createProducts() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (Node) springFxmlLoader.load("/view/create-product-provider.fxml");
+    }
+
+    @Bean
+    public Node receipts() throws IOException {
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        return (Node) springFxmlLoader.load("/view/receipts.fxml");
     }
 
     @Bean
@@ -91,6 +105,11 @@ public class PagesConfiguration {
     @Bean
     public AddProductController addProductController() {
         return new AddProductController();
+    }
+
+    @Bean
+    public AddReceiptController addReceiptController(){
+        return new AddReceiptController();
     }
 
     @Bean
