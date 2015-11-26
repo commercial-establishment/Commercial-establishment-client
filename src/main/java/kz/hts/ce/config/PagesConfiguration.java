@@ -62,7 +62,7 @@ public class PagesConfiguration {
     @Bean
     public Node createProducts() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
-        return (Node) springFxmlLoader.load("/view/create-product.fxml");
+        return (Node) springFxmlLoader.load("/view/create-product-provider.fxml");
     }
 
     @Bean
