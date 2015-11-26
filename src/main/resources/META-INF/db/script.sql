@@ -11,13 +11,17 @@ INSERT INTO city (id, name) VALUES (1, 'АСТАНА');
 INSERT INTO city (id, name) VALUES (2, 'КАРАГАНДА');
 
 INSERT INTO category (id, name) VALUES (1, 'Напитки');
+INSERT INTO category (id, name) VALUES (2, 'НеНапитки');
 
 /*TODO change types*/
 INSERT INTO type (id, name) VALUES (1, 'A');
 INSERT INTO type (id, name) VALUES (2, 'B');
 
-INSERT INTO product (id, BARCODE, is_blocked, name, category_id) VALUES (1, 123123123123, FALSE, 'Coca-Cola', 1);
-INSERT INTO product (id, BARCODE, is_blocked, name, category_id) VALUES (2, 321321321321, FALSE, 'NeCoca-Cola', 1);
+INSERT INTO unit (id, name, symbol) VALUES (1, 'Килограмм', 'кг');
+INSERT INTO unit (id, name, symbol) VALUES (2, 'Литр', 'л');
+
+INSERT INTO product (id, BARCODE, is_blocked, name, category_id, UNIT_ID) VALUES (1, 123123123123, FALSE, 'Coca-Cola', 1, 1);
+INSERT INTO product (id, BARCODE, is_blocked, name, category_id, UNIT_ID) VALUES (2, 321321321321, FALSE, 'NeCoca-Cola', 2, 2);
 
 INSERT INTO shop (id, address, is_blocked, name, city_id, type_id) VALUES (1, 'Туркистан 8/2', FALSE, 'Gal Mart', 1, 1);
 

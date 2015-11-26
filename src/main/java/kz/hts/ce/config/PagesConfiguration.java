@@ -8,7 +8,6 @@ import kz.hts.ce.util.SpringFxmlLoader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
 
 import java.io.IOException;
 
@@ -51,7 +50,6 @@ public class PagesConfiguration {
     }
 
     @Bean
-    @Scope("prototype")
     public Stage payment() {
         primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.setResizable(false);
