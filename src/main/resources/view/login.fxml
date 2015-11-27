@@ -14,7 +14,7 @@
                    promptText="Username"/>
         <PasswordField fx:id="password" layoutX="65.0" layoutY="140.0" prefHeight="30.0" prefWidth="275.0"
                        promptText="Password"/>
-        <Button layoutX="137.0" layoutY="189.0" mnemonicParsing="false" onAction="#btnLoginAction"
+        <Button layoutX="137.0" layoutY="189.0" mnemonicParsing="false" onAction="#loginAction"
                 prefHeight="25.0" prefWidth="130.0" text="Login">
             <font>
                 <Font size="14.0"/>

@@ -10,9 +10,9 @@ public class ProductProvider extends BaseEntity {
 
     @NotNull
     private long amount;
-
-    @NotNull
-    private BigDecimal price;
+//
+//    @NotNull
+//    private BigDecimal price;
 
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "product_id", referencedColumnName = "id")
@@ -35,14 +35,6 @@ public class ProductProvider extends BaseEntity {
 
     public void setAmount(long amount) {
         this.amount = amount;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
     }
 
     public void setProduct(Product product) {

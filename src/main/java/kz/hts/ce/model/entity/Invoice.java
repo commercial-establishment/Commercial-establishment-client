@@ -3,7 +3,7 @@ package kz.hts.ce.model.entity;
 import javax.persistence.Entity;
 
 @Entity
-public class Waybill extends BaseEntity {
+public class Invoice extends BaseEntity {
 
     private long number;
 

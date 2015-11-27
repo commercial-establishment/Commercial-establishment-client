@@ -8,6 +8,7 @@ import kz.hts.ce.util.SpringFxmlLoader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 
 import java.io.IOException;
 
@@ -42,6 +43,7 @@ public class PagesConfiguration {
     }
 
     @Bean
+    @Scope("prototype")
     public Stage addProduct() {
         primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.setResizable(false);
@@ -50,6 +52,7 @@ public class PagesConfiguration {
     }
 
     @Bean
+    @Scope("prototype")
     public Stage payment() {
         primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.setResizable(false);
@@ -58,6 +61,7 @@ public class PagesConfiguration {
     }
 
     @Bean
+    @Scope("prototype")
     public Stage addReceipt() {
         primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.setResizable(false);
@@ -66,6 +70,7 @@ public class PagesConfiguration {
     }
 
     @Bean
+    @Scope("prototype")
     public Node createProducts() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (Node) springFxmlLoader.load("/view/create-product-provider.fxml");
@@ -75,6 +80,13 @@ public class PagesConfiguration {
     public Node receipts() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (Node) springFxmlLoader.load("/view/receipts.fxml");
+    }
+
+    @Bean
+    @Scope("prototype")
+    public Node shopProducts() throws IOException {
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        return (Node) springFxmlLoader.load("/view/shop-products.fxml");
     }
 
     @Bean
@@ -108,8 +120,8 @@ public class PagesConfiguration {
     }
 
     @Bean
-    public AddReceiptController addReceiptController(){
-        return new AddReceiptController();
+    public AddReceiptPageController addReceiptPageController() {
+        return new AddReceiptPageController();
     }
 
     @Bean
@@ -120,5 +132,10 @@ public class PagesConfiguration {
     @Bean
     public CreateProductController createProductController() {
         return new CreateProductController();
+    }
+
+    @Bean
+    public ShopProductsController shopProductsController() {
+        return new ShopProductsController();
     }
 }

@@ -38,8 +38,6 @@ public class CreateProductController implements Initializable {
     @FXML
     private TextField unit;
     @FXML
-    private TextField price;
-    @FXML
     private TextField productName;
 
     @FXML
@@ -89,7 +87,6 @@ public class CreateProductController implements Initializable {
                     } else amount.increment(1);
 
                     ProductDto productDto = productTable.getSelectionModel().getSelectedItem();
-                    price.setText(String.valueOf(productDto.getPrice()));
                     productName.setText(productDto.getName());
                     unit.setText(productDto.getUnit());
                 }
@@ -136,7 +133,6 @@ public class CreateProductController implements Initializable {
         for (ProductProvider productProvider : productsProvider) {
             ProductDto productDto = new ProductDto();
             productDto.setName(productProvider.getProduct().getName());
-//            productDto.setPrice(productProvider.getPrice());
             productDto.setBarcode(productProvider.getProduct().getBarcode());
             productDto.setUnit(productProvider.getProduct().getUnit().getSymbol());
             productsData.add(productDto);
@@ -153,6 +149,7 @@ public class CreateProductController implements Initializable {
         return shopProviderService.findByShopId(shopId);
     }
 
+    @FXML
     public void calculatePrice(ActionEvent event) {
         TextField source = (TextField) event.getSource();
         String text = source.getText();

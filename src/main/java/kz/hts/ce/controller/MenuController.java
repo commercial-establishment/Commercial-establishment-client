@@ -19,6 +19,8 @@ import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 public class MenuController {
 
     @FXML
+    private Button products;
+    @FXML
     private Button createProduct;
     @FXML
     private Button sales;
@@ -29,7 +31,7 @@ public class MenuController {
     private MainController mainController;
 
     @FXML
-    private void show(ActionEvent event) throws IOException {
+    private void showContent(ActionEvent event) throws IOException {
         PagesConfiguration screens = getPagesConfiguration();
         Node node;
         if (event.getSource() == createProduct) {
@@ -39,6 +41,9 @@ public class MenuController {
             mainController.getContentContainer().getChildren().setAll(mainController.getSales());
         } else if (event.getSource() == receipts){
             node = screens.receipts();
+            mainController.getContentContainer().getChildren().setAll(node);
+        } else if (event.getSource() == products) {
+            node = screens.shopProducts();
             mainController.getContentContainer().getChildren().setAll(node);
         }
 

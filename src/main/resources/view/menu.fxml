@@ -14,8 +14,9 @@
                             <children>
                                 <VBox prefHeight="74.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <Button fx:id="sales" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#show" prefHeight="25.0" prefWidth="370.0" text="Продажи" />
-                              <Button fx:id="receipts" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#show" prefHeight="25.0" prefWidth="370.0" text="Поступления" />
+                                        <Button fx:id="sales" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showContent" prefHeight="25.0" prefWidth="370.0" text="Продажи" />
+                              <Button fx:id="products" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showContent" prefHeight="25.0" prefWidth="370.0" text="Товары" />
+                              <Button fx:id="receipts" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showContent" prefHeight="25.0" prefWidth="370.0" text="Поступления" />
                                     </children>
                                 </VBox>
                             </children>
@@ -28,7 +29,7 @@
                             <children>
                                 <VBox prefHeight="74.0" prefWidth="286.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <Button fx:id="createProduct" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#show" text="Добавить товар" />
+                                        <Button fx:id="createProduct" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showContent" text="Добавить товар" />
                                     </children>
                                 </VBox>
                             </children>
