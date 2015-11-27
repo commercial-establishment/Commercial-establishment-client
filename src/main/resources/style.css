@@ -1,0 +1,11 @@
+.redColor {
+    -fx-background-color: #ff3d13;
+}
+
+.orangeColor {
+    -fx-background-color: orange;
+}
+
+.greenColor {
+    -fx-background-color: limegreen;
+}

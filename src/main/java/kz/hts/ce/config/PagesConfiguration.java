@@ -1,6 +1,9 @@
 package kz.hts.ce.config;
 
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import kz.hts.ce.controller.*;
@@ -86,7 +89,8 @@ public class PagesConfiguration {
     @Scope("prototype")
     public Node shopProducts() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
-        return (Node) springFxmlLoader.load("/view/shop-products.fxml");
+        primaryStage.getScene().getStylesheets().add("style.css");
+        return (AnchorPane) springFxmlLoader.load("/view/shop-products.fxml");
     }
 
     @Bean

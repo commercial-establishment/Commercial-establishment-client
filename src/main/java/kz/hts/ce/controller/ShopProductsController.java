@@ -1,26 +1,29 @@
 package kz.hts.ce.controller;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.util.Callback;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Category;
-import kz.hts.ce.model.entity.Shop;
 import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.service.CategoryService;
 import kz.hts.ce.service.EmployeeService;
-import kz.hts.ce.service.ShopService;
 import kz.hts.ce.service.WarehouseProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -30,6 +33,9 @@ import static kz.hts.ce.util.SpringUtil.getPrincipal;
 @Controller
 public class ShopProductsController implements Initializable {
 
+    public static final String GREEN_COLOR = "greenColor";
+    public static final String ORANGE_COLOR = "orangeColor";
+    public static final String RED_COLOR = "redColor";
     private long shopId;
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
 
@@ -68,7 +74,6 @@ public class ShopProductsController implements Initializable {
         shopId = employeeService.findByUsername(getPrincipal()).getShop().getId();
     }
 
-
     public void findProductsByCategories(ActionEvent event) {
         productsData.clear();
 
@@ -78,8 +83,8 @@ public class ShopProductsController implements Initializable {
         List<WarehouseProduct> warehouseProducts = warehouseProductService.
                 findByCategoryIdAndShopId(categoryService.findByName(categoryName).getId(), shopId);
 
-        ProductDto productDto = new ProductDto();
         for (WarehouseProduct warehouseProduct : warehouseProducts) {
+            ProductDto productDto = new ProductDto();
             productDto.setName(warehouseProduct.getProduct().getName());
             productDto.setBarcode(warehouseProduct.getProduct().getBarcode());
             productDto.setCategoryName(warehouseProduct.getProduct().getCategory().getName());
@@ -98,5 +103,36 @@ public class ShopProductsController implements Initializable {
         residue.setCellValueFactory(cellData -> cellData.getValue().residueProperty());
         price.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
         productTable.setItems(productsData);
+
+        productTable.setRowFactory(new Callback<TableView<ProductDto>, TableRow<ProductDto>>() {
+            @Override
+            public TableRow<ProductDto> call(TableView<ProductDto> tableView) {
+                return new TableRow<ProductDto>() {
+                    @Override
+                    protected void updateItem(ProductDto productDto, boolean empty) {
+                        super.updateItem(productDto, empty);
+                        if (!empty) {
+                            if (productDto.getResidue() <= 10) {
+                                getStyleClass().removeAll(Collections.singleton(GREEN_COLOR));
+                                getStyleClass().removeAll(Collections.singleton(ORANGE_COLOR));
+                                getStyleClass().add(RED_COLOR);
+                            } else if (productDto.getResidue() > 10 && productDto.getResidue() <= 30) {
+                                getStyleClass().removeAll(Collections.singleton(GREEN_COLOR));
+                                getStyleClass().removeAll(Collections.singleton(RED_COLOR));
+                                getStyleClass().add(ORANGE_COLOR);
+                            } else if (productDto.getResidue() > 30) {
+                                getStyleClass().removeAll(Collections.singleton(ORANGE_COLOR));
+                                getStyleClass().removeAll(Collections.singleton(RED_COLOR));
+                                getStyleClass().add(GREEN_COLOR);
+                            }
+                        } else {
+                            getStyleClass().removeAll(Collections.singleton(ORANGE_COLOR));
+                            getStyleClass().removeAll(Collections.singleton(RED_COLOR));
+                            getStyleClass().removeAll(Collections.singleton(GREEN_COLOR));
+                        }
+                    }
+                };
+            }
+        });
     }
 }
