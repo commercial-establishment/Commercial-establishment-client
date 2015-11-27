@@ -21,7 +21,7 @@ public class AddReceiptController {
     @FXML
     private VBox vBox;
 
-    private int cnt=0;
+    private int cnt=-1;
 
     @FXML
     public void add(){
@@ -38,7 +38,7 @@ public class AddReceiptController {
     }
     @FXML
     public void delete(ActionEvent event){
-        if(cnt!=0) {
+        if(cnt!=-1) {
             vBox.getChildren().remove(cnt--);
         }
     }
