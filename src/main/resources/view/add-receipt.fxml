@@ -1,99 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="434.0"
-            prefWidth="477.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="kz.hts.ce.controller.AddReceiptController">
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.AddReceiptController">
     <children>
-        <GridPane layoutX="48.0" layoutY="45.0" prefHeight="308.0" prefWidth="382.0">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="186.0" minWidth="10.0" prefWidth="130.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="252.0" minWidth="10.0" prefWidth="252.0"/>
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            </rowConstraints>
-            <children>
-                <Label text="Номер">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </Label>
-                <TextField fx:id="number" maxHeight="-Infinity" prefHeight="35.0" GridPane.columnIndex="1">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </TextField>
-                <Label text="Поставщик" GridPane.rowIndex="1">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </Label>
-                <Label text="Дата" GridPane.rowIndex="5">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </Label>
-                <DatePicker fx:id="dateOfCreation" maxHeight="-Infinity" maxWidth="1.7976931348623157E308"
-                            prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-                <ComboBox fx:id="provider" maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="150.0"
-                          GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                <Label text="Отсрочка" GridPane.rowIndex="6">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </Label>
-                <Spinner fx:id="postponement" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="35.0"
-                         GridPane.columnIndex="1" GridPane.rowIndex="6"/>
-                <Label text="НДС" GridPane.rowIndex="3">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </Label>
-                <CheckBox fx:id="vat" onAction="#checkPrice" alignment="CENTER_RIGHT" contentDisplay="CENTER"
-                          maxWidth="1.7976931348623157E308"
-                          mnemonicParsing="false" prefHeight="25.0" prefWidth="29.0" GridPane.columnIndex="1"
-                          GridPane.rowIndex="3">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </CheckBox>
-                <Label text="Цена" GridPane.rowIndex="2">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </Label>
-                <TextField fx:id="price" maxHeight="-Infinity" prefHeight="35.0" GridPane.columnIndex="1"
-                           GridPane.rowIndex="2">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </TextField>
-                <Label prefHeight="25.0" prefWidth="117.0" text="Цена с НДС" GridPane.rowIndex="4">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </Label>
-                <TextField fx:id="priceWithVat" disable="true" maxHeight="-Infinity" prefHeight="35.0"
-                           GridPane.columnIndex="1" GridPane.rowIndex="4">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </TextField>
-            </children>
-        </GridPane>
-        <Button layoutX="330.0" layoutY="372.0" mnemonicParsing="false" text="Сохранить">
-            <font>
-                <Font size="16.0"/>
-            </font>
-        </Button>
+        <SplitPane dividerPositions="0.3676222596964587" layoutX="54.0" layoutY="173.0" orientation="VERTICAL"
+                   prefHeight="595.0" prefWidth="1008.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                    <children>
+                        <Label layoutX="165.0" layoutY="48.0" text="Номер">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Label>
+                        <TextField layoutX="288.0" layoutY="42.0" prefHeight="25.0" prefWidth="200.0">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </TextField>
+                        <Label layoutX="165.0" layoutY="96.0" text="Поставщик">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Label>
+                        <TextField layoutX="288.0" layoutY="90.0" prefHeight="25.0" prefWidth="200.0">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </TextField>
+                        <Label layoutX="165.0" layoutY="143.0" text="Отсрочка">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Label>
+                        <Spinner layoutX="288.0" layoutY="137.0" prefHeight="37.0" prefWidth="200.0"/>
+                        <Label layoutX="559.0" layoutY="48.0" text="Дата">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Label>
+                        <DatePicker layoutX="641.0" layoutY="42.0" prefHeight="37.0" prefWidth="200.0"/>
+                        <Label layoutX="559.0" layoutY="96.0" text="НДС">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Label>
+                        <CheckBox layoutX="641.0" layoutY="90.0" mnemonicParsing="false" prefHeight="37.0"
+                                  prefWidth="34.0"/>
+                    </children>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                    <children>
+                        <VBox fx:id="vBox" layoutX="130.0" layoutY="52.0" opacity="0.76" prefHeight="196.0"
+                              prefWidth="688.0" style="-: ;" AnchorPane.bottomAnchor="136.0"
+                              AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="188.0" AnchorPane.topAnchor="52.0"/>
+                        <Button layoutX="841.0" layoutY="308.0" mnemonicParsing="false" prefHeight="37.0"
+                                prefWidth="139.0" text="Сохранить" AnchorPane.bottomAnchor="27.0"
+                                AnchorPane.rightAnchor="26.0">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Button>
+                        <Button layoutX="841.0" layoutY="52.0" mnemonicParsing="false" onAction="#addRowForNewProduct"
+                                text="Добавить товар" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="52.0">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Button>
+                        <Button layoutX="841.0" layoutY="107.0" mnemonicParsing="false" onAction="#deleteProductRow"
+                                prefHeight="37.0" prefWidth="139.0" text="Удалить" AnchorPane.rightAnchor="26.0"
+                                AnchorPane.topAnchor="107.0">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Button>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="130.0" layoutY="27.0"
+                               prefHeight="25.0" prefWidth="424.0" style="-: ;" text="Наименование товара">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="554.0" layoutY="27.0" prefHeight="25.0" prefWidth="156.0"
+                               text="Единица измерения">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="710.0" layoutY="27.0" prefHeight="25.0" prefWidth="101.0"
+                               text="Количество">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
     </children>
 </AnchorPane>

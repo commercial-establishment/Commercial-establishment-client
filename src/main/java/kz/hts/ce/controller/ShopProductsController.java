@@ -48,8 +48,6 @@ public class ShopProductsController implements Initializable {
     @FXML
     private TableColumn<ProductDto, String> name;
     @FXML
-    private TableColumn<ProductDto, String> category;
-    @FXML
     private TableColumn<ProductDto, String> unit;
     @FXML
     private TableColumn<ProductDto, Number> amount;
@@ -87,7 +85,6 @@ public class ShopProductsController implements Initializable {
             ProductDto productDto = new ProductDto();
             productDto.setName(warehouseProduct.getProduct().getName());
             productDto.setBarcode(warehouseProduct.getProduct().getBarcode());
-            productDto.setCategoryName(warehouseProduct.getProduct().getCategory().getName());
             productDto.setUnit(warehouseProduct.getProduct().getUnit().getName());
             productDto.setAmount(warehouseProduct.getArrival());
             productDto.setResidue(warehouseProduct.getResidue());
@@ -97,7 +94,6 @@ public class ShopProductsController implements Initializable {
 
         barcode.setCellValueFactory(cellData -> cellData.getValue().barcodeProperty());
         name.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        category.setCellValueFactory(cellData -> cellData.getValue().categoryNameProperty());
         unit.setCellValueFactory(cellData -> cellData.getValue().unitProperty());
         amount.setCellValueFactory(cellData -> cellData.getValue().amountProperty());
         residue.setCellValueFactory(cellData -> cellData.getValue().residueProperty());

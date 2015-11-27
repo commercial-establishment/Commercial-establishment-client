@@ -12,12 +12,12 @@ import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 @Controller
 public class ReceiptsController {
 
-    private PagesConfiguration screens;
     @Autowired
     private MainController mainController;
+
     @FXML
     public void createReceipt() throws IOException {
-        screens = getPagesConfiguration();
+        PagesConfiguration screens = getPagesConfiguration();
         mainController.getContentContainer().getChildren().setAll(screens.addReceipt());
     }
 }

@@ -15,7 +15,6 @@
             <columns>
                 <TableColumn fx:id="barcode" prefWidth="155.0" text="Штрих код"/>
                 <TableColumn fx:id="name" prefWidth="297.0" text="Наименование"/>
-                <TableColumn fx:id="category" prefWidth="297.0" text="Категория"/>
                 <TableColumn fx:id="price" prefWidth="297.0" text="Цена"/>
                 <TableColumn fx:id="unit" prefWidth="297.0" text="Единица измерения"/>
                 <TableColumn fx:id="amount" prefWidth="297.0" text="Привезено"/>
