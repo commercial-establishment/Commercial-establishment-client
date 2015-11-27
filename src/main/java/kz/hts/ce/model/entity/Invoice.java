@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 public class Invoice extends BaseEntity {
 
-    private long number;
+//    private long number;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date date;
@@ -21,13 +21,13 @@ public class Invoice extends BaseEntity {
 
     private int postponement;
 
-    public long getNumber() {
-        return number;
-    }
-
-    public void setNumber(long number) {
-        this.number = number;
-    }
+//    public long getNumber() {
+//        return number;
+//    }
+//
+//    public void setNumber(long number) {
+//        this.number = number;
+//    }
 
     public Date getDate() {
         return date;
