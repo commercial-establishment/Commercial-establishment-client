@@ -79,54 +79,53 @@ public class PaymentController implements Initializable {
 
     @FXML
     public void success() {
-        if (shortage.getText().equals(ZERO)) {
-            ObservableList<ProductDto> productsData = productsController.getProductsData();
-            for (ProductDto productDto : productsData) {
-                long warehouseProductId = productDto.getId();
-                WarehouseProduct warehouseProduct = warehouseProductService.findById(warehouseProductId);
+        try {
+            if (shortage.getText().equals(ZERO)) {
+                ObservableList<ProductDto> productsData = productsController.getProductsData();
+                for (ProductDto productDto : productsData) {
+                    long warehouseProductId = productDto.getId();
+                    WarehouseProduct warehouseProduct = warehouseProductService.findById(warehouseProductId);
 
-                ProductHistory productHistory = new ProductHistory();
-                productHistory.setEmployee(employeeService.findByUsername(getPrincipal()));
-                productHistory.setWarehouseProduct(warehouseProduct);
-                productHistory.setVersion(warehouseProduct.getVersion());
-                productHistory.setAmount(productDto.getAmount());
-                productHistory.setSaleDate(new Date());
-                productHistory.setTotalPrice(multiplyIntegerAndBigDecimal(productDto.getAmount(), warehouseProduct.getPrice()));
-                productHistoryService.save(productHistory);
+                    ProductHistory productHistory = new ProductHistory();
+                    productHistory.setEmployee(employeeService.findByUsername(getPrincipal()));
+                    productHistory.setWarehouseProduct(warehouseProduct);
+                    productHistory.setVersion(warehouseProduct.getVersion());
+                    productHistory.setAmount(productDto.getAmount());
+                    productHistory.setSaleDate(new Date());
+                    productHistory.setTotalPrice(multiplyIntegerAndBigDecimal(productDto.getAmount(), warehouseProduct.getPrice()));
+                    productHistoryService.save(productHistory);
 
-                int productAmount = productDto.getAmount();
-                int residue = warehouseProduct.getResidue();
-                warehouseProduct.setResidue(residue - productAmount);
+                    int productAmount = productDto.getAmount();
+                    int residue = warehouseProduct.getResidue();
+                    warehouseProduct.setResidue(residue - productAmount);
 
-                warehouseProduct.setVersion(warehouseProduct.getVersion() + 1);
-                warehouseProductService.save(warehouseProduct);
+                    warehouseProduct.setVersion(warehouseProduct.getVersion() + 1);
+                    warehouseProductService.save(warehouseProduct);
+                }
+                alert(Alert.AlertType.INFORMATION, "Товар успешно продан", null, "Сдача: " + change.getText() + " тенге");
+                productsController.deleteAllProductsFromTable();
+                productsController.getProductsDto().clear();
+                PagesConfiguration screens = getPagesConfiguration();
+                screens.payment().hide();
+            } else {
+                alert(Alert.AlertType.WARNING, "Недостаточно средств", null, "Недостаточно средств для оплаты товара");
             }
-            alert(Alert.AlertType.INFORMATION, "Товар успешно продан", null, "Сдача: " + change.getText() + " тенге");
-            productsController.deleteAllProductsFromTable();
-            productsController.getProductsDto().clear();
-            PagesConfiguration screens = getPagesConfiguration();
-            screens.payment().close();
-        } else {
-            alert(Alert.AlertType.WARNING, "Недостаточно средств", null, "Недостаточно средств для оплаты товара");
+        } catch (RuntimeException e) {
+            alert(Alert.AlertType.ERROR, "Ошибка приложения", null, "Недостаточно средств для оплаты товара");
         }
     }
 
     @FXML
     public void print(ActionEvent event) {
-
     }
 
     @FXML
     public void cancel() {
         PagesConfiguration screens = getPagesConfiguration();
-        screens.payment().close();
+        screens.payment().hide();
     }
 
     public TextField getGiven() {
         return given;
-    }
-
-    public void setGiven(TextField given) {
-        this.given = given;
     }
 }

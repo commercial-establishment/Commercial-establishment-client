@@ -99,9 +99,9 @@ public class ProductCategoryController implements Initializable {
                         warehouseProducts = productMapEntry.getValue();
                     }
                 }
-                ProductDto productDto = new ProductDto();
                 if (warehouseProducts != null) {
                     for (WarehouseProduct productWarehouse : warehouseProducts) {
+                        ProductDto productDto = new ProductDto();
                         productDto.setName(productWarehouse.getProduct().getName());
                         productDto.setPrice(productWarehouse.getPrice());
                         productDto.setResidue(productWarehouse.getResidue());

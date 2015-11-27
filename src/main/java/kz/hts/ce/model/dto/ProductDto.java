@@ -16,6 +16,7 @@ public class ProductDto {
     private IntegerProperty residue;
     private LongProperty barcode;
     private StringProperty unit;
+    private StringProperty categoryName;
 
     public long getId() {
         return id;
@@ -38,6 +39,21 @@ public class ProductDto {
             this.name = new SimpleStringProperty();
         }
         this.name.set(name);
+    }
+
+    public String getCategoryName() {
+        return categoryName.get();
+    }
+
+    public StringProperty categoryNameProperty() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        if (this.categoryName == null) {
+            this.categoryName = new SimpleStringProperty();
+        }
+        this.categoryName.set(categoryName);
     }
 
     public String getUnit() {

@@ -32,7 +32,7 @@ public class LoginController {
 
     @FXML
     @Transactional
-    private void btnLoginAction(ActionEvent event) throws IOException {
+    private void loginAction(ActionEvent event) throws IOException {
         PagesConfiguration screens = getPagesConfiguration();
         try {
             springUtils.authorize(username.getText(), password.getText());
@@ -41,7 +41,7 @@ public class LoginController {
             screens.login().close();
             screens.main().show();
         } catch (NullPointerException | UsernameNotFoundException e) {
-            message.setText("Ошибка авторизации. Пожалуйста, попробуйте ещё раз:");
+            message.setText("Неверное имя пользователя или пароль:");
         }
     }
 }

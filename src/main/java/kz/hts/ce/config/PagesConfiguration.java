@@ -1,6 +1,9 @@
 package kz.hts.ce.config;
 
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import kz.hts.ce.controller.*;
@@ -8,6 +11,7 @@ import kz.hts.ce.util.SpringFxmlLoader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 
 import java.io.IOException;
 
@@ -42,6 +46,7 @@ public class PagesConfiguration {
     }
 
     @Bean
+    @Scope("prototype")
     public Stage addProduct() {
         primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.setResizable(false);
@@ -50,15 +55,24 @@ public class PagesConfiguration {
     }
 
     @Bean
+    @Scope("prototype")
     public Stage payment() {
         primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.setResizable(false);
         showStage(primaryStage, "/view/payment.fxml");
         return primaryStage;
     }
-
-
     @Bean
+    @Scope("prototype")
+    public Stage addReceipt() {
+        primaryStage.initStyle(StageStyle.UTILITY);
+        primaryStage.setResizable(false);
+        showStage(primaryStage, "/view/add-receipt.fxml");
+        return primaryStage;
+    }
+    
+    @Bean
+    @Scope("prototype")
     public Node createProducts() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (Node) springFxmlLoader.load("/view/create-product-provider.fxml");
@@ -76,6 +90,14 @@ public class PagesConfiguration {
         return (Node) springFxmlLoader.load("/view/new-add-receipt.fxml");
     }
 
+
+    @Bean
+    @Scope("prototype")
+    public Node shopProducts() throws IOException {
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        primaryStage.getScene().getStylesheets().add("style.css");
+        return (AnchorPane) springFxmlLoader.load("/view/shop-products.fxml");
+    }
 
     @Bean
     public LoginController loginController() {
@@ -108,8 +130,8 @@ public class PagesConfiguration {
     }
 
     @Bean
-    public AddReceiptController addReceiptController(){
-        return new AddReceiptController();
+    public AddReceiptPageController addReceiptPageController() {
+        return new AddReceiptPageController();
     }
 
     @Bean
@@ -120,5 +142,10 @@ public class PagesConfiguration {
     @Bean
     public CreateProductController createProductController() {
         return new CreateProductController();
+    }
+
+    @Bean
+    public ShopProductsController shopProductsController() {
+        return new ShopProductsController();
     }
 }

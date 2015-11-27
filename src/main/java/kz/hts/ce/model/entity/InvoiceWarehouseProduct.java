@@ -6,23 +6,23 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "waybill_warehouse_product")
-public class WaybillWarehouseProduct extends BaseEntity {
+@Table(name = "invoice_warehouse_product")
+public class InvoiceWarehouseProduct extends BaseEntity {
 
     @ManyToOne
-    @PrimaryKeyJoinColumn(name = "waybill_id", referencedColumnName = "id")
-    private Waybill waybill;
+    @PrimaryKeyJoinColumn(name = "invoice_id", referencedColumnName = "id")
+    private Invoice invoice;
 
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "warehouse_product_id", referencedColumnName = "id")
     private WarehouseProduct warehouseProduct;
 
-    public Waybill getWaybill() {
-        return waybill;
+    public Invoice getInvoice() {
+        return invoice;
     }
 
-    public void setWaybill(Waybill waybill) {
-        this.waybill = waybill;
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 
     public WarehouseProduct getWarehouseProduct() {

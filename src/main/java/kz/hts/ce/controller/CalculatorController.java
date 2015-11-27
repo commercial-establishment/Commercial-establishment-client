@@ -6,7 +6,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.ProductDto;
