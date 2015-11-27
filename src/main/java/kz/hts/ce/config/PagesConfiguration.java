@@ -57,13 +57,6 @@ public class PagesConfiguration {
         return primaryStage;
     }
 
-    @Bean
-    public Stage addReceipt() {
-        primaryStage.initStyle(StageStyle.UTILITY);
-        primaryStage.setResizable(false);
-        showStage(primaryStage, "/view/add-receipt.fxml");
-        return primaryStage;
-    }
 
     @Bean
     public Node createProducts() throws IOException {
@@ -76,6 +69,13 @@ public class PagesConfiguration {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (Node) springFxmlLoader.load("/view/receipts.fxml");
     }
+
+    @Bean
+    public Node addReceipt() throws IOException {
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        return (Node) springFxmlLoader.load("/view/new-add-receipt.fxml");
+    }
+
 
     @Bean
     public LoginController loginController() {
