@@ -1,8 +1,6 @@
 package kz.hts.ce.config;
 
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -62,15 +60,7 @@ public class PagesConfiguration {
         showStage(primaryStage, "/view/payment.fxml");
         return primaryStage;
     }
-    @Bean
-    @Scope("prototype")
-    public Stage addReceipt() {
-        primaryStage.initStyle(StageStyle.UTILITY);
-        primaryStage.setResizable(false);
-        showStage(primaryStage, "/view/add-receipt.fxml");
-        return primaryStage;
-    }
-    
+
     @Bean
     @Scope("prototype")
     public Node createProducts() throws IOException {
@@ -79,6 +69,7 @@ public class PagesConfiguration {
     }
 
     @Bean
+    @Scope("prototype")
     public Node receipts() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (Node) springFxmlLoader.load("/view/receipts.fxml");
@@ -89,7 +80,6 @@ public class PagesConfiguration {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (Node) springFxmlLoader.load("/view/new-add-receipt.fxml");
     }
-
 
     @Bean
     @Scope("prototype")
@@ -128,11 +118,11 @@ public class PagesConfiguration {
     public AddProductController addProductController() {
         return new AddProductController();
     }
-
-    @Bean
-    public AddReceiptPageController addReceiptPageController() {
-        return new AddReceiptPageController();
-    }
+//
+//    @Bean
+//    public AddReceiptPageController addReceiptPageController() {
+//        return new AddReceiptPageController();
+//    }
 
     @Bean
     public ProductCategoryController productCategoryController() {
