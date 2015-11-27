@@ -32,7 +32,7 @@ public class AddReceiptController {
     @FXML
     private DatePicker date;
     @FXML
-    private ComboBox<String> provider;
+    private ComboBox<String> providers;
     @FXML
     private VBox vBox;
 
