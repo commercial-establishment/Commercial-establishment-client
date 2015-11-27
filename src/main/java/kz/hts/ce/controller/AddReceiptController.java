@@ -1,6 +1,5 @@
 package kz.hts.ce.controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -21,10 +20,15 @@ public class AddReceiptController {
         TextField productName = new TextField();
         TextField unitOfMeasure = new TextField();
         TextField amount = new TextField();
-        productName.setPrefWidth(424);
-        unitOfMeasure.setPrefWidth(156);
-        amount.setPrefWidth(101);
-        box.getChildren().addAll(productName, unitOfMeasure, amount);
+        TextField price = new TextField();
+        TextField priceAmount = new TextField();
+
+        productName.setPrefWidth(362);
+        price.setPrefWidth(118);
+        unitOfMeasure.setPrefWidth(89);
+        amount.setPrefWidth(89);
+        priceAmount.setPrefWidth(112);
+        box.getChildren().addAll(productName, price, unitOfMeasure, amount, priceAmount);
         vBox.getChildren().add(box);
         cnt++;
     }
