@@ -4,19 +4,30 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="182.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.MenuController">
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+           minWidth="-Infinity" prefHeight="595.0" prefWidth="182.0" xmlns="http://javafx.com/javafx/8.0.40"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.MenuController">
     <children>
-        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="100.0">
+        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+              minWidth="-Infinity" prefHeight="200.0" prefWidth="100.0">
             <children>
                 <TitledPane animated="false" text="Региситрация">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <VBox prefHeight="74.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <VBox prefHeight="74.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0"
+                                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                      AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <Button fx:id="sales" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showContent" prefHeight="25.0" prefWidth="370.0" text="Продажи" />
-                              <Button fx:id="products" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showContent" prefHeight="25.0" prefWidth="370.0" text="Товары" />
-                              <Button fx:id="receipts" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showContent" prefHeight="25.0" prefWidth="370.0" text="Поступления" />
+                                        <Button fx:id="sales" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                                onAction="#showContent" prefHeight="25.0" prefWidth="370.0"
+                                                text="Продажи"/>
+                                        <Button fx:id="products" maxWidth="1.7976931348623157E308"
+                                                mnemonicParsing="false" onAction="#showContent" prefHeight="25.0"
+                                                prefWidth="370.0" text="Товары"/>
+                                        <Button fx:id="receipts" maxWidth="1.7976931348623157E308"
+                                                mnemonicParsing="false" onAction="#showContent" prefHeight="25.0"
+                                                prefWidth="370.0" text="Поступления"/>
                                     </children>
                                 </VBox>
                             </children>
@@ -27,9 +38,12 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <VBox prefHeight="74.0" prefWidth="286.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <VBox prefHeight="74.0" prefWidth="286.0" AnchorPane.bottomAnchor="0.0"
+                                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                      AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <Button fx:id="createProduct" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showContent" text="Добавить товар" />
+                                        <Button fx:id="createProduct" maxWidth="1.7976931348623157E308"
+                                                mnemonicParsing="false" onAction="#showContent" text="Добавить товар"/>
                                     </children>
                                 </VBox>
                             </children>
@@ -38,12 +52,21 @@
                 </TitledPane>
                 <TitledPane animated="false" text="Утилиты">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
                     </content>
                 </TitledPane>
                 <TitledPane animated="false" text="Системные настройки">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <VBox layoutX="11.0" layoutY="11.0" prefHeight="101.0" prefWidth="158.0">
+                                    <children>
+                                        <Button fx:id="settings" mnemonicParsing="false" prefHeight="25.0"
+                                                prefWidth="168.0" onAction="#showContent" text="Настройки"/>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </AnchorPane>
                     </content>
                 </TitledPane>
             </children>

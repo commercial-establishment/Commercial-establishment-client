@@ -19,6 +19,8 @@ import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 public class MenuController {
 
     @FXML
+    private Button settings;
+    @FXML
     private Button products;
     @FXML
     private Button createProduct;
@@ -45,7 +47,9 @@ public class MenuController {
         } else if (event.getSource() == products) {
             node = screens.shopProducts();
             mainController.getContentContainer().getChildren().setAll(node);
+        } else if (event.getSource() == settings) {
+            node = screens.settings();
+            mainController.getContentContainer().getChildren().setAll(node);
         }
-
     }
 }

@@ -90,6 +90,13 @@ public class PagesConfiguration {
     }
 
     @Bean
+    @Scope("prototype")
+    public Node settings() {
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        return (AnchorPane) springFxmlLoader.load("/view/settings.fxml");
+    }
+
+    @Bean
     public LoginController loginController() {
         return new LoginController();
     }
@@ -118,11 +125,6 @@ public class PagesConfiguration {
     public AddProductController addProductController() {
         return new AddProductController();
     }
-//
-//    @Bean
-//    public AddReceiptPageController addReceiptPageController() {
-//        return new AddReceiptPageController();
-//    }
 
     @Bean
     public ProductCategoryController productCategoryController() {
