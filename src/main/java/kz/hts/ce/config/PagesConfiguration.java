@@ -90,7 +90,6 @@ public class PagesConfiguration {
     }
 
     @Bean
-    @Scope("prototype")
     public Node settings() {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (AnchorPane) springFxmlLoader.load("/view/settings.fxml");
