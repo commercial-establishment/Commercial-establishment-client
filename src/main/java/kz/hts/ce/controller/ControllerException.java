@@ -2,7 +2,6 @@ package kz.hts.ce.controller;
 
 public class ControllerException extends RuntimeException {
 
-
     public ControllerException() {
         super();
     }

@@ -18,6 +18,7 @@ import kz.hts.ce.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -60,13 +61,13 @@ public class AddReceiptController implements Initializable {
     @Autowired
     private ShopProviderService shopProviderService;
     @Autowired
-    private ProductProviderService productProviderService;
-    @Autowired
     private EmployeeService employeeService;
     @Autowired
     private CategoryService categoryService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private UnitService unitService;
 
     private ObservableList<ProductDto> productDtosByCategory = FXCollections.observableArrayList();
     private List<ProductDto> productDtos;
@@ -109,16 +110,11 @@ public class AddReceiptController implements Initializable {
         });
     }
 
-    public void clearData(){
+    public void clearData() {
         productComboBox.getItems().clear();
         productComboBox.getEditor().setText("");
         barcode.setText("");
         unitOfMeasure.setText("");
-    }
-
-    @FXML
-    public void add() {
-
     }
 
     @FXML
@@ -156,5 +152,18 @@ public class AddReceiptController implements Initializable {
     private void productSearch(ActionEvent event) {
         ComboBox source = (ComboBox) event.getSource();
         source.getValue();
+    }
+
+    @FXML
+    private void addProductToTable(ActionEvent event) {
+        String barcode = this.barcode.getText();
+        Product product = productService.findByBarcode(Long.parseLong(barcode));
+        if (product != null) {
+            String categoryName = categories.getValue();
+            String productName = productComboBox.getValue();
+            Unit unit = unitService.findByName(String.valueOf(unitOfMeasure));
+            BigDecimal price = new BigDecimal(this.price.getText());
+            Integer amount = this.amount.getValue();
+        }
     }
 }
