@@ -15,7 +15,7 @@ public class ProductDto {
     private ObjectProperty<BigDecimal> totalPrice;
     private IntegerProperty residue;
     private LongProperty barcode;
-    private StringProperty unit;
+    private StringProperty unitName;
     private StringProperty categoryName;
 
     public long getId() {
@@ -56,19 +56,19 @@ public class ProductDto {
         this.categoryName.set(categoryName);
     }
 
-    public String getUnit() {
-        return unit.get();
+    public String getUnitName() {
+        return unitName.get();
     }
 
-    public StringProperty unitProperty() {
-        return unit;
+    public StringProperty unitNameProperty() {
+        return unitName;
     }
 
-    public void setUnit(String unit) {
-        if (this.unit == null) {
-            this.unit = new SimpleStringProperty();
+    public void setUnitName(String unitName) {
+        if (this.unitName == null) {
+            this.unitName = new SimpleStringProperty();
         }
-        this.unit.set(unit);
+        this.unitName.set(unitName);
     }
 
     public int getAmount() {

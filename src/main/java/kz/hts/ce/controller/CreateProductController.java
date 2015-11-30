@@ -6,8 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Category;
 import kz.hts.ce.model.entity.ProductProvider;
@@ -88,7 +86,7 @@ public class CreateProductController implements Initializable {
 
                     ProductDto productDto = productTable.getSelectionModel().getSelectedItem();
                     productName.setText(productDto.getName());
-                    unit.setText(productDto.getUnit());
+                    unit.setText(productDto.getUnitName());
                 }
             });
         }
@@ -134,7 +132,7 @@ public class CreateProductController implements Initializable {
             ProductDto productDto = new ProductDto();
             productDto.setName(productProvider.getProduct().getName());
             productDto.setBarcode(productProvider.getProduct().getBarcode());
-            productDto.setUnit(productProvider.getProduct().getUnit().getSymbol());
+            productDto.setUnitName(productProvider.getProduct().getUnit().getSymbol());
             productsData.add(productDto);
         }
 

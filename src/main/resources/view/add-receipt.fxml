@@ -1,76 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.*?>
 <?import java.lang.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.AddReceiptController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.AddReceiptController">
     <children>
-        <SplitPane dividerPositions="0.2630691399662732" layoutX="54.0" layoutY="173.0" orientation="VERTICAL" prefHeight="595.0" prefWidth="1008.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <SplitPane dividerPositions="0.2630691399662732" layoutX="54.0" layoutY="173.0" orientation="VERTICAL"
+                   prefHeight="595.0" prefWidth="1008.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                     <children>
                         <Label layoutX="165.0" layoutY="47.0" text="Поставщик">
                             <font>
-                                <Font size="14.0" />
+                                <Font size="14.0"/>
                             </font>
                         </Label>
                         <Label layoutX="165.0" layoutY="94.0" text="Отсрочка">
                             <font>
-                                <Font size="14.0" />
+                                <Font size="14.0"/>
                             </font>
                         </Label>
-                        <Spinner fx:id="postponement" layoutX="288.0" layoutY="88.0" prefHeight="30.0" prefWidth="200.0" />
+                        <Spinner fx:id="postponement" layoutX="288.0" layoutY="88.0" prefHeight="30.0"
+                                 prefWidth="200.0"/>
                         <Label layoutX="537.0" layoutY="47.0" text="Дата">
                             <font>
-                                <Font size="14.0" />
+                                <Font size="14.0"/>
                             </font>
                         </Label>
-                        <DatePicker fx:id="date" layoutX="619.0" layoutY="41.0" prefHeight="30.0" prefWidth="200.0" />
+                        <DatePicker fx:id="date" layoutX="619.0" layoutY="41.0" prefHeight="30.0" prefWidth="200.0"/>
                         <Label layoutX="537.0" layoutY="95.0" text="НДС">
                             <font>
-                                <Font size="14.0" />
+                                <Font size="14.0"/>
                             </font>
                         </Label>
-                        <CheckBox fx:id="vat" layoutX="619.0" layoutY="89.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="34.0" />
-                        <ComboBox fx:id="providers" layoutX="288.0" layoutY="39.0" prefHeight="30.0" prefWidth="200.0" />
+                        <CheckBox fx:id="vat" layoutX="619.0" layoutY="89.0" mnemonicParsing="false" prefHeight="37.0"
+                                  prefWidth="34.0"/>
+                        <ComboBox fx:id="providers" layoutX="288.0" layoutY="39.0" prefHeight="30.0" prefWidth="200.0"
+                                  promptText="Выберите поставщика"/>
                     </children>
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-               <children>
-                  <TableView editable="true" fixedCellSize="1.0" layoutX="36.0" layoutY="32.0" prefHeight="231.0" prefWidth="931.0" AnchorPane.bottomAnchor="171.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="32.0">
-                    <columns>
-                      <TableColumn prefWidth="343.0" text="Наименование товара" />
-                      <TableColumn minWidth="0.0" prefWidth="120.0" text="Цена за ед" />
-                        <TableColumn prefWidth="84.342529296875" text="Количество" />
-                        <TableColumn prefWidth="110.9747314453125" text="Ед. измерения" />
-                        <TableColumn prefWidth="143.0" text="Сумма" />
-                        <TableColumn prefWidth="128.0" />
-                    </columns>
-                  </TableView>
-                  <TextField fx:id="price" layoutX="408.0" layoutY="277.0" prefHeight="25.0" prefWidth="140.0" promptText="Цена за ед">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="amount" layoutX="552.0" layoutY="277.0" prefHeight="25.0" prefWidth="102.0" promptText="Количество">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="unitOfMeasure" layoutX="658.0" layoutY="277.0" prefHeight="25.0" prefWidth="115.0" promptText="Ед. измерения">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TextField>
-                  <Button layoutX="784.0" layoutY="277.0" mnemonicParsing="false" onAction="#add" prefHeight="30.0" prefWidth="102.0" text="Добавить">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-                  <ComboBox layoutX="70.0" layoutY="277.0" prefHeight="30.0" prefWidth="333.0" promptText="Наименование товара" />
-               </children>
+                    <children>
+                        <TableView editable="true" fixedCellSize="1.0" layoutX="36.0" layoutY="32.0" prefHeight="231.0"
+                                   prefWidth="931.0" AnchorPane.bottomAnchor="171.0" AnchorPane.leftAnchor="36.0"
+                                   AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="32.0">
+                            <columns>
+                                <TableColumn prefWidth="343.0" text="Наименование товара"/>
+                                <TableColumn minWidth="0.0" prefWidth="120.0" text="Цена за ед"/>
+                                <TableColumn prefWidth="84.342529296875" text="Количество"/>
+                                <TableColumn prefWidth="110.9747314453125" text="Ед. измерения"/>
+                                <TableColumn prefWidth="143.0" text="Сумма"/>
+                                <TableColumn prefWidth="128.0"/>
+                            </columns>
+                        </TableView>
+                        <TextField fx:id="price" layoutX="619.0" layoutY="277.0" prefHeight="30.0" prefWidth="115.0"
+                                   promptText="Цена за ед.">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                        </TextField>
+                        <Spinner fx:id="amount" layoutX="741.0" layoutY="277.0" prefHeight="30.0" prefWidth="102.0"/>
+                        <TextField fx:id="unitOfMeasure" editable="false" layoutX="495.0" layoutY="277.0"
+                                   prefHeight="30.0" prefWidth="115.0" promptText="Ед. измерения">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                        </TextField>
+                        <Button layoutX="850.0" layoutY="277.0" mnemonicParsing="false" onAction="#add"
+                                prefHeight="30.0" prefWidth="102.0" text="Добавить">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                        </Button>
+                        <ComboBox fx:id="categories" layoutX="51.0" layoutY="277.0" onAction="#findProductsByCategory"
+                                  prefHeight="30.0" prefWidth="160.0" promptText="Выберите категорию"/>
+                        <ComboBox editable="true" disable="true" fx:id="productComboBox" onAction="#productSearch"
+                                  layoutX="219.0" layoutY="277.0" prefHeight="30.0" prefWidth="147.0"
+                                  promptText="Введите название товара"/>
+                        <TextField fx:id="barcode" layoutX="373.0" layoutY="277.0" prefHeight="30.0" prefWidth="115.0"
+                                   promptText="Штрих-код"/>
+                    </children>
                 </AnchorPane>
             </items>
         </SplitPane>
