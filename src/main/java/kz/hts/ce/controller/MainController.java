@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -46,6 +47,7 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         PagesConfiguration screens = getPagesConfiguration();
         getWatch(dateLabel);
+        screens.getPrimaryStage().getIcons().add(new Image("shop3.png"));
         screens.getPrimaryStage().addEventHandler(EventType.ROOT, new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
