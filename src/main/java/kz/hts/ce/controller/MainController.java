@@ -55,7 +55,6 @@ public class MainController implements Initializable {
                 flag = true;
             }
         });
-
         Employee employee = employeeService.findByUsername(getPrincipal());
         role.setText(employee.getRole().getName());
     }

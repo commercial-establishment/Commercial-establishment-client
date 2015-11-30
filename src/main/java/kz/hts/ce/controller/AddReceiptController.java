@@ -1,5 +1,6 @@
 package kz.hts.ce.controller;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Invoice;
 import kz.hts.ce.model.entity.InvoiceWarehouseProduct;
 import kz.hts.ce.model.entity.WarehouseProduct;
@@ -21,7 +23,12 @@ import static kz.hts.ce.util.JavaFxUtil.alert;
 @Controller
 public class AddReceiptController {
 
-    private int cnt=-1;
+    @Autowired
+    private InvoiceService invoiceService;
+    @Autowired
+    private WarehouseProductService warehouseProductService;
+    @Autowired
+    private InvoiceWarehouseProductService invoiceWarehouseProductService;
 
     @FXML
     private TextField number;
@@ -33,40 +40,17 @@ public class AddReceiptController {
     private DatePicker date;
     @FXML
     private ComboBox<String> providers;
+
     @FXML
     private VBox vBox;
+    @FXML
+    private TableView<ProductDto> tableView = new TableView<>();
 
-    @Autowired
-    private InvoiceService invoiceService;
-    @Autowired
-    private WarehouseProductService warehouseProductService;
-    @Autowired
-    private InvoiceWarehouseProductService invoiceWarehouseProductService;
+    private ObservableList<ProductDto> tableData = FXCollections.observableArrayList();
 
     @FXML
-    private void addRowForNewProduct() {
-        HBox box = new HBox();
-        TextField productName = new TextField();
-        TextField unitOfMeasure = new TextField();
-        TextField amount = new TextField();
-        TextField price = new TextField();
-        TextField priceAmount = new TextField();
+    public void add(){
 
-        productName.setPrefWidth(362);
-        price.setPrefWidth(118);
-        unitOfMeasure.setPrefWidth(89);
-        amount.setPrefWidth(89);
-        priceAmount.setPrefWidth(112);
-        box.getChildren().addAll(productName, price, unitOfMeasure, amount, priceAmount);
-        vBox.getChildren().add(box);
-        cnt++;
-    }
-
-    @FXML
-    private void deleteProductRow() {
-        if (cnt != -1) {
-            vBox.getChildren().remove(cnt--);
-        }
     }
 
     @FXML
