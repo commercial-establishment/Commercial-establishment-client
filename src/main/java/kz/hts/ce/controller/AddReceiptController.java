@@ -254,15 +254,19 @@ public class AddReceiptController implements Initializable {
         productDto.setPrice(price);
         productDto.setAmount(amount);
         productDto.setUnitName(unit);
-        productsData.add(productDto);
 
-        productsTable.setItems(productsData);
-        deleteRowColumn.setDisable(false);
+        if (!barcode.matches("^[0-9]{7,12}$")) {
+            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Штрих код не соответствует стандартам");
+        } else {
+            productsData.add(productDto);
+            productsTable.setItems(productsData);
+            deleteRowColumn.setDisable(false);
 
-        productComboBox.setValue("");
-        this.barcode.setText("");
-        this.unitOfMeasure.getEditor().setText("");
-        this.price.setText("0");
+            productComboBox.setValue("");
+            this.barcode.setText("");
+            this.unitOfMeasure.getEditor().setText("");
+            this.price.setText("0");
+        }
     }
 
     @FXML
