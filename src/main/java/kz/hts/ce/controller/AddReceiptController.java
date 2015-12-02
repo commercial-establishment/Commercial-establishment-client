@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.entity.Invoice;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.*;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaFxUtil.alert;
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromProduct;
+import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 import static kz.hts.ce.util.SpringUtil.getPrincipal;
 
 @Controller
@@ -101,6 +104,8 @@ public class AddReceiptController implements Initializable {
     private WarehouseProductService warehouseProductService;
     @Autowired
     private WarehouseService warehouseService;
+    @Autowired
+    private MainController mainController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -143,40 +148,6 @@ public class AddReceiptController implements Initializable {
         });
     }
 
-    public void initializeTableColumns() {
-        barcodeColumn.setCellValueFactory(cellData -> cellData.getValue().barcodeProperty());
-        categoryNameColumn.setCellValueFactory(cellData -> cellData.getValue().categoryNameProperty());
-        nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        priceColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
-        amountColumn.setCellValueFactory(cellData -> cellData.getValue().amountProperty());
-        unitOfMeasureColumn.setCellValueFactory(cellData -> cellData.getValue().unitNameProperty());
-        totalPriceColumn.setCellValueFactory(cellData -> cellData.getValue().totalPriceProperty());
-    }
-
-    public void clearData() {
-        productComboBox.getItems().clear();
-        productComboBox.getEditor().setText("");
-        barcode.setText("");
-        unitOfMeasure.setText("");
-    }
-
-    @FXML
-    private void save() {
-        try {
-            ObservableList<Node> products = vBox.getChildren();
-            for (Node product : products) {
-                HBox productHBox = (HBox) product;
-                ObservableList<Node> productFields = productHBox.getChildren();
-                for (Node productField : productFields) {
-                    TextField productTextField = (TextField) productField;
-                    String fieldText = ((TextField) productField).getText();
-                }
-            }
-        } catch (ControllerException e) {
-            alert(Alert.AlertType.WARNING, "Ошибка", null, "Не все поля заполнены верно");
-        }
-    }
-
     public void findProductsByCategory(ActionEvent event) {
         productDtosByCategory.clear();
         clearData();
@@ -207,53 +178,59 @@ public class AddReceiptController implements Initializable {
     @FXML
     @Transactional
     private void saveInvoice(ActionEvent event) {
-        String providerCompanyName = providers.getValue();
-        LocalDate localDate = this.date.getValue();
-        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        boolean vat = this.vat.isSelected();
-        Integer postponement = this.postponement.getValue();
+        try {
+            String providerCompanyName = providers.getValue();
+            LocalDate localDate = this.date.getValue();
+            Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            boolean vat = this.vat.isSelected();
+            Integer postponement = this.postponement.getValue();
 
-        Invoice invoiceEntity = new Invoice();
-        invoiceEntity.setDate(date);
-        invoiceEntity.setPostponement(postponement);
-        invoiceEntity.setProvider(providerService.findByCompanyName(providerCompanyName));
-        invoiceEntity.setVat(vat);
-        Invoice invoice = invoiceService.save(invoiceEntity);
+            Invoice invoiceEntity = new Invoice();
+            invoiceEntity.setDate(date);
+            invoiceEntity.setPostponement(postponement);
+            invoiceEntity.setProvider(providerService.findByCompanyName(providerCompanyName));
+            invoiceEntity.setVat(vat);
+            Invoice invoice = invoiceService.save(invoiceEntity);
 
-        for (ProductDto productDto : productsData) {
-            Product product = productService.findByBarcode(productDto.getBarcode());
-            WarehouseProduct warehouseProduct = new WarehouseProduct();
-            warehouseProduct.setArrival(productDto.getAmount());
-            warehouseProduct.setInitialPrice(productDto.getPrice());
+            for (ProductDto productDto : productsData) {
+                Product product = productService.findByBarcode(productDto.getBarcode());
+                WarehouseProduct warehouseProduct = new WarehouseProduct();
+                warehouseProduct.setArrival(productDto.getAmount());
+                warehouseProduct.setInitialPrice(productDto.getPrice());
 
-            //TODO price with/without VAT?!?!?!
-            warehouseProduct.setPrice(productDto.getPrice());
+                //TODO price with/without VAT?!?!?!
+                warehouseProduct.setPrice(productDto.getPrice());
 
-            warehouseProduct.setResidue(productDto.getAmount());
-            if (product != null) {
-                warehouseProduct.setProduct(product);
-            } else {
-                Product newProduct = new Product();
-                newProduct.setBarcode(productDto.getBarcode());
-                newProduct.setBlocked(false);
-                Category category = categoryService.findByName(productDto.getCategoryName());
-                newProduct.setCategory(category);
-                newProduct.setName(productDto.getName());
-                Unit unit = unitService.findByName(productDto.getUnitName());
-                newProduct.setUnit(unit);
+                warehouseProduct.setResidue(productDto.getAmount());
+                if (product != null) {
+                    warehouseProduct.setProduct(product);
+                } else {
+                    Product newProduct = new Product();
+                    newProduct.setBarcode(productDto.getBarcode());
+                    newProduct.setBlocked(false);
+                    Category category = categoryService.findByName(productDto.getCategoryName());
+                    newProduct.setCategory(category);
+                    newProduct.setName(productDto.getName());
+                    Unit unit = unitService.findByName(productDto.getUnitName());
+                    newProduct.setUnit(unit);
 
-                Product createdProduct = productService.save(newProduct);
-                warehouseProduct.setProduct(createdProduct);
+                    Product createdProduct = productService.save(newProduct);
+                    warehouseProduct.setProduct(createdProduct);
+                }
+                long shopId = employeeService.findByUsername(getPrincipal()).getShop().getId();
+                warehouseProduct.setWarehouse(warehouseService.findByShopId(shopId));
+                warehouseProduct.setVersion(1);
+                warehouseProductService.save(warehouseProduct);
+
+                InvoiceWarehouseProduct invoiceWarehouseProduct = new InvoiceWarehouseProduct();
+                invoiceWarehouseProduct.setInvoice(invoice);
+                invoiceWarehouseProduct.setWarehouseProduct(warehouseProduct);
+                invoiceWarehouseProductService.save(invoiceWarehouseProduct);
+
+                showReceiptsPage();
             }
-            long shopId = employeeService.findByUsername(getPrincipal()).getShop().getId();
-            warehouseProduct.setWarehouse(warehouseService.findByShopId(shopId));
-            warehouseProduct.setVersion(1);
-            warehouseProductService.save(warehouseProduct);
-
-            InvoiceWarehouseProduct invoiceWarehouseProduct = new InvoiceWarehouseProduct();
-            invoiceWarehouseProduct.setInvoice(invoice);
-            invoiceWarehouseProduct.setWarehouseProduct(warehouseProduct);
-            invoiceWarehouseProductService.save(invoiceWarehouseProduct);
+        } catch (ControllerException e) {
+            alert(Alert.AlertType.ERROR, "Внутренная ошибка", null, "Пожалуйста, проверьте корректность введённых данных");
         }
     }
 
@@ -285,6 +262,14 @@ public class AddReceiptController implements Initializable {
     }
 
     @FXML
+    private void enableAllFields() {
+        date.setDisable(false);
+        postponement.setDisable(false);
+        vat.setDisable(false);
+        categories.setDisable(false);
+    }
+
+    @FXML
     private void deleteProductFromTable() {
         ProductDto productDto = productsTable.getSelectionModel().getSelectedItem();
         if (productDto == null) {
@@ -292,6 +277,32 @@ public class AddReceiptController implements Initializable {
         } else {
             productsData.remove(productDto);
             productsTable.getItems().remove(productDto);
+        }
+    }
+
+    public void initializeTableColumns() {
+        barcodeColumn.setCellValueFactory(cellData -> cellData.getValue().barcodeProperty());
+        categoryNameColumn.setCellValueFactory(cellData -> cellData.getValue().categoryNameProperty());
+        nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        priceColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
+        amountColumn.setCellValueFactory(cellData -> cellData.getValue().amountProperty());
+        unitOfMeasureColumn.setCellValueFactory(cellData -> cellData.getValue().unitNameProperty());
+        totalPriceColumn.setCellValueFactory(cellData -> cellData.getValue().totalPriceProperty());
+    }
+
+    public void clearData() {
+        productComboBox.getItems().clear();
+        productComboBox.getEditor().setText("");
+        barcode.setText("");
+        unitOfMeasure.setText("");
+    }
+
+    public void showReceiptsPage() {
+        PagesConfiguration screens = getPagesConfiguration();
+        try {
+            mainController.getContentContainer().getChildren().setAll(screens.receipts());
+        } catch (IOException e) {
+            throw new ControllerException(e);
         }
     }
 }
