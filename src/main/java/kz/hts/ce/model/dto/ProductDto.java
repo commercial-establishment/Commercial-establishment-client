@@ -8,7 +8,7 @@ import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
 
 public class ProductDto {
 
-    private long id;
+    private LongProperty id;
     private StringProperty name;
     private IntegerProperty amount;
     private ObjectProperty<BigDecimal> price;
@@ -19,11 +19,18 @@ public class ProductDto {
     private StringProperty categoryName;
 
     public long getId() {
+        return id.get();
+    }
+
+    public LongProperty idProperty() {
         return id;
     }
 
     public void setId(long id) {
-        this.id = id;
+        if (this.id == null) {
+            this.id = new SimpleLongProperty();
+        }
+        this.id.set(id);
     }
 
     public String getName() {
@@ -126,7 +133,7 @@ public class ProductDto {
 
     public void setPrice(BigDecimal price) {
         if (this.price == null) {
-            this.price = new SimpleObjectProperty<BigDecimal>();
+            this.price = new SimpleObjectProperty<>();
         }
         this.price.set(price);
     }
@@ -134,13 +141,12 @@ public class ProductDto {
     public BigDecimal getTotalPrice() {
         BigDecimal price = getPrice();
         int amount = getAmount();
-        BigDecimal totalPrice = multiplyIntegerAndBigDecimal(amount, price);
-        return totalPrice;
+        return multiplyIntegerAndBigDecimal(amount, price);
     }
 
     public void setTotalPrice(BigDecimal totalPrice) {
         if (this.totalPrice == null) {
-            this.totalPrice = new SimpleObjectProperty<BigDecimal>();
+            this.totalPrice = new SimpleObjectProperty<>();
         }
         this.totalPrice.set(totalPrice);
     }
