@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -69,7 +70,7 @@ public class AddReceiptController implements Initializable {
     @FXML
     private TextField price;
     @FXML
-    private TextField unitOfMeasure;
+    private ComboBox<String> unitOfMeasure;
     @FXML
     private ComboBox<String> categories;
     @FXML
@@ -116,6 +117,10 @@ public class AddReceiptController implements Initializable {
         postponement.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0));
         amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 1));
 
+        List<Unit> units = unitService.findAll();
+        List<String> unitNames = units.stream().map(Unit::getName).collect(Collectors.toList());
+        unitOfMeasure.getItems().addAll(unitNames);
+
         long shopId = employeeService.findByUsername(getPrincipal()).getShop().getId();
         List<ShopProvider> shopProviders = shopProviderService.findByShopId(shopId);
         List<String> providerNames = shopProviders.stream().map(shopProvider -> shopProvider.getProvider().getCompanyName()).collect(Collectors.toList());
@@ -132,11 +137,15 @@ public class AddReceiptController implements Initializable {
                     if (name.equals(newValue)) {
                         productComboBox.getEditor().setText(name);
                         barcode.setText(String.valueOf(Long.valueOf(productDto.getBarcode())));
-                        unitOfMeasure.setText(productDto.getUnitName());
+                        String unitName = productDto.getUnitName();
+                        unitOfMeasure.getEditor().setText(unitName);
+                        unitOfMeasure.setDisable(true);
                     } else if (newValue.equals("")) {
                         clearData();
+                        unitOfMeasure.setDisable(false);
                     } else {
                         ObservableList<String> items = productComboBox.getItems();
+                        unitOfMeasure.setDisable(false);
                         if (!items.contains(name)) {
                             items.add(name);
                         }
@@ -167,12 +176,6 @@ public class AddReceiptController implements Initializable {
             ProductDto productDto = createProductDtoFromProduct(product);
             productDtosByCategory.add(productDto);
         }
-    }
-
-    @FXML
-    private void productSearch(ActionEvent event) {
-        ComboBox source = (ComboBox) event.getSource();
-        source.getValue();
     }
 
     @FXML
@@ -210,7 +213,8 @@ public class AddReceiptController implements Initializable {
                     newProduct.setBlocked(false);
                     Category category = categoryService.findByName(productDto.getCategoryName());
                     newProduct.setCategory(category);
-                    newProduct.setName(productDto.getName());
+                    String productName = productDto.getName();
+                    newProduct.setName(productName);
                     Unit unit = unitService.findByName(productDto.getUnitName());
                     newProduct.setUnit(unit);
 
@@ -237,8 +241,8 @@ public class AddReceiptController implements Initializable {
     @FXML
     private void addProductToTable() {
         String categoryName = categories.getValue();
-        String productName = productComboBox.getValue();
-        String unit = unitOfMeasure.getText();
+        String productName = productComboBox.getEditor().getText();
+        String unit = unitOfMeasure.getEditor().getText();
         BigDecimal price = new BigDecimal(this.price.getText());
         Integer amount = this.amount.getValue();
         String barcode = this.barcode.getText();
@@ -257,7 +261,7 @@ public class AddReceiptController implements Initializable {
 
         productComboBox.setValue("");
         this.barcode.setText("");
-        this.unitOfMeasure.setText("");
+        this.unitOfMeasure.getEditor().setText("");
         this.price.setText("0");
     }
 
@@ -294,7 +298,7 @@ public class AddReceiptController implements Initializable {
         productComboBox.getItems().clear();
         productComboBox.getEditor().setText("");
         barcode.setText("");
-        unitOfMeasure.setText("");
+        unitOfMeasure.getEditor().setText("");
     }
 
     public void showReceiptsPage() {

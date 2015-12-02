@@ -54,6 +54,8 @@ public class ReceiptsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        invoiceData.clear();
+
         Employee employee = employeeService.findByUsername(getPrincipal());
         List<InvoiceWarehouseProduct> invoicesWarehouseProducts = invoiceWarehouseProductService.
                 findByWarehouseProductWarehouseShopId(employee.getShop().getId());
