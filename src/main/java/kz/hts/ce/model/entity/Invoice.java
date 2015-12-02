@@ -1,5 +1,7 @@
 package kz.hts.ce.model.entity;
 
+import kz.hts.ce.model.entity.BaseEntity;
+import kz.hts.ce.model.entity.Provider;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
@@ -20,6 +22,7 @@ public class Invoice extends BaseEntity {
     private Provider provider;
 
     private int postponement;
+    private boolean vat;
 
     public Date getDate() {
         return date;
@@ -43,6 +46,14 @@ public class Invoice extends BaseEntity {
 
     public void setPostponement(int postponement) {
         this.postponement = postponement;
+    }
+
+    public boolean isVat() {
+        return vat;
+    }
+
+    public void setVat(boolean vat) {
+        this.vat = vat;
     }
 
     @Override

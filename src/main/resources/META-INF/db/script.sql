@@ -28,12 +28,12 @@ INSERT INTO shop (id, address, is_blocked, name, city_id, type_id) VALUES (1, '�
 
 INSERT INTO WAREHOUSE (id, shop_id) VALUES (1, 1);
 
-INSERT INTO warehouse_product (id, arrival, import_date, residue, product_id, WAREHOUSE_ID, VERSION, INITIAL_PRICE, PRICE)
-VALUES (1, 100, NULL, 50, 1, 1, 1, 200, 220);
-INSERT INTO warehouse_product (id, arrival, import_date, residue, product_id, WAREHOUSE_ID, VERSION, INITIAL_PRICE, PRICE)
-VALUES (3, 30, NULL, 25, 3, 1, 1, 200, 220);
-INSERT INTO warehouse_product (id, arrival, import_date, residue, product_id, WAREHOUSE_ID, VERSION, INITIAL_PRICE, PRICE)
-VALUES (2, 100, NULL, 50, 2, 1, 1, 150, 170);
+INSERT INTO warehouse_product (id, arrival, residue, product_id, WAREHOUSE_ID, VERSION, INITIAL_PRICE, PRICE)
+VALUES (1, 100, 50, 1, 1, 1, 200, 220);
+INSERT INTO warehouse_product (id, arrival, residue, product_id, WAREHOUSE_ID, VERSION, INITIAL_PRICE, PRICE)
+VALUES (3, 30, 25, 3, 1, 1, 200, 220);
+INSERT INTO warehouse_product (id, arrival, residue, product_id, WAREHOUSE_ID, VERSION, INITIAL_PRICE, PRICE)
+VALUES (2, 100, 50, 2, 1, 1, 150, 170);
 
 INSERT INTO provider (id, address, is_blocked, company_name, contact_person, email, end_work_date, password, start_work_date, username, city_id, role_id)
 VALUES (1, 'ул. Ташенова 5/2', FALSE, 'COMPANY NAME', 'PERSON NAME', 'yakov@gmail.com', NULL,
