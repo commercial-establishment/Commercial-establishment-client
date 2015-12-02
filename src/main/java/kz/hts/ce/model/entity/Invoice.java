@@ -2,6 +2,7 @@ package kz.hts.ce.model.entity;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -10,8 +11,7 @@ import java.util.Date;
 @Entity
 public class Invoice extends BaseEntity {
 
-//    private long number;
-
+    @Column(nullable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date date;
 
@@ -20,14 +20,6 @@ public class Invoice extends BaseEntity {
     private Provider provider;
 
     private int postponement;
-
-//    public long getNumber() {
-//        return number;
-//    }
-//
-//    public void setNumber(long number) {
-//        this.number = number;
-//    }
 
     public Date getDate() {
         return date;
@@ -51,5 +43,14 @@ public class Invoice extends BaseEntity {
 
     public void setPostponement(int postponement) {
         this.postponement = postponement;
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "date=" + date +
+                ", provider=" + provider +
+                ", postponement=" + postponement +
+                '}';
     }
 }

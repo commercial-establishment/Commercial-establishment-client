@@ -141,4 +141,9 @@ public class PagesConfiguration {
     public ShopProductsController shopProductsController() {
         return new ShopProductsController();
     }
+
+    @Bean
+    public AddReceiptController addReceiptController() {
+        return new AddReceiptController();
+    }
 }

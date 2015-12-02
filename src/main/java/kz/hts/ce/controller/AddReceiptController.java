@@ -1,8 +1,5 @@
 package kz.hts.ce.controller;
 
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,7 +17,11 @@ import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaFxUtil.alert;
@@ -30,8 +31,30 @@ import static kz.hts.ce.util.SpringUtil.getPrincipal;
 @Controller
 public class AddReceiptController implements Initializable {
 
-    private ObservableList<ProductDto> tableData = FXCollections.observableArrayList();
+    private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
+    private ObservableList<ProductDto> productDtosByCategory = FXCollections.observableArrayList();
 
+    @FXML
+    private TableView<ProductDto> productsTable;
+    @FXML
+    private TableColumn<ProductDto, Number> barcodeColumn;
+    @FXML
+    private TableColumn<ProductDto, String> nameColumn;
+    @FXML
+    private TableColumn<ProductDto, String> categoryNameColumn;
+    @FXML
+    private TableColumn<ProductDto, BigDecimal> priceColumn;
+    @FXML
+    private TableColumn<ProductDto, Number> amountColumn;
+    @FXML
+    private TableColumn<ProductDto, String> unitOfMeasureColumn;
+    @FXML
+    private TableColumn<ProductDto, BigDecimal> totalPriceColumn;
+
+    @FXML
+    private Button deleteRowColumn;
+    @FXML
+    private Button add;
     @FXML
     private ComboBox<String> productComboBox;
     @FXML
@@ -55,8 +78,6 @@ public class AddReceiptController implements Initializable {
 
     @FXML
     private VBox vBox;
-    @FXML
-    private TableView<ProductDto> tableView;
 
     @Autowired
     private ShopProviderService shopProviderService;
@@ -68,13 +89,27 @@ public class AddReceiptController implements Initializable {
     private ProductService productService;
     @Autowired
     private UnitService unitService;
-
-    private ObservableList<ProductDto> productDtosByCategory = FXCollections.observableArrayList();
-    private List<ProductDto> productDtos;
+    @Autowired
+    private InvoiceService invoiceService;
+    @Autowired
+    private InvoiceWarehouseProductService invoiceWarehouseProductService;
+    @Autowired
+    private ProviderService providerService;
+    @Autowired
+    private WarehouseProductService warehouseProductService;
+    @Autowired
+    private WarehouseService warehouseService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        productDtos = new ArrayList<>();
+        barcodeColumn.setCellValueFactory(cellData -> cellData.getValue().barcodeProperty());
+        categoryNameColumn.setCellValueFactory(cellData -> cellData.getValue().categoryNameProperty());
+        nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        priceColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
+        amountColumn.setCellValueFactory(cellData -> cellData.getValue().amountProperty());
+        unitOfMeasureColumn.setCellValueFactory(cellData -> cellData.getValue().unitNameProperty());
+        totalPriceColumn.setCellValueFactory(cellData -> cellData.getValue().totalPriceProperty());
+
         postponement.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0));
         amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 1));
 
@@ -106,7 +141,7 @@ public class AddReceiptController implements Initializable {
                     }
                 }
             }
-            this.productComboBox.show();
+            productComboBox.show();
         });
     }
 
@@ -137,7 +172,13 @@ public class AddReceiptController implements Initializable {
     public void findProductsByCategory(ActionEvent event) {
         productDtosByCategory.clear();
         clearData();
+
         productComboBox.setDisable(false);
+        barcode.setDisable(false);
+        unitOfMeasure.setDisable(false);
+        price.setDisable(false);
+        amount.setDisable(false);
+        add.setDisable(false);
 
         ComboBox<String> source = (ComboBox<String>) event.getSource();
         List<Product> products = productService.findByCategoryName(source.getValue());
@@ -155,15 +196,90 @@ public class AddReceiptController implements Initializable {
     }
 
     @FXML
-    private void addProductToTable(ActionEvent event) {
+    private void saveInvoice(ActionEvent event) {
+        String categoryName = categories.getValue();
+        String productName = productComboBox.getValue();
         String barcode = this.barcode.getText();
+        Unit unit = unitService.findByName(unitOfMeasure.getText());
+        BigDecimal price = new BigDecimal(this.price.getText());
+        Integer amount = this.amount.getValue();
+
+        String providerCompanyName = providers.getValue();
+        LocalDate localDate = this.date.getValue();
+        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        boolean vat = this.vat.isSelected();
+        Integer postponement = this.postponement.getValue();
+
         Product product = productService.findByBarcode(Long.parseLong(barcode));
         if (product != null) {
-            String categoryName = categories.getValue();
-            String productName = productComboBox.getValue();
-            Unit unit = unitService.findByName(String.valueOf(unitOfMeasure));
-            BigDecimal price = new BigDecimal(this.price.getText());
-            Integer amount = this.amount.getValue();
+            Invoice invoiceEntity = new Invoice();
+            invoiceEntity.setDate(date);
+            invoiceEntity.setPostponement(postponement);
+            invoiceEntity.setProvider(providerService.findByCompanyName(providerCompanyName));
+            Invoice invoice = invoiceService.save(invoiceEntity);
+        }
+    }
+
+    @FXML
+    private void enableAllFields() {
+        date.setDisable(false);
+        postponement.setDisable(false);
+        vat.setDisable(false);
+        categories.setDisable(false);
+    }
+
+    @FXML
+    private void addProductToTable(ActionEvent event) {
+        String categoryName = categories.getValue();
+        String productName = productComboBox.getValue();
+        String unit = unitOfMeasure.getText();
+//        Unit unit = unitService.findByName(unit);
+        BigDecimal price = new BigDecimal(this.price.getText());
+        Integer amount = this.amount.getValue();
+//
+        String barcode = this.barcode.getText();
+//        Product product = productService.findByBarcode(Long.parseLong(barcode));
+//        if (product != null) {
+
+//
+//            WarehouseProduct warehouseProduct = new WarehouseProduct();
+//            warehouseProduct.setArrival(amount);
+//            warehouseProduct.setInitialPrice(price);
+//
+//            //TODO price with/without VAT?!?!?!
+//            warehouseProduct.setPrice(price);
+//
+//            warehouseProduct.setResidue(amount);
+//            warehouseProduct.setProduct(product);
+//
+//            long shopId = employeeService.findByUsername(getPrincipal()).getShop().getId();
+//            warehouseProduct.setWarehouse(warehouseService.findByShopId(shopId));
+//            warehouseProduct.setVersion(1);
+//
+//            warehouseProductService.save(warehouseProduct);
+//        }
+
+        ProductDto productDto = new ProductDto();
+        productDto.setBarcode(Long.parseLong(barcode));
+        productDto.setCategoryName(categoryName);
+        productDto.setName(productName);
+        productDto.setPrice(price);
+        productDto.setAmount(amount);
+        productDto.setUnitName(unit);
+        productsData.add(productDto);
+
+        productsTable.setItems(productsData);
+        deleteRowColumn.setDisable(false);
+    }
+
+    @FXML
+    private void deleteProductFromTable(ActionEvent event) {
+        ProductDto productDto = productsTable.getSelectionModel().getSelectedItem();
+        if (productDto == null) {
+            alert(Alert.AlertType.WARNING, "Товар не выбран", null, "Пожалуйста, выберите товар для удаления");
+        } else {
+            productsData.remove(productDto);
+            productsTable.getItems().remove(productDto);
         }
     }
 }

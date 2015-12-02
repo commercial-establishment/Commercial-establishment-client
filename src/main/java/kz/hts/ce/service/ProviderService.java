@@ -20,6 +20,10 @@ public class ProviderService extends BaseService<Provider, ProviderRepository> {
         return repository.findByUsername(username);
     }
 
+    public Provider findByCompanyName(String name) {
+        return repository.findByCompanyName(name);
+    }
+
     public Provider findByUsernameAndBlocked(String username, boolean blocked) {
         return repository.findByUsernameAndBlocked(username, blocked);
     }
