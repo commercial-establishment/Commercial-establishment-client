@@ -15,10 +15,10 @@
     <class>kz.hts.ce.model.entity.ShopProvider</class>
     <class>kz.hts.ce.model.entity.Type</class>
     <class>kz.hts.ce.model.entity.Warehouse</class>
-    <class>kz.hts.ce.model.entity.ProductHistory</class>
+    <class>kz.hts.ce.model.entity.WarehouseProductHistory</class>
     <class>kz.hts.ce.model.entity.WarehouseProduct</class>
     <class>kz.hts.ce.model.entity.Invoice</class>
-    <class>kz.hts.ce.model.entity.InvoiceWarehouseProduct</class>
+    <class>kz.hts.ce.model.entity.InvoiceProduct</class>
     <properties>
         <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
         <property name="hibernate.hbm2ddl.auto" value="update"/>

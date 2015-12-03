@@ -19,9 +19,6 @@ public class WarehouseProduct extends BaseEntity {
     @PrimaryKeyJoinColumn(name = "warehouse_id", referencedColumnName = "id")
     private Warehouse warehouse;
 
-    @Column(name = "initial_price")
-    private BigDecimal initialPrice;
-
     private int version;
     private int arrival;
     private int residue;
@@ -33,14 +30,6 @@ public class WarehouseProduct extends BaseEntity {
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public BigDecimal getInitialPrice() {
-        return initialPrice;
-    }
-
-    public void setInitialPrice(BigDecimal initialPrice) {
-        this.initialPrice = initialPrice;
     }
 
     public BigDecimal getPrice() {

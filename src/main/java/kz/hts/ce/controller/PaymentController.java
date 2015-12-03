@@ -8,10 +8,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.ProductDto;
-import kz.hts.ce.model.entity.ProductHistory;
+import kz.hts.ce.model.entity.WarehouseProductHistory;
 import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.service.EmployeeService;
-import kz.hts.ce.service.ProductHistoryService;
+import kz.hts.ce.service.WarehouseProductHistoryService;
 import kz.hts.ce.service.WarehouseProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,7 +44,7 @@ public class PaymentController implements Initializable {
     @Autowired
     private WarehouseProductService warehouseProductService;
     @Autowired
-    private ProductHistoryService productHistoryService;
+    private WarehouseProductHistoryService warehouseProductHistoryService;
     @Autowired
     private EmployeeService employeeService;
 
@@ -86,14 +86,14 @@ public class PaymentController implements Initializable {
                     long warehouseProductId = productDto.getId();
                     WarehouseProduct warehouseProduct = warehouseProductService.findById(warehouseProductId);
 
-                    ProductHistory productHistory = new ProductHistory();
-                    productHistory.setEmployee(employeeService.findByUsername(getPrincipal()));
-                    productHistory.setWarehouseProduct(warehouseProduct);
-                    productHistory.setVersion(warehouseProduct.getVersion());
-                    productHistory.setAmount(productDto.getAmount());
-                    productHistory.setSaleDate(new Date());
-                    productHistory.setTotalPrice(multiplyIntegerAndBigDecimal(productDto.getAmount(), warehouseProduct.getPrice()));
-                    productHistoryService.save(productHistory);
+                    WarehouseProductHistory warehouseProductHistory = new WarehouseProductHistory();
+                    warehouseProductHistory.setEmployee(employeeService.findByUsername(getPrincipal()));
+                    warehouseProductHistory.setWarehouseProduct(warehouseProduct);
+                    warehouseProductHistory.setVersion(warehouseProduct.getVersion());
+                    warehouseProductHistory.setArrival(productDto.getAmount());
+                    warehouseProductHistory.setDate(new Date());
+                    warehouseProductHistory.setTotalPrice(multiplyIntegerAndBigDecimal(productDto.getAmount(), warehouseProduct.getPrice()));
+                    warehouseProductHistoryService.save(warehouseProductHistory);
 
                     int productAmount = productDto.getAmount();
                     int residue = warehouseProduct.getResidue();

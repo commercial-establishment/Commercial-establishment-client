@@ -3,7 +3,7 @@ package kz.hts.ce.util;
 import kz.hts.ce.model.dto.InvoiceDto;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Invoice;
-import kz.hts.ce.model.entity.InvoiceWarehouseProduct;
+import kz.hts.ce.model.entity.InvoiceProduct;
 import kz.hts.ce.model.entity.Product;
 import kz.hts.ce.model.entity.WarehouseProduct;
 
@@ -67,7 +67,7 @@ public class JavaUtil {
         return productDto;
     }
 
-    public static InvoiceDto createInvoiceDtoFromInvoice(Invoice invoice, List<InvoiceWarehouseProduct> invoiceWarehouseProducts) {
+    public static InvoiceDto createInvoiceDtoFromInvoice(Invoice invoice, List<InvoiceProduct> invoiceProducts) {
         InvoiceDto invoiceDto = new InvoiceDto();
         invoiceDto.setId(invoice.getId());
         invoiceDto.setDate(String.valueOf(invoice.getDate()));
@@ -75,11 +75,11 @@ public class JavaUtil {
         invoiceDto.setProviderCompanyName(invoice.getProvider().getCompanyName());
         invoiceDto.setVat(invoice.isVat());
 
-        if (invoiceWarehouseProducts != null) {
+        if (invoiceProducts != null) {
             BigDecimal totalPrice = BigDecimal.ZERO;
-            for (InvoiceWarehouseProduct invoiceWarehouseProduct : invoiceWarehouseProducts) {
-                BigDecimal price = invoiceWarehouseProduct.getWarehouseProduct().getPrice();
-                int arrival = invoiceWarehouseProduct.getWarehouseProduct().getArrival();
+            for (InvoiceProduct invoiceProduct : invoiceProducts) {
+                BigDecimal price = invoiceProduct.getPrice();
+                int arrival = invoiceProduct.getAmount();
                 BigDecimal productsPrice = multiplyIntegerAndBigDecimal(arrival, price);
                 totalPrice = totalPrice.add(productsPrice);
             }
