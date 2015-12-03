@@ -35,8 +35,10 @@ public class PagesConfiguration {
     public void initialize() {
         boolean fileExists = jsonUtil().checkJsonFile();
         if (!fileExists) {
-            jsonUtil().create(jsonUtil().getAbsolutePath(), 10, 30);
-        } else jsonUtil().read(jsonUtil().getAbsolutePath());
+            jsonUtil().create(10, 30);
+        } else {
+            jsonUtil().fillFields();
+        }
     }
 
     @Bean

@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-public class SettingsController implements Initializable{
+public class SettingsController implements Initializable {
 
     private Integer min;
     private Integer max;
@@ -29,11 +29,14 @@ public class SettingsController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        minValue.getEditor().setText(String.valueOf(jsonUtil.getMin()));
+        maxValue.getEditor().setText(String.valueOf(jsonUtil.getMax()));
         minValue.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, jsonUtil.getMin()));
         maxValue.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, jsonUtil.getMax()));
     }
+
     @FXML
-    public void update(){
+    public void update() {
         String textMin = minValue.getEditor().getText();
         SpinnerValueFactory<Integer> valueFactoryMin = minValue.getValueFactory();
         if (valueFactoryMin != null) {
@@ -42,6 +45,7 @@ public class SettingsController implements Initializable{
                 Integer valueMin = converterMin.fromString(textMin);
                 valueFactoryMin.setValue(valueMin);
                 min = valueFactoryMin.getValue();
+                jsonUtil.setMin(Integer.parseInt(textMin));
             }
         }
         String textMax = maxValue.getEditor().getText();
@@ -52,15 +56,25 @@ public class SettingsController implements Initializable{
                 Integer valueMax = converterMax.fromString(textMax);
                 valueFactoryMax.setValue(valueMax);
                 max = valueFactoryMax.getValue();
+                jsonUtil.setMax(Integer.parseInt(textMax));
             }
         }
-
+        jsonUtil.update(jsonUtil.getMin(), jsonUtil.getMax());
     }
+
     public Integer getMax() {
         return max;
     }
 
     public Integer getMin() {
         return min;
+    }
+
+    public void setMin(Integer min) {
+        this.min = min;
+    }
+
+    public void setMax(Integer max) {
+        this.max = max;
     }
 }

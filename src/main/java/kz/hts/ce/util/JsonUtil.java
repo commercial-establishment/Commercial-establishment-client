@@ -1,6 +1,5 @@
 package kz.hts.ce.util;
 
-import javafx.fxml.Initializable;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -10,11 +9,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 @Component
-public class JsonUtil implements Initializable {
+public class JsonUtil {
 
     public static final String pathToJson = "src/main/resources/settings.json";
     public static final String PRODUCT_MIN = "productMin";
@@ -24,8 +21,7 @@ public class JsonUtil implements Initializable {
     private int min;
     private int max;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void fillFields() {
         try {
             FileReader fileReader = new FileReader(pathToJson);
             JSONParser parser = new JSONParser();
@@ -50,21 +46,21 @@ public class JsonUtil implements Initializable {
         return jsonObject;
     }
 
-    public void create(String filePath, int min, int max) {
+    public void create(int min, int max) {
         JSONObject json = new JSONObject();
-        createOrUpdateJson(json, filePath, min, max);
+        createOrUpdateJson(json, min, max);
     }
 
-    public void update(String filePath, int min, int max) {
-        JSONObject json = read(filePath);
-        createOrUpdateJson(json, filePath, min, max);
+    public void update(int min, int max) {
+        JSONObject json = read(pathToJson);
+        createOrUpdateJson(json, min, max);
     }
 
-    public void createOrUpdateJson(JSONObject jsonObject, String filePath, int min, int max) {
+    public void createOrUpdateJson(JSONObject jsonObject, int min, int max) {
         try {
             jsonObject.put(PRODUCT_MIN, min);
             jsonObject.put(PRODUCT_MAX, max);
-            FileWriter fileWriter = new FileWriter(filePath);
+            FileWriter fileWriter = new FileWriter(pathToJson);
             fileWriter.write(jsonObject.toJSONString());
             fileWriter.flush();
             fileWriter.close();
