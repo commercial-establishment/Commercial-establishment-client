@@ -83,7 +83,6 @@ public class AddReceiptController implements Initializable {
     private DatePicker date;
     @FXML
     private ComboBox<String> providers;
-
     @FXML
     private VBox vBox;
 
@@ -152,17 +151,13 @@ public class AddReceiptController implements Initializable {
                             items.add(name);
                         }
 
-                        items.stream().filter(item -> !item.toLowerCase().contains(newValue.toLowerCase())).forEach(item -> {
-                            productComboBox.getItems().remove(item);
-                        });
+                        items.stream().filter(item -> !item.toLowerCase().contains(newValue.toLowerCase()))
+                                .forEach(item -> productComboBox.getItems().remove(item));
                     }
                 } else {
                     unitOfMeasure.setDisable(false);
-                    for (ProductDto dto : productDtosByCategory) {
-                        if (name.toLowerCase().equals(dto.getName().toLowerCase())) {
-                            productComboBox.getItems().remove(name);
-                        }
-                    }
+                    productDtosByCategory.stream().filter(dto -> name.toLowerCase().equals(dto.getName().toLowerCase()))
+                            .forEach(dto -> productComboBox.getItems().remove(name));
                 }
             }
             productComboBox.show();
