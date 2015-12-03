@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaFxUtil.alert;
@@ -133,8 +135,8 @@ public class AddReceiptController implements Initializable {
         productComboBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
             for (ProductDto productDto : productDtosByCategory) {
                 String name = productDto.getName();
-                if (name.toLowerCase().contains(newValue) || name.equals(newValue)) {
-                    if (name.equals(newValue)) {
+                if (name.toLowerCase().contains(newValue.toLowerCase())) {
+                    if (name.toLowerCase().equals(newValue.toLowerCase())) {
                         productComboBox.getEditor().setText(name);
                         barcode.setText(String.valueOf(Long.valueOf(productDto.getBarcode())));
                         String unitName = productDto.getUnitName();
@@ -149,7 +151,17 @@ public class AddReceiptController implements Initializable {
                         if (!items.contains(name)) {
                             items.add(name);
                         }
-                        items.stream().filter(item -> !item.contains(newValue)).forEach(item -> productComboBox.getItems().remove(item));
+
+                        items.stream().filter(item -> !item.toLowerCase().contains(newValue.toLowerCase())).forEach(item -> {
+                            productComboBox.getItems().remove(item);
+                        });
+                    }
+                } else {
+                    unitOfMeasure.setDisable(false);
+                    for (ProductDto dto : productDtosByCategory) {
+                        if (name.toLowerCase().equals(dto.getName().toLowerCase())) {
+                            productComboBox.getItems().remove(name);
+                        }
                     }
                 }
             }
