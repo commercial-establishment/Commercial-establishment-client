@@ -1,6 +1,5 @@
 package kz.hts.ce.config;
 
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -13,15 +12,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import static kz.hts.ce.util.SpringFxmlLoader.showStage;
 
 @Lazy
 @Configuration
-public class PagesConfiguration implements Initializable {
+public class PagesConfiguration {
 
     private Stage primaryStage;
 
@@ -33,13 +31,12 @@ public class PagesConfiguration implements Initializable {
         return primaryStage;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        JsonUtil jsonUtil = new JsonUtil();
-        boolean fileExists = jsonUtil.checkJsonFile();
+    @PostConstruct
+    public void initialize() {
+        boolean fileExists = jsonUtil().checkJsonFile();
         if (!fileExists) {
-            jsonUtil.create(jsonUtil.getAbsolutePath(), 10, 30);
-        }
+            jsonUtil().create(jsonUtil().getAbsolutePath(), 10, 30);
+        } else jsonUtil().read(jsonUtil().getAbsolutePath());
     }
 
     @Bean
@@ -157,5 +154,10 @@ public class PagesConfiguration implements Initializable {
     @Bean
     public AddReceiptController addReceiptController() {
         return new AddReceiptController();
+    }
+
+    @Bean
+    public JsonUtil jsonUtil() {
+        return new JsonUtil();
     }
 }

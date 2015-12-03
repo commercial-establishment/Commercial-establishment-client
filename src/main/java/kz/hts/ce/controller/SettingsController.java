@@ -6,6 +6,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
+import kz.hts.ce.util.JsonUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.net.URL;
@@ -17,6 +19,9 @@ public class SettingsController implements Initializable{
     private Integer min;
     private Integer max;
 
+    @Autowired
+    private JsonUtil jsonUtil;
+
     @FXML
     private Spinner<Integer> minValue;
     @FXML
@@ -24,8 +29,8 @@ public class SettingsController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        minValue.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0));
-        maxValue.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0));
+        minValue.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, jsonUtil.getMin()));
+        maxValue.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, jsonUtil.getMax()));
     }
     @FXML
     public void update(){
