@@ -1,10 +1,12 @@
 package kz.hts.ce.config;
 
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import kz.hts.ce.controller.*;
+import kz.hts.ce.util.JsonUtil;
 import kz.hts.ce.util.SpringFxmlLoader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,12 +14,14 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import static kz.hts.ce.util.SpringFxmlLoader.showStage;
 
 @Lazy
 @Configuration
-public class PagesConfiguration {
+public class PagesConfiguration implements Initializable {
 
     private Stage primaryStage;
 
@@ -27,6 +31,15 @@ public class PagesConfiguration {
 
     public Stage getPrimaryStage() {
         return primaryStage;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        JsonUtil jsonUtil = new JsonUtil();
+        boolean fileExists = jsonUtil.checkJsonFile();
+        if (!fileExists) {
+            jsonUtil.create(jsonUtil.getAbsolutePath(), 10, 30);
+        }
     }
 
     @Bean
