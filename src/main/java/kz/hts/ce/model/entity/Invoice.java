@@ -1,7 +1,5 @@
 package kz.hts.ce.model.entity;
 
-import kz.hts.ce.model.entity.BaseEntity;
-import kz.hts.ce.model.entity.Provider;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;

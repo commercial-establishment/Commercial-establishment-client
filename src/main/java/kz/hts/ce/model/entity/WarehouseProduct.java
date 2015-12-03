@@ -18,15 +18,9 @@ public class WarehouseProduct extends BaseEntity {
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "warehouse_id", referencedColumnName = "id")
     private Warehouse warehouse;
-//
-//    /*TODO nullable = false*/
-//    @Column(name = "import_date", nullable = true)
-//    @DateTimeFormat(pattern = "dd-MM-yyyy")
-//    private Date importDate;
 
     @Column(name = "initial_price")
     private BigDecimal initialPrice;
-
 
     private int version;
     private int arrival;

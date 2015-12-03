@@ -1,6 +1,5 @@
 package kz.hts.ce.config;
 
-import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -12,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import static kz.hts.ce.util.SpringFxmlLoader.showStage;
@@ -29,6 +27,16 @@ public class PagesConfiguration {
 
     public Stage getPrimaryStage() {
         return primaryStage;
+    }
+
+    @PostConstruct
+    public void initialize() {
+        boolean fileExists = jsonUtil().checkJsonFile();
+        if (!fileExists) {
+            jsonUtil().create(10, 30);
+        } else {
+            jsonUtil().fillFields();
+        }
     }
 
     @Bean
@@ -146,5 +154,10 @@ public class PagesConfiguration {
     @Bean
     public AddReceiptController addReceiptController() {
         return new AddReceiptController();
+    }
+
+    @Bean
+    public JsonUtil jsonUtil() {
+        return new JsonUtil();
     }
 }

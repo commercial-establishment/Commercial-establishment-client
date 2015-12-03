@@ -16,6 +16,7 @@ import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.service.CategoryService;
 import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.WarehouseProductService;
+import kz.hts.ce.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -36,7 +37,6 @@ public class ShopProductsController implements Initializable {
     public static final String RED_COLOR = "redColor";
     private long shopId;
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
-
 
     @FXML
     private TableView<ProductDto> productTable;
@@ -63,6 +63,8 @@ public class ShopProductsController implements Initializable {
     private EmployeeService employeeService;
     @Autowired
     private SettingsController settingsController;
+    @Autowired
+    private JsonUtil jsonUtil;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -108,6 +110,10 @@ public class ShopProductsController implements Initializable {
                     @Override
                     protected void updateItem(ProductDto productDto, boolean empty) {
                         super.updateItem(productDto, empty);
+                        if (settingsController.getMax() == null && settingsController.getMin() == null) {
+                            settingsController.setMin(jsonUtil.getMin());
+                            settingsController.setMax(jsonUtil.getMax());
+                        }
                         if (!empty && settingsController.getMax() != null && settingsController.getMin() != null) {
                             if (productDto.getResidue() <= settingsController.getMin()) {
                                 getStyleClass().removeAll(Collections.singleton(GREEN_COLOR));
