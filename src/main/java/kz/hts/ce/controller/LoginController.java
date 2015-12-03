@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.util.SpringUtil;
@@ -29,6 +30,8 @@ public class LoginController {
 
     @Autowired
     private SpringUtil springUtils;
+    @Autowired
+    private CalculatorController calculatorController;
 
     @FXML
     @Transactional
@@ -40,6 +43,7 @@ public class LoginController {
             screens.setPrimaryStage(stage);
             screens.login().close();
             screens.main().show();
+            calculatorController.startEventHandler(screens.getPrimaryStage().getScene());
         } catch (NullPointerException | UsernameNotFoundException e) {
             message.setText("Неверное имя пользователя или пароль:");
         }

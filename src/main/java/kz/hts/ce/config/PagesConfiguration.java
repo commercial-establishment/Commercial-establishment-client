@@ -1,5 +1,6 @@
 package kz.hts.ce.config;
 
+import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import static kz.hts.ce.util.SpringFxmlLoader.showStage;

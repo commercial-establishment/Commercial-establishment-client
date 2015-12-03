@@ -3,10 +3,13 @@ package kz.hts.ce.util;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.config.PersistenceConfig;
+import kz.hts.ce.controller.CalculatorController;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
