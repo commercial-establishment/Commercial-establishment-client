@@ -1,12 +1,15 @@
 package kz.hts.ce.controller;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.ProductDto;
@@ -32,7 +35,8 @@ public class CalculatorController implements Initializable {
     private TextField txtAdditionalDisplay;
     @FXML
     private TextField txtDisplay;
-
+    @FXML
+    private AnchorPane anchorPane;
     @Autowired
     private WarehouseProductService warehouseProductService;
 
@@ -40,7 +44,7 @@ public class CalculatorController implements Initializable {
     private AddProductController addProductController;
     @Autowired
     private ProductsController productsController;
-
+    private EventHandler<KeyEvent> eventHandler;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         PagesConfiguration screens = getPagesConfiguration();
@@ -48,12 +52,27 @@ public class CalculatorController implements Initializable {
         buttonState = new StringBuilder("");
         /*TODO change event handler*/
 //        screens.getPrimaryStage().focusedProperty().addListener((observable1, oldValue, newValue) -> {
-//            if (newValue) screens.getPrimaryStage().getScene().addEventHandler(KeyEvent.KEY_PRESSED, evt -> {
-//                buttonState.setLength(0);
-//                buttonState.append(evt.getCode().toString());
-//                CalculatorController.this.handleOnAnyButtonFromKeypad();
+//            if (newValue)
+//                screens.main().getScene().addEventHandler(KeyEvent.KEY_PRESSED, evt -> {
+//                    buttonState.setLength(0);
+//                    buttonState.append(evt.getCode().toString());
+//                    CalculatorController.this.handleOnAnyButtonFromKeypad();
 //                });
 //        });
+        eventHandler = new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                buttonState.setLength(0);
+                buttonState.append(event.getCode().toString());
+                CalculatorController.this.handleOnAnyButtonFromKeypad();
+            }
+        };
+    }
+    public void startEventHandler(Scene scene){
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
+    }
+    public void stopEventHandler(Scene scene){
+        scene.removeEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
     }
 
     @FXML
@@ -135,5 +154,9 @@ public class CalculatorController implements Initializable {
 
     public void deleteSelectedProductFromTable() {
         productsController.deleteSelectedProductFromTable();
+    }
+
+    public StringBuilder getButtonState() {
+        return buttonState;
     }
 }
