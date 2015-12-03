@@ -1,8 +1,11 @@
 package kz.hts.ce.model.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "warehouse_product")
@@ -15,10 +18,11 @@ public class WarehouseProduct extends BaseEntity {
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "warehouse_id", referencedColumnName = "id")
     private Warehouse warehouse;
-
-    /*TODO nullable = false*/
-    @Column(name = "import_date", nullable = true)
-    private LocalDateTime importDate;
+//
+//    /*TODO nullable = false*/
+//    @Column(name = "import_date", nullable = true)
+//    @DateTimeFormat(pattern = "dd-MM-yyyy")
+//    private Date importDate;
 
     @Column(name = "initial_price")
     private BigDecimal initialPrice;
@@ -59,14 +63,6 @@ public class WarehouseProduct extends BaseEntity {
 
     public void setWarehouse(Warehouse warehouse) {
         this.warehouse = warehouse;
-    }
-
-    public LocalDateTime getImportDate() {
-        return importDate;
-    }
-
-    public void setImportDate(LocalDateTime importDate) {
-        this.importDate = importDate;
     }
 
     public int getVersion() {

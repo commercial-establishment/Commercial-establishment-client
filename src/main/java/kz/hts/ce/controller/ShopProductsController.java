@@ -1,12 +1,10 @@
 package kz.hts.ce.controller;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -88,7 +86,7 @@ public class ShopProductsController implements Initializable {
             ProductDto productDto = new ProductDto();
             productDto.setName(warehouseProduct.getProduct().getName());
             productDto.setBarcode(warehouseProduct.getProduct().getBarcode());
-            productDto.setUnit(warehouseProduct.getProduct().getUnit().getName());
+            productDto.setUnitName(warehouseProduct.getProduct().getUnit().getName());
             productDto.setAmount(warehouseProduct.getArrival());
             productDto.setResidue(warehouseProduct.getResidue());
             productDto.setPrice(warehouseProduct.getPrice());
@@ -97,7 +95,7 @@ public class ShopProductsController implements Initializable {
 
         barcode.setCellValueFactory(cellData -> cellData.getValue().barcodeProperty());
         name.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        unit.setCellValueFactory(cellData -> cellData.getValue().unitProperty());
+        unit.setCellValueFactory(cellData -> cellData.getValue().unitNameProperty());
         amount.setCellValueFactory(cellData -> cellData.getValue().amountProperty());
         residue.setCellValueFactory(cellData -> cellData.getValue().residueProperty());
         price.setCellValueFactory(cellData -> cellData.getValue().priceProperty());

@@ -1,6 +1,10 @@
 package kz.hts.ce.util;
 
+import kz.hts.ce.model.dto.InvoiceDto;
 import kz.hts.ce.model.dto.ProductDto;
+import kz.hts.ce.model.entity.Invoice;
+import kz.hts.ce.model.entity.InvoiceWarehouseProduct;
+import kz.hts.ce.model.entity.Product;
 import kz.hts.ce.model.entity.WarehouseProduct;
 
 import java.math.BigDecimal;
@@ -47,10 +51,40 @@ public class JavaUtil {
         ProductDto productDto = new ProductDto();
         productDto.setId(warehouseProduct.getId());
         productDto.setName(warehouseProduct.getProduct().getName());
-        productDto.setAmount(0);
         productDto.setAmount(amount);
         productDto.setPrice(new BigDecimal(0));
         productDto.setPrice(warehouseProduct.getPrice());
         return productDto;
+    }
+
+    public static ProductDto createProductDtoFromProduct(Product product) {
+        ProductDto productDto = new ProductDto();
+        productDto.setId(product.getId());
+        productDto.setName(product.getName());
+        productDto.setBarcode(product.getBarcode());
+        productDto.setUnitName(product.getUnit().getName());
+        productDto.setCategoryName(product.getCategory().getName());
+        return productDto;
+    }
+
+    public static InvoiceDto createInvoiceDtoFromInvoice(Invoice invoice, List<InvoiceWarehouseProduct> invoiceWarehouseProducts) {
+        InvoiceDto invoiceDto = new InvoiceDto();
+        invoiceDto.setId(invoice.getId());
+        invoiceDto.setDate(String.valueOf(invoice.getDate()));
+        invoiceDto.setPostponement(invoice.getPostponement());
+        invoiceDto.setProviderCompanyName(invoice.getProvider().getCompanyName());
+        invoiceDto.setVat(invoice.isVat());
+
+        if (invoiceWarehouseProducts != null) {
+            BigDecimal totalPrice = BigDecimal.ZERO;
+            for (InvoiceWarehouseProduct invoiceWarehouseProduct : invoiceWarehouseProducts) {
+                BigDecimal price = invoiceWarehouseProduct.getWarehouseProduct().getPrice();
+                int arrival = invoiceWarehouseProduct.getWarehouseProduct().getArrival();
+                BigDecimal productsPrice = multiplyIntegerAndBigDecimal(arrival, price);
+                totalPrice = totalPrice.add(productsPrice);
+            }
+            invoiceDto.setTotalPrice(totalPrice);
+        }
+        return invoiceDto;
     }
 }

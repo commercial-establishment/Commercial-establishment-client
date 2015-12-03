@@ -8,22 +8,29 @@ import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
 
 public class ProductDto {
 
-    private long id;
+    private LongProperty id;
     private StringProperty name;
     private IntegerProperty amount;
     private ObjectProperty<BigDecimal> price;
     private ObjectProperty<BigDecimal> totalPrice;
     private IntegerProperty residue;
     private LongProperty barcode;
-    private StringProperty unit;
+    private StringProperty unitName;
     private StringProperty categoryName;
 
     public long getId() {
+        return id.get();
+    }
+
+    public LongProperty idProperty() {
         return id;
     }
 
     public void setId(long id) {
-        this.id = id;
+        if (this.id == null) {
+            this.id = new SimpleLongProperty();
+        }
+        this.id.set(id);
     }
 
     public String getName() {
@@ -56,19 +63,19 @@ public class ProductDto {
         this.categoryName.set(categoryName);
     }
 
-    public String getUnit() {
-        return unit.get();
+    public String getUnitName() {
+        return unitName.get();
     }
 
-    public StringProperty unitProperty() {
-        return unit;
+    public StringProperty unitNameProperty() {
+        return unitName;
     }
 
-    public void setUnit(String unit) {
-        if (this.unit == null) {
-            this.unit = new SimpleStringProperty();
+    public void setUnitName(String unitName) {
+        if (this.unitName == null) {
+            this.unitName = new SimpleStringProperty();
         }
-        this.unit.set(unit);
+        this.unitName.set(unitName);
     }
 
     public int getAmount() {
@@ -126,7 +133,7 @@ public class ProductDto {
 
     public void setPrice(BigDecimal price) {
         if (this.price == null) {
-            this.price = new SimpleObjectProperty<BigDecimal>();
+            this.price = new SimpleObjectProperty<>();
         }
         this.price.set(price);
     }
@@ -134,13 +141,12 @@ public class ProductDto {
     public BigDecimal getTotalPrice() {
         BigDecimal price = getPrice();
         int amount = getAmount();
-        BigDecimal totalPrice = multiplyIntegerAndBigDecimal(amount, price);
-        return totalPrice;
+        return multiplyIntegerAndBigDecimal(amount, price);
     }
 
     public void setTotalPrice(BigDecimal totalPrice) {
         if (this.totalPrice == null) {
-            this.totalPrice = new SimpleObjectProperty<BigDecimal>();
+            this.totalPrice = new SimpleObjectProperty<>();
         }
         this.totalPrice.set(totalPrice);
     }

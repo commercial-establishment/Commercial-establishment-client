@@ -76,6 +76,7 @@ public class PagesConfiguration {
     }
 
     @Bean
+    @Scope("prototype")
     public Node addReceipt() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (Node) springFxmlLoader.load("/view/add-receipt.fxml");
@@ -138,5 +139,10 @@ public class PagesConfiguration {
     @Bean
     public ShopProductsController shopProductsController() {
         return new ShopProductsController();
+    }
+
+    @Bean
+    public AddReceiptController addReceiptController() {
+        return new AddReceiptController();
     }
 }

@@ -28,7 +28,11 @@ public class ProductService extends BaseService<Product, ProductRepository> {
     }
 
     public Product findByBarcode(long barcode) {
-        return repository.findByBarcode(barcode);
+        try {
+            return repository.findByBarcode(barcode);
+        } catch (ServiceException e) {
+            return null;
+        }
     }
 
     public List<Product> findByCategoryName(String name) {

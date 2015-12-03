@@ -15,6 +15,8 @@ public interface ProviderRepository extends JpaRepository<Provider, Long> {
 
     Provider findByUsername(String username);
 
+    Provider findByCompanyName(String name);
+
     List<Provider> findByRole_Name(String roleName);
 
     @Transactional
