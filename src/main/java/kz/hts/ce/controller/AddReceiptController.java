@@ -21,9 +21,8 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaFxUtil.alert;
@@ -37,6 +36,7 @@ public class AddReceiptController implements Initializable {
 
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productDtosByCategory = FXCollections.observableArrayList();
+    private Set<Long> barcodes = new HashSet<>();
 
     @FXML
     private TableView<ProductDto> productsTable;
@@ -109,6 +109,8 @@ public class AddReceiptController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        List<Product> products = productService.findAll();
+        barcodes.addAll(products.stream().map(Product::getBarcode).collect(Collectors.toList()));
         productsData.clear();
 
         initializeTableColumns();
@@ -138,12 +140,15 @@ public class AddReceiptController implements Initializable {
                         barcode.setText(String.valueOf(Long.valueOf(productDto.getBarcode())));
                         String unitName = productDto.getUnitName();
                         unitOfMeasure.getEditor().setText(unitName);
+                        barcode.setDisable(true);
                         unitOfMeasure.setDisable(true);
                     } else if (newValue.equals("")) {
                         clearData();
+                        barcode.setDisable(false);
                         unitOfMeasure.setDisable(false);
                     } else {
                         ObservableList<String> items = productComboBox.getItems();
+                        barcode.setDisable(false);
                         unitOfMeasure.setDisable(false);
                         if (!items.contains(name)) {
                             items.add(name);
@@ -153,7 +158,12 @@ public class AddReceiptController implements Initializable {
                                 .forEach(item -> productComboBox.getItems().remove(item));
                     }
                 } else {
+                    barcode.setDisable(false);
                     unitOfMeasure.setDisable(false);
+                    productDtosByCategory.stream().filter(dto -> dto.getName().toLowerCase().contains(newValue.toLowerCase())).forEach(dto -> {
+                        barcode.setDisable(true);
+                        unitOfMeasure.setDisable(true);
+                    });
                     productDtosByCategory.stream().filter(dto -> name.toLowerCase().equals(dto.getName().toLowerCase()))
                             .forEach(dto -> productComboBox.getItems().remove(name));
                 }
@@ -283,8 +293,10 @@ public class AddReceiptController implements Initializable {
         productDto.setResidue(amount);
         productDto.setUnitName(unit);
 
-        if (!barcode.matches("^[0-9]{7,12}$")) {
-            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Штрих код не соответствует стандартам");
+        if (!barcode.matches("^[0-9]{7,12}$"))
+            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Штрих код не соответствует стандартам.");
+        else if (barcodes.contains(productDto.getBarcode())) {
+            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Данный штрих код занят.");
         } else {
             productsData.add(productDto);
             productsTable.setItems(productsData);
