@@ -109,7 +109,7 @@ public class ShopProductsController implements Initializable {
                     protected void updateItem(ProductDto productDto, boolean empty) {
                         super.updateItem(productDto, empty);
                         if (!empty && settingsController.getMax() != null && settingsController.getMin() != null) {
-                            if (productDto.getResidue() <= settingsController.getMax()) {
+                            if (productDto.getResidue() <= settingsController.getMin()) {
                                 getStyleClass().removeAll(Collections.singleton(GREEN_COLOR));
                                 getStyleClass().removeAll(Collections.singleton(ORANGE_COLOR));
                                 getStyleClass().add(RED_COLOR);
@@ -117,7 +117,7 @@ public class ShopProductsController implements Initializable {
                                 getStyleClass().removeAll(Collections.singleton(GREEN_COLOR));
                                 getStyleClass().removeAll(Collections.singleton(RED_COLOR));
                                 getStyleClass().add(ORANGE_COLOR);
-                            } else if (productDto.getResidue() > settingsController.getMin()) {
+                            } else if (productDto.getResidue() > settingsController.getMax()) {
                                 getStyleClass().removeAll(Collections.singleton(ORANGE_COLOR));
                                 getStyleClass().removeAll(Collections.singleton(RED_COLOR));
                                 getStyleClass().add(GREEN_COLOR);
