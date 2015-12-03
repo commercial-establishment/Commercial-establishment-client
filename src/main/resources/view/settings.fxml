@@ -1,11 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40"
-            xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <Label layoutX="289.0" layoutY="179.0" text="Settings"/>
-    </children>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.SettingsController">
+   <children>
+      <TabPane layoutX="53.0" layoutY="41.0" prefHeight="595.0" prefWidth="1008.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab text="Товары">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="44.0" layoutY="81.0" text="Укажите минимальное число">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="42.0" layoutY="119.0" text="Укажите максимальное число">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="14.0" layoutY="23.0" text="Обозначьте пределы что бы знать об остатках">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="276.0" layoutY="181.0" mnemonicParsing="false" onAction="#update" prefHeight="25.0" prefWidth="79.0" text="Принять">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Spinner fx:id="minValue" editable="true" layoutX="263.0" layoutY="76.0" prefHeight="30.0" prefWidth="105.0" />
+                        <Spinner fx:id="maxValue" editable="true" layoutX="264.0" layoutY="114.0" prefHeight="30.0" prefWidth="104.0" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Ценообразование">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
 </AnchorPane>

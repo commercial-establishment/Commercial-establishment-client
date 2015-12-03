@@ -37,6 +37,7 @@ public class ShopProductsController implements Initializable {
     private long shopId;
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
 
+
     @FXML
     private TableView<ProductDto> productTable;
     @FXML
@@ -60,6 +61,8 @@ public class ShopProductsController implements Initializable {
     private WarehouseProductService warehouseProductService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private SettingsController settingsController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -105,16 +108,16 @@ public class ShopProductsController implements Initializable {
                     @Override
                     protected void updateItem(ProductDto productDto, boolean empty) {
                         super.updateItem(productDto, empty);
-                        if (!empty) {
-                            if (productDto.getResidue() <= 10) {
+                        if (!empty && settingsController.getMax() != null && settingsController.getMin() != null) {
+                            if (productDto.getResidue() <= settingsController.getMax()) {
                                 getStyleClass().removeAll(Collections.singleton(GREEN_COLOR));
                                 getStyleClass().removeAll(Collections.singleton(ORANGE_COLOR));
                                 getStyleClass().add(RED_COLOR);
-                            } else if (productDto.getResidue() > 10 && productDto.getResidue() <= 30) {
+                            } else if (productDto.getResidue() > settingsController.getMin() && productDto.getResidue() <= settingsController.getMax()) {
                                 getStyleClass().removeAll(Collections.singleton(GREEN_COLOR));
                                 getStyleClass().removeAll(Collections.singleton(RED_COLOR));
                                 getStyleClass().add(ORANGE_COLOR);
-                            } else if (productDto.getResidue() > 30) {
+                            } else if (productDto.getResidue() > settingsController.getMin()) {
                                 getStyleClass().removeAll(Collections.singleton(ORANGE_COLOR));
                                 getStyleClass().removeAll(Collections.singleton(RED_COLOR));
                                 getStyleClass().add(GREEN_COLOR);
@@ -128,5 +131,9 @@ public class ShopProductsController implements Initializable {
                 };
             }
         });
+    }
+
+    public TableView<ProductDto> getProductTable() {
+        return productTable;
     }
 }
