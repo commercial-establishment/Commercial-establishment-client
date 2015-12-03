@@ -50,21 +50,12 @@ public class CalculatorController implements Initializable {
         PagesConfiguration screens = getPagesConfiguration();
         button = new Button();
         buttonState = new StringBuilder("");
-        /*TODO change event handler*/
-//        screens.getPrimaryStage().focusedProperty().addListener((observable1, oldValue, newValue) -> {
-//            if (newValue)
-//                screens.main().getScene().addEventHandler(KeyEvent.KEY_PRESSED, evt -> {
-//                    buttonState.setLength(0);
-//                    buttonState.append(evt.getCode().toString());
-//                    CalculatorController.this.handleOnAnyButtonFromKeypad();
-//                });
-//        });
         eventHandler = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 buttonState.setLength(0);
                 buttonState.append(event.getCode().toString());
-                CalculatorController.this.handleOnAnyButtonFromKeypad();
+                handleOnAnyButtonFromKeypad();
             }
         };
     }
