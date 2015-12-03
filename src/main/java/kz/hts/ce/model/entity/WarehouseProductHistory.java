@@ -7,8 +7,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-@Table(name = "product_history")
-public class ProductHistory extends BaseEntity {
+@Table(name = "warehouse_product_history")
+public class WarehouseProductHistory extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "warehouse_product_id", nullable = false)
@@ -18,14 +18,15 @@ public class ProductHistory extends BaseEntity {
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
-    @Column(name = "sale_date", nullable = false)
+    @Column(name = "date", nullable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private Date saleDate;
+    private Date date;
 
     @Column(name = "total_price", nullable = false)
     private BigDecimal totalPrice;
-    private int amount;
+    private int arrival;
     private int version;
+    private int residue;
 
     public WarehouseProduct getWarehouseProduct() {
         return warehouseProduct;
@@ -43,12 +44,12 @@ public class ProductHistory extends BaseEntity {
         this.employee = employee;
     }
 
-    public Date getSaleDate() {
-        return saleDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setSaleDate(Date saleDate) {
-        this.saleDate = saleDate;
+    public void setDate(Date saleDate) {
+        this.date = saleDate;
     }
 
     public BigDecimal getTotalPrice() {
@@ -59,12 +60,12 @@ public class ProductHistory extends BaseEntity {
         this.totalPrice = totalPrice;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getArrival() {
+        return arrival;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setArrival(int amount) {
+        this.arrival = amount;
     }
 
     public int getVersion() {
@@ -73,5 +74,13 @@ public class ProductHistory extends BaseEntity {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    public int getResidue() {
+        return residue;
+    }
+
+    public void setResidue(int residue) {
+        this.residue = residue;
     }
 }

@@ -22,6 +22,10 @@ public class Invoice extends BaseEntity {
     private int postponement;
     private boolean vat;
 
+    @ManyToOne
+    @JoinColumn(name = "warehouse_id", nullable = false)
+    private Warehouse warehouse;
+
     public Date getDate() {
         return date;
     }
@@ -52,6 +56,14 @@ public class Invoice extends BaseEntity {
 
     public void setVat(boolean vat) {
         this.vat = vat;
+    }
+
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
     }
 
     @Override

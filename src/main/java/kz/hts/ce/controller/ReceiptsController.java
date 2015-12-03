@@ -8,17 +8,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.InvoiceDto;
-import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.Invoice;
-import kz.hts.ce.model.entity.InvoiceWarehouseProduct;
 import kz.hts.ce.service.EmployeeService;
-import kz.hts.ce.service.InvoiceWarehouseProductService;
+import kz.hts.ce.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -48,19 +45,20 @@ public class ReceiptsController implements Initializable {
     @Autowired
     private MainController mainController;
     @Autowired
-    private InvoiceWarehouseProductService invoiceWarehouseProductService;
-    @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private InvoiceService invoiceService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         invoiceData.clear();
 
         Employee employee = employeeService.findByUsername(getPrincipal());
-        List<InvoiceWarehouseProduct> invoicesWarehouseProducts = invoiceWarehouseProductService.
-                findByWarehouseProductWarehouseShopId(employee.getShop().getId());
+        List<Invoice> invoicesFromDB = invoiceService.findByWarehouseShopId(employee.getShop().getId());
 
-        Set<Invoice> invoices = invoicesWarehouseProducts.stream().map(InvoiceWarehouseProduct::getInvoice).collect(Collectors.toSet());
+//        Set<Invoice> invoices = invoicesWarehouseProducts.stream().map(InvoiceWarehouse::getInvoice).collect(Collectors.toSet());
+
+        Set<Invoice> invoices = invoicesFromDB.stream().collect(Collectors.toSet());
 
         id.setCellValueFactory(cellData -> cellData.getValue().idProperty());
         providerCompanyName.setCellValueFactory(cellData -> cellData.getValue().providerCompanyNameProperty());

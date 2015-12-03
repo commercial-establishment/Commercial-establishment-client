@@ -5,9 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.entity.Invoice;
@@ -23,16 +21,14 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaFxUtil.alert;
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromProduct;
+import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
 import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 import static kz.hts.ce.util.SpringUtil.getPrincipal;
 
@@ -99,8 +95,6 @@ public class AddReceiptController implements Initializable {
     @Autowired
     private InvoiceService invoiceService;
     @Autowired
-    private InvoiceWarehouseProductService invoiceWarehouseProductService;
-    @Autowired
     private ProviderService providerService;
     @Autowired
     private WarehouseProductService warehouseProductService;
@@ -108,6 +102,10 @@ public class AddReceiptController implements Initializable {
     private WarehouseService warehouseService;
     @Autowired
     private MainController mainController;
+    @Autowired
+    private InvoiceProductService invoiceProductService;
+    @Autowired
+    private WarehouseProductHistoryService warehouseProductHistoryService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -195,25 +193,35 @@ public class AddReceiptController implements Initializable {
             boolean vat = this.vat.isSelected();
             Integer postponement = this.postponement.getValue();
 
+            Employee employee = employeeService.findByUsername(getPrincipal());
+            long shopId = employee.getShop().getId();
+            Warehouse warehouse = warehouseService.findByShopId(shopId);
+
             Invoice invoiceEntity = new Invoice();
             invoiceEntity.setDate(date);
             invoiceEntity.setPostponement(postponement);
             invoiceEntity.setProvider(providerService.findByCompanyName(providerCompanyName));
             invoiceEntity.setVat(vat);
+            invoiceEntity.setWarehouse(warehouse);
             Invoice invoice = invoiceService.save(invoiceEntity);
 
             for (ProductDto productDto : productsData) {
                 Product product = productService.findByBarcode(productDto.getBarcode());
+                InvoiceProduct invoiceProduct = new InvoiceProduct();
+                invoiceProduct.setInvoice(invoice);
+                invoiceProduct.setAmount(productDto.getAmount());
+                invoiceProduct.setPrice(productDto.getPrice());
+
                 WarehouseProduct warehouseProduct = new WarehouseProduct();
-                warehouseProduct.setArrival(productDto.getAmount());
-                warehouseProduct.setInitialPrice(productDto.getPrice());
-
-                //TODO price with/without VAT?!?!?!
                 warehouseProduct.setPrice(productDto.getPrice());
+                warehouseProduct.setWarehouse(warehouse);
+                warehouseProduct.setArrival(productDto.getAmount());
+                warehouseProduct.setResidue(productDto.getResidue());
+                warehouseProduct.setVersion(1);
 
-                warehouseProduct.setResidue(productDto.getAmount());
                 if (product != null) {
                     warehouseProduct.setProduct(product);
+                    invoiceProduct.setProduct(product);
                 } else {
                     Product newProduct = new Product();
                     newProduct.setBarcode(productDto.getBarcode());
@@ -227,19 +235,31 @@ public class AddReceiptController implements Initializable {
 
                     Product createdProduct = productService.save(newProduct);
                     warehouseProduct.setProduct(createdProduct);
+                    invoiceProduct.setProduct(createdProduct);
                 }
-                long shopId = employeeService.findByUsername(getPrincipal()).getShop().getId();
-                warehouseProduct.setWarehouse(warehouseService.findByShopId(shopId));
-                warehouseProduct.setVersion(1);
-                warehouseProductService.save(warehouseProduct);
+                WarehouseProduct warehouseProductFromDB = warehouseProductService.findByProductBarcode(warehouseProduct.getProduct().getBarcode());
+                if (warehouseProductFromDB == null) {
+                    warehouseProductService.save(warehouseProduct);
+                } else {
+                    WarehouseProductHistory warehouseProductHistory = new WarehouseProductHistory();
+                    warehouseProductHistory.setWarehouseProduct(warehouseProductFromDB);
+                    warehouseProductHistory.setEmployee(employee);
+                    warehouseProductHistory.setVersion(warehouseProductFromDB.getVersion());
+                    warehouseProductHistory.setArrival(warehouseProductFromDB.getArrival());
+                    warehouseProductHistory.setResidue(warehouseProductFromDB.getResidue());
+                    warehouseProductHistory.setDate(new Date());
+                    warehouseProductHistory.setTotalPrice(multiplyIntegerAndBigDecimal(warehouseProductFromDB.getResidue(), warehouseProductFromDB.getPrice()));
+                    warehouseProductHistoryService.save(warehouseProductHistory);
 
-                InvoiceWarehouseProduct invoiceWarehouseProduct = new InvoiceWarehouseProduct();
-                invoiceWarehouseProduct.setInvoice(invoice);
-                invoiceWarehouseProduct.setWarehouseProduct(warehouseProduct);
-                invoiceWarehouseProductService.save(invoiceWarehouseProduct);
-
-                showReceiptsPage();
+                    warehouseProductFromDB.setVersion(warehouseProductFromDB.getVersion() + 1);
+                    warehouseProductFromDB.setArrival(warehouseProduct.getArrival());
+                    warehouseProductFromDB.setResidue(warehouseProductFromDB.getResidue() + warehouseProduct.getResidue());
+                    warehouseProductFromDB.setPrice(warehouseProduct.getPrice());
+                    warehouseProductService.save(warehouseProductFromDB);
+                }
+                invoiceProductService.save(invoiceProduct);
             }
+            showReceiptsPage();
         } catch (ControllerException e) {
             alert(Alert.AlertType.ERROR, "Внутренная ошибка", null, "Пожалуйста, проверьте корректность введённых данных");
         }
@@ -260,6 +280,7 @@ public class AddReceiptController implements Initializable {
         productDto.setName(productName);
         productDto.setPrice(price);
         productDto.setAmount(amount);
+        productDto.setResidue(amount);
         productDto.setUnitName(unit);
 
         if (!barcode.matches("^[0-9]{7,12}$")) {
