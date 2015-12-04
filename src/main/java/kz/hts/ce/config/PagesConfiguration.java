@@ -6,12 +6,15 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import kz.hts.ce.controller.*;
 import kz.hts.ce.controller.invoice.AddReceiptController;
+import kz.hts.ce.controller.invoice.EditReceiptController;
+import kz.hts.ce.controller.invoice.ReceiptsController;
 import kz.hts.ce.controller.payment.PaymentController;
 import kz.hts.ce.controller.sale.CalculatorController;
 import kz.hts.ce.controller.sale.ProductCategoryController;
 import kz.hts.ce.controller.sale.ProductsController;
-import kz.hts.ce.util.JsonUtil;
-import kz.hts.ce.util.SpringFxmlLoader;
+import kz.hts.ce.util.spring.JsonUtil;
+import kz.hts.ce.util.spring.SpringFxmlLoader;
+import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -20,7 +23,7 @@ import org.springframework.context.annotation.Scope;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 
-import static kz.hts.ce.util.SpringFxmlLoader.showStage;
+import static kz.hts.ce.util.spring.SpringFxmlLoader.showStage;
 
 @Lazy
 @Configuration
@@ -150,7 +153,18 @@ public class PagesConfiguration {
     }
 
     @Bean
+    public ReceiptsController receiptsController() {
+        return new ReceiptsController();
+    }
+
+    @Bean
     public JsonUtil jsonUtil() {
         return new JsonUtil();
+    }
+
+    @Bean
+    @Scope("singleton")
+    public SpringUtil springUtil() {
+        return new SpringUtil();
     }
 }

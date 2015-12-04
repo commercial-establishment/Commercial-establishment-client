@@ -16,7 +16,7 @@ import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.service.CategoryService;
 import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.WarehouseProductService;
-import kz.hts.ce.util.JsonUtil;
+import kz.hts.ce.util.spring.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import static kz.hts.ce.util.SpringUtil.getPrincipal;
+import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class ShopProductsController implements Initializable {

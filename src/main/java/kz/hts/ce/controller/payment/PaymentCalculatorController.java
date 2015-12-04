@@ -8,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import kz.hts.ce.config.PagesConfiguration;
-import kz.hts.ce.controller.payment.PaymentController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -16,7 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static kz.hts.ce.util.JavaFxUtil.additionalCalculator;
-import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
+import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
 public class PaymentCalculatorController implements Initializable {

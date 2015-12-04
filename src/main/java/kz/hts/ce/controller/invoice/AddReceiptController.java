@@ -24,21 +24,20 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaFxUtil.alert;
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromProduct;
 import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
-import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
-import static kz.hts.ce.util.SpringUtil.getPrincipal;
+import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
+import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class AddReceiptController implements Initializable {
 
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productDtosByCategory = FXCollections.observableArrayList();
-    private Set<Long> barcodes = new HashSet<>();
+    private Set<Long> barcodes;
 
     @FXML
     private TableView<ProductDto> productsTable;
@@ -111,6 +110,7 @@ public class AddReceiptController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        barcodes = new HashSet<>();
         List<Product> products = productService.findAll();
         barcodes.addAll(products.stream().map(Product::getBarcode).collect(Collectors.toList()));
         productsData.clear();
@@ -295,7 +295,7 @@ public class AddReceiptController implements Initializable {
         productDto.setResidue(amount);
         productDto.setUnitName(unit);
 
-        if (!barcode.matches("^[0-9]{7,12}$")){
+        if (!barcode.matches("^[0-9]{7,12}$")) {
             alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Штрих код не соответствует стандартам.");
 //        else if (barcodes.contains(productDto.getBarcode())) {
 //            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Данный штрих код занят.");

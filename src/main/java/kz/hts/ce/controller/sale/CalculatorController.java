@@ -1,4 +1,4 @@
-package kz.hts.ce.controller;
+package kz.hts.ce.controller.sale;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 
 import static kz.hts.ce.util.JavaFxUtil.*;
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromWarehouseProduct;
-import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
+import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
 public class CalculatorController implements Initializable {
@@ -41,10 +41,9 @@ public class CalculatorController implements Initializable {
     private WarehouseProductService warehouseProductService;
 
     @Autowired
-    private AddProductController addProductController;
-    @Autowired
     private ProductsController productsController;
     private EventHandler<KeyEvent> eventHandler;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         PagesConfiguration screens = getPagesConfiguration();
@@ -65,10 +64,12 @@ public class CalculatorController implements Initializable {
             handleOnAnyButtonFromKeypad();
         };
     }
-    public void startEventHandler(Scene scene){
+
+    public void startEventHandler(Scene scene) {
         scene.addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
     }
-    public void stopEventHandler(Scene scene){
+
+    public void stopEventHandler(Scene scene) {
         scene.removeEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
     }
 

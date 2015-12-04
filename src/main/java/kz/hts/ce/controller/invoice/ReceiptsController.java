@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -16,7 +17,8 @@ import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.Invoice;
 import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.InvoiceService;
-import kz.hts.ce.util.JsonUtil;
+import kz.hts.ce.util.spring.JsonUtil;
+import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -30,8 +32,8 @@ import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaUtil.countDays;
 import static kz.hts.ce.util.JavaUtil.createInvoiceDtoFromInvoice;
-import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
-import static kz.hts.ce.util.SpringUtil.getPrincipal;
+import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
+import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class ReceiptsController implements Initializable {
@@ -67,6 +69,8 @@ public class ReceiptsController implements Initializable {
 
     @Autowired
     private JsonUtil jsonUtil;
+    @Autowired
+    private SpringUtil springUtil;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -125,6 +129,20 @@ public class ReceiptsController implements Initializable {
                 };
             }
         });
+
+        if (receiptsTable != null) {
+            receiptsTable.setOnMousePressed(event -> {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    try {
+                        springUtil.setId(receiptsTable.getSelectionModel().getSelectedItem().getId());
+                        Node node = getPagesConfiguration().editReceipt();
+                        mainController.getContentContainer().getChildren().setAll(node);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     @FXML

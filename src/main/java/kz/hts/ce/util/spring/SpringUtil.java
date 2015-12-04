@@ -1,12 +1,10 @@
-package kz.hts.ce.util;
+package kz.hts.ce.util.spring;
 
-import kz.hts.ce.config.PagesConfiguration;
-import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.security.AuthenticationService;
 import kz.hts.ce.security.CustomAuthenticationProvider;
-import kz.hts.ce.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SpringUtil {
+
+    private long id;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -40,13 +40,16 @@ public class SpringUtil {
         UserDetails user = authenticationService.loadUserByUsername(username);
         if (passwordEncoder.matches(password, user.getPassword())) {
             Authentication authToken = new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
-            Authentication authenticate = customAuthenticationProvider.authenticate(authToken);
+            customAuthenticationProvider.authenticate(authToken);
             SecurityContextHolder.getContext().setAuthentication(authToken);
         } else throw new NullPointerException();
     }
 
-    public static PagesConfiguration getScreensConfiguration() {
-        ApplicationContext context = AppContextSingleton.getInstance();
-        return context.getBean(PagesConfiguration.class);
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

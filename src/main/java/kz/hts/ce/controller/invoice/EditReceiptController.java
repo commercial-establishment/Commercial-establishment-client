@@ -1,4 +1,4 @@
-package kz.hts.ce.controller;
+package kz.hts.ce.controller.invoice;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,9 +9,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import kz.hts.ce.config.PagesConfiguration;
+import kz.hts.ce.controller.ControllerException;
+import kz.hts.ce.controller.MainController;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.*;
 import kz.hts.ce.service.*;
+import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +30,8 @@ import java.util.stream.Collectors;
 import static kz.hts.ce.util.JavaFxUtil.alert;
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromProduct;
 import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
-import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
-import static kz.hts.ce.util.SpringUtil.getPrincipal;
+import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
+import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class EditReceiptController implements Initializable{
@@ -109,8 +112,12 @@ public class EditReceiptController implements Initializable{
     private InvoiceProductService invoiceProductService;
     @Autowired
     private WarehouseProductHistoryService warehouseProductHistoryService;
+
     @Autowired
     private AddReceiptController addReceiptController;
+
+    @Autowired
+    private SpringUtil springUtil;
 
 
     @Override
@@ -134,6 +141,7 @@ public class EditReceiptController implements Initializable{
         List<String> providerNames = shopProviders.stream().map(shopProvider -> shopProvider.getProvider().getCompanyName()).collect(Collectors.toList());
         providers.getItems().addAll(providerNames);
         */
+        System.out.println("spring Id: " + springUtil.getId());
 
         List<Category> categoriesFromDB = categoryService.findAll();
         List<String> categoryNames = categoriesFromDB.stream().map(Category::getName).collect(Collectors.toList());

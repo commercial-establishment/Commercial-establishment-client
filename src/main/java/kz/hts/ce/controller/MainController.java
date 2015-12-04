@@ -19,8 +19,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static kz.hts.ce.util.JavaFxUtil.getWatch;
-import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
-import static kz.hts.ce.util.SpringUtil.getPrincipal;
+import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
+import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class MainController implements Initializable {

@@ -1,4 +1,4 @@
-package kz.hts.ce.util;
+package kz.hts.ce.util.spring;
 
 import kz.hts.ce.controller.ControllerException;
 import org.json.simple.JSONObject;

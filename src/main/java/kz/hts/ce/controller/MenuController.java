@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 
-import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
+import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
 public class MenuController {

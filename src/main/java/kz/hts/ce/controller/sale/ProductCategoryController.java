@@ -8,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import kz.hts.ce.controller.sale.ProductsController;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.*;
 import kz.hts.ce.service.CategoryService;
@@ -22,7 +21,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static kz.hts.ce.util.SpringUtil.getPrincipal;
+import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class ProductCategoryController implements Initializable {

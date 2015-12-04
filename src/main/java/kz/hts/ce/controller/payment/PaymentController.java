@@ -26,8 +26,8 @@ import java.util.ResourceBundle;
 import static kz.hts.ce.util.JavaFxUtil.alert;
 import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
 import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
-import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
-import static kz.hts.ce.util.SpringUtil.getPrincipal;
+import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
+import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class PaymentController implements Initializable {

@@ -112,27 +112,6 @@ public class JavaFxUtil {
 
         }
     }
-//
-//    public static void readProductFields(AddProductController addProductController, TextField txtDisplay, TextField txtAdditionalDisplay) {
-//        TextField txtAmount = addProductController.getAmount();
-//        TextField txtPrice = addProductController.getPrice();
-//
-//        txtPrice.setText(txtDisplay.getText());
-//        if (txtAdditionalDisplay.getText().equals("")) {
-//            txtAdditionalDisplay.setText("*1");
-//        }
-//        String additionalDisplayText = txtAdditionalDisplay.getText();
-//        String[] splittedAdditionalDisplay = additionalDisplayText.split("\\*");
-//        txtAmount.setText(splittedAdditionalDisplay[1]);
-//
-//        int amount = Integer.parseInt(txtAmount.getText());
-//        BigDecimal price = stringToBigDecimal(txtPrice.getText());
-//
-//        List<Integer> integerParameters = new ArrayList<>();
-//        integerParameters.add(amount);
-//        BigDecimal total = calculateCost(integerParameters, price);
-//        addProductController.getTotalPrice().setText(String.valueOf(total));
-//    }
 
     public static void alert(Alert.AlertType alertType, String title, String headerText, String contentText) {
         Alert alert = new Alert(alertType);

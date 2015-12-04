@@ -1,4 +1,4 @@
-package kz.hts.ce.util;
+package kz.hts.ce.util.spring;
 
 import kz.hts.ce.config.PersistenceConfig;
 import org.springframework.context.ApplicationContext;
