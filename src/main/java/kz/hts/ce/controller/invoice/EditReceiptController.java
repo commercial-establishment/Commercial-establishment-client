@@ -130,7 +130,7 @@ public class EditReceiptController implements Initializable{
 
         initializeTableColumns();
 
-        postponement.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0));
+
         amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 1));
 
         List<Unit> units = unitService.findAll();
@@ -142,12 +142,17 @@ public class EditReceiptController implements Initializable{
         List<String> providerNames = shopProviders.stream().map(shopProvider -> shopProvider.getProvider().getCompanyName()).collect(Collectors.toList());
         providers.getItems().addAll(providerNames);
 
+        /*TODO upload from db*/
         Invoice invoice = invoiceService.findById(springUtil.getId());
         providers.setValue(invoice.getProvider().getCompanyName());
 
         Date input = invoice.getDate();
         LocalDate date = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         this.date.setValue(date);
+
+        postponement.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, invoice.getPostponement()));
+
+        vat.selectedProperty().setValue(invoice.isVat());
 
         List<Category> categoriesFromDB = categoryService.findAll();
         List<String> categoryNames = categoriesFromDB.stream().map(Category::getName).collect(Collectors.toList());
