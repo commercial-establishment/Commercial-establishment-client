@@ -1,4 +1,4 @@
-package kz.hts.ce.controller;
+package kz.hts.ce.controller.sale;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

@@ -7,7 +7,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="396.0"
             prefWidth="569.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="kz.hts.ce.controller.PaymentController">
+            fx:controller="kz.hts.ce.controller.payment.PaymentController">
     <children>
         <Button onAction="#success" layoutX="451.0" layoutY="347.0" mnemonicParsing="false" opacity="0.83" prefHeight="30.0"
                 prefWidth="104.0" text="Принять">
@@ -46,7 +46,7 @@
                                     </font>
                                 </TextField>
                                 <AnchorPane layoutX="339.0" layoutY="13.0" prefHeight="225.0" prefWidth="195.0">
-                                    <fx:include source="additional-calculator.fxml"/>
+                                    <fx:include source="payment-calculator.fxml"/>
                                 </AnchorPane>
                             </children>
                         </AnchorPane>

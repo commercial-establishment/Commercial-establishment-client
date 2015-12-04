@@ -1,4 +1,4 @@
-package kz.hts.ce.controller;
+package kz.hts.ce.controller.payment;
 
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import kz.hts.ce.config.PagesConfiguration;
+import kz.hts.ce.controller.payment.PaymentController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -18,7 +19,7 @@ import static kz.hts.ce.util.JavaFxUtil.additionalCalculator;
 import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
-public class AdditionalCalculatorController implements Initializable {
+public class PaymentCalculatorController implements Initializable {
 
     private StringBuilder buttonState;
     private Button button;

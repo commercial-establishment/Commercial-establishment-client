@@ -1,4 +1,4 @@
-package kz.hts.ce.controller;
+package kz.hts.ce.controller.invoice;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import kz.hts.ce.config.PagesConfiguration;
+import kz.hts.ce.controller.MainController;
 import kz.hts.ce.model.dto.InvoiceDto;
 import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.Invoice;

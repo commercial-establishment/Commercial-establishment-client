@@ -1,4 +1,4 @@
-package kz.hts.ce.controller;
+package kz.hts.ce.controller.sale;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -41,8 +41,6 @@ public class CalculatorController implements Initializable {
     private WarehouseProductService warehouseProductService;
 
     @Autowired
-    private AddProductController addProductController;
-    @Autowired
     private ProductsController productsController;
     private EventHandler<KeyEvent> eventHandler;
     @Override
@@ -59,13 +57,10 @@ public class CalculatorController implements Initializable {
 //                    CalculatorController.this.handleOnAnyButtonFromKeypad();
 //                });
 //        });
-        eventHandler = new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                buttonState.setLength(0);
-                buttonState.append(event.getCode().toString());
-                CalculatorController.this.handleOnAnyButtonFromKeypad();
-            }
+        eventHandler = event -> {
+            buttonState.setLength(0);
+            buttonState.append(event.getCode().toString());
+            handleOnAnyButtonFromKeypad();
         };
     }
     public void startEventHandler(Scene scene){
@@ -99,8 +94,8 @@ public class CalculatorController implements Initializable {
         }
         if (buttonText.matches("^[0-9CE\\s[*+.]\\s]*$")) {
             calculator(buttonText, txtDisplay, txtAdditionalDisplay);
-        } else if (buttonText.matches("ADD")) {
-            addProductPage();
+//        } else if (buttonText.matches("ADD")) {
+//            addProductPage();
         } else if (buttonText.matches("ENTER")) {
             findAndAddProductByBarcode();
         } else if (buttonText.matches("SUBTRACT")) {
@@ -109,19 +104,19 @@ public class CalculatorController implements Initializable {
             paymentPage();
         }
     }
-
-    @FXML
-    public void addProductPage() {
-        String displayText = txtDisplay.getText();
-        if (!displayText.equals("") && displayText.matches("^[1-9CE\\s[.]\\s]*$")) {
-            PagesConfiguration screens = getPagesConfiguration();
-            Stage stage = new Stage();
-            screens.setPrimaryStage(stage);
-            screens.addProduct();
-
-            readProductFields(addProductController, txtDisplay, txtAdditionalDisplay);
-        }
-    }
+//
+//    @FXML
+//    public void addProductPage() {
+//        String displayText = txtDisplay.getText();
+//        if (!displayText.equals("") && displayText.matches("^[1-9CE\\s[.]\\s]*$")) {
+//            PagesConfiguration screens = getPagesConfiguration();
+//            Stage stage = new Stage();
+//            screens.setPrimaryStage(stage);
+//            screens.addProduct();
+//
+//            readProductFields(addProductController, txtDisplay, txtAdditionalDisplay);
+//        }
+//    }
 
     @FXML
     public void paymentPage() {

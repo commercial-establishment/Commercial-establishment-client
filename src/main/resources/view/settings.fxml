@@ -13,28 +13,45 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label layoutX="44.0" layoutY="81.0" text="Укажите минимальное число">
+                        <Label layoutX="44.0" layoutY="81.0" text="Укажите минимум:">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="42.0" layoutY="119.0" text="Укажите максимальное число">
+                        <Label layoutX="42.0" layoutY="119.0" text="Укажите максимум:">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="14.0" layoutY="23.0" text="Обозначьте пределы что бы знать об остатках">
+                        <Label layoutX="44.0" layoutY="39.0" prefHeight="20.0" prefWidth="300.0" text="Обозначьте пределы, чтобы знать об остатках">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Button layoutX="276.0" layoutY="181.0" mnemonicParsing="false" onAction="#update" prefHeight="25.0" prefWidth="79.0" text="Принять">
+                        <Button layoutX="264.0" layoutY="307.0" mnemonicParsing="false" onAction="#update" prefHeight="30.0" prefWidth="82.0" text="Принять">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Spinner fx:id="minValue" editable="true" layoutX="263.0" layoutY="76.0" prefHeight="30.0" prefWidth="105.0" />
-                        <Spinner fx:id="maxValue" editable="true" layoutX="264.0" layoutY="114.0" prefHeight="30.0" prefWidth="104.0" />
+                        <Spinner fx:id="productMin" editable="true" layoutX="184.0" layoutY="76.0" prefHeight="30.0" prefWidth="160.0" />
+                        <Spinner fx:id="productMax" editable="true" layoutX="184.0" layoutY="114.0" prefHeight="30.0" prefWidth="160.0" />
+                        <Label layoutX="44.0" layoutY="184.0" prefHeight="20.0" prefWidth="311.0" text="Обозначьте пределы, чтобы знать о накладных">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="44.0" layoutY="226.0" text="Укажите минимум:">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="42.0" layoutY="263.0" text="Укажите максимум:">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Spinner fx:id="invoiceMin" editable="true" layoutX="184.0" layoutY="221.0" prefHeight="30.0" prefWidth="160.0" />
+                        <Spinner fx:id="invoiceMax" editable="true" layoutX="184.0" layoutY="258.0" prefHeight="30.0" prefWidth="160.0" />
                      </children></AnchorPane>
             </content>
           </Tab>

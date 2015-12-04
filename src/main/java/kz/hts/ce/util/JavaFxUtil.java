@@ -6,17 +6,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
-import kz.hts.ce.controller.AddProductController;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
-
-import static kz.hts.ce.util.JavaUtil.calculateCost;
-import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
 
 public class JavaFxUtil {
 
@@ -118,27 +112,27 @@ public class JavaFxUtil {
 
         }
     }
-
-    public static void readProductFields(AddProductController addProductController, TextField txtDisplay, TextField txtAdditionalDisplay) {
-        TextField txtAmount = addProductController.getAmount();
-        TextField txtPrice = addProductController.getPrice();
-
-        txtPrice.setText(txtDisplay.getText());
-        if (txtAdditionalDisplay.getText().equals("")) {
-            txtAdditionalDisplay.setText("*1");
-        }
-        String additionalDisplayText = txtAdditionalDisplay.getText();
-        String[] splittedAdditionalDisplay = additionalDisplayText.split("\\*");
-        txtAmount.setText(splittedAdditionalDisplay[1]);
-
-        int amount = Integer.parseInt(txtAmount.getText());
-        BigDecimal price = stringToBigDecimal(txtPrice.getText());
-
-        List<Integer> integerParameters = new ArrayList<>();
-        integerParameters.add(amount);
-        BigDecimal total = calculateCost(integerParameters, price);
-        addProductController.getTotalPrice().setText(String.valueOf(total));
-    }
+//
+//    public static void readProductFields(AddProductController addProductController, TextField txtDisplay, TextField txtAdditionalDisplay) {
+//        TextField txtAmount = addProductController.getAmount();
+//        TextField txtPrice = addProductController.getPrice();
+//
+//        txtPrice.setText(txtDisplay.getText());
+//        if (txtAdditionalDisplay.getText().equals("")) {
+//            txtAdditionalDisplay.setText("*1");
+//        }
+//        String additionalDisplayText = txtAdditionalDisplay.getText();
+//        String[] splittedAdditionalDisplay = additionalDisplayText.split("\\*");
+//        txtAmount.setText(splittedAdditionalDisplay[1]);
+//
+//        int amount = Integer.parseInt(txtAmount.getText());
+//        BigDecimal price = stringToBigDecimal(txtPrice.getText());
+//
+//        List<Integer> integerParameters = new ArrayList<>();
+//        integerParameters.add(amount);
+//        BigDecimal total = calculateCost(integerParameters, price);
+//        addProductController.getTotalPrice().setText(String.valueOf(total));
+//    }
 
     public static void alert(Alert.AlertType alertType, String title, String headerText, String contentText) {
         Alert alert = new Alert(alertType);

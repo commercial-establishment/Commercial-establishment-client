@@ -1,4 +1,4 @@
-package kz.hts.ce.controller;
+package kz.hts.ce.controller.invoice;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,6 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import kz.hts.ce.config.PagesConfiguration;
+import kz.hts.ce.controller.ControllerException;
+import kz.hts.ce.controller.MainController;
 import kz.hts.ce.model.entity.Invoice;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.*;

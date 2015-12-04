@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
             minWidth="-Infinity" prefHeight="233.0" prefWidth="809.0" xmlns="http://javafx.com/javafx/8.0.40"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.ProductCategoryController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.sale.ProductCategoryController">
     <children>
         <TableView fx:id="categoryProductsTable" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity"
                    maxWidth="-Infinity" minHeight="-Infinity"

@@ -1,4 +1,4 @@
-package kz.hts.ce.controller;
+package kz.hts.ce.controller.sale;
 
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import kz.hts.ce.controller.sale.ProductsController;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.*;
 import kz.hts.ce.service.CategoryService;
@@ -115,10 +116,6 @@ public class ProductCategoryController implements Initializable {
             }
             flag = true;
         };
-    }
-
-    public ObservableList<ProductDto> getProductsData() {
-        return productsData;
     }
 
     public TableColumn<ProductDto, String> getName() {

@@ -110,20 +110,20 @@ public class ShopProductsController implements Initializable {
                     @Override
                     protected void updateItem(ProductDto productDto, boolean empty) {
                         super.updateItem(productDto, empty);
-                        if (settingsController.getMax() == null && settingsController.getMin() == null) {
-                            settingsController.setMin(jsonUtil.getMin());
-                            settingsController.setMax(jsonUtil.getMax());
+                        if (settingsController.getProductMaxInt() == null && settingsController.getProductMinInt() == null) {
+                            settingsController.setProductMinInt(jsonUtil.getMin());
+                            settingsController.setProductMaxInt(jsonUtil.getMax());
                         }
-                        if (!empty && settingsController.getMax() != null && settingsController.getMin() != null) {
-                            if (productDto.getResidue() <= settingsController.getMin()) {
+                        if (!empty && settingsController.getProductMaxInt() != null && settingsController.getProductMinInt() != null) {
+                            if (productDto.getResidue() <= settingsController.getProductMinInt()) {
                                 getStyleClass().removeAll(Collections.singleton(GREEN_COLOR));
                                 getStyleClass().removeAll(Collections.singleton(ORANGE_COLOR));
                                 getStyleClass().add(RED_COLOR);
-                            } else if (productDto.getResidue() > settingsController.getMin() && productDto.getResidue() <= settingsController.getMax()) {
+                            } else if (productDto.getResidue() > settingsController.getProductMinInt() && productDto.getResidue() <= settingsController.getProductMaxInt()) {
                                 getStyleClass().removeAll(Collections.singleton(GREEN_COLOR));
                                 getStyleClass().removeAll(Collections.singleton(RED_COLOR));
                                 getStyleClass().add(ORANGE_COLOR);
-                            } else if (productDto.getResidue() > settingsController.getMax()) {
+                            } else if (productDto.getResidue() > settingsController.getProductMaxInt()) {
                                 getStyleClass().removeAll(Collections.singleton(ORANGE_COLOR));
                                 getStyleClass().removeAll(Collections.singleton(RED_COLOR));
                                 getStyleClass().add(GREEN_COLOR);
@@ -137,9 +137,5 @@ public class ShopProductsController implements Initializable {
                 };
             }
         });
-    }
-
-    public TableView<ProductDto> getProductTable() {
-        return productTable;
     }
 }

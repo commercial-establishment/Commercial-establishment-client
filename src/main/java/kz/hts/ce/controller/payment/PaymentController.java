@@ -1,4 +1,4 @@
-package kz.hts.ce.controller;
+package kz.hts.ce.controller.payment;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import kz.hts.ce.config.PagesConfiguration;
+import kz.hts.ce.controller.sale.ProductsController;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.WarehouseProductHistory;
 import kz.hts.ce.model.entity.WarehouseProduct;

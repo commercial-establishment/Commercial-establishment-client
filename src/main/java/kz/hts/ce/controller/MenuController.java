@@ -1,18 +1,15 @@
 package kz.hts.ce.controller;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import kz.hts.ce.config.PagesConfiguration;
+import kz.hts.ce.controller.sale.CalculatorController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 
@@ -39,11 +36,12 @@ public class MenuController {
     private void showContent(ActionEvent event) throws IOException {
         PagesConfiguration screens = getPagesConfiguration();
         Node node;
-        if (event.getSource() == createProduct) {
-            node = screens.createProducts();
-            mainController.getContentContainer().getChildren().setAll(node);
-            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
-        } else if (event.getSource() == sales) {
+//        if (event.getSource() == createProduct) {
+//            node = screens.createProducts();
+//            mainController.getContentContainer().getChildren().setAll(node);
+//            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
+//        } else
+        if (event.getSource() == sales) {
             mainController.getContentContainer().getChildren().setAll(mainController.getSales());
             calculatorController.startEventHandler(screens.getPrimaryStage().getScene());
         } else if (event.getSource() == receipts){
