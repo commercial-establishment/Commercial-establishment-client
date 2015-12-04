@@ -18,6 +18,7 @@ import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import sun.util.resources.LocaleData;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -122,7 +123,7 @@ public class EditReceiptController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-     /*
+
         List<Product> products = productService.findAll();
         barcodes.addAll(products.stream().map(Product::getBarcode).collect(Collectors.toList()));
         productsData.clear();
@@ -140,8 +141,13 @@ public class EditReceiptController implements Initializable{
         List<ShopProvider> shopProviders = shopProviderService.findByShopId(shopId);
         List<String> providerNames = shopProviders.stream().map(shopProvider -> shopProvider.getProvider().getCompanyName()).collect(Collectors.toList());
         providers.getItems().addAll(providerNames);
-        */
-        System.out.println("spring Id: " + springUtil.getId());
+
+        Invoice invoice = invoiceService.findById(springUtil.getId());
+        providers.setValue(invoice.getProvider().getCompanyName());
+
+        Date input = invoice.getDate();
+        LocalDate date = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        this.date.setValue(date);
 
         List<Category> categoriesFromDB = categoryService.findAll();
         List<String> categoryNames = categoriesFromDB.stream().map(Category::getName).collect(Collectors.toList());
