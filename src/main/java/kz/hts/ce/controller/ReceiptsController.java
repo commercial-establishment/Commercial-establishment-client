@@ -4,8 +4,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.AnchorPane;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.InvoiceDto;
 import kz.hts.ce.model.entity.Employee;
@@ -48,6 +50,9 @@ public class ReceiptsController implements Initializable {
     private EmployeeService employeeService;
     @Autowired
     private InvoiceService invoiceService;
+    @Autowired
+    private EditReceiptController editReceiptController;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -71,6 +76,21 @@ public class ReceiptsController implements Initializable {
             invoiceData.add(invoiceDto);
         }
         receiptsTable.getItems().addAll(invoiceData);
+
+        if (receiptsTable != null) {
+            receiptsTable.setOnMousePressed(event -> {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    try {
+                        Node node = getPagesConfiguration().editReceipt();
+                        node.setUserData((receiptsTable.getSelectionModel().getSelectedItem()).getId());
+                        mainController.getContentContainer().getChildren().set(0, node);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     @FXML

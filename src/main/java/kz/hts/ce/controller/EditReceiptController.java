@@ -6,9 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import kz.hts.ce.config.PagesConfiguration;
-import kz.hts.ce.model.entity.Invoice;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.*;
 import kz.hts.ce.service.*;
@@ -22,7 +22,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaFxUtil.alert;
@@ -32,11 +31,12 @@ import static kz.hts.ce.util.SpringFxmlLoader.getPagesConfiguration;
 import static kz.hts.ce.util.SpringUtil.getPrincipal;
 
 @Controller
-public class AddReceiptController implements Initializable {
+public class EditReceiptController implements Initializable{
 
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productDtosByCategory = FXCollections.observableArrayList();
     private Set<Long> barcodes = new HashSet<>();
+
 
     @FXML
     private TableView<ProductDto> productsTable;
@@ -81,6 +81,9 @@ public class AddReceiptController implements Initializable {
     private ComboBox<String> providers;
     @FXML
     private VBox vBox;
+    @FXML
+    private AnchorPane editPane;
+
 
     @Autowired
     private ShopProviderService shopProviderService;
@@ -106,9 +109,13 @@ public class AddReceiptController implements Initializable {
     private InvoiceProductService invoiceProductService;
     @Autowired
     private WarehouseProductHistoryService warehouseProductHistoryService;
+    @Autowired
+    private AddReceiptController addReceiptController;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+     /*
         List<Product> products = productService.findAll();
         barcodes.addAll(products.stream().map(Product::getBarcode).collect(Collectors.toList()));
         productsData.clear();
@@ -126,6 +133,7 @@ public class AddReceiptController implements Initializable {
         List<ShopProvider> shopProviders = shopProviderService.findByShopId(shopId);
         List<String> providerNames = shopProviders.stream().map(shopProvider -> shopProvider.getProvider().getCompanyName()).collect(Collectors.toList());
         providers.getItems().addAll(providerNames);
+        */
 
         List<Category> categoriesFromDB = categoryService.findAll();
         List<String> categoryNames = categoriesFromDB.stream().map(Category::getName).collect(Collectors.toList());
@@ -354,19 +362,5 @@ public class AddReceiptController implements Initializable {
         }
     }
 
-    public Spinner<Integer> getPostponement() {
-        return postponement;
-    }
 
-    public CheckBox getVat() {
-        return vat;
-    }
-
-    public DatePicker getDate() {
-        return date;
-    }
-
-    public ComboBox<String> getProviders() {
-        return providers;
-    }
 }
