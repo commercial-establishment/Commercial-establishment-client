@@ -41,7 +41,7 @@ public class LoginController {
             springUtils.authorize(username.getText(), password.getText());
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
-            screens.login().close();
+            screens.login().hide();
             screens.main().show();
             calculatorController.startEventHandler(screens.getPrimaryStage().getScene());
         } catch (NullPointerException | UsernameNotFoundException e) {

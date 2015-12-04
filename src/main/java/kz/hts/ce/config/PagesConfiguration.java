@@ -39,13 +39,14 @@ public class PagesConfiguration {
     @PostConstruct
     public void initialize() {
         if (!jsonUtil().checkJsonFile()) {
-            jsonUtil().create(10, 30);
+            jsonUtil().create(10, 30, 3, 10);
         } else {
             jsonUtil().fillFields();
         }
     }
 
     @Bean
+    @Scope("prototype")
     public Stage main() {
         showStage(primaryStage, "/view/main.fxml");
         return primaryStage;
@@ -61,28 +62,12 @@ public class PagesConfiguration {
 
     @Bean
     @Scope("prototype")
-    public Stage addProduct() {
-        primaryStage.initStyle(StageStyle.UTILITY);
-        primaryStage.setResizable(false);
-        showStage(primaryStage, "/view/add-product.fxml");
-        return primaryStage;
-    }
-
-    @Bean
-    @Scope("prototype")
     public Stage payment() {
         primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.setResizable(false);
         showStage(primaryStage, "/view/payment.fxml");
         return primaryStage;
     }
-//
-//    @Bean
-//    @Scope("prototype")
-//    public Node createProducts() throws IOException {
-//        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
-//        return (Node) springFxmlLoader.load("/view/create-product-provider.fxml");
-//    }
 
     @Bean
     @Scope("prototype")
@@ -137,20 +122,10 @@ public class PagesConfiguration {
         return new ProductsController();
     }
 
-//    @Bean
-//    public AddProductController addProductController() {
-//        return new AddProductController();
-//    }
-
     @Bean
     public ProductCategoryController productCategoryController() {
         return new ProductCategoryController();
     }
-
-//    @Bean
-//    public CreateProductController createProductController() {
-//        return new CreateProductController();
-//    }
 
     @Bean
     public ShopProductsController shopProductsController() {

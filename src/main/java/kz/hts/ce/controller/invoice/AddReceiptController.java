@@ -295,10 +295,10 @@ public class AddReceiptController implements Initializable {
         productDto.setResidue(amount);
         productDto.setUnitName(unit);
 
-        if (!barcode.matches("^[0-9]{7,12}$"))
+        if (!barcode.matches("^[0-9]{7,12}$")){
             alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Штрих код не соответствует стандартам.");
-        else if (barcodes.contains(productDto.getBarcode())) {
-            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Данный штрих код занят.");
+//        else if (barcodes.contains(productDto.getBarcode())) {
+//            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Данный штрих код занят.");
         } else {
             productsData.add(productDto);
             productsTable.setItems(productsData);

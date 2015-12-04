@@ -35,6 +35,7 @@ public class ShopProductsController implements Initializable {
     public static final String GREEN_COLOR = "greenColor";
     public static final String ORANGE_COLOR = "orangeColor";
     public static final String RED_COLOR = "redColor";
+
     private long shopId;
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
 
@@ -111,8 +112,8 @@ public class ShopProductsController implements Initializable {
                     protected void updateItem(ProductDto productDto, boolean empty) {
                         super.updateItem(productDto, empty);
                         if (settingsController.getProductMaxInt() == null && settingsController.getProductMinInt() == null) {
-                            settingsController.setProductMinInt(jsonUtil.getMin());
-                            settingsController.setProductMaxInt(jsonUtil.getMax());
+                            settingsController.setProductMinInt(jsonUtil.getProductMinInt());
+                            settingsController.setProductMaxInt(jsonUtil.getProductMaxInt());
                         }
                         if (!empty && settingsController.getProductMaxInt() != null && settingsController.getProductMinInt() != null) {
                             if (productDto.getResidue() <= settingsController.getProductMinInt()) {
