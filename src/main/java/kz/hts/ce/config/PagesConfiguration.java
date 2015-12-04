@@ -5,6 +5,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import kz.hts.ce.controller.*;
+import kz.hts.ce.controller.invoice.AddReceiptController;
+import kz.hts.ce.controller.payment.PaymentController;
+import kz.hts.ce.controller.sale.CalculatorController;
+import kz.hts.ce.controller.sale.ProductCategoryController;
+import kz.hts.ce.controller.sale.ProductsController;
 import kz.hts.ce.util.JsonUtil;
 import kz.hts.ce.util.SpringFxmlLoader;
 import org.springframework.context.annotation.Bean;
@@ -33,15 +38,15 @@ public class PagesConfiguration {
 
     @PostConstruct
     public void initialize() {
-        boolean fileExists = jsonUtil().checkJsonFile();
-        if (!fileExists) {
-            jsonUtil().create(10, 30);
+        if (!jsonUtil().checkJsonFile()) {
+            jsonUtil().create(10, 30, 3, 10);
         } else {
             jsonUtil().fillFields();
         }
     }
 
     @Bean
+    @Scope("prototype")
     public Stage main() {
         showStage(primaryStage, "/view/main.fxml");
         return primaryStage;
@@ -57,27 +62,11 @@ public class PagesConfiguration {
 
     @Bean
     @Scope("prototype")
-    public Stage addProduct() {
-        primaryStage.initStyle(StageStyle.UTILITY);
-        primaryStage.setResizable(false);
-        showStage(primaryStage, "/view/add-product.fxml");
-        return primaryStage;
-    }
-
-    @Bean
-    @Scope("prototype")
     public Stage payment() {
         primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.setResizable(false);
         showStage(primaryStage, "/view/payment.fxml");
         return primaryStage;
-    }
-
-    @Bean
-    @Scope("prototype")
-    public Node createProducts() throws IOException {
-        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
-        return (Node) springFxmlLoader.load("/view/create-product-provider.fxml");
     }
 
     @Bean
@@ -141,18 +130,8 @@ public class PagesConfiguration {
     }
 
     @Bean
-    public AddProductController addProductController() {
-        return new AddProductController();
-    }
-
-    @Bean
     public ProductCategoryController productCategoryController() {
         return new ProductCategoryController();
-    }
-
-    @Bean
-    public CreateProductController createProductController() {
-        return new CreateProductController();
     }
 
     @Bean

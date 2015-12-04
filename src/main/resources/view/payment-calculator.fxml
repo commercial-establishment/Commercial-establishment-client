@@ -5,7 +5,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="238.0"
             prefWidth="194.0"
             xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="kz.hts.ce.controller.AdditionalCalculatorController">
+            fx:controller="kz.hts.ce.controller.payment.PaymentCalculatorController">
     <children>
         <AnchorPane layoutX="6.0" layoutY="4.0">
             <children>

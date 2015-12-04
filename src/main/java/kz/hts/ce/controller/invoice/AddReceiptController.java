@@ -1,4 +1,4 @@
-package kz.hts.ce.controller;
+package kz.hts.ce.controller.invoice;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,6 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import kz.hts.ce.config.PagesConfiguration;
+import kz.hts.ce.controller.ControllerException;
+import kz.hts.ce.controller.MainController;
 import kz.hts.ce.model.entity.Invoice;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.*;
@@ -293,10 +295,10 @@ public class AddReceiptController implements Initializable {
         productDto.setResidue(amount);
         productDto.setUnitName(unit);
 
-        if (!barcode.matches("^[0-9]{7,12}$"))
+        if (!barcode.matches("^[0-9]{7,12}$")){
             alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Штрих код не соответствует стандартам.");
-        else if (barcodes.contains(productDto.getBarcode())) {
-            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Данный штрих код занят.");
+//        else if (barcodes.contains(productDto.getBarcode())) {
+//            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Данный штрих код занят.");
         } else {
             productsData.add(productDto);
             productsTable.setItems(productsData);

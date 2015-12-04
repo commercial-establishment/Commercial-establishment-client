@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class JavaUtil {
@@ -86,5 +88,23 @@ public class JavaUtil {
             invoiceDto.setTotalPrice(totalPrice);
         }
         return invoiceDto;
+    }
+
+    public static int countDays(String dateStr, int postponement) {
+        try {
+            String format = "yyyy-MM-dd hh:mm:ss";
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            Date date = sdf.parse(dateStr);
+
+            long postponementDaysInMilliseconds = postponement * 24 * 60 * 60 * 1000L;
+            long time = date.getTime();
+            time = time + postponementDaysInMilliseconds;
+            Date dateWithPostponement = new Date(time);
+            Date today = new Date();
+            long difference = dateWithPostponement.getTime() - today.getTime();
+            return (int) (difference / (24 * 60 * 60 * 1000));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);/*TODO*/
+        }
     }
 }

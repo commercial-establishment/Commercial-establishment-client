@@ -5,7 +5,7 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0"
             prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.ReceiptsController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.invoice.ReceiptsController">
     <children>
         <Label layoutX="39.0" layoutY="29.0" text="Cписок накладных">
             <font>

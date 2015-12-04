@@ -5,9 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
+import kz.hts.ce.controller.sale.CalculatorController;
 import kz.hts.ce.util.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,7 +41,7 @@ public class LoginController {
             springUtils.authorize(username.getText(), password.getText());
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
-            screens.login().close();
+            screens.login().hide();
             screens.main().show();
             calculatorController.startEventHandler(screens.getPrimaryStage().getScene());
         } catch (NullPointerException | UsernameNotFoundException e) {
