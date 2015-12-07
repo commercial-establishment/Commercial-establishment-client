@@ -41,8 +41,9 @@ public class PagesConfiguration {
 
     @PostConstruct
     public void initialize() {
-        if (!jsonUtil().checkJsonFile()) {
-            jsonUtil().create(10, 30, 3, 10);
+        boolean isChecked = jsonUtil().checkJsonFile();
+        if (!isChecked) {
+            jsonUtil().create(10, 30, 3, 10, false);
         } else {
             jsonUtil().fillFields();
         }
@@ -158,12 +159,16 @@ public class PagesConfiguration {
     }
 
     @Bean
+    public SettingsController settingsController() {
+        return new SettingsController();
+    }
+
+    @Bean
     public JsonUtil jsonUtil() {
         return new JsonUtil();
     }
 
     @Bean
-    @Scope("singleton")
     public SpringUtil springUtil() {
         return new SpringUtil();
     }

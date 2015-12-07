@@ -2,6 +2,7 @@ package kz.hts.ce.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.util.StringConverter;
@@ -31,21 +32,27 @@ public class SettingsController implements Initializable {
     private Spinner<Integer> invoiceMin;
     @FXML
     private Spinner<Integer> invoiceMax;
+    @FXML
+    private CheckBox vat;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        jsonUtil.fillFields();
         productMin.getEditor().setText(String.valueOf(jsonUtil.getProductMinInt()));
         productMax.getEditor().setText(String.valueOf(jsonUtil.getProductMaxInt()));
         productMin.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, jsonUtil.getProductMinInt()));
         productMax.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, jsonUtil.getProductMaxInt()));
+
         invoiceMin.getEditor().setText(String.valueOf(jsonUtil.getInvoiceMinInt()));
         invoiceMax.getEditor().setText(String.valueOf(jsonUtil.getInvoiceMaxInt()));
         invoiceMin.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, jsonUtil.getInvoiceMinInt()));
         invoiceMax.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, jsonUtil.getInvoiceMaxInt()));
+
+        vat.setSelected(jsonUtil.isVatBoolean());
     }
 
     @FXML
-    public void update() {
+    public void updateProducts() {
         String productMin = this.productMin.getEditor().getText();
         SpinnerValueFactory<Integer> productValueFactoryMin = this.productMin.getValueFactory();
         if (productValueFactoryMin != null) {
@@ -90,8 +97,12 @@ public class SettingsController implements Initializable {
                 jsonUtil.setInvoiceMaxInt(Integer.parseInt(invoiceMax));
             }
         }
+
+        boolean vat = this.vat.isSelected();
+        jsonUtil.setVatBoolean(vat);
+
         jsonUtil.update(jsonUtil.getProductMinInt(), jsonUtil.getProductMaxInt(),
-                jsonUtil.getInvoiceMinInt(), jsonUtil.getInvoiceMaxInt());
+                jsonUtil.getInvoiceMinInt(), jsonUtil.getInvoiceMaxInt(), vat);
     }
 
     public Integer getProductMaxInt() {
