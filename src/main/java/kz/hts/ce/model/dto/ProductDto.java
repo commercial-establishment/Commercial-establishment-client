@@ -12,6 +12,7 @@ public class ProductDto {
     private StringProperty name;
     private IntegerProperty amount;
     private ObjectProperty<BigDecimal> price;
+    private ObjectProperty<BigDecimal> priceWithMargin;
     private ObjectProperty<BigDecimal> totalPrice;
     private IntegerProperty residue;
     private LongProperty barcode;
@@ -136,6 +137,21 @@ public class ProductDto {
             this.price = new SimpleObjectProperty<>();
         }
         this.price.set(price);
+    }
+
+    public BigDecimal getPriceWithMargin() {
+        return priceWithMargin.get();
+    }
+
+    public ObjectProperty<BigDecimal> priceWithMarginProperty() {
+        return priceWithMargin;
+    }
+
+    public void setPriceWithMargin(BigDecimal priceWithMargin) {
+        if (this.priceWithMargin == null) {
+            this.priceWithMargin = new SimpleObjectProperty<>();
+        }
+        this.priceWithMargin.set(priceWithMargin);
     }
 
     public BigDecimal getTotalPrice() {

@@ -1,9 +1,6 @@
 package kz.hts.ce.model.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -17,6 +14,9 @@ public class InvoiceProduct extends BaseEntity {
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
+
+    @Column(name = "price_with_margin")
+    private BigDecimal priceWithMargin;
 
     private int amount;
     private BigDecimal price;
@@ -51,5 +51,13 @@ public class InvoiceProduct extends BaseEntity {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public BigDecimal getPriceWithMargin() {
+        return priceWithMargin;
+    }
+
+    public void setPriceWithMargin(BigDecimal priceWithMargin) {
+        this.priceWithMargin = priceWithMargin;
     }
 }

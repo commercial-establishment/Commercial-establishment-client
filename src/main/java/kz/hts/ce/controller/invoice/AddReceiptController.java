@@ -14,6 +14,7 @@ import kz.hts.ce.model.entity.Invoice;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.*;
 import kz.hts.ce.service.*;
+import kz.hts.ce.util.spring.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,6 +83,8 @@ public class AddReceiptController implements Initializable {
     private ComboBox<String> providers;
     @FXML
     private VBox vBox;
+    @FXML
+    private TextField margin;
 
     @Autowired
     private ShopProviderService shopProviderService;
@@ -107,6 +110,8 @@ public class AddReceiptController implements Initializable {
     private InvoiceProductService invoiceProductService;
     @Autowired
     private WarehouseProductHistoryService warehouseProductHistoryService;
+    @Autowired
+    private JsonUtil jsonUtil;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -217,15 +222,25 @@ public class AddReceiptController implements Initializable {
             invoiceEntity.setWarehouse(warehouse);
             Invoice invoice = invoiceService.save(invoiceEntity);
 
+            String margin = this.margin.getText();
+            margin = String.valueOf((Integer.valueOf(margin) / 100) + 1);
+            BigDecimal priceWithMargin = new BigDecimal(margin);
             for (ProductDto productDto : productsData) {
                 Product product = productService.findByBarcode(productDto.getBarcode());
                 InvoiceProduct invoiceProduct = new InvoiceProduct();
                 invoiceProduct.setInvoice(invoice);
                 invoiceProduct.setAmount(productDto.getAmount());
+                if (jsonUtil.isVatBoolean() && !vat) {
+                    priceWithMargin = (priceWithMargin.multiply(productDto.getPrice())).multiply(BigDecimal.valueOf(1.12));
+                } else {
+                    priceWithMargin = priceWithMargin.multiply(productDto.getPrice());
+                }
+                productDto.setPriceWithMargin(priceWithMargin);
+                invoiceProduct.setPriceWithMargin(productDto.getPriceWithMargin());
                 invoiceProduct.setPrice(productDto.getPrice());
 
                 WarehouseProduct warehouseProduct = new WarehouseProduct();
-                warehouseProduct.setPrice(productDto.getPrice());
+                warehouseProduct.setPrice(productDto.getPriceWithMargin());
                 warehouseProduct.setWarehouse(warehouse);
                 warehouseProduct.setArrival(productDto.getAmount());
                 warehouseProduct.setResidue(productDto.getResidue());
@@ -295,7 +310,7 @@ public class AddReceiptController implements Initializable {
         productDto.setResidue(amount);
         productDto.setUnitName(unit);
 
-        if (!barcode.matches("^[0-9]{7,12}$")) {
+        if (!barcode.matches("^[a-zA-Z0-9]{0,20}$")) {
             alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Штрих код не соответствует стандартам.");
 //        else if (barcodes.contains(productDto.getBarcode())) {
 //            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Данный штрих код занят.");
@@ -313,6 +328,7 @@ public class AddReceiptController implements Initializable {
 
     @FXML
     private void enableAllFields() {
+        margin.setDisable(false);
         date.setDisable(false);
         postponement.setDisable(false);
         vat.setDisable(false);
