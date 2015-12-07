@@ -3,9 +3,13 @@ package kz.hts.ce.controller.invoice;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.util.converter.IntegerStringConverter;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.controller.ControllerException;
 import kz.hts.ce.controller.MainController;
@@ -21,9 +25,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
@@ -120,7 +127,7 @@ public class AddReceiptController implements Initializable {
         initializeTableColumns();
 
         postponement.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0));
-        amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 1));
+        amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10000, 1));
         margin.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0));
 
         List<Unit> units = unitService.findAll();
@@ -136,45 +143,7 @@ public class AddReceiptController implements Initializable {
         List<String> categoryNames = categoriesFromDB.stream().map(Category::getName).collect(Collectors.toList());
         categories.getItems().addAll(categoryNames);
 
-        productComboBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
-            for (ProductDto productDto : productDtosByCategory) {
-                String name = productDto.getName();
-                if (name.toLowerCase().contains(newValue.toLowerCase())) {
-                    if (name.toLowerCase().equals(newValue.toLowerCase())) {
-                        productComboBox.getEditor().setText(name);
-                        barcode.setText(String.valueOf(Long.valueOf(productDto.getBarcode())));
-                        String unitName = productDto.getUnitName();
-                        unitOfMeasure.getEditor().setText(unitName);
-                        barcode.setDisable(true);
-                        unitOfMeasure.setDisable(true);
-                    } else if (newValue.equals("")) {
-                        clearData();
-                        barcode.setDisable(false);
-                        unitOfMeasure.setDisable(false);
-                    } else {
-                        ObservableList<String> items = productComboBox.getItems();
-                        barcode.setDisable(false);
-                        unitOfMeasure.setDisable(false);
-                        if (!items.contains(name)) {
-                            items.add(name);
-                        }
-
-                        items.stream().filter(item -> !item.toLowerCase().contains(newValue.toLowerCase()))
-                                .forEach(item -> productComboBox.getItems().remove(item));
-                    }
-                } else {
-                    barcode.setDisable(false);
-                    unitOfMeasure.setDisable(false);
-                    productDtosByCategory.stream().filter(dto -> dto.getName().toLowerCase().contains(newValue.toLowerCase())).forEach(dto -> {
-                        barcode.setDisable(true);
-                        unitOfMeasure.setDisable(true);
-                    });
-                    productDtosByCategory.stream().filter(dto -> name.toLowerCase().equals(dto.getName().toLowerCase()))
-                            .forEach(dto -> productComboBox.getItems().remove(name));
-                }
-            }
-            productComboBox.show();
-        });
+        productComboBoxListener();
     }
 
     public void findProductsByCategory(ActionEvent event) {
@@ -307,21 +276,14 @@ public class AddReceiptController implements Initializable {
         productDto.setAmount(amount);
         productDto.setResidue(amount);
         productDto.setUnitName(unit);
+        productsData.add(productDto);
+        productsTable.setItems(productsData);
+        deleteRowColumn.setDisable(false);
 
-//        if (!barcode.matches("^[a-zA-Z0-9]{0,20}$")) {
-//            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Штрих код не соответствует стандартам.");
-//        else if (barcodes.contains(productDto.getBarcode())) {
-//            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Данный штрих код занят.");
-//        } else {
-            productsData.add(productDto);
-            productsTable.setItems(productsData);
-            deleteRowColumn.setDisable(false);
-
-            productComboBox.setValue("");
-            this.barcode.setText("");
-            this.unitOfMeasure.getEditor().setText("");
-            this.price.setText("0");
-//        }
+        productComboBox.setValue("");
+        this.barcode.setText("");
+        this.unitOfMeasure.getEditor().setText("");
+        this.price.setText("0");
     }
 
     @FXML
@@ -368,6 +330,53 @@ public class AddReceiptController implements Initializable {
         } catch (IOException e) {
             throw new ControllerException(e);
         }
+    }
+
+    public void productComboBoxListener() {
+        productComboBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            for (ProductDto productDto : productDtosByCategory) {
+                String name = productDto.getName();
+                if (name.toLowerCase().contains(newValue.toLowerCase())) {
+                    if (name.toLowerCase().equals(newValue.toLowerCase())) {
+                        productComboBox.getEditor().setText(name);
+                        barcode.setText(String.valueOf(Long.valueOf(productDto.getBarcode())));
+                        String unitName = productDto.getUnitName();
+                        unitOfMeasure.getEditor().setText(unitName);
+                        barcode.setDisable(true);
+                        unitOfMeasure.setDisable(true);
+                        unitOfMeasure.setEditable(true);
+                    } else if (newValue.equals("")) {
+                        clearData();
+                        barcode.setDisable(false);
+                        unitOfMeasure.setDisable(false);
+                        unitOfMeasure.setEditable(false);
+                    } else {
+                        ObservableList<String> items = productComboBox.getItems();
+                        barcode.setDisable(false);
+                        unitOfMeasure.setDisable(false);
+                        unitOfMeasure.setEditable(false);
+                        if (!items.contains(name)) {
+                            items.add(name);
+                        }
+
+                        items.stream().filter(item -> !item.toLowerCase().contains(newValue.toLowerCase()))
+                                .forEach(item -> productComboBox.getItems().remove(item));
+                    }
+                } else {
+                    barcode.setDisable(false);
+                    unitOfMeasure.setDisable(false);
+                    unitOfMeasure.setEditable(false);
+                    productDtosByCategory.stream().filter(dto -> dto.getName().toLowerCase().contains(newValue.toLowerCase())).forEach(dto -> {
+                        barcode.setDisable(true);
+                        unitOfMeasure.setDisable(true);
+                        unitOfMeasure.setEditable(true);
+                    });
+                    productDtosByCategory.stream().filter(dto -> name.toLowerCase().equals(dto.getName().toLowerCase()))
+                            .forEach(dto -> productComboBox.getItems().remove(name));
+                }
+            }
+            productComboBox.show();
+        });
     }
 
     public Spinner<Integer> getPostponement() {

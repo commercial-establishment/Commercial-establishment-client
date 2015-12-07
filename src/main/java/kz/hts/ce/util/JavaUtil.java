@@ -17,7 +17,6 @@ import java.util.List;
 
 public class JavaUtil {
 
-
     public static BigDecimal stringToBigDecimal(String value) {
         try {
             DecimalFormatSymbols symbols = new DecimalFormatSymbols();

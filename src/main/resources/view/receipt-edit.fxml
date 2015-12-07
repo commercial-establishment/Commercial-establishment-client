@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import kz.hts.ce.util.javafx.PriceTextField?>
 <AnchorPane fx:id="editPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
             minWidth="-Infinity" prefHeight="595.0" prefWidth="1008.0"
             xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
@@ -61,12 +62,12 @@
                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                             </columnResizePolicy>
                         </TableView>
-                        <TextField fx:id="price" disable="true" layoutX="621.0" layoutY="299.0" prefHeight="30.0"
+                        <PriceTextField fx:id="price" disable="true" layoutX="621.0" layoutY="299.0" prefHeight="30.0"
                                    prefWidth="115.0" promptText="Цена за ед.">
                             <font>
                                 <Font size="14.0"/>
                             </font>
-                        </TextField>
+                        </PriceTextField>
                         <Spinner fx:id="amount" disable="true" layoutX="743.0" layoutY="299.0" prefHeight="30.0"
                                  prefWidth="102.0"/>
                         <ComboBox fx:id="unitOfMeasure" disable="true" editable="true" layoutX="499.0" layoutY="299.0"
