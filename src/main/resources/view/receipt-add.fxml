@@ -39,7 +39,8 @@
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                     <children>
-                        <TableView fx:id="productsTable" layoutX="38.0" layoutY="54.0" AnchorPane.bottomAnchor="149.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="37.0" AnchorPane.topAnchor="54.0">
+                        <TableView fx:id="productsTable" layoutX="38.0" layoutY="54.0" AnchorPane.bottomAnchor="149.0"
+                                   AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="37.0" AnchorPane.topAnchor="54.0">
                             <columns>
                                 <TableColumn fx:id="barcodeColumn" text="Штрих код" />
                                 <TableColumn fx:id="nameColumn" text="Наименование товара" />

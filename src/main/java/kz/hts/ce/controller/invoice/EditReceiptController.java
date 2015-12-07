@@ -26,6 +26,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaFxUtil.alert;
@@ -40,7 +41,6 @@ public class EditReceiptController implements Initializable{
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productDtosByCategory = FXCollections.observableArrayList();
     private Set<Long> barcodes = new HashSet<>();
-
 
     @FXML
     private TableView<ProductDto> productsTable;
@@ -154,6 +154,16 @@ public class EditReceiptController implements Initializable{
 
         vat.selectedProperty().setValue(invoice.isVat());
 
+        List<InvoiceProduct> invoiceProductsFromDB = invoiceProductService.findByInvoiceId(springUtil.getId());
+
+        for(InvoiceProduct invoiceProduct : invoiceProductsFromDB){
+            ProductDto productDto = createProductDtoFromProduct(invoiceProduct.getProduct());
+            productDto.setPrice(invoiceProduct.getPrice());
+            productDto.setAmount(invoiceProduct.getAmount());
+            productsTable.getItems().add(productDto);
+        }
+
+        /*END */
         List<Category> categoriesFromDB = categoryService.findAll();
         List<String> categoryNames = categoriesFromDB.stream().map(Category::getName).collect(Collectors.toList());
         categories.getItems().addAll(categoryNames);
@@ -363,6 +373,8 @@ public class EditReceiptController implements Initializable{
         amountColumn.setCellValueFactory(cellData -> cellData.getValue().amountProperty());
         unitOfMeasureColumn.setCellValueFactory(cellData -> cellData.getValue().unitNameProperty());
         totalPriceColumn.setCellValueFactory(cellData -> cellData.getValue().totalPriceProperty());
+
+
     }
 
     public void clearData() {
