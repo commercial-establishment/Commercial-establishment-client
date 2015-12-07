@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static kz.hts.ce.util.JavaFxUtil.additionalCalculator;
+import static kz.hts.ce.util.javafx.JavaFxUtil.additionalCalculator;
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller

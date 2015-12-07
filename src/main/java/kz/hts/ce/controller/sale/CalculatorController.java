@@ -21,7 +21,7 @@ import org.springframework.stereotype.Controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static kz.hts.ce.util.JavaFxUtil.*;
+import static kz.hts.ce.util.javafx.JavaFxUtil.*;
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromWarehouseProduct;
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 

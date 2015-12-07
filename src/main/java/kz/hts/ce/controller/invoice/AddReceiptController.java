@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.controller.ControllerException;
 import kz.hts.ce.controller.MainController;
@@ -27,7 +26,7 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static kz.hts.ce.util.JavaFxUtil.alert;
+import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromProduct;
 import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
@@ -82,9 +81,7 @@ public class AddReceiptController implements Initializable {
     @FXML
     private ComboBox<String> providers;
     @FXML
-    private VBox vBox;
-    @FXML
-    private TextField margin;
+    private Spinner<Integer> margin;
 
     @Autowired
     private ShopProviderService shopProviderService;
@@ -124,6 +121,7 @@ public class AddReceiptController implements Initializable {
 
         postponement.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0));
         amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 1));
+        margin.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0));
 
         List<Unit> units = unitService.findAll();
         List<String> unitNames = units.stream().map(Unit::getName).collect(Collectors.toList());
@@ -222,7 +220,7 @@ public class AddReceiptController implements Initializable {
             invoiceEntity.setWarehouse(warehouse);
             Invoice invoice = invoiceService.save(invoiceEntity);
 
-            String margin = this.margin.getText();
+            String margin = this.margin.getEditor().getText();
             margin = String.valueOf((Integer.valueOf(margin) / 100) + 1);
             BigDecimal priceWithMargin = new BigDecimal(margin);
             for (ProductDto productDto : productsData) {
@@ -310,11 +308,11 @@ public class AddReceiptController implements Initializable {
         productDto.setResidue(amount);
         productDto.setUnitName(unit);
 
-        if (!barcode.matches("^[a-zA-Z0-9]{0,20}$")) {
-            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Штрих код не соответствует стандартам.");
+//        if (!barcode.matches("^[a-zA-Z0-9]{0,20}$")) {
+//            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Штрих код не соответствует стандартам.");
 //        else if (barcodes.contains(productDto.getBarcode())) {
 //            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Данный штрих код занят.");
-        } else {
+//        } else {
             productsData.add(productDto);
             productsTable.setItems(productsData);
             deleteRowColumn.setDisable(false);
@@ -323,7 +321,7 @@ public class AddReceiptController implements Initializable {
             this.barcode.setText("");
             this.unitOfMeasure.getEditor().setText("");
             this.price.setText("0");
-        }
+//        }
     }
 
     @FXML

@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import static kz.hts.ce.util.JavaFxUtil.alert;
+import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
 import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;

@@ -1,4 +1,4 @@
-package kz.hts.ce.util;
+package kz.hts.ce.util.javafx;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
