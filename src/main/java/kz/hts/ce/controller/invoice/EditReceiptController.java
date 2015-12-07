@@ -262,6 +262,7 @@ public class EditReceiptController implements Initializable {
             invoiceEntity.setProvider(providerService.findByCompanyName(providerCompanyName));
             invoiceEntity.setVat(vat);
             invoiceEntity.setWarehouse(warehouse);
+
             Invoice invoice = invoiceService.save(invoiceEntity);
 
             for (ProductDto productDto : productsData) {
@@ -358,6 +359,11 @@ public class EditReceiptController implements Initializable {
         }
     }
 
+    private void update(){
+        invoiceService.updateVatById(vat.isSelected(), springUtil.getId());
+        invoiceService.updatePostponementById(postponement.getValue(), springUtil.getId());
+    }
+
     @FXML
     private void enableAllFields() {
         date.setDisable(false);
@@ -385,8 +391,6 @@ public class EditReceiptController implements Initializable {
         amountColumn.setCellValueFactory(cellData -> cellData.getValue().amountProperty());
         unitOfMeasureColumn.setCellValueFactory(cellData -> cellData.getValue().unitNameProperty());
         totalPriceColumn.setCellValueFactory(cellData -> cellData.getValue().totalPriceProperty());
-
-
     }
 
     public void clearData() {
