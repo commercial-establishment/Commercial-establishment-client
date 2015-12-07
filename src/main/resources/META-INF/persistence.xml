@@ -19,6 +19,7 @@
     <class>kz.hts.ce.model.entity.WarehouseProduct</class>
     <class>kz.hts.ce.model.entity.Invoice</class>
     <class>kz.hts.ce.model.entity.InvoiceProduct</class>
+    <class>kz.hts.ce.model.entity.Shift</class>
     <properties>
         <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
         <property name="hibernate.hbm2ddl.auto" value="update"/>

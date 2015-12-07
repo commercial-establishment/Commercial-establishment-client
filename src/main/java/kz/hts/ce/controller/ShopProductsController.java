@@ -44,7 +44,7 @@ public class ShopProductsController implements Initializable {
     @FXML
     private TableColumn<ProductDto, BigDecimal> price;
     @FXML
-    private TableColumn<ProductDto, Number> barcode;
+    private TableColumn<ProductDto, String> barcode;
     @FXML
     private TableColumn<ProductDto, String> name;
     @FXML

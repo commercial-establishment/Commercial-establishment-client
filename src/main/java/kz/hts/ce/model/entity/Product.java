@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 public class Product extends BaseEntity {
 
     private String name;
-    private long barcode;
+    private String barcode;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
@@ -30,11 +30,11 @@ public class Product extends BaseEntity {
         this.name = name;
     }
 
-    public long getBarcode() {
+    public String getBarcode() {
         return barcode;
     }
 
-    public void setBarcode(long barcode) {
+    public void setBarcode(String barcode) {
         this.barcode = barcode;
     }
 

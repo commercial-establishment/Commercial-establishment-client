@@ -1,5 +1,6 @@
 package kz.hts.ce.util.spring;
 
+import kz.hts.ce.model.entity.Shift;
 import kz.hts.ce.security.AuthenticationService;
 import kz.hts.ce.security.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 public class SpringUtil {
 
     private long id;
+    private Shift shift;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -51,5 +53,13 @@ public class SpringUtil {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Shift getShift() {
+        return shift;
+    }
+
+    public void setShift(Shift shift) {
+        this.shift = shift;
     }
 }

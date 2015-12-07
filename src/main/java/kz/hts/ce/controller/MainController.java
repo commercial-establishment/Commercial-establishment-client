@@ -11,11 +11,16 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.entity.Employee;
+import kz.hts.ce.model.entity.Shift;
 import kz.hts.ce.service.EmployeeService;
+import kz.hts.ce.service.ShiftService;
+import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import static kz.hts.ce.util.javafx.JavaFxUtil.getWatch;
@@ -40,6 +45,12 @@ public class MainController implements Initializable {
 
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private ShiftService shiftService;
+
+    @Lazy
+    @Autowired
+    private SpringUtil springUtil;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -61,6 +72,9 @@ public class MainController implements Initializable {
 
     public void logout() {
         PagesConfiguration screens = getPagesConfiguration();
+        Shift shift = springUtil.getShift();
+        shift.setEnd(new Date());
+        shiftService.save(shift);
         screens.main().close();
         screens.login().show();
     }

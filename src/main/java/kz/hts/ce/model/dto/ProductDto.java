@@ -15,7 +15,7 @@ public class ProductDto {
     private ObjectProperty<BigDecimal> priceWithMargin;
     private ObjectProperty<BigDecimal> totalPrice;
     private IntegerProperty residue;
-    private LongProperty barcode;
+    private StringProperty barcode;
     private StringProperty unitName;
     private StringProperty categoryName;
 
@@ -109,17 +109,17 @@ public class ProductDto {
         this.residue.set(residue);
     }
 
-    public long getBarcode() {
+    public String getBarcode() {
         return barcode.get();
     }
 
-    public LongProperty barcodeProperty() {
+    public StringProperty barcodeProperty() {
         return barcode;
     }
 
-    public void setBarcode(long barcode) {
+    public void setBarcode(String barcode) {
         if (this.barcode == null) {
-            this.barcode = new SimpleLongProperty();
+            this.barcode = new SimpleStringProperty();
         }
         this.barcode.set(barcode);
     }

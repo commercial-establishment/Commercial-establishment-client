@@ -22,7 +22,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("UPDATE Product p set p.blocked = FALSE where p.id = ?1")
     void reestablishById(long id);
 
-    Product findByBarcode(long barcode);
+    Product findByBarcode(String barcode);
 
     List<Product> findByCategory_Name(String name);
 }

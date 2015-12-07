@@ -12,6 +12,7 @@ import kz.hts.ce.controller.payment.PaymentController;
 import kz.hts.ce.controller.sale.CalculatorController;
 import kz.hts.ce.controller.sale.ProductCategoryController;
 import kz.hts.ce.controller.sale.ProductsController;
+import kz.hts.ce.security.CustomAuthenticationProvider;
 import kz.hts.ce.util.spring.JsonUtil;
 import kz.hts.ce.util.spring.SpringFxmlLoader;
 import kz.hts.ce.util.spring.SpringUtil;

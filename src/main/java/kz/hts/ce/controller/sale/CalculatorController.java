@@ -134,7 +134,7 @@ public class CalculatorController implements Initializable {
     public void findAndAddProductByBarcode() {
         try {
             String barcode = txtDisplay.getText();
-            WarehouseProduct warehouseProduct = warehouseProductService.findByProductBarcode(Long.parseLong(barcode));
+            WarehouseProduct warehouseProduct = warehouseProductService.findByProductBarcode(barcode);
             if (warehouseProduct != null) {
                 if (txtAdditionalDisplay.getText().equals("") || txtAdditionalDisplay.getText().equals("*")) {
                     txtAdditionalDisplay.setText("*1");

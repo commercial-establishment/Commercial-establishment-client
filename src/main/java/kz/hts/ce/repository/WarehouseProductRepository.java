@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface WarehouseProductRepository extends JpaRepository<WarehouseProduct, Long> {
 
-    WarehouseProduct findByProduct_Barcode(long barcode);
+    WarehouseProduct findByProduct_Barcode(String barcode);
 
     List<WarehouseProduct> findByProduct_Category_IdAndWarehouse_Shop_Id(long categoryId, long shopId);
 }

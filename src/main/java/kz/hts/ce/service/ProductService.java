@@ -27,7 +27,7 @@ public class ProductService extends BaseService<Product, ProductRepository> {
         repository.reestablishById(id);
     }
 
-    public Product findByBarcode(long barcode) {
+    public Product findByBarcode(String barcode) {
         try {
             return repository.findByBarcode(barcode);
         } catch (ServiceException e) {

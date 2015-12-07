@@ -64,7 +64,7 @@
                             </font>
                         </PriceTextField>
                         <Spinner fx:id="amount" disable="true" layoutX="743.0" layoutY="299.0" prefHeight="30.0" prefWidth="102.0" />
-                        <ComboBox fx:id="unitOfMeasure" disable="true" layoutX="499.0" layoutY="299.0" prefHeight="30.0" prefWidth="115.0" promptText="Ед. измерения" />
+                        <ComboBox fx:id="unitOfMeasure" editable="true" disable="true" layoutX="499.0" layoutY="299.0" prefHeight="30.0" prefWidth="115.0" promptText="Ед. измерения" />
                         <Button fx:id="add" disable="true" layoutX="852.0" layoutY="299.0" mnemonicParsing="false" onAction="#addProductToTable" prefHeight="30.0" prefWidth="102.0" text="Добавить">
                             <font>
                                 <Font size="14.0" />

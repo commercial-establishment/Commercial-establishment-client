@@ -15,7 +15,7 @@ public class WarehouseProductService extends BaseService<WarehouseProduct, Wareh
         super(repository);
     }
 
-    public WarehouseProduct findByProductBarcode(long barcode) {
+    public WarehouseProduct findByProductBarcode(String barcode) {
         return repository.findByProduct_Barcode(barcode);
     }
 

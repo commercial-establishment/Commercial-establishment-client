@@ -44,12 +44,12 @@ public class AddReceiptController implements Initializable {
 
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productDtosByCategory = FXCollections.observableArrayList();
-    private Set<Long> barcodes;
+    private Set<String> barcodes;
 
     @FXML
     private TableView<ProductDto> productsTable;
     @FXML
-    private TableColumn<ProductDto, Number> barcodeColumn;
+    private TableColumn<ProductDto, String> barcodeColumn;
     @FXML
     private TableColumn<ProductDto, String> nameColumn;
     @FXML
@@ -269,7 +269,7 @@ public class AddReceiptController implements Initializable {
         String barcode = this.barcode.getText();
 
         ProductDto productDto = new ProductDto();
-        productDto.setBarcode(Long.parseLong(barcode));
+        productDto.setBarcode(barcode);
         productDto.setCategoryName(categoryName);
         productDto.setName(productName);
         productDto.setPrice(price);
@@ -344,17 +344,14 @@ public class AddReceiptController implements Initializable {
                         unitOfMeasure.getEditor().setText(unitName);
                         barcode.setDisable(true);
                         unitOfMeasure.setDisable(true);
-                        unitOfMeasure.setEditable(true);
                     } else if (newValue.equals("")) {
                         clearData();
                         barcode.setDisable(false);
                         unitOfMeasure.setDisable(false);
-                        unitOfMeasure.setEditable(false);
                     } else {
                         ObservableList<String> items = productComboBox.getItems();
                         barcode.setDisable(false);
                         unitOfMeasure.setDisable(false);
-                        unitOfMeasure.setEditable(false);
                         if (!items.contains(name)) {
                             items.add(name);
                         }
@@ -365,11 +362,9 @@ public class AddReceiptController implements Initializable {
                 } else {
                     barcode.setDisable(false);
                     unitOfMeasure.setDisable(false);
-                    unitOfMeasure.setEditable(false);
                     productDtosByCategory.stream().filter(dto -> dto.getName().toLowerCase().contains(newValue.toLowerCase())).forEach(dto -> {
                         barcode.setDisable(true);
                         unitOfMeasure.setDisable(true);
-                        unitOfMeasure.setEditable(true);
                     });
                     productDtosByCategory.stream().filter(dto -> name.toLowerCase().equals(dto.getName().toLowerCase()))
                             .forEach(dto -> productComboBox.getItems().remove(name));

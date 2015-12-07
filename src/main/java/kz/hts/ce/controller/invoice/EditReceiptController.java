@@ -40,12 +40,12 @@ public class EditReceiptController implements Initializable {
 
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productDtosByCategory = FXCollections.observableArrayList();
-    private Set<Long> barcodes = new HashSet<>();
+    private Set<String> barcodes = new HashSet<>();
 
     @FXML
     private TableView<ProductDto> productsTable;
     @FXML
-    private TableColumn<ProductDto, Number> barcodeColumn;
+    private TableColumn<ProductDto, String> barcodeColumn;
     @FXML
     private TableColumn<ProductDto, String> nameColumn;
     @FXML
@@ -335,7 +335,7 @@ public class EditReceiptController implements Initializable {
         String barcode = this.barcode.getText();
 
         ProductDto productDto = new ProductDto();
-        productDto.setBarcode(Long.parseLong(barcode));
+        productDto.setBarcode(barcode);
         productDto.setCategoryName(categoryName);
         productDto.setName(productName);
         productDto.setPrice(price);
