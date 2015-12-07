@@ -36,7 +36,7 @@ import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
-public class EditReceiptController implements Initializable{
+public class EditReceiptController implements Initializable {
 
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productDtosByCategory = FXCollections.observableArrayList();
@@ -119,6 +119,7 @@ public class EditReceiptController implements Initializable{
 
     @Autowired
     private SpringUtil springUtil;
+    private ProductDto productDto = new ProductDto();
 
 
     @Override
@@ -129,9 +130,6 @@ public class EditReceiptController implements Initializable{
         productsData.clear();
 
         initializeTableColumns();
-
-
-        amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 1));
 
         List<Unit> units = unitService.findAll();
         List<String> unitNames = units.stream().map(Unit::getName).collect(Collectors.toList());
@@ -156,15 +154,29 @@ public class EditReceiptController implements Initializable{
 
         List<InvoiceProduct> invoiceProductsFromDB = invoiceProductService.findByInvoiceId(springUtil.getId());
 
-        for(InvoiceProduct invoiceProduct : invoiceProductsFromDB){
+        for (InvoiceProduct invoiceProduct : invoiceProductsFromDB) {
             ProductDto productDto = createProductDtoFromProduct(invoiceProduct.getProduct());
             productDto.setPrice(invoiceProduct.getPrice());
             productDto.setAmount(invoiceProduct.getAmount());
             productsTable.getItems().add(productDto);
         }
 
+        if (productsTable != null){
+            productsTable.setOnMousePressed(event -> {
+                if (event.isPrimaryButtonDown()) {
+                    productDto = productsTable.getSelectionModel().getSelectedItem();
+                    price.setText(String.valueOf(productDto.getPrice()));
+
+                    amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, productDto.getAmount(), 1));
+
+                    price.setDisable(false);
+                    amount.setDisable(false);
+                }
+            });
+        }
+
         /*END */
-        List<Category> categoriesFromDB = categoryService.findAll();
+            List<Category> categoriesFromDB = categoryService.findAll();
         List<String> categoryNames = categoriesFromDB.stream().map(Category::getName).collect(Collectors.toList());
         categories.getItems().addAll(categoryNames);
 
