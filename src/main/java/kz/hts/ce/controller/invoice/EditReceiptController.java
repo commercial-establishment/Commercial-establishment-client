@@ -18,6 +18,7 @@ import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import sun.util.resources.LocaleData;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -25,6 +26,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
@@ -34,12 +36,11 @@ import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
-public class EditReceiptController implements Initializable{
+public class EditReceiptController implements Initializable {
 
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productDtosByCategory = FXCollections.observableArrayList();
     private Set<Long> barcodes = new HashSet<>();
-
 
     @FXML
     private TableView<ProductDto> productsTable;
@@ -118,19 +119,17 @@ public class EditReceiptController implements Initializable{
 
     @Autowired
     private SpringUtil springUtil;
+    private ProductDto productDto = new ProductDto();
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-     /*
+
         List<Product> products = productService.findAll();
         barcodes.addAll(products.stream().map(Product::getBarcode).collect(Collectors.toList()));
         productsData.clear();
 
         initializeTableColumns();
-
-        postponement.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0));
-        amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 1));
 
         List<Unit> units = unitService.findAll();
         List<String> unitNames = units.stream().map(Unit::getName).collect(Collectors.toList());
@@ -140,10 +139,44 @@ public class EditReceiptController implements Initializable{
         List<ShopProvider> shopProviders = shopProviderService.findByShopId(shopId);
         List<String> providerNames = shopProviders.stream().map(shopProvider -> shopProvider.getProvider().getCompanyName()).collect(Collectors.toList());
         providers.getItems().addAll(providerNames);
-        */
-        System.out.println("spring Id: " + springUtil.getId());
 
-        List<Category> categoriesFromDB = categoryService.findAll();
+        /*TODO upload from db*/
+        Invoice invoice = invoiceService.findById(springUtil.getId());
+        providers.setValue(invoice.getProvider().getCompanyName());
+
+        Date input = invoice.getDate();
+        LocalDate date = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        this.date.setValue(date);
+
+        postponement.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, invoice.getPostponement()));
+
+        vat.selectedProperty().setValue(invoice.isVat());
+
+        List<InvoiceProduct> invoiceProductsFromDB = invoiceProductService.findByInvoiceId(springUtil.getId());
+
+        for (InvoiceProduct invoiceProduct : invoiceProductsFromDB) {
+            ProductDto productDto = createProductDtoFromProduct(invoiceProduct.getProduct());
+            productDto.setPrice(invoiceProduct.getPrice());
+            productDto.setAmount(invoiceProduct.getAmount());
+            productsTable.getItems().add(productDto);
+        }
+
+        if (productsTable != null){
+            productsTable.setOnMousePressed(event -> {
+                if (event.isPrimaryButtonDown()) {
+                    productDto = productsTable.getSelectionModel().getSelectedItem();
+                    price.setText(String.valueOf(productDto.getPrice()));
+
+                    amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, productDto.getAmount(), 1));
+
+                    price.setDisable(false);
+                    amount.setDisable(false);
+                }
+            });
+        }
+
+        /*END */
+            List<Category> categoriesFromDB = categoryService.findAll();
         List<String> categoryNames = categoriesFromDB.stream().map(Category::getName).collect(Collectors.toList());
         categories.getItems().addAll(categoryNames);
 
@@ -229,6 +262,7 @@ public class EditReceiptController implements Initializable{
             invoiceEntity.setProvider(providerService.findByCompanyName(providerCompanyName));
             invoiceEntity.setVat(vat);
             invoiceEntity.setWarehouse(warehouse);
+
             Invoice invoice = invoiceService.save(invoiceEntity);
 
             for (ProductDto productDto : productsData) {
@@ -323,6 +357,11 @@ public class EditReceiptController implements Initializable{
             this.unitOfMeasure.getEditor().setText("");
             this.price.setText("0");
         }
+    }
+
+    private void update(){
+        invoiceService.updateVatById(vat.isSelected(), springUtil.getId());
+        invoiceService.updatePostponementById(postponement.getValue(), springUtil.getId());
     }
 
     @FXML
