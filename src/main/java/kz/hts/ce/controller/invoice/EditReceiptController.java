@@ -1,24 +1,28 @@
 package kz.hts.ce.controller.invoice;
 
+import com.sun.javafx.scene.control.skin.TableViewSkin;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.controller.ControllerException;
 import kz.hts.ce.controller.MainController;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.*;
 import kz.hts.ce.service.*;
+import kz.hts.ce.util.javafx.EditingBigDecimalCell;
+import kz.hts.ce.util.javafx.EditingNumberCell;
 import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import sun.util.resources.LocaleData;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -26,21 +30,23 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromProduct;
 import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
+import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class EditReceiptController implements Initializable {
 
+    @FXML
+    private Spinner<Integer> margin;
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productDtosByCategory = FXCollections.observableArrayList();
-    private Set<String> barcodes = new HashSet<>();
+    private Set<String> barcodes;
+    private ProductDto productDto;
 
     @FXML
     private TableView<ProductDto> productsTable;
@@ -88,7 +94,6 @@ public class EditReceiptController implements Initializable {
     @FXML
     private AnchorPane editPane;
 
-
     @Autowired
     private ShopProviderService shopProviderService;
     @Autowired
@@ -108,22 +113,20 @@ public class EditReceiptController implements Initializable {
     @Autowired
     private WarehouseService warehouseService;
     @Autowired
-    private MainController mainController;
-    @Autowired
     private InvoiceProductService invoiceProductService;
     @Autowired
     private WarehouseProductHistoryService warehouseProductHistoryService;
 
     @Autowired
-    private AddReceiptController addReceiptController;
+    private ReceiptPageController receiptPageController;
 
     @Autowired
     private SpringUtil springUtil;
-    private ProductDto productDto = new ProductDto();
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        productDto = new ProductDto();
+        barcodes = new HashSet<>();
 
         List<Product> products = productService.findAll();
         barcodes.addAll(products.stream().map(Product::getBarcode).collect(Collectors.toList()));
@@ -140,8 +143,11 @@ public class EditReceiptController implements Initializable {
         List<String> providerNames = shopProviders.stream().map(shopProvider -> shopProvider.getProvider().getCompanyName()).collect(Collectors.toList());
         providers.getItems().addAll(providerNames);
 
-        /*TODO upload from db*/
         Invoice invoice = invoiceService.findById(springUtil.getId());
+
+        amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10000, 1));
+        margin.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10000, invoice.getMargin()));
+
         providers.setValue(invoice.getProvider().getCompanyName());
 
         Date input = invoice.getDate();
@@ -158,66 +164,28 @@ public class EditReceiptController implements Initializable {
             ProductDto productDto = createProductDtoFromProduct(invoiceProduct.getProduct());
             productDto.setPrice(invoiceProduct.getPrice());
             productDto.setAmount(invoiceProduct.getAmount());
+            productsData.add(productDto);
             productsTable.getItems().add(productDto);
         }
 
-        if (productsTable != null){
-            productsTable.setOnMousePressed(event -> {
-                if (event.isPrimaryButtonDown()) {
-                    productDto = productsTable.getSelectionModel().getSelectedItem();
-                    price.setText(String.valueOf(productDto.getPrice()));
-
-                    amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, productDto.getAmount(), 1));
-
-                    price.setDisable(false);
-                    amount.setDisable(false);
-                }
-            });
-        }
-
-        /*END */
-            List<Category> categoriesFromDB = categoryService.findAll();
+        List<Category> categoriesFromDB = categoryService.findAll();
         List<String> categoryNames = categoriesFromDB.stream().map(Category::getName).collect(Collectors.toList());
         categories.getItems().addAll(categoryNames);
 
-        productComboBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
-            for (ProductDto productDto : productDtosByCategory) {
-                String name = productDto.getName();
-                if (name.toLowerCase().contains(newValue.toLowerCase())) {
-                    if (name.toLowerCase().equals(newValue.toLowerCase())) {
-                        productComboBox.getEditor().setText(name);
-                        barcode.setText(String.valueOf(Long.valueOf(productDto.getBarcode())));
-                        String unitName = productDto.getUnitName();
-                        unitOfMeasure.getEditor().setText(unitName);
-                        barcode.setDisable(true);
-                        unitOfMeasure.setDisable(true);
-                    } else if (newValue.equals("")) {
-                        clearData();
-                        barcode.setDisable(false);
-                        unitOfMeasure.setDisable(false);
-                    } else {
-                        ObservableList<String> items = productComboBox.getItems();
-                        barcode.setDisable(false);
-                        unitOfMeasure.setDisable(false);
-                        if (!items.contains(name)) {
-                            items.add(name);
-                        }
+        productComboBoxListener();
 
-                        items.stream().filter(item -> !item.toLowerCase().contains(newValue.toLowerCase()))
-                                .forEach(item -> productComboBox.getItems().remove(item));
-                    }
-                } else {
-                    barcode.setDisable(false);
-                    unitOfMeasure.setDisable(false);
-                    productDtosByCategory.stream().filter(dto -> dto.getName().toLowerCase().contains(newValue.toLowerCase())).forEach(dto -> {
-                        barcode.setDisable(true);
-                        unitOfMeasure.setDisable(true);
-                    });
-                    productDtosByCategory.stream().filter(dto -> name.toLowerCase().equals(dto.getName().toLowerCase()))
-                            .forEach(dto -> productComboBox.getItems().remove(name));
-                }
-            }
-            productComboBox.show();
+        amountColumn.setCellFactory(p -> new EditingNumberCell());
+        amountColumn.setOnEditCommit(t -> {
+            t.getTableView().getItems()
+                    .get(t.getTablePosition().getRow()).setAmount((Integer) t.getNewValue());
+            productsTable.getProperties().put(TableViewSkin.RECREATE, Boolean.TRUE);
+        });
+
+        priceColumn.setCellFactory(p -> new EditingBigDecimalCell());
+        priceColumn.setOnEditCommit(t -> {
+            t.getTableView().getItems()
+                    .get(t.getTablePosition().getRow()).setPrice(t.getNewValue());
+            productsTable.getProperties().put(TableViewSkin.RECREATE, Boolean.TRUE);
         });
     }
 
@@ -243,8 +211,35 @@ public class EditReceiptController implements Initializable {
     }
 
     @FXML
+    private void addProductToTable() {
+        String categoryName = categories.getValue();
+        String productName = productComboBox.getEditor().getText();
+        String unit = unitOfMeasure.getEditor().getText();
+        BigDecimal price = new BigDecimal(this.price.getText());
+        Integer amount = this.amount.getValue();
+        String barcode = this.barcode.getText();
+
+        ProductDto productDto = new ProductDto();
+        productDto.setBarcode(barcode);
+        productDto.setCategoryName(categoryName);
+        productDto.setName(productName);
+        productDto.setPrice(price);
+        productDto.setAmount(amount);
+        productDto.setResidue(amount);
+        productDto.setUnitName(unit);
+        productsData.add(productDto);
+        productsTable.setItems(productsData);
+        deleteRowColumn.setDisable(false);
+
+        productComboBox.setValue("");
+        this.barcode.setText("");
+        this.unitOfMeasure.getEditor().setText("");
+        this.price.setText("0");
+    }
+
+    @FXML
     @Transactional
-    private void saveInvoice(ActionEvent event) {
+    private void updateInvoice() {
         try {
             String providerCompanyName = providers.getValue();
             LocalDate localDate = this.date.getValue();
@@ -319,49 +314,10 @@ public class EditReceiptController implements Initializable {
                 }
                 invoiceProductService.save(invoiceProduct);
             }
-            showReceiptsPage();
+            receiptPageController.showReceiptsPage();
         } catch (ControllerException e) {
             alert(Alert.AlertType.ERROR, "Внутренная ошибка", null, "Пожалуйста, проверьте корректность введённых данных");
         }
-    }
-
-    @FXML
-    private void addProductToTable() {
-        String categoryName = categories.getValue();
-        String productName = productComboBox.getEditor().getText();
-        String unit = unitOfMeasure.getEditor().getText();
-        BigDecimal price = new BigDecimal(this.price.getText());
-        Integer amount = this.amount.getValue();
-        String barcode = this.barcode.getText();
-
-        ProductDto productDto = new ProductDto();
-        productDto.setBarcode(barcode);
-        productDto.setCategoryName(categoryName);
-        productDto.setName(productName);
-        productDto.setPrice(price);
-        productDto.setAmount(amount);
-        productDto.setResidue(amount);
-        productDto.setUnitName(unit);
-
-        if (!barcode.matches("^[0-9]{7,12}$"))
-            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Штрих код не соответствует стандартам.");
-        else if (barcodes.contains(productDto.getBarcode())) {
-            alert(Alert.AlertType.WARNING, "Неверный штрих код", null, "Данный штрих код занят.");
-        } else {
-            productsData.add(productDto);
-            productsTable.setItems(productsData);
-            deleteRowColumn.setDisable(false);
-
-            productComboBox.setValue("");
-            this.barcode.setText("");
-            this.unitOfMeasure.getEditor().setText("");
-            this.price.setText("0");
-        }
-    }
-
-    private void update(){
-        invoiceService.updateVatById(vat.isSelected(), springUtil.getId());
-        invoiceService.updatePostponementById(postponement.getValue(), springUtil.getId());
     }
 
     @FXML
@@ -400,14 +356,45 @@ public class EditReceiptController implements Initializable {
         unitOfMeasure.getEditor().setText("");
     }
 
-    public void showReceiptsPage() {
-        PagesConfiguration screens = getPagesConfiguration();
-        try {
-            mainController.getContentContainer().getChildren().setAll(screens.receipts());
-        } catch (IOException e) {
-            throw new ControllerException(e);
-        }
+    public void productComboBoxListener() {
+        productComboBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            for (ProductDto productDto : productDtosByCategory) {
+                String name = productDto.getName();
+                if (name.toLowerCase().contains(newValue.toLowerCase())) {
+                    if (name.toLowerCase().equals(newValue.toLowerCase())) {
+                        productComboBox.getEditor().setText(name);
+                        barcode.setText(String.valueOf(Long.valueOf(productDto.getBarcode())));
+                        String unitName = productDto.getUnitName();
+                        unitOfMeasure.getEditor().setText(unitName);
+                        barcode.setDisable(true);
+                        unitOfMeasure.setDisable(true);
+                    } else if (newValue.equals("")) {
+                        clearData();
+                        barcode.setDisable(false);
+                        unitOfMeasure.setDisable(false);
+                    } else {
+                        ObservableList<String> items = productComboBox.getItems();
+                        barcode.setDisable(false);
+                        unitOfMeasure.setDisable(false);
+                        if (!items.contains(name)) {
+                            items.add(name);
+                        }
+
+                        items.stream().filter(item -> !item.toLowerCase().contains(newValue.toLowerCase()))
+                                .forEach(item -> productComboBox.getItems().remove(item));
+                    }
+                } else {
+                    barcode.setDisable(false);
+                    unitOfMeasure.setDisable(false);
+                    productDtosByCategory.stream().filter(dto -> dto.getName().toLowerCase().contains(newValue.toLowerCase())).forEach(dto -> {
+                        barcode.setDisable(true);
+                        unitOfMeasure.setDisable(true);
+                    });
+                    productDtosByCategory.stream().filter(dto -> name.toLowerCase().equals(dto.getName().toLowerCase()))
+                            .forEach(dto -> productComboBox.getItems().remove(name));
+                }
+            }
+            productComboBox.show();
+        });
     }
-
-
 }

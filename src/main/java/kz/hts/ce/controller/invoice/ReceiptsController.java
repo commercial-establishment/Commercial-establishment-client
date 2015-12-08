@@ -150,4 +150,6 @@ public class ReceiptsController implements Initializable {
         PagesConfiguration screens = getPagesConfiguration();
         mainController.getContentContainer().getChildren().setAll(screens.addReceipt());
     }
+
+
 }
