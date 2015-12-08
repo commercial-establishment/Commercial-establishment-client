@@ -1,5 +1,6 @@
 package kz.hts.ce.controller.invoice;
 
+import com.sun.javafx.scene.control.skin.TableViewSkin;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -110,8 +111,6 @@ public class AddReceiptController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         barcodes = new HashSet<>();
-        List<Product> products = productService.findAll();
-        barcodes.addAll(products.stream().map(Product::getBarcode).collect(Collectors.toList()));
         productsData.clear();
 
         initializeTableColumns();
@@ -261,16 +260,28 @@ public class AddReceiptController implements Initializable {
         Integer amount = this.amount.getValue();
         String barcode = this.barcode.getText();
 
-        ProductDto productDto = new ProductDto();
-        productDto.setBarcode(barcode);
-        productDto.setCategoryName(categoryName);
-        productDto.setName(productName);
-        productDto.setPrice(price);
-        productDto.setAmount(amount);
-        productDto.setResidue(amount);
-        productDto.setUnitName(unit);
-        productsData.add(productDto);
-        productsTable.setItems(productsData);
+        barcodes.clear();
+        for (ProductDto dto : productsData) {
+            barcodes.add(dto.getBarcode());
+            if (barcode.equals(dto.getBarcode())) {
+                dto.setAmount(dto.getAmount() + amount);
+                dto.setPrice(price);
+                productsTable.getProperties().put(TableViewSkin.RECREATE, Boolean.TRUE);
+            }
+        }
+
+        if (!barcodes.contains(barcode)) {
+            ProductDto productDto = new ProductDto();
+            productDto.setBarcode(barcode);
+            productDto.setCategoryName(categoryName);
+            productDto.setName(productName);
+            productDto.setPrice(price);
+            productDto.setAmount(amount);
+            productDto.setResidue(amount);
+            productDto.setUnitName(unit);
+            productsData.add(productDto);
+            productsTable.setItems(productsData);
+        }
         deleteRowColumn.setDisable(false);
 
         productComboBox.setValue("");

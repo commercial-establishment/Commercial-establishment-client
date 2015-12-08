@@ -58,14 +58,14 @@ public class ReceiptsController implements Initializable {
     private TableColumn<InvoiceDto, Boolean> vat;
 
     @Autowired
-    private MainController mainController;
-    @Autowired
-    private SettingsController settingsController;
-
-    @Autowired
     private EmployeeService employeeService;
     @Autowired
     private InvoiceService invoiceService;
+
+    @Autowired
+    private MainController mainController;
+    @Autowired
+    private SettingsController settingsController;
 
     @Autowired
     private JsonUtil jsonUtil;
@@ -150,6 +150,4 @@ public class ReceiptsController implements Initializable {
         PagesConfiguration screens = getPagesConfiguration();
         mainController.getContentContainer().getChildren().setAll(screens.addReceipt());
     }
-
-
 }
