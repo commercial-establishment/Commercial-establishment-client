@@ -38,10 +38,10 @@
                      <children>
                         <VBox layoutX="67.0" layoutY="-67.0" prefHeight="123.0" prefWidth="181.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Отчеты по чекам" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Отчеты по продажам" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Отчеты по товарам" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Отчеты по поставщикам" />
+                              <Button fx:id="reportChecks" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showContent" text="Отчеты по чекам" />
+                              <Button fx:id="reportSales" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showContent" text="Отчеты по продажам" />
+                              <Button fx:id="reportProducts" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showContent" text="Отчеты по товарам" />
+                              <Button fx:id="reportProviders" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showContent" text="Отчеты по поставщикам" />
                            </children>
                         </VBox>
                      </children></AnchorPane>
