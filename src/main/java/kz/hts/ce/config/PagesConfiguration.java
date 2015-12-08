@@ -104,6 +104,34 @@ public class PagesConfiguration {
     }
 
     @Bean
+    @Scope("prototype")
+    public Node reportChecks() throws IOException {
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        return (Node) springFxmlLoader.load("/view/report-by-check.fxml");
+    }
+
+    @Bean
+    @Scope("prototype")
+    public Node reportProducts() throws IOException {
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        return (Node) springFxmlLoader.load("/view/report-by-products.fxml");
+    }
+
+    @Bean
+    @Scope("prototype")
+    public Node reportProviders() throws IOException {
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        return (Node) springFxmlLoader.load("/view/report-by-providers.fxml");
+    }
+
+    @Bean
+    @Scope("prototype")
+    public Node reportSales() throws IOException {
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        return (Node) springFxmlLoader.load("/view/report-by-sales.fxml");
+    }
+
+    @Bean
     public Node settings() {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (AnchorPane) springFxmlLoader.load("/view/settings.fxml");

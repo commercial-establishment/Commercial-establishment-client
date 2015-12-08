@@ -26,6 +26,14 @@ public class MenuController {
     private Button sales;
     @FXML
     private Button receipts;
+    @FXML
+    private Button reportSales;
+    @FXML
+    private Button reportChecks;
+    @FXML
+    private Button reportProducts;
+    @FXML
+    private Button reportProviders;
 
     @Autowired
     private MainController mainController;
@@ -36,15 +44,10 @@ public class MenuController {
     private void showContent(ActionEvent event) throws IOException {
         PagesConfiguration screens = getPagesConfiguration();
         Node node;
-//        if (event.getSource() == createProduct) {
-//            node = screens.createProducts();
-//            mainController.getContentContainer().getChildren().setAll(node);
-//            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
-//        } else
         if (event.getSource() == sales) {
             mainController.getContentContainer().getChildren().setAll(mainController.getSales());
             calculatorController.startEventHandler(screens.getPrimaryStage().getScene());
-        } else if (event.getSource() == receipts){
+        } else if (event.getSource() == receipts) {
             node = screens.receipts();
             mainController.getContentContainer().getChildren().setAll(node);
             calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
@@ -54,6 +57,22 @@ public class MenuController {
             calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
         } else if (event.getSource() == settings) {
             node = screens.settings();
+            mainController.getContentContainer().getChildren().setAll(node);
+            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
+        } else if (event.getSource() == reportChecks) {
+            node = screens.reportChecks();
+            mainController.getContentContainer().getChildren().setAll(node);
+            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
+        } else if (event.getSource() == reportProducts) {
+            node = screens.reportProducts();
+            mainController.getContentContainer().getChildren().setAll(node);
+            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
+        } else if (event.getSource() == reportProviders) {
+            node = screens.reportProviders();
+            mainController.getContentContainer().getChildren().setAll(node);
+            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
+        } else if (event.getSource() == reportSales) {
+            node = screens.reportSales();
             mainController.getContentContainer().getChildren().setAll(node);
             calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
         }

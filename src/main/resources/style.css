@@ -9,3 +9,9 @@
 .greenColor {
     -fx-background-color: limegreen;
 }
+#export {
+    -fx-background-image: url("export-icon.png");
+    -fx-background-size: 18 18;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
