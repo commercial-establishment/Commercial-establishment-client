@@ -8,33 +8,38 @@
 
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.invoice.ReceiptsController">
     <children>
-        <Button layoutX="87.0" layoutY="37.0" mnemonicParsing="false" onAction="#createReceipt" prefHeight="25.0" prefWidth="150.0" text="Скомпилировать">
+        <Button fx:id="compile" layoutX="820.0" layoutY="31.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Скомпилировать">
             <font>
-                <Font size="16.0" />
+                <Font size="14.0" />
             </font>
         </Button>
-      <DatePicker layoutX="530.0" layoutY="36.0" prefHeight="37.0" prefWidth="174.0" />
-      <Label layoutX="451.0" layoutY="42.0" text="Период с:">
+      <DatePicker layoutX="110.0" layoutY="31.0" prefHeight="30.0" prefWidth="174.0" />
+      <Label layoutX="41.0" layoutY="36.0" text="Период с:">
          <font>
-            <Font size="16.0" />
+            <Font size="14.0" />
          </font>
       </Label>
-      <DatePicker layoutX="745.0" layoutY="36.0" prefHeight="37.0" prefWidth="174.0" />
-      <Label layoutX="713.0" layoutY="43.0" text="по:">
+      <DatePicker layoutX="325.0" layoutY="31.0" prefHeight="30.0" prefWidth="174.0" />
+      <Label layoutX="297.0" layoutY="37.0" text="по:">
          <font>
-            <Font size="16.0" />
+            <Font size="14.0" />
          </font>
       </Label>
-      <TreeTableView layoutX="27.0" layoutY="98.0" prefHeight="448.0" prefWidth="953.0">
+      <TreeTableView fx:id="productReport" layoutX="27.0" layoutY="98.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="98.0">
         <columns>
-          <TreeTableColumn prefWidth="75.0" text="№ чека" />
-          <TreeTableColumn prefWidth="298.0" text="ФИО Сотрудника" />
-            <TreeTableColumn prefWidth="75.0" text="Дата продажи" />
-            <TreeTableColumn prefWidth="298.0" text="Сумма" />
+          <TreeTableColumn prefWidth="282.0" text="Поставщик / товары" />
+            <TreeTableColumn prefWidth="76.0" text="Количество" />
+            <TreeTableColumn prefWidth="65.0" text="Ед. изм" />
+            <TreeTableColumn prefWidth="125.0" text="Цена" />
+            <TreeTableColumn prefWidth="131.0" text="Сумма" />
+            <TreeTableColumn prefWidth="145.0" text="Сумма (себестоимость)" />
+            <TreeTableColumn prefWidth="128.0" text="Цена остатка" />
         </columns>
-         <columnResizePolicy>
-            <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
       </TreeTableView>
+      <Button fx:id="export" layoutX="764.0" layoutY="32.0" mnemonicParsing="false" onAction="#createReceipt" prefHeight="30.0" prefWidth="44.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>
