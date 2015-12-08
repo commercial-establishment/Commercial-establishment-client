@@ -6,7 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.invoice.ReceiptsController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="595.0"
+            prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="kz.hts.ce.controller.reports.ChecksReportController">
     <children>
         <Button fx:id="compile" layoutX="830.0" layoutY="26.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Скомпилировать">
             <font>
@@ -33,7 +35,7 @@
             <TreeTableColumn prefWidth="187.0" text="Сумма" />
         </columns>
       </TreeTableView>
-      <Button fx:id="export" layoutX="772.0" layoutY="26.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="43.0">
+      <Button id="export" fx:id="export" layoutX="772.0" layoutY="26.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="43.0" stylesheets="@../style.css">
          <font>
             <Font size="14.0" />
          </font>
