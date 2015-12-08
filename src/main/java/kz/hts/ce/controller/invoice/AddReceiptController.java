@@ -245,6 +245,7 @@ public class AddReceiptController implements Initializable {
                 }
                 invoiceProductService.save(invoiceProduct);
             }
+
             receiptPageController.showReceiptsPage();
         } catch (ControllerException e) {
             alert(Alert.AlertType.ERROR, "Внутренная ошибка", null, "Пожалуйста, проверьте корректность введённых данных");
