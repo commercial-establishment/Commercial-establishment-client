@@ -291,15 +291,6 @@ public class AddReceiptController implements Initializable {
     }
 
     @FXML
-    private void enableAllFields() {
-        margin.setDisable(false);
-        date.setDisable(false);
-        postponement.setDisable(false);
-        vat.setDisable(false);
-        categories.setDisable(false);
-    }
-
-    @FXML
     private void deleteProductFromTable() {
         ProductDto productDto = productsTable.getSelectionModel().getSelectedItem();
         if (productDto == null) {
