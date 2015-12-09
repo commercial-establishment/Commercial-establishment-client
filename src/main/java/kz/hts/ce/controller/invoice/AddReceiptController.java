@@ -319,6 +319,15 @@ public class AddReceiptController implements Initializable {
         unitOfMeasure.getEditor().setText("");
     }
 
+    @FXML
+    private void enableAllFields() {
+        margin.setDisable(false);
+        date.setDisable(false);
+        postponement.setDisable(false);
+        vat.setDisable(false);
+        categories.setDisable(false);
+    }
+
     public void productComboBoxListener() {
         productComboBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
             for (ProductDto productDto : productDtosByCategory) {

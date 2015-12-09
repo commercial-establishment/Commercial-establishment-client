@@ -14,6 +14,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
     List<Invoice> findByWarehouse_Shop_Id(long id);
 
+    List<Invoice> findByWarehouse_Shop_IdAndProvider_Id(long shopId, long providerId);
 
     @Transactional
     @Modifying
@@ -24,5 +25,4 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     @Modifying
     @Query("UPDATE Invoice i set i.vat = ?1 where i.id = ?2")
     void updateVatById(boolean vat, long id);
-
 }

@@ -78,6 +78,7 @@ public class PagesConfiguration {
     @Scope("prototype")
     public Node receipts() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        primaryStage.getScene().getStylesheets().add("style.css");
         return (Node) springFxmlLoader.load("/view/receipts.fxml");
     }
 
