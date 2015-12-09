@@ -20,6 +20,10 @@ public class WarehouseProductService extends BaseService<WarehouseProduct, Wareh
     }
 
     public List<WarehouseProduct> findByCategoryIdAndShopId(long categoryId, long shopId) {
-            return repository.findByProduct_Category_IdAndWarehouse_Shop_Id(categoryId, shopId);
+        return repository.findByProduct_Category_IdAndWarehouse_Shop_Id(categoryId, shopId);
+    }
+
+    public WarehouseProduct findByWarehouseIdAndProductId(long warehouseId, long productId) {
+        return repository.findByWarehouse_IdAndProduct_Id(warehouseId, productId);
     }
 }

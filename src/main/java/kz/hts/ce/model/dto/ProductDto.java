@@ -11,6 +11,7 @@ public class ProductDto {
     private LongProperty id;
     private StringProperty name;
     private IntegerProperty amount;
+    private IntegerProperty oldAmount;
     private ObjectProperty<BigDecimal> price;
     private ObjectProperty<BigDecimal> priceWithMargin;
     private ObjectProperty<BigDecimal> totalPrice;
@@ -173,5 +174,20 @@ public class ProductDto {
         BigDecimal totalPriceBD = multiplyIntegerAndBigDecimal(amount, price);
         setTotalPrice(totalPriceBD);
         return totalPrice;
+    }
+
+    public int getOldAmount() {
+        return oldAmount.get();
+    }
+
+    public IntegerProperty oldAmountProperty() {
+        return oldAmount;
+    }
+
+    public void setOldAmount(int oldAmount) {
+        if (this.oldAmount == null) {
+            this.oldAmount = new SimpleIntegerProperty();
+        }
+        this.oldAmount.set(oldAmount);
     }
 }

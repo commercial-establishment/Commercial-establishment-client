@@ -1,19 +1,13 @@
 package kz.hts.ce.controller.invoice;
 
+import com.sun.javafx.scene.control.skin.TableViewSkin;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.util.converter.IntegerStringConverter;
-import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.controller.ControllerException;
-import kz.hts.ce.controller.MainController;
-import kz.hts.ce.model.entity.Invoice;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.*;
 import kz.hts.ce.service.*;
@@ -22,21 +16,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.text.NumberFormat;
-import java.text.ParsePosition;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
-import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromProduct;
 import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
-import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
+import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
@@ -109,19 +98,18 @@ public class AddReceiptController implements Initializable {
     @Autowired
     private WarehouseService warehouseService;
     @Autowired
-    private MainController mainController;
-    @Autowired
     private InvoiceProductService invoiceProductService;
     @Autowired
     private WarehouseProductHistoryService warehouseProductHistoryService;
+
+    @Autowired
+    private ReceiptPageController receiptPageController;
+
     @Autowired
     private JsonUtil jsonUtil;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        barcodes = new HashSet<>();
-        List<Product> products = productService.findAll();
-        barcodes.addAll(products.stream().map(Product::getBarcode).collect(Collectors.toList()));
         productsData.clear();
 
         initializeTableColumns();
@@ -187,10 +175,13 @@ public class AddReceiptController implements Initializable {
             invoiceEntity.setProvider(providerService.findByCompanyName(providerCompanyName));
             invoiceEntity.setVat(vat);
             invoiceEntity.setWarehouse(warehouse);
-            Invoice invoice = invoiceService.save(invoiceEntity);
 
             String margin = this.margin.getEditor().getText();
-            margin = String.valueOf((Integer.valueOf(margin) / 100) + 1);
+            invoiceEntity.setMargin(Integer.parseInt(margin));
+            margin = String.valueOf((Double.valueOf(margin) / 100) + 1);
+
+            Invoice invoice = invoiceService.save(invoiceEntity);
+
             BigDecimal priceWithMargin = new BigDecimal(margin);
             for (ProductDto productDto : productsData) {
                 Product product = productService.findByBarcode(productDto.getBarcode());
@@ -212,7 +203,6 @@ public class AddReceiptController implements Initializable {
                 warehouseProduct.setArrival(productDto.getAmount());
                 warehouseProduct.setResidue(productDto.getResidue());
                 warehouseProduct.setVersion(1);
-
                 if (product != null) {
                     warehouseProduct.setProduct(product);
                     invoiceProduct.setProduct(product);
@@ -253,7 +243,8 @@ public class AddReceiptController implements Initializable {
                 }
                 invoiceProductService.save(invoiceProduct);
             }
-            showReceiptsPage();
+
+            receiptPageController.showReceiptsPage();
         } catch (ControllerException e) {
             alert(Alert.AlertType.ERROR, "Внутренная ошибка", null, "Пожалуйста, проверьте корректность введённых данных");
         }
@@ -268,31 +259,36 @@ public class AddReceiptController implements Initializable {
         Integer amount = this.amount.getValue();
         String barcode = this.barcode.getText();
 
-        ProductDto productDto = new ProductDto();
-        productDto.setBarcode(barcode);
-        productDto.setCategoryName(categoryName);
-        productDto.setName(productName);
-        productDto.setPrice(price);
-        productDto.setAmount(amount);
-        productDto.setResidue(amount);
-        productDto.setUnitName(unit);
-        productsData.add(productDto);
-        productsTable.setItems(productsData);
+        if (barcodes == null) barcodes = new HashSet<>();
+        barcodes.clear();
+
+        for (ProductDto dto : productsData) {
+            barcodes.add(dto.getBarcode());
+            if (barcode.equals(dto.getBarcode())) {
+                dto.setAmount(dto.getAmount() + amount);
+                dto.setPrice(price);
+                productsTable.getProperties().put(TableViewSkin.RECREATE, Boolean.TRUE);
+            }
+        }
+
+        if (!barcodes.contains(barcode)) {
+            ProductDto productDto = new ProductDto();
+            productDto.setBarcode(barcode);
+            productDto.setCategoryName(categoryName);
+            productDto.setName(productName);
+            productDto.setPrice(price);
+            productDto.setAmount(amount);
+            productDto.setResidue(amount);
+            productDto.setUnitName(unit);
+            productsData.add(productDto);
+            productsTable.setItems(productsData);
+        }
         deleteRowColumn.setDisable(false);
 
         productComboBox.setValue("");
         this.barcode.setText("");
         this.unitOfMeasure.getEditor().setText("");
         this.price.setText("0");
-    }
-
-    @FXML
-    private void enableAllFields() {
-        margin.setDisable(false);
-        date.setDisable(false);
-        postponement.setDisable(false);
-        vat.setDisable(false);
-        categories.setDisable(false);
     }
 
     @FXML
@@ -321,15 +317,6 @@ public class AddReceiptController implements Initializable {
         productComboBox.getEditor().setText("");
         barcode.setText("");
         unitOfMeasure.getEditor().setText("");
-    }
-
-    public void showReceiptsPage() {
-        PagesConfiguration screens = getPagesConfiguration();
-        try {
-            mainController.getContentContainer().getChildren().setAll(screens.receipts());
-        } catch (IOException e) {
-            throw new ControllerException(e);
-        }
     }
 
     public void productComboBoxListener() {
