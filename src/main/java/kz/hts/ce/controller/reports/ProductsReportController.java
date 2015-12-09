@@ -2,7 +2,6 @@ package kz.hts.ce.controller.reports;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,21 +9,25 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
-import javafx.util.Callback;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Category;
 import kz.hts.ce.model.entity.Product;
+import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.service.CategoryService;
+import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.ProductService;
+import kz.hts.ce.service.WarehouseProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class ProductsReportController {
+
     @FXML
     private DatePicker startDate;
     @FXML
@@ -46,8 +49,8 @@ public class ProductsReportController {
     @FXML
     private TreeTableColumn<ProductDto, BigDecimal> shopPrice;
 
-    private TreeItem<ProductDto> parentRoot = new TreeItem<>();
-    private TreeItem<Map<Category, List<ProductDto>>> categoryTreeItem = new TreeItem<>();
+    private TreeItem<ProductDto> root = new TreeItem<>();
+    private TreeItem<ProductDto> categoryTreeItem = new TreeItem<>();
     private TreeItem<ProductDto> productTreeItem = new TreeItem<>();
 
 
@@ -57,30 +60,51 @@ public class ProductsReportController {
     private CategoryService categoryService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private WarehouseProductService warehouseProductService;
 
     @FXML
     public void showReport() {
-//        if (!startDate.getEditor().getText().equals("") && !endDate.getEditor().getText().equals("")){
-//        }
-        List<Category> all = categoryService.findAll();
-        List<Product> productList = productService.findAll();
-        parentRoot.setExpanded(true);
+        root.setExpanded(true);
+        productsReport.setShowRoot(false);
 
-        ProductDto productDto = new ProductDto();
-        productDto.setName("asdasdasd");
-        productDto.setAmount(111);
+        List<WarehouseProduct> warehouseProducts = warehouseProductService.findAll();
+        Set<Category> categories = new HashSet<>();
+        for (WarehouseProduct warehouseProduct : warehouseProducts) {
+            categories.add(warehouseProduct.getProduct().getCategory());
+        }
 
+        Map<String, List<WarehouseProduct>> categoryProductsMap = new HashMap<>();
+        for (Category category : categories) {
+            List<WarehouseProduct> warehouseProductsByCategory = warehouseProductService.findByCategoryId(category.getId());
+            categoryProductsMap.put(category.getName(), warehouseProductsByCategory);
+        }
 
+        ProductDto productDto1 = new ProductDto();
+        productDto1.setName("BBBB");
+        productDto1.setAmount(111);
+        root.setValue(productDto1);
 
-        categoryTreeItem.getChildren().add(new TreeItem<>());
-//        categoryTreeItem.setValue("");
-//        parentRoot.getChildren().add(categoryTreeItem);
-//        parentRoot.getChildren().add(new TreeItem<>(all.get(1).getName()));
+        for (Map.Entry<String, List<WarehouseProduct>> map : categoryProductsMap.entrySet()) {
+            String categoryName = map.getKey();
+            List<WarehouseProduct> products = map.getValue();
+            ProductDto productDtoKey = new ProductDto();
+            productDtoKey.setName(categoryName);
+            productDtoKey.setAmount(100);
+            TreeItem<ProductDto> categoryItem = new TreeItem<>(productDtoKey);
+            root.getChildren().add(categoryItem);
+            for (WarehouseProduct product : products) {
+                ProductDto productDtoValue = new ProductDto();
+                productDtoValue.setName(product.getProduct().getName());
+                productDtoValue.setAmount(140);
+                TreeItem<ProductDto> categoryItem1 = new TreeItem<>(productDtoValue);
+                categoryItem.getChildren().add(categoryItem1);
+            }
+        }
+        productsReport.setRoot(root);
 
         categoryProduct.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProductDto, String> p) ->
                 new ReadOnlyStringWrapper(p.getValue().getValue().getName()));
         amount.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getAmount()));
-        productsReport.setRoot(parentRoot);
-        productsReport.setShowRoot(false);
     }
 }
