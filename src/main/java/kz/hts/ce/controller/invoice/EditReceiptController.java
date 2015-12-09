@@ -45,6 +45,7 @@ public class EditReceiptController implements Initializable {
     private Set<Long> ids;
     private Invoice invoiceFromDB;
     private List<InvoiceProduct> oldInvoiceProducts;
+    List<ProductDto> removedProducts;
 
     @FXML
     private TableView<ProductDto> productsTable;
@@ -177,18 +178,13 @@ public class EditReceiptController implements Initializable {
 
         amountColumn.setCellFactory(p -> new EditingNumberCell());
         amountColumn.setOnEditCommit(t -> {
-            t.getTableView().getItems()
-                    .get(t.getTablePosition().getRow()).setAmount((Integer) t.getNewValue());
+            t.getTableView().getItems().get(t.getTablePosition().getRow()).setAmount((Integer) t.getNewValue());
             productsTable.getProperties().put(TableViewSkin.RECREATE, Boolean.TRUE);
         });
-
         priceColumn.setCellFactory(p -> new EditingBigDecimalCell());
-        priceColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<ProductDto, BigDecimal>>() {
-            @Override
-            public void handle(TableColumn.CellEditEvent<ProductDto, BigDecimal> t) {
-                t.getTableView().getItems().get(t.getTablePosition().getRow()).setPrice(t.getNewValue());
-                productsTable.getProperties().put(TableViewSkin.RECREATE, Boolean.TRUE);
-            }
+        priceColumn.setOnEditCommit(t -> {
+            t.getTableView().getItems().get(t.getTablePosition().getRow()).setPrice(t.getNewValue());
+            productsTable.getProperties().put(TableViewSkin.RECREATE, Boolean.TRUE);
         });
     }
 
@@ -279,10 +275,9 @@ public class EditReceiptController implements Initializable {
             ids.clear();
             for (ProductDto productDto : productsData) {
                 long id = productDto.getId();
-                ids.add(id);
+                ids.add(id);/*TODO for what?????*/
                 for (InvoiceProduct oldInvoiceProduct : oldInvoiceProducts) {
                     if (id == oldInvoiceProduct.getId()) {
-                        oldInvoiceProduct.setAmount(productDto.getAmount());
                         oldInvoiceProduct.setPrice(productDto.getPrice());
                         BigDecimal priceWithMargin = new BigDecimal(margin);
                         if (jsonUtil.isVatBoolean() && !vat) {
@@ -291,7 +286,6 @@ public class EditReceiptController implements Initializable {
                             priceWithMargin = priceWithMargin.multiply(productDto.getPrice());
                         }
                         oldInvoiceProduct.setPriceWithMargin(priceWithMargin);
-                        invoiceProductService.save(oldInvoiceProduct);
 
                         WarehouseProduct warehouseProduct = warehouseProductService
                                 .findByProductBarcode(oldInvoiceProduct.getProduct().getBarcode());
@@ -309,8 +303,13 @@ public class EditReceiptController implements Initializable {
                         warehouseProduct.setVersion(warehouseProduct.getVersion() + 1);
                         warehouseProduct.setPrice(productDto.getPrice());
                         warehouseProduct.setArrival(productDto.getAmount());
-                        warehouseProduct.setResidue(warehouseProduct.getResidue() + productDto.getAmount());
+                        int residue = warehouseProduct.getResidue();
+                        int amount = productDto.getAmount();
+                        int amount1 = oldInvoiceProduct.getAmount();
+                        warehouseProduct.setResidue(residue - amount1 + amount);
                         warehouseProductService.save(warehouseProduct);
+                        oldInvoiceProduct.setAmount(productDto.getAmount());
+                        invoiceProductService.save(oldInvoiceProduct);
                     }
                 }
                 if (id == 0) {
@@ -377,6 +376,34 @@ public class EditReceiptController implements Initializable {
                 }
             }
 
+            if (removedProducts != null) {
+                for (ProductDto productDto : removedProducts) {
+                    long id = productDto.getId();
+                    for (InvoiceProduct oldInvoiceProduct : oldInvoiceProducts) {
+                        if (oldInvoiceProduct.getId() == id) {
+                            invoiceProductService.delete(oldInvoiceProduct.getId());
+
+                            WarehouseProduct warehouseProduct = warehouseProductService
+                                    .findByProductBarcode(oldInvoiceProduct.getProduct().getBarcode());
+
+                            WarehouseProductHistory warehouseProductHistory = new WarehouseProductHistory();
+                            warehouseProductHistory.setWarehouseProduct(warehouseProduct);
+                            warehouseProductHistory.setEmployee(employee);
+                            warehouseProductHistory.setVersion(warehouseProduct.getVersion());
+                            warehouseProductHistory.setArrival(warehouseProduct.getArrival());
+                            warehouseProductHistory.setResidue(warehouseProduct.getResidue());
+                            warehouseProductHistory.setDate(new Date());
+                            warehouseProductHistory.setTotalPrice(multiplyIntegerAndBigDecimal(warehouseProduct.getResidue(), warehouseProduct.getPrice()));
+                            warehouseProductHistoryService.save(warehouseProductHistory);
+
+                            warehouseProduct.setVersion(warehouseProduct.getVersion() + 1);
+                            warehouseProduct.setResidue(warehouseProduct.getResidue() - oldInvoiceProduct.getAmount());
+                            warehouseProductService.save(warehouseProduct);
+                        }
+                    }
+                }
+            }
+
             if (productsData.size() == 0) {
                 //TODO
             }
@@ -397,10 +424,12 @@ public class EditReceiptController implements Initializable {
 
     @FXML
     private void deleteProductFromTable() {
+        if (removedProducts == null) removedProducts = new ArrayList<>();
         ProductDto productDto = productsTable.getSelectionModel().getSelectedItem();
         if (productDto == null) {
             alert(Alert.AlertType.WARNING, "Товар не выбран", null, "Пожалуйста, выберите товар, который хотите удалить.");
         } else {
+            removedProducts.add(productDto);
             productsData.remove(productDto);
             productsTable.getItems().remove(productDto);
         }

@@ -204,7 +204,6 @@ public class AddReceiptController implements Initializable {
                 warehouseProduct.setArrival(productDto.getAmount());
                 warehouseProduct.setResidue(productDto.getResidue());
                 warehouseProduct.setVersion(1);
-
                 if (product != null) {
                     warehouseProduct.setProduct(product);
                     invoiceProduct.setProduct(product);

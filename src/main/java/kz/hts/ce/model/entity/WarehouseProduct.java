@@ -1,11 +1,7 @@
 package kz.hts.ce.model.entity;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "warehouse_product")
