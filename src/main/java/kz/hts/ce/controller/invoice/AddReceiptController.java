@@ -110,7 +110,6 @@ public class AddReceiptController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        barcodes = new HashSet<>();
         productsData.clear();
 
         initializeTableColumns();
@@ -260,7 +259,9 @@ public class AddReceiptController implements Initializable {
         Integer amount = this.amount.getValue();
         String barcode = this.barcode.getText();
 
+        if (barcodes == null) barcodes = new HashSet<>();
         barcodes.clear();
+
         for (ProductDto dto : productsData) {
             barcodes.add(dto.getBarcode());
             if (barcode.equals(dto.getBarcode())) {
