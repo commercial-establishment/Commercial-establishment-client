@@ -44,6 +44,11 @@ public class ProductsReportController {
     private TreeTableColumn<ProductDto, BigDecimal> costPrice;
     @FXML
     private TreeTableColumn<ProductDto, BigDecimal> shopPrice;
+    @FXML
+    private TreeTableColumn<ProductDto, BigDecimal> sumShopPrice;
+    @FXML
+    private TreeTableColumn<ProductDto, BigDecimal> sumCostPrice;
+
 
     private TreeItem<ProductDto> root = null;
     private TreeItem<ProductDto> categoryTreeItem = null;
@@ -66,7 +71,7 @@ public class ProductsReportController {
     public void showReport() {
         root = new TreeItem<>();
         categoryTreeItem = new TreeItem<>();
-
+        productsReport.getStylesheets().add("style.css");
         root.setExpanded(true);
         productsReport.setShowRoot(false);
         List<WarehouseProduct> warehouseProducts = warehouseProductService.findAll();
@@ -83,11 +88,13 @@ public class ProductsReportController {
 
         ProductDto productDto1 = new ProductDto();
         productDto1.setName("A");
-        productDto1.setUnitName("B");
+        productDto1.setUnitSymbol("");
         productDto1.setOldAmount(0);
         productDto1.setResidue(0);
         productDto1.setFinalPrice(BigDecimal.ZERO);
         productDto1.setPrice(BigDecimal.ZERO);
+        productDto1.setSumOfCostPrice(BigDecimal.ZERO);
+        productDto1.setSumOfShopPrice(BigDecimal.ZERO);
         root.setValue(productDto1);
 
         for (Map.Entry<String, List<WarehouseProduct>> map : categoryProductsMap.entrySet()) {
@@ -98,9 +105,11 @@ public class ProductsReportController {
             productDtoKey.setAmount(0);
             productDtoKey.setOldAmount(0);
             productDtoKey.setResidue(0);
-            productDtoKey.setUnitName(" ");
+            productDtoKey.setUnitSymbol("");
             productDtoKey.setFinalPrice(BigDecimal.ZERO);
             productDtoKey.setPrice(BigDecimal.ZERO);
+            productDtoKey.setSumOfCostPrice(BigDecimal.ZERO);
+            productDtoKey.setSumOfShopPrice(BigDecimal.ZERO);
 
             TreeItem<ProductDto> categoryItem = new TreeItem<>(productDtoKey);
             root.getChildren().add(categoryItem);
@@ -109,9 +118,12 @@ public class ProductsReportController {
                 productDtoValue.setName(product.getProduct().getName());
                 productDtoValue.setOldAmount(product.getArrival());
                 productDtoValue.setResidue(product.getResidue());
-                productDtoValue.setUnitName(product.getProduct().getUnit().getName());
+                productDtoValue.setUnitSymbol(product.getProduct().getUnit().getSymbol());
                 productDtoValue.setFinalPrice(product.getFinalPrice());
                 productDtoValue.setPrice(product.getInitialPrice());
+                productDtoValue.setSumOfCostPrice(product.getInitialPrice().multiply(BigDecimal.valueOf(product.getResidue())));
+                productDtoValue.setSumOfShopPrice(product.getFinalPrice().multiply(BigDecimal.valueOf(product.getResidue())));
+
                 TreeItem<ProductDto> categoryItem1 = new TreeItem<>(productDtoValue);
                 categoryItem.getChildren().add(categoryItem1);
             }
@@ -125,9 +137,11 @@ public class ProductsReportController {
         residueInitial.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getOldAmount()));
         residueFinal.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getResidue()));
         unitOfMeasure.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProductDto, String> p) ->
-                new ReadOnlyStringWrapper(p.getValue().getValue().getUnitName()));
+                new ReadOnlyStringWrapper(p.getValue().getValue().getUnitSymbol()));
         costPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getPrice()));
         shopPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getFinalPrice()));
+        sumCostPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSumOfCostPrice()));
+        sumShopPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSumOfShopPrice()));
 
     }
 }

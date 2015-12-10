@@ -13,6 +13,8 @@ public class ProductDto {
     private IntegerProperty amount;
     private IntegerProperty oldAmount;
     private ObjectProperty<BigDecimal> price;
+    private ObjectProperty<BigDecimal> sumOfShopPrice;
+    private ObjectProperty<BigDecimal> sumOfCostPrice;
     private IntegerProperty margin;
     private BooleanProperty vat;
     private ObjectProperty<BigDecimal> finalPrice;
@@ -20,6 +22,7 @@ public class ProductDto {
     private IntegerProperty residue;
     private StringProperty barcode;
     private StringProperty unitName;
+    private StringProperty unitSymbol;
     private StringProperty categoryName;
 
     public long getId() {
@@ -221,5 +224,50 @@ public class ProductDto {
             this.oldAmount = new SimpleIntegerProperty();
         }
         this.oldAmount.set(oldAmount);
+    }
+
+    public String getUnitSymbol() {
+        return unitSymbol.get();
+    }
+
+    public StringProperty unitSymbolProperty() {
+        return unitSymbol;
+    }
+
+    public void setUnitSymbol(String unitSymbol) {
+        if (this.unitSymbol == null) {
+            this.unitSymbol = new SimpleStringProperty();
+        }
+        this.unitSymbol.set(unitSymbol);
+    }
+
+    public BigDecimal getSumOfShopPrice() {
+        return sumOfShopPrice.get();
+    }
+
+    public ObjectProperty<BigDecimal> sumOfShopPriceProperty() {
+        return sumOfShopPrice;
+    }
+
+    public void setSumOfShopPrice(BigDecimal sumOfShopPrice) {
+        if (this.sumOfShopPrice == null) {
+            this.sumOfShopPrice = new SimpleObjectProperty<>();
+        }
+        this.sumOfShopPrice.set(sumOfShopPrice);
+    }
+
+    public BigDecimal getSumOfCostPrice() {
+        return sumOfCostPrice.get();
+    }
+
+    public ObjectProperty<BigDecimal> sumOfCostPriceProperty() {
+        return sumOfCostPrice;
+    }
+
+    public void setSumOfCostPrice(BigDecimal sumOfCostPrice) {
+        if (this.sumOfCostPrice == null) {
+            this.sumOfCostPrice = new SimpleObjectProperty<>();
+        }
+        this.sumOfCostPrice.set(sumOfCostPrice);
     }
 }

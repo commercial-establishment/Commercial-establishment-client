@@ -15,3 +15,7 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position:center;
 }
+#unitM{
+    -fx-text-alignment: center;
+    -fx-font-style: italic;
+}
