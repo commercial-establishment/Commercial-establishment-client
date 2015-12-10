@@ -26,6 +26,11 @@ import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 @Controller
 public class ProductsReportController {
 
+    private TreeItem<ProductDto> root = null;
+    private TreeItem<ProductDto> categoryTreeItem = null;
+    private TreeItem<ProductDto> productTreeItem = new TreeItem<>();
+    private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
+
     @FXML
     private DatePicker startDate;
     @FXML
@@ -45,13 +50,6 @@ public class ProductsReportController {
     @FXML
     private TreeTableColumn<ProductDto, BigDecimal> shopPrice;
 
-    private TreeItem<ProductDto> root = null;
-    private TreeItem<ProductDto> categoryTreeItem = null;
-    private TreeItem<ProductDto> productTreeItem = new TreeItem<>();
-
-
-    private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
-
     @Autowired
     private CategoryService categoryService;
     @Autowired
@@ -61,7 +59,9 @@ public class ProductsReportController {
 
     @FXML
     public void export(){
+
     }
+
     @FXML
     public void showReport() {
         root = new TreeItem<>();
@@ -128,6 +128,5 @@ public class ProductsReportController {
                 new ReadOnlyStringWrapper(p.getValue().getValue().getUnitName()));
         costPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getPrice()));
         shopPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getFinalPrice()));
-
     }
 }
