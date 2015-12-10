@@ -58,6 +58,7 @@ public class LoginController {
             Shift shiftEntity = new Shift();
             shiftEntity.setStart(new Date());
             Employee employee = employeeService.findByUsername(getPrincipal());
+            springUtils.setEmployee(employee);
             shiftEntity.setEmployee(employee);
             Shift shift = shiftService.save(shiftEntity);
             springUtils.setShift(shift);

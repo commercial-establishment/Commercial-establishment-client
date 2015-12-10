@@ -2,9 +2,11 @@ package kz.hts.ce.controller.invoice;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -15,8 +17,11 @@ import kz.hts.ce.controller.SettingsController;
 import kz.hts.ce.model.dto.InvoiceDto;
 import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.Invoice;
+import kz.hts.ce.model.entity.ShopProvider;
 import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.InvoiceService;
+import kz.hts.ce.service.ProviderService;
+import kz.hts.ce.service.ShopProviderService;
 import kz.hts.ce.util.spring.JsonUtil;
 import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +32,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaUtil.countDays;
 import static kz.hts.ce.util.JavaUtil.createInvoiceDtoFromInvoice;
@@ -41,8 +44,11 @@ public class ReceiptsController implements Initializable {
     public static final String GREEN_COLOR = "greenColor";
     public static final String ORANGE_COLOR = "orangeColor";
     public static final String RED_COLOR = "redColor";
+    public static final String ALL_PROVIDERS_RU = "Все поставщики";
 
     private ObservableList<InvoiceDto> invoiceData = FXCollections.observableArrayList();
+    private List<ShopProvider> shopProviders;
+    private Employee employee;
 
     @FXML
     private TableView<InvoiceDto> receiptsTable;
@@ -56,17 +62,22 @@ public class ReceiptsController implements Initializable {
     private TableColumn<InvoiceDto, Number> postponement;
     @FXML
     private TableColumn<InvoiceDto, Boolean> vat;
+    @FXML
+    private ComboBox<String> providers;
 
     @Autowired
     private EmployeeService employeeService;
     @Autowired
     private InvoiceService invoiceService;
+    @Autowired
+    private ShopProviderService shopProviderService;
+    @Autowired
+    private ProviderService providerService;
 
     @Autowired
     private MainController mainController;
     @Autowired
     private SettingsController settingsController;
-
     @Autowired
     private JsonUtil jsonUtil;
     @Autowired
@@ -74,26 +85,28 @@ public class ReceiptsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        invoiceData.clear();
+        employee = employeeService.findByUsername(getPrincipal());
+        shopProviders = shopProviderService.findByShopId(employee.getShop().getId());
+        providers.getItems().add(ALL_PROVIDERS_RU);
+        for (ShopProvider shopProvider : shopProviders) {
+            providers.getItems().add(shopProvider.getProvider().getCompanyName());
+        }
 
-        Employee employee = employeeService.findByUsername(getPrincipal());
-        List<Invoice> invoicesFromDB = invoiceService.findByWarehouseShopId(employee.getShop().getId());
+        initializeTableColumns();
+        changeRowColor();
 
-        Set<Invoice> invoices = invoicesFromDB.stream().collect(Collectors.toSet());
+        if (receiptsTable != null) showEditReceiptPage();
+    }
 
+    private void initializeTableColumns() {
         id.setCellValueFactory(cellData -> cellData.getValue().idProperty());
         providerCompanyName.setCellValueFactory(cellData -> cellData.getValue().providerCompanyNameProperty());
         date.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
         postponement.setCellValueFactory(cellData -> cellData.getValue().postponementProperty());
         vat.setCellValueFactory(cellData -> cellData.getValue().vatProperty());
+    }
 
-        for (Invoice invoice : invoices) {
-            InvoiceDto invoiceDto = createInvoiceDtoFromInvoice(invoice, null);
-            invoiceData.add(invoiceDto);
-        }
-
-        receiptsTable.getItems().addAll(invoiceData);
-
+    private void changeRowColor() {
         receiptsTable.setRowFactory(new Callback<TableView<InvoiceDto>, TableRow<InvoiceDto>>() {
             @Override
             public TableRow<InvoiceDto> call(TableView<InvoiceDto> tableView) {
@@ -101,21 +114,23 @@ public class ReceiptsController implements Initializable {
                     @Override
                     protected void updateItem(InvoiceDto invoiceDto, boolean empty) {
                         super.updateItem(invoiceDto, empty);
-                        if (settingsController.getProductMaxInt() == null && settingsController.getProductMinInt() == null) {
+                        Integer invoiceMinInt = settingsController.getInvoiceMinInt();
+                        Integer invoiceMaxInt = settingsController.getInvoiceMaxInt();
+                        if (invoiceMaxInt == null && invoiceMinInt == null) {
                             settingsController.setInvoiceMinInt(jsonUtil.getInvoiceMinInt());
                             settingsController.setInvoiceMaxInt(jsonUtil.getInvoiceMaxInt());
                         }
-                        if (!empty && settingsController.getInvoiceMaxInt() != null && settingsController.getInvoiceMinInt() != null) {
+                        if (!empty && invoiceMaxInt != null && invoiceMinInt != null) {
                             int diff = countDays(invoiceDto.getDate(), invoiceDto.getPostponement());
-                            if (diff <= settingsController.getInvoiceMinInt()) {
+                            if (diff <= invoiceMinInt) {
                                 getStyleClass().removeAll(Collections.singleton(GREEN_COLOR));
                                 getStyleClass().removeAll(Collections.singleton(ORANGE_COLOR));
                                 getStyleClass().add(RED_COLOR);
-                            } else if (diff > settingsController.getInvoiceMinInt() && diff <= settingsController.getInvoiceMinInt()) {
+                            } else if (diff > invoiceMinInt && diff <= invoiceMaxInt) {
                                 getStyleClass().removeAll(Collections.singleton(GREEN_COLOR));
                                 getStyleClass().removeAll(Collections.singleton(RED_COLOR));
                                 getStyleClass().add(ORANGE_COLOR);
-                            } else if (diff > settingsController.getInvoiceMaxInt()) {
+                            } else if (diff > invoiceMaxInt) {
                                 getStyleClass().removeAll(Collections.singleton(ORANGE_COLOR));
                                 getStyleClass().removeAll(Collections.singleton(RED_COLOR));
                                 getStyleClass().add(GREEN_COLOR);
@@ -129,25 +144,44 @@ public class ReceiptsController implements Initializable {
                 };
             }
         });
+    }
 
-        if (receiptsTable != null) {
-            receiptsTable.setOnMousePressed(event -> {
-                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                    try {
-                        springUtil.setId(receiptsTable.getSelectionModel().getSelectedItem().getId());
-                        Node node = getPagesConfiguration().editReceipt();
-                        mainController.getContentContainer().getChildren().setAll(node);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+    private void showEditReceiptPage() {
+        receiptsTable.setOnMousePressed(event -> {
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                try {
+                    springUtil.setId(receiptsTable.getSelectionModel().getSelectedItem().getId());
+                    Node node = getPagesConfiguration().editReceipt();
+                    mainController.getContentContainer().getChildren().setAll(node);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            });
-        }
+            }
+        });
     }
 
     @FXML
-    public void createReceipt() throws IOException {
+    public void showCreateReceiptPage() throws IOException {
         PagesConfiguration screens = getPagesConfiguration();
         mainController.getContentContainer().getChildren().setAll(screens.addReceipt());
+    }
+
+    public void findReceiptsByProvider(ActionEvent event) {
+        ComboBox<String> source = (ComboBox<String>) event.getSource();
+        String providerCompanyName = source.getValue();
+        invoiceData.clear();
+        receiptsTable.getItems().clear();
+        List<Invoice> invoices;
+        if (providerCompanyName.equals(ALL_PROVIDERS_RU)) {
+            invoices = invoiceService.findByWarehouseShopId(employee.getShop().getId());
+        } else {
+            long providerId = providerService.findByCompanyName(providerCompanyName).getId();
+            invoices = invoiceService.findByWarehouseShopIdAndProviderId(employee.getShop().getId(), providerId);
+        }
+        for (Invoice invoice : invoices) {
+            InvoiceDto invoiceDto = createInvoiceDtoFromInvoice(invoice, null);
+            invoiceData.add(invoiceDto);
+        }
+        receiptsTable.setItems(invoiceData);
     }
 }

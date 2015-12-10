@@ -15,10 +15,18 @@ public class WarehouseProduct extends BaseEntity {
     @PrimaryKeyJoinColumn(name = "warehouse_id", referencedColumnName = "id")
     private Warehouse warehouse;
 
+    @Column(name = "initial_price")
+    private BigDecimal initialPrice;
+
+    @Column(name = "final_price")
+    private BigDecimal finalPrice;
+
     private int version;
     private int arrival;
     private int residue;
-    private BigDecimal price;
+
+    private int margin;
+    private boolean vat;
 
     public Product getProduct() {
         return product;
@@ -28,12 +36,12 @@ public class WarehouseProduct extends BaseEntity {
         this.product = product;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getInitialPrice() {
+        return initialPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setInitialPrice(BigDecimal price) {
+        this.initialPrice = price;
     }
 
     public Warehouse getWarehouse() {
@@ -66,5 +74,29 @@ public class WarehouseProduct extends BaseEntity {
 
     public void setResidue(int residue) {
         this.residue = residue;
+    }
+
+    public int getMargin() {
+        return margin;
+    }
+
+    public void setMargin(int margin) {
+        this.margin = margin;
+    }
+
+    public boolean isVat() {
+        return vat;
+    }
+
+    public void setVat(boolean vat) {
+        this.vat = vat;
+    }
+
+    public BigDecimal getFinalPrice() {
+        return finalPrice;
+    }
+
+    public void setFinalPrice(BigDecimal finalPrice) {
+        this.finalPrice = finalPrice;
     }
 }

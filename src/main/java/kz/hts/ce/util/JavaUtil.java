@@ -54,7 +54,7 @@ public class JavaUtil {
         productDto.setName(warehouseProduct.getProduct().getName());
         productDto.setAmount(amount);
         productDto.setPrice(new BigDecimal(0));
-        productDto.setPrice(warehouseProduct.getPrice());
+        productDto.setPrice(warehouseProduct.getInitialPrice());
         return productDto;
     }
 
@@ -79,7 +79,7 @@ public class JavaUtil {
         if (invoiceProducts != null) {
             BigDecimal totalPrice = BigDecimal.ZERO;
             for (InvoiceProduct invoiceProduct : invoiceProducts) {
-                BigDecimal price = invoiceProduct.getPrice();
+                BigDecimal price = invoiceProduct.getInitialPrice();
                 int arrival = invoiceProduct.getAmount();
                 BigDecimal productsPrice = multiplyIntegerAndBigDecimal(arrival, price);
                 totalPrice = totalPrice.add(productsPrice);

@@ -78,6 +78,7 @@ public class PagesConfiguration {
     @Scope("prototype")
     public Node receipts() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        primaryStage.getScene().getStylesheets().add("style.css");
         return (Node) springFxmlLoader.load("/view/receipts.fxml");
     }
 
@@ -129,6 +130,12 @@ public class PagesConfiguration {
     public Node reportSales() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (Node) springFxmlLoader.load("/view/report-by-sales.fxml");
+    }
+
+    @Bean
+    public Node addProvider() {
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        return (AnchorPane) springFxmlLoader.load("/view/provider-add.fxml");
     }
 
     @Bean
@@ -190,6 +197,11 @@ public class PagesConfiguration {
     @Bean
     public SettingsController settingsController() {
         return new SettingsController();
+    }
+
+    @Bean
+    public AddProviderController addProviderController() {
+        return new AddProviderController();
     }
 
     @Bean

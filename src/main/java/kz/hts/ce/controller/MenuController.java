@@ -17,6 +17,8 @@ import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 public class MenuController {
 
     @FXML
+    private Button addProvider;
+    @FXML
     private Button settings;
     @FXML
     private Button products;
@@ -73,6 +75,10 @@ public class MenuController {
             calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
         } else if (event.getSource() == reportSales) {
             node = screens.reportSales();
+            mainController.getContentContainer().getChildren().setAll(node);
+            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
+        } else if (event.getSource() == addProvider) {
+            node = screens.addProvider();
             mainController.getContentContainer().getChildren().setAll(node);
             calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
         }

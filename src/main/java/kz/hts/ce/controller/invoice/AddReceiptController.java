@@ -178,11 +178,11 @@ public class AddReceiptController implements Initializable {
 
             String margin = this.margin.getEditor().getText();
             invoiceEntity.setMargin(Integer.parseInt(margin));
-            margin = String.valueOf((Double.valueOf(margin) / 100) + 1);
 
             Invoice invoice = invoiceService.save(invoiceEntity);
 
-            BigDecimal priceWithMargin = new BigDecimal(margin);
+            String marginPercentage = String.valueOf((Double.valueOf(margin) / 100) + 1);
+            BigDecimal priceWithMargin = new BigDecimal(marginPercentage);
             for (ProductDto productDto : productsData) {
                 Product product = productService.findByBarcode(productDto.getBarcode());
                 InvoiceProduct invoiceProduct = new InvoiceProduct();
@@ -193,12 +193,18 @@ public class AddReceiptController implements Initializable {
                 } else {
                     priceWithMargin = priceWithMargin.multiply(productDto.getPrice());
                 }
-                productDto.setPriceWithMargin(priceWithMargin);
-                invoiceProduct.setPriceWithMargin(productDto.getPriceWithMargin());
-                invoiceProduct.setPrice(productDto.getPrice());
+                productDto.setMargin(Integer.parseInt(margin));
+                productDto.setVat(vat);
+                productDto.setFinalPrice(priceWithMargin);
+                invoiceProduct.setMargin(productDto.getMargin());
+                invoiceProduct.setFinalPrice(productDto.getFinalPrice());
+                invoiceProduct.setInitialPrice(productDto.getPrice());
 
                 WarehouseProduct warehouseProduct = new WarehouseProduct();
-                warehouseProduct.setPrice(productDto.getPriceWithMargin());
+                warehouseProduct.setInitialPrice(productDto.getPrice());
+                warehouseProduct.setVat(productDto.getVat());
+                warehouseProduct.setMargin(productDto.getMargin());
+                warehouseProduct.setFinalPrice(productDto.getFinalPrice());
                 warehouseProduct.setWarehouse(warehouse);
                 warehouseProduct.setArrival(productDto.getAmount());
                 warehouseProduct.setResidue(productDto.getResidue());
@@ -232,13 +238,16 @@ public class AddReceiptController implements Initializable {
                     warehouseProductHistory.setArrival(warehouseProductFromDB.getArrival());
                     warehouseProductHistory.setResidue(warehouseProductFromDB.getResidue());
                     warehouseProductHistory.setDate(new Date());
-                    warehouseProductHistory.setTotalPrice(multiplyIntegerAndBigDecimal(warehouseProductFromDB.getResidue(), warehouseProductFromDB.getPrice()));
+                    warehouseProductHistory.setTotalPrice(multiplyIntegerAndBigDecimal(warehouseProductFromDB.getResidue(), warehouseProductFromDB.getInitialPrice()));
                     warehouseProductHistoryService.save(warehouseProductHistory);
 
                     warehouseProductFromDB.setVersion(warehouseProductFromDB.getVersion() + 1);
                     warehouseProductFromDB.setArrival(warehouseProduct.getArrival());
                     warehouseProductFromDB.setResidue(warehouseProductFromDB.getResidue() + warehouseProduct.getResidue());
-                    warehouseProductFromDB.setPrice(warehouseProduct.getPrice());
+                    warehouseProductFromDB.setInitialPrice(warehouseProduct.getInitialPrice());
+                    warehouseProductFromDB.setFinalPrice(warehouseProduct.getFinalPrice());
+                    warehouseProductFromDB.setMargin(warehouseProduct.getMargin());
+                    warehouseProductFromDB.setVat(warehouseProduct.isVat());
                     warehouseProductService.save(warehouseProductFromDB);
                 }
                 invoiceProductService.save(invoiceProduct);
@@ -317,6 +326,15 @@ public class AddReceiptController implements Initializable {
         productComboBox.getEditor().setText("");
         barcode.setText("");
         unitOfMeasure.getEditor().setText("");
+    }
+
+    @FXML
+    private void enableAllFields() {
+        margin.setDisable(false);
+        date.setDisable(false);
+        postponement.setDisable(false);
+        vat.setDisable(false);
+        categories.setDisable(false);
     }
 
     public void productComboBoxListener() {

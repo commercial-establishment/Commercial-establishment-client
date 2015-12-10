@@ -1,5 +1,6 @@
 package kz.hts.ce.util.spring;
 
+import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.Shift;
 import kz.hts.ce.security.AuthenticationService;
 import kz.hts.ce.security.CustomAuthenticationProvider;
@@ -18,6 +19,7 @@ public class SpringUtil {
 
     private long id;
     private Shift shift;
+    private Employee employee;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -61,5 +63,13 @@ public class SpringUtil {
 
     public void setShift(Shift shift) {
         this.shift = shift;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 }

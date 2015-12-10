@@ -15,15 +15,19 @@ public class InvoiceService extends BaseService<Invoice, InvoiceRepository> {
         super(repository);
     }
 
-    public List<Invoice> findByWarehouseShopId(long id){
+    public List<Invoice> findByWarehouseShopId(long id) {
         return repository.findByWarehouse_Shop_Id(id);
     }
 
-    public void updatePostponementById(int postponement, long id){
+    public void updatePostponementById(int postponement, long id) {
         repository.updatePostponementById(postponement, id);
     }
 
-    public void updateVatById(boolean vat, long id){
+    public void updateVatById(boolean vat, long id) {
         repository.updateVatById(vat, id);
+    }
+
+    public List<Invoice> findByWarehouseShopIdAndProviderId(long shopId, long providerId) {
+        return repository.findByWarehouse_Shop_IdAndProvider_Id(shopId, providerId);
     }
 }
