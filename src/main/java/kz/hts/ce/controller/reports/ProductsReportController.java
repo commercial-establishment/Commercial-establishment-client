@@ -5,10 +5,7 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Category;
 import kz.hts.ce.model.entity.InvoiceProduct;
@@ -48,8 +45,8 @@ public class ProductsReportController {
     @FXML
     private TreeTableColumn<ProductDto, BigDecimal> shopPrice;
 
-    private TreeItem<ProductDto> root = new TreeItem<>();
-    private TreeItem<ProductDto> categoryTreeItem = new TreeItem<>();
+    private TreeItem<ProductDto> root = null;
+    private TreeItem<ProductDto> categoryTreeItem = null;
     private TreeItem<ProductDto> productTreeItem = new TreeItem<>();
 
 
@@ -63,8 +60,13 @@ public class ProductsReportController {
     private WarehouseProductService warehouseProductService;
 
     @FXML
+    public void export(){
+    }
+    @FXML
     public void showReport() {
-        productsReport.refresh();
+        root = new TreeItem<>();
+        categoryTreeItem = new TreeItem<>();
+
         root.setExpanded(true);
         productsReport.setShowRoot(false);
         List<WarehouseProduct> warehouseProducts = warehouseProductService.findAll();
@@ -114,6 +116,7 @@ public class ProductsReportController {
                 categoryItem.getChildren().add(categoryItem1);
             }
         }
+
         productsReport.setRoot(root);
         categoryTreeItem.setExpanded(true);
 
