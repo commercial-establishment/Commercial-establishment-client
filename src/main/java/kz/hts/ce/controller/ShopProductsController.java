@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -20,6 +21,7 @@ import kz.hts.ce.util.spring.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Collections;
@@ -27,6 +29,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
@@ -62,8 +65,12 @@ public class ShopProductsController implements Initializable {
     private WarehouseProductService warehouseProductService;
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private MainController mainController;
     @Autowired
     private SettingsController settingsController;
+
     @Autowired
     private JsonUtil jsonUtil;
 
@@ -74,6 +81,8 @@ public class ShopProductsController implements Initializable {
         categories.getItems().addAll(categoryNames);
 
         shopId = employeeService.findByUsername(getPrincipal()).getShop().getId();
+
+        showEditProductPage();
     }
 
     public void findProductsByCategories(ActionEvent event) {
@@ -139,6 +148,19 @@ public class ShopProductsController implements Initializable {
                         }
                     }
                 };
+            }
+        });
+    }
+
+    private void showEditProductPage() {
+        productTable.setOnMousePressed(event -> {
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                try {
+                    Node node = getPagesConfiguration().editProduct();
+                    mainController.getContentContainer().getChildren().setAll(node);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

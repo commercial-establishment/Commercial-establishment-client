@@ -98,6 +98,14 @@ public class PagesConfiguration {
 
     @Bean
     @Scope("prototype")
+    public Node editProduct() throws IOException {
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        return (Node) springFxmlLoader.load("/view/product-edit.fxml");
+    }
+
+
+    @Bean
+    @Scope("prototype")
     public Node shopProducts() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         primaryStage.getScene().getStylesheets().add("style.css");
@@ -204,6 +212,12 @@ public class PagesConfiguration {
     @Scope("prototype")
     public AddProviderController addProviderController() {
         return new AddProviderController();
+    }
+
+    @Bean
+    @Scope("prototype")
+    public EditProductController editProductController() {
+        return new EditProductController();
     }
 
     @Bean
