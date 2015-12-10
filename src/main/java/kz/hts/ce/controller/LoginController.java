@@ -10,9 +10,11 @@ import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.controller.sale.CalculatorController;
 import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.Shift;
+import kz.hts.ce.model.entity.WarehouseProductHistory;
 import kz.hts.ce.repository.ShiftRepository;
 import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.ShiftService;
+import kz.hts.ce.service.WarehouseProductHistoryService;
 import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
@@ -45,6 +48,8 @@ public class LoginController {
 
     @Autowired
     private SpringUtil springUtils;
+    @Autowired
+    private WarehouseProductHistoryService wphService;
 
     @FXML
     @Transactional

@@ -1,4 +1,4 @@
-package kz.hts.ce.controller;
+package kz.hts.ce.controller.products;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +11,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
+import kz.hts.ce.controller.MainController;
+import kz.hts.ce.controller.SettingsController;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Category;
 import kz.hts.ce.model.entity.WarehouseProduct;

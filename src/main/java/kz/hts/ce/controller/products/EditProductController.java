@@ -1,4 +1,4 @@
-package kz.hts.ce.controller;
+package kz.hts.ce.controller.products;
 
 import org.springframework.stereotype.Controller;
 
