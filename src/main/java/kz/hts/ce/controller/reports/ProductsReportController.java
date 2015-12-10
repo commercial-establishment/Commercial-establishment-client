@@ -11,6 +11,7 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Category;
+import kz.hts.ce.model.entity.InvoiceProduct;
 import kz.hts.ce.model.entity.Product;
 import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.service.CategoryService;
@@ -36,8 +37,6 @@ public class ProductsReportController {
     private TreeTableView productsReport;
     @FXML
     private TreeTableColumn<ProductDto, String> categoryProduct;
-    @FXML
-    private TreeTableColumn<ProductDto, Number> amount;
     @FXML
     private TreeTableColumn<ProductDto, String> unitOfMeasure;
     @FXML
@@ -67,7 +66,6 @@ public class ProductsReportController {
     public void showReport() {
         root.setExpanded(true);
         productsReport.setShowRoot(false);
-
         List<WarehouseProduct> warehouseProducts = warehouseProductService.findAll();
         Set<Category> categories = new HashSet<>();
         for (WarehouseProduct warehouseProduct : warehouseProducts) {
@@ -81,8 +79,12 @@ public class ProductsReportController {
         }
 
         ProductDto productDto1 = new ProductDto();
-        productDto1.setName("BBBB");
-        productDto1.setAmount(111);
+        productDto1.setName("A");
+        productDto1.setUnitName("B");
+        productDto1.setOldAmount(0);
+        productDto1.setResidue(0);
+        productDto1.setPriceWithMargin(BigDecimal.ZERO);
+        productDto1.setPrice(BigDecimal.ZERO);
         root.setValue(productDto1);
 
         for (Map.Entry<String, List<WarehouseProduct>> map : categoryProductsMap.entrySet()) {
@@ -90,21 +92,35 @@ public class ProductsReportController {
             List<WarehouseProduct> products = map.getValue();
             ProductDto productDtoKey = new ProductDto();
             productDtoKey.setName(categoryName);
-            productDtoKey.setAmount(100);
+            productDtoKey.setAmount(0);
+            productDtoKey.setOldAmount(0);
+            productDtoKey.setResidue(0);
+            productDtoKey.setUnitName(" ");
+            productDtoKey.setPriceWithMargin(BigDecimal.ZERO);
+            productDtoKey.setPrice(BigDecimal.ZERO);
+
             TreeItem<ProductDto> categoryItem = new TreeItem<>(productDtoKey);
             root.getChildren().add(categoryItem);
             for (WarehouseProduct product : products) {
                 ProductDto productDtoValue = new ProductDto();
                 productDtoValue.setName(product.getProduct().getName());
-                productDtoValue.setAmount(140);
+                productDtoValue.setOldAmount(product.getArrival());
+                productDtoValue.setResidue(product.getResidue());
+                productDtoValue.setUnitName(product.getProduct().getUnit().getName());
+                productDtoValue.setPriceWithMargin(product.getPrice());
+                productDtoValue.setPrice(BigDecimal.ONE);
                 TreeItem<ProductDto> categoryItem1 = new TreeItem<>(productDtoValue);
                 categoryItem.getChildren().add(categoryItem1);
             }
         }
         productsReport.setRoot(root);
+        categoryTreeItem.setExpanded(true);
 
         categoryProduct.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProductDto, String> p) ->
                 new ReadOnlyStringWrapper(p.getValue().getValue().getName()));
-        amount.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getAmount()));
+        residueInitial.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getOldAmount()));
+        residueFinal.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getResidue()));
+        unitOfMeasure.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProductDto, String> p) ->
+                new ReadOnlyStringWrapper(p.getValue().getValue().getUnitName()));
     }
 }

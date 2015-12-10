@@ -27,13 +27,12 @@
         </Label>
         <TreeTableView fx:id="productsReport" layoutX="27.0" layoutY="98.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="98.0">
             <columns>
-                <TreeTableColumn fx:id="categoryProduct" prefWidth="282.0" text="Категории / Название" />
-                <TreeTableColumn fx:id="amount" prefWidth="76.0" text="Количество" />
-                <TreeTableColumn fx:id="unitOfMeasure" prefWidth="92.0" text="Ед. измерения" />
-                <TreeTableColumn fx:id="residueInitial" prefWidth="125.0" text="Начальный остаток" />
-                <TreeTableColumn fx:id="residueFinal" prefWidth="117.0" text="Конечный остаток" />
-                <TreeTableColumn fx:id="costPrice" prefWidth="122.0" text="Себестоимость" />
-                <TreeTableColumn fx:id="shopPrice" prefWidth="138.0" text="Цена в магазине" />
+                <TreeTableColumn fx:id="categoryProduct" prefWidth="306.0" text="Категории / Название" />
+                <TreeTableColumn fx:id="unitOfMeasure" prefWidth="90.0" text="Ед. измерения" />
+                <TreeTableColumn fx:id="residueInitial" prefWidth="122.0" text="Начальный остаток" />
+                <TreeTableColumn fx:id="residueFinal" prefWidth="116.0" text="Конечный остаток" />
+                <TreeTableColumn fx:id="costPrice" prefWidth="162.0" text="Себестоимость" />
+                <TreeTableColumn fx:id="shopPrice" prefWidth="156.0" text="Цена в магазине" />
             </columns>
         </TreeTableView>
         <Button id="export" fx:id="export" layoutX="763.0" layoutY="58.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="44.0" stylesheets="@../style.css">
