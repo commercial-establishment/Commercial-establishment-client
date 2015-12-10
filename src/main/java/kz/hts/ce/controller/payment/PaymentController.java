@@ -94,7 +94,7 @@ public class PaymentController implements Initializable {
                     warehouseProductHistory.setVersion(warehouseProduct.getVersion());
                     warehouseProductHistory.setArrival(productDto.getAmount());
                     warehouseProductHistory.setDate(new Date());
-                    warehouseProductHistory.setTotalPrice(multiplyIntegerAndBigDecimal(productDto.getAmount(), warehouseProduct.getPrice()));
+                    warehouseProductHistory.setTotalPrice(multiplyIntegerAndBigDecimal(productDto.getAmount(), warehouseProduct.getInitialPrice()));
                     warehouseProductHistoryService.save(warehouseProductHistory);
 
                     int productAmount = productDto.getAmount();

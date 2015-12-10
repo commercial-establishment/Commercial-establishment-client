@@ -58,6 +58,9 @@ public class Provider extends BaseEntity {
     @Column(name = "is_blocked", nullable = false)
     private boolean blocked;
 
+    private int iin;
+    private int bin;
+
     public String getUsername() {
         return username;
     }
@@ -144,5 +147,21 @@ public class Provider extends BaseEntity {
 
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
+    }
+
+    public int getIin() {
+        return iin;
+    }
+
+    public void setIin(int iin) {
+        this.iin = iin;
+    }
+
+    public int getBin() {
+        return bin;
+    }
+
+    public void setBin(int bin) {
+        this.bin = bin;
     }
 }

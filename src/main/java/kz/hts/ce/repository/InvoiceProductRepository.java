@@ -21,6 +21,6 @@ public interface InvoiceProductRepository extends JpaRepository<InvoiceProduct, 
 
     @Transactional
     @Modifying
-    @Query("UPDATE InvoiceProduct p set p.price = ?1 where p.id = ?2")
+    @Query("UPDATE InvoiceProduct p set p.initialPrice = ?1 where p.id = ?2")
     void updatePriceById(BigDecimal price, long id);
 }

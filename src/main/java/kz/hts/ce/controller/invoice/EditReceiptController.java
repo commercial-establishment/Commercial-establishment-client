@@ -164,7 +164,7 @@ public class EditReceiptController implements Initializable {
 
         for (InvoiceProduct invoiceProduct : oldInvoiceProducts) {
             ProductDto productDto = createProductDtoFromProduct(invoiceProduct.getProduct());
-            productDto.setPrice(invoiceProduct.getPrice());
+            productDto.setPrice(invoiceProduct.getInitialPrice());
             productDto.setAmount(invoiceProduct.getAmount());
             productDto.setId(invoiceProduct.getId());
             productsData.add(productDto);
@@ -228,6 +228,8 @@ public class EditReceiptController implements Initializable {
         BigDecimal price = new BigDecimal(this.price.getText());
         Integer amount = this.amount.getValue();
         String barcode = this.barcode.getText();
+        boolean vat = this.vat.isSelected();
+        int margin = this.margin.getValue();
 
         if (!productName.equals("") && !barcode.equals("") && !unit.equals("")) {
             barcodes.clear();
@@ -281,21 +283,21 @@ public class EditReceiptController implements Initializable {
 
                 Invoice invoice = invoiceService.save(invoiceFromDB);
 
-                margin = String.valueOf((Double.valueOf(margin) / 100) + ONE);
-
+                String marginPercentage = String.valueOf((Double.valueOf(margin) / 100) + ONE);
                 for (ProductDto productDto : productsData) {
                     long id = productDto.getId();
                     for (InvoiceProduct oldInvoiceProduct : oldInvoiceProducts) {
                         if (id == oldInvoiceProduct.getId()) {
-                            oldInvoiceProduct.setPrice(productDto.getPrice());
-                            BigDecimal priceWithMargin = new BigDecimal(margin);
+                            oldInvoiceProduct.setInitialPrice(productDto.getPrice());
+                            BigDecimal priceWithMargin = new BigDecimal(marginPercentage);
                             if (jsonUtil.isVatBoolean() && !vat) {
                                 priceWithMargin = (priceWithMargin.multiply(productDto.getPrice()))
                                         .multiply(BigDecimal.valueOf(VAT));
                             } else {
                                 priceWithMargin = priceWithMargin.multiply(productDto.getPrice());
                             }
-                            oldInvoiceProduct.setPriceWithMargin(priceWithMargin);
+                            oldInvoiceProduct.setMargin(Integer.parseInt(margin));
+                            oldInvoiceProduct.setFinalPrice(priceWithMargin);
 
                             WarehouseProduct warehouseProduct = warehouseProductService
                                     .findByProductBarcode(oldInvoiceProduct.getProduct().getBarcode());
@@ -308,11 +310,14 @@ public class EditReceiptController implements Initializable {
                             warehouseProductHistory.setResidue(warehouseProduct.getResidue());
                             warehouseProductHistory.setDate(new Date());
                             warehouseProductHistory.setTotalPrice(multiplyIntegerAndBigDecimal(warehouseProduct.
-                                    getResidue(), warehouseProduct.getPrice()));
+                                    getResidue(), warehouseProduct.getInitialPrice()));
                             warehouseProductHistoryService.save(warehouseProductHistory);
 
+                            warehouseProduct.setVat(vat);
+                            warehouseProduct.setMargin(Integer.parseInt(margin));
+                            warehouseProduct.setFinalPrice(priceWithMargin);
                             warehouseProduct.setVersion(warehouseProduct.getVersion() + ONE);
-                            warehouseProduct.setPrice(productDto.getPrice());
+                            warehouseProduct.setInitialPrice(productDto.getPrice());
                             warehouseProduct.setArrival(productDto.getAmount());
                             warehouseProduct.setResidue(warehouseProduct.getResidue() - oldInvoiceProduct.
                                     getAmount() + productDto.getAmount());
@@ -327,19 +332,25 @@ public class EditReceiptController implements Initializable {
                         InvoiceProduct invoiceProduct = new InvoiceProduct();
                         invoiceProduct.setInvoice(invoice);
                         invoiceProduct.setAmount(productDto.getAmount());
-                        BigDecimal priceWithMargin = new BigDecimal(margin);
+                        BigDecimal priceWithMargin = new BigDecimal(marginPercentage);
                         if (jsonUtil.isVatBoolean() && !vat) {
                             priceWithMargin = (priceWithMargin.multiply(productDto.getPrice()))
                                     .multiply(BigDecimal.valueOf(VAT));
                         } else {
                             priceWithMargin = priceWithMargin.multiply(productDto.getPrice());
                         }
-                        productDto.setPriceWithMargin(priceWithMargin);
-                        invoiceProduct.setPriceWithMargin(productDto.getPriceWithMargin());
-                        invoiceProduct.setPrice(productDto.getPrice());
+                        productDto.setVat(productDto.getVat());
+                        productDto.setMargin(productDto.getMargin());
+                        productDto.setFinalPrice(priceWithMargin);
+                        invoiceProduct.setFinalPrice(productDto.getFinalPrice());
+                        invoiceProduct.setMargin(productDto.getMargin());
+                        invoiceProduct.setInitialPrice(productDto.getPrice());
 
                         WarehouseProduct warehouseProduct = new WarehouseProduct();
-                        warehouseProduct.setPrice(productDto.getPrice());
+                        warehouseProduct.setInitialPrice(productDto.getPrice());
+                        warehouseProduct.setMargin(productDto.getMargin());
+                        warehouseProduct.setVat(productDto.getVat());
+                        warehouseProduct.setFinalPrice(productDto.getFinalPrice());
                         warehouseProduct.setWarehouse(warehouse);
                         warehouseProduct.setArrival(productDto.getAmount());
                         warehouseProduct.setResidue(productDto.getResidue());
@@ -375,13 +386,16 @@ public class EditReceiptController implements Initializable {
                             warehouseProductHistory.setResidue(warehouseProductFromDB.getResidue());
                             warehouseProductHistory.setDate(new Date());
                             warehouseProductHistory.setTotalPrice(multiplyIntegerAndBigDecimal(warehouseProductFromDB
-                                    .getResidue(), warehouseProductFromDB.getPrice()));
+                                    .getResidue(), warehouseProductFromDB.getInitialPrice()));
                             warehouseProductHistoryService.save(warehouseProductHistory);
 
                             warehouseProductFromDB.setVersion(warehouseProductFromDB.getVersion() + ONE);
                             warehouseProductFromDB.setArrival(warehouseProduct.getArrival());
                             warehouseProductFromDB.setResidue(warehouseProductFromDB.getResidue() + warehouseProduct.getResidue());
-                            warehouseProductFromDB.setPrice(warehouseProduct.getPrice());
+                            warehouseProductFromDB.setInitialPrice(warehouseProduct.getInitialPrice());
+                            warehouseProductFromDB.setFinalPrice(warehouseProduct.getFinalPrice());
+                            warehouseProductFromDB.setVat(warehouseProduct.isVat());
+                            warehouseProductFromDB.setMargin(warehouseProduct.getMargin());
                             warehouseProductService.save(warehouseProductFromDB);
                         }
                         invoiceProductService.save(invoiceProduct);
@@ -406,7 +420,7 @@ public class EditReceiptController implements Initializable {
                                 warehouseProductHistory.setResidue(warehouseProduct.getResidue());
                                 warehouseProductHistory.setDate(new Date());
                                 warehouseProductHistory.setTotalPrice(multiplyIntegerAndBigDecimal(warehouseProduct
-                                        .getResidue(), warehouseProduct.getPrice()));
+                                        .getResidue(), warehouseProduct.getInitialPrice()));
                                 warehouseProductHistoryService.save(warehouseProductHistory);
 
                                 warehouseProduct.setVersion(warehouseProduct.getVersion() + ONE);

@@ -13,7 +13,10 @@ public class ProductDto {
     private IntegerProperty amount;
     private IntegerProperty oldAmount;
     private ObjectProperty<BigDecimal> price;
-    private ObjectProperty<BigDecimal> priceWithMargin;
+    //    private ObjectProperty<BigDecimal> priceWithMargin;
+    private IntegerProperty margin;
+    private BooleanProperty vat;
+    private ObjectProperty<BigDecimal> finalPrice;
     private ObjectProperty<BigDecimal> totalPrice;
     private IntegerProperty residue;
     private StringProperty barcode;
@@ -140,19 +143,65 @@ public class ProductDto {
         this.price.set(price);
     }
 
-    public BigDecimal getPriceWithMargin() {
-        return priceWithMargin.get();
+//    public BigDecimal getPriceWithMargin() {
+//        return priceWithMargin.get();
+//    }
+//
+//    public ObjectProperty<BigDecimal> priceWithMarginProperty() {
+//        return priceWithMargin;
+//    }
+//
+//    public void setPriceWithMargin(BigDecimal priceWithMargin) {
+//        if (this.priceWithMargin == null) {
+//            this.priceWithMargin = new SimpleObjectProperty<>();
+//        }
+//        this.priceWithMargin.set(priceWithMargin);
+//    }
+
+
+    public int getMargin() {
+        return margin.get();
     }
 
-    public ObjectProperty<BigDecimal> priceWithMarginProperty() {
-        return priceWithMargin;
+    public IntegerProperty marginProperty() {
+        return margin;
     }
 
-    public void setPriceWithMargin(BigDecimal priceWithMargin) {
-        if (this.priceWithMargin == null) {
-            this.priceWithMargin = new SimpleObjectProperty<>();
+    public void setMargin(int margin) {
+        if (this.margin == null) {
+            this.margin = new SimpleIntegerProperty();
         }
-        this.priceWithMargin.set(priceWithMargin);
+        this.margin.set(margin);
+    }
+
+    public boolean getVat() {
+        return vat.get();
+    }
+
+    public BooleanProperty vatProperty() {
+        return vat;
+    }
+
+    public void setVat(boolean vat) {
+        if (this.vat == null) {
+            this.vat = new SimpleBooleanProperty();
+        }
+        this.vat.set(vat);
+    }
+
+    public BigDecimal getFinalPrice() {
+        return finalPrice.get();
+    }
+
+    public ObjectProperty<BigDecimal> finalPriceProperty() {
+        return finalPrice;
+    }
+
+    public void setFinalPrice(BigDecimal finalPrice) {
+        if (this.finalPrice == null) {
+            this.finalPrice = new SimpleObjectProperty<>();
+        }
+        this.finalPrice.set(finalPrice);
     }
 
     public BigDecimal getTotalPrice() {

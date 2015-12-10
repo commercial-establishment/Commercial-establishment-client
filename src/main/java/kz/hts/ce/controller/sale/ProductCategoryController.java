@@ -103,7 +103,7 @@ public class ProductCategoryController implements Initializable {
                     for (WarehouseProduct productWarehouse : warehouseProducts) {
                         ProductDto productDto = new ProductDto();
                         productDto.setName(productWarehouse.getProduct().getName());
-                        productDto.setPrice(productWarehouse.getPrice());
+                        productDto.setPrice(productWarehouse.getInitialPrice());
                         productDto.setResidue(productWarehouse.getResidue());
                         productsData.add(productDto);
                     }

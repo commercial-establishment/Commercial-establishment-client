@@ -129,7 +129,7 @@ public class PagesConfiguration {
     @Scope("prototype")
     public Node reportSales() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
-        return (Node) springFxmlLoader.load("/view/report-by-sale");
+        return (Node) springFxmlLoader.load("/view/report-by-sales.fxml");
     }
 
     @Bean
@@ -197,6 +197,11 @@ public class PagesConfiguration {
     @Bean
     public SettingsController settingsController() {
         return new SettingsController();
+    }
+
+    @Bean
+    public AddProviderController addProviderController() {
+        return new AddProviderController();
     }
 
     @Bean

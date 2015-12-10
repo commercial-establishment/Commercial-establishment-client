@@ -92,7 +92,7 @@ public class ShopProductsController implements Initializable {
             productDto.setUnitName(warehouseProduct.getProduct().getUnit().getName());
             productDto.setAmount(warehouseProduct.getArrival());
             productDto.setResidue(warehouseProduct.getResidue());
-            productDto.setPrice(warehouseProduct.getPrice());
+            productDto.setPrice(warehouseProduct.getInitialPrice());
             productsData.add(productDto);
         }
 
