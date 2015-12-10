@@ -42,6 +42,14 @@ INSERT INTO provider (id, address, is_blocked, company_name, contact_person, ema
 VALUES (1, 'ул. Ташенова 5/2', FALSE, 'COMPANY NAME', 'PERSON NAME', 'yakov@gmail.com', NULL,
         '$2a$10$5/0IiLwNrICc3Dmq/7AWKO08qK13AKH2tWIytGe9a2.WZHIj2WwPa', '2012-09-17 18:47:52.69',
         'username', 1, 2, 123456789, 987654321);
+INSERT INTO provider (id, address, is_blocked, company_name, contact_person, email, end_work_date, password, start_work_date, username, city_id, role_id, iin, bin)
+VALUES (2, 'ул. Ташенова 5/2', FALSE, 'COMPANY NAME TWO', 'PERSON NAME', 'yakov@gmail.com', NULL,
+        '$2a$10$5/0IiLwNrICc3Dmq/7AWKO08qK13AKH2tWIytGe9a2.WZHIj2WwPa', '2012-09-17 18:47:52.69',
+        'username', 1, 2, 123456789, 987654321);
+INSERT INTO provider (id, address, is_blocked, company_name, contact_person, email, end_work_date, password, start_work_date, username, city_id, role_id, iin, bin)
+VALUES (3, 'ул. Ташенова 5/2', FALSE, 'COMPANY NAME THREE', 'PERSON NAME', 'yakov@gmail.com', NULL,
+        '$2a$10$5/0IiLwNrICc3Dmq/7AWKO08qK13AKH2tWIytGe9a2.WZHIj2WwPa', '2012-09-17 18:47:52.69',
+        'username', 1, 2, 123456789, 987654321);
 
 INSERT INTO product_provider (id, is_blocked, product_id, provider_id, amount) VALUES (1, FALSE, 1, 1, 10);
 INSERT INTO product_provider (id, is_blocked, product_id, provider_id, amount) VALUES (2, FALSE, 2, 1, 20);
