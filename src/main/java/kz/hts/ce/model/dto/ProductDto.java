@@ -13,7 +13,6 @@ public class ProductDto {
     private IntegerProperty amount;
     private IntegerProperty oldAmount;
     private ObjectProperty<BigDecimal> price;
-    //    private ObjectProperty<BigDecimal> priceWithMargin;
     private IntegerProperty margin;
     private BooleanProperty vat;
     private ObjectProperty<BigDecimal> finalPrice;
@@ -142,22 +141,6 @@ public class ProductDto {
         }
         this.price.set(price);
     }
-
-//    public BigDecimal getPriceWithMargin() {
-//        return priceWithMargin.get();
-//    }
-//
-//    public ObjectProperty<BigDecimal> priceWithMarginProperty() {
-//        return priceWithMargin;
-//    }
-//
-//    public void setPriceWithMargin(BigDecimal priceWithMargin) {
-//        if (this.priceWithMargin == null) {
-//            this.priceWithMargin = new SimpleObjectProperty<>();
-//        }
-//        this.priceWithMargin.set(priceWithMargin);
-//    }
-
 
     public int getMargin() {
         return margin.get();

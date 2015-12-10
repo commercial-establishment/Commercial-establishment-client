@@ -2,10 +2,8 @@ package kz.hts.ce.util;
 
 import kz.hts.ce.model.dto.InvoiceDto;
 import kz.hts.ce.model.dto.ProductDto;
-import kz.hts.ce.model.entity.Invoice;
-import kz.hts.ce.model.entity.InvoiceProduct;
-import kz.hts.ce.model.entity.Product;
-import kz.hts.ce.model.entity.WarehouseProduct;
+import kz.hts.ce.model.dto.ProviderDto;
+import kz.hts.ce.model.entity.*;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -87,6 +85,19 @@ public class JavaUtil {
             invoiceDto.setTotalPrice(totalPrice);
         }
         return invoiceDto;
+    }
+
+    public static ProviderDto createProviderDtoFromProvider(Provider provider){
+        ProviderDto providerDto = new ProviderDto();
+        providerDto.setAddress(provider.getAddress());
+        providerDto.setBin(provider.getBin());
+        providerDto.setCityName(provider.getCity().getName());
+        providerDto.setCompanyName(provider.getCompanyName());
+        providerDto.setContactPerson(provider.getContactPerson());
+        providerDto.setEmail(provider.getEmail());
+        providerDto.setIin(provider.getIin());
+
+        return providerDto;
     }
 
     public static int countDays(String dateStr, int postponement) {
