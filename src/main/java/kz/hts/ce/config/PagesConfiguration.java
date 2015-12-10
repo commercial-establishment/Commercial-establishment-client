@@ -133,6 +133,7 @@ public class PagesConfiguration {
     }
 
     @Bean
+    @Scope("prototype")
     public Node addProvider() {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (AnchorPane) springFxmlLoader.load("/view/provider-add.fxml");
@@ -200,6 +201,7 @@ public class PagesConfiguration {
     }
 
     @Bean
+    @Scope("prototype")
     public AddProviderController addProviderController() {
         return new AddProviderController();
     }
