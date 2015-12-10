@@ -35,7 +35,7 @@
                 <TreeTableColumn fx:id="shopPrice" prefWidth="156.0" text="Цена в магазине" />
             </columns>
         </TreeTableView>
-        <Button id="export" fx:id="export" layoutX="763.0" layoutY="58.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="44.0" stylesheets="@../style.css">
+        <Button id="export" fx:id="export" onAction="#export" layoutX="763.0" layoutY="58.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="44.0" stylesheets="@../style.css">
             <font>
                 <Font size="14.0" />
             </font>
