@@ -64,6 +64,7 @@ public class ProductsReportController {
 
     @FXML
     public void showReport() {
+        productsReport.refresh();
         root.setExpanded(true);
         productsReport.setShowRoot(false);
         List<WarehouseProduct> warehouseProducts = warehouseProductService.findAll();
@@ -83,7 +84,7 @@ public class ProductsReportController {
         productDto1.setUnitName("B");
         productDto1.setOldAmount(0);
         productDto1.setResidue(0);
-        productDto1.setPriceWithMargin(BigDecimal.ZERO);
+        productDto1.setFinalPrice(BigDecimal.ZERO);
         productDto1.setPrice(BigDecimal.ZERO);
         root.setValue(productDto1);
 
@@ -96,7 +97,7 @@ public class ProductsReportController {
             productDtoKey.setOldAmount(0);
             productDtoKey.setResidue(0);
             productDtoKey.setUnitName(" ");
-            productDtoKey.setPriceWithMargin(BigDecimal.ZERO);
+            productDtoKey.setFinalPrice(BigDecimal.ZERO);
             productDtoKey.setPrice(BigDecimal.ZERO);
 
             TreeItem<ProductDto> categoryItem = new TreeItem<>(productDtoKey);
@@ -107,8 +108,8 @@ public class ProductsReportController {
                 productDtoValue.setOldAmount(product.getArrival());
                 productDtoValue.setResidue(product.getResidue());
                 productDtoValue.setUnitName(product.getProduct().getUnit().getName());
-                productDtoValue.setPriceWithMargin(product.getPrice());
-                productDtoValue.setPrice(BigDecimal.ONE);
+                productDtoValue.setFinalPrice(product.getFinalPrice());
+                productDtoValue.setPrice(product.getInitialPrice());
                 TreeItem<ProductDto> categoryItem1 = new TreeItem<>(productDtoValue);
                 categoryItem.getChildren().add(categoryItem1);
             }
@@ -122,5 +123,8 @@ public class ProductsReportController {
         residueFinal.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getResidue()));
         unitOfMeasure.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProductDto, String> p) ->
                 new ReadOnlyStringWrapper(p.getValue().getValue().getUnitName()));
+        costPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getPrice()));
+        shopPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getFinalPrice()));
+
     }
 }
