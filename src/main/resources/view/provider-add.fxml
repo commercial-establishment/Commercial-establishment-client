@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0"
-            prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.AddProviderController">
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.AddProviderController">
     <children>
-        <TableView fx:id="providerTable" layoutX="54.0" layoutY="98.0" prefHeight="294.0" prefWidth="900.0">
+        <TableView fx:id="providerTable" layoutX="54.0" layoutY="98.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="294.0" prefWidth="900.0" AnchorPane.bottomAnchor="203.0" AnchorPane.leftAnchor="54.0" AnchorPane.rightAnchor="54.0" AnchorPane.topAnchor="98.0">
             <columns>
-                <TableColumn fx:id="companyName" prefWidth="198.0" text="Название компании"/>
-                <TableColumn fx:id="contactPerson" prefWidth="142.0" text="Контактное лицо"/>
-                <TableColumn fx:id="email" prefWidth="138.0" text="Email"/>
-                <TableColumn fx:id="city" prefWidth="123.0" text="Город"/>
-                <TableColumn fx:id="address" prefWidth="128.0" text="Адрес"/>
-                <TableColumn fx:id="iin" prefWidth="85.0" text="ИИН"/>
-                <TableColumn fx:id="bin" prefWidth="85.0" text="БИН"/>
+                <TableColumn fx:id="companyName" prefWidth="198.0" text="Название компании" />
+                <TableColumn fx:id="contactPerson" prefWidth="142.0" text="Контактное лицо" />
+                <TableColumn fx:id="email" prefWidth="138.0" text="Email" />
+                <TableColumn fx:id="city" prefWidth="123.0" text="Город" />
+                <TableColumn fx:id="address" prefWidth="128.0" text="Адрес" />
+                <TableColumn fx:id="iin" prefWidth="85.0" text="ИИН" />
+                <TableColumn fx:id="bin" prefWidth="85.0" text="БИН" />
             </columns>
-            <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-            </columnResizePolicy>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
         </TableView>
         <Label layoutX="54.0" layoutY="39.0" text="Список поставщиков">
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
         </Label>
-        <ComboBox fx:id="providers" layoutX="326.0" layoutY="415.0" prefHeight="34.0" prefWidth="200.0"
-                  promptText="Выберите поставщика"/>
-        <Button layoutX="543.0" layoutY="415.0" mnemonicParsing="false" onAction="#addProvider" prefHeight="34.0"
-                prefWidth="140.0" text="Добавить"/>
+        <ComboBox fx:id="providers" layoutX="326.0" layoutY="415.0" prefHeight="34.0" prefWidth="200.0" promptText="Выберите поставщика" />
+        <Button layoutX="543.0" layoutY="415.0" mnemonicParsing="false" onAction="#addProvider" prefHeight="34.0" prefWidth="140.0" text="Добавить" />
     </children>
 </AnchorPane>
