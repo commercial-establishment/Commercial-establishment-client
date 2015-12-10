@@ -298,6 +298,7 @@ public class EditReceiptController implements Initializable {
                             }
                             oldInvoiceProduct.setMargin(Integer.parseInt(margin));
                             oldInvoiceProduct.setFinalPrice(priceWithMargin);
+                            oldInvoiceProduct.setFinalPrice(priceWithMargin);
 
                             WarehouseProduct warehouseProduct = warehouseProductService
                                     .findByProductBarcode(oldInvoiceProduct.getProduct().getBarcode());

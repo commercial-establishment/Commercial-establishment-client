@@ -7,21 +7,18 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import kz.hts.ce.model.dto.ProductDto;
-import kz.hts.ce.model.entity.Category;
-import kz.hts.ce.model.entity.InvoiceProduct;
-import kz.hts.ce.model.entity.Product;
-import kz.hts.ce.model.entity.WarehouseProduct;
+import kz.hts.ce.model.entity.*;
 import kz.hts.ce.service.CategoryService;
-import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.ProductService;
+import kz.hts.ce.service.WarehouseProductHistoryService;
 import kz.hts.ce.service.WarehouseProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
-
-import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class ProductsReportController {
@@ -63,12 +60,21 @@ public class ProductsReportController {
     private ProductService productService;
     @Autowired
     private WarehouseProductService warehouseProductService;
+    @Autowired
+    private WarehouseProductHistoryService wphService;
 
     @FXML
     public void export(){
     }
     @FXML
     public void showReport() {
+        LocalDate startLocaleDate = startDate.getValue();
+        Date startDateUtil = Date.from(startLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        LocalDate endLocaleDate = endDate.getValue();
+        Date endDateUtil = Date.from(endLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        List<WarehouseProductHistory> productHistories = wphService.findByDateBetweenAndProductId(startDateUtil, endDateUtil, 1);
+
         root = new TreeItem<>();
         categoryTreeItem = new TreeItem<>();
         productsReport.getStylesheets().add("style.css");
