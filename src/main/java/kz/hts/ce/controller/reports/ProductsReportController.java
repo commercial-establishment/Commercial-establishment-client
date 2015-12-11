@@ -150,7 +150,7 @@ public class ProductsReportController {
             Date endDateUtil = Date.from(endLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
             List<WarehouseProductHistory> productHistories = wphService.findByDateBetweenAndProductId(startDateUtil, endDateUtil, 1);
-            System.out.printf(String.valueOf(productHistories.size()));
+            System.out.println(productHistories.size());
         }
     }
 }
