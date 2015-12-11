@@ -1,6 +1,5 @@
 package kz.hts.ce.controller.sale;
 
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,10 +8,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import kz.hts.ce.model.dto.ProductDto;
-import kz.hts.ce.model.entity.*;
+import kz.hts.ce.model.entity.Category;
+import kz.hts.ce.model.entity.Employee;
+import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.service.CategoryService;
-import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.WarehouseProductService;
+import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -20,8 +21,6 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class ProductCategoryController implements Initializable {
@@ -45,11 +44,12 @@ public class ProductCategoryController implements Initializable {
     private CategoryService categoryService;
     @Autowired
     private WarehouseProductService warehouseProductService;
-    @Autowired
-    private EmployeeService employeeService;
 
     @Autowired
     private ProductsController productsController;
+
+    @Autowired
+    private SpringUtil springUtil;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -64,7 +64,7 @@ public class ProductCategoryController implements Initializable {
         categoriesData.addAll(categoryNames.stream().collect(Collectors.toList()));
         categories.setItems(categoriesData);
 
-        Employee employee = employeeService.findByUsername(getPrincipal());
+        Employee employee = springUtil.getEmployee();
 
         Map<String, List<WarehouseProduct>> productMap = new HashMap<>();
         List<Category> categoriesFromDB = categoryService.findAll();
@@ -74,22 +74,12 @@ public class ProductCategoryController implements Initializable {
             productMap.put(category.getName(), warehouseProducts);
         }
 
-        categories.getSelectionModel().selectedItemProperty().addListener(categoriesListener(productMap));
-
-        if (categoryProductsTable != null) {
-            categoryProductsTable.setOnMousePressed(event -> {
-                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                    ProductDto productDto = categoryProductsTable.getSelectionModel().getSelectedItem();
-                    productDto.setAmount(1);
-                    productsController.addProductIntProductDto(productDto);
-                    productsController.addProductsToTable();
-                }
-            });
-        }
+        categoriesListener(productMap);
+        addProductToTable();
     }
 
-    public ChangeListener<String> categoriesListener( Map<String, List<WarehouseProduct>> productMap){
-       return (ov, oldVal, newVal) -> {
+    public void categoriesListener(Map<String, List<WarehouseProduct>> productMap) {
+        categories.getSelectionModel().selectedItemProperty().addListener((ov, oldVal, newVal) -> {
             if (flag) {
                 productsData.clear();
 
@@ -114,7 +104,20 @@ public class ProductCategoryController implements Initializable {
                 categoryProductsTable.setItems(productsData);
             }
             flag = true;
-        };
+        });
+    }
+
+    public void addProductToTable() {
+        if (categoryProductsTable != null) {
+            categoryProductsTable.setOnMousePressed(event -> {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    ProductDto productDto = categoryProductsTable.getSelectionModel().getSelectedItem();
+                    productDto.setAmount(1);
+                    productsController.addProductIntProductDto(productDto);
+                    productsController.addProductsToTable();
+                }
+            });
+        }
     }
 
     public TableColumn<ProductDto, String> getName() {

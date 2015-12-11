@@ -24,6 +24,8 @@ public class ProductDto {
     private StringProperty unitName;
     private StringProperty unitSymbol;
     private StringProperty categoryName;
+    private IntegerProperty arrival;
+    private IntegerProperty soldAmount;
 
     public long getId() {
         return id.get();
@@ -34,9 +36,7 @@ public class ProductDto {
     }
 
     public void setId(long id) {
-        if (this.id == null) {
-            this.id = new SimpleLongProperty();
-        }
+        if (this.id == null) this.id = new SimpleLongProperty();
         this.id.set(id);
     }
 
@@ -49,9 +49,7 @@ public class ProductDto {
     }
 
     public void setName(String name) {
-        if (this.name == null) {
-            this.name = new SimpleStringProperty();
-        }
+        if (this.name == null) this.name = new SimpleStringProperty();
         this.name.set(name);
     }
 
@@ -64,9 +62,7 @@ public class ProductDto {
     }
 
     public void setCategoryName(String categoryName) {
-        if (this.categoryName == null) {
-            this.categoryName = new SimpleStringProperty();
-        }
+        if (this.categoryName == null) this.categoryName = new SimpleStringProperty();
         this.categoryName.set(categoryName);
     }
 
@@ -79,9 +75,7 @@ public class ProductDto {
     }
 
     public void setUnitName(String unitName) {
-        if (this.unitName == null) {
-            this.unitName = new SimpleStringProperty();
-        }
+        if (this.unitName == null) this.unitName = new SimpleStringProperty();
         this.unitName.set(unitName);
     }
 
@@ -94,9 +88,7 @@ public class ProductDto {
     }
 
     public void setAmount(int amount) {
-        if (this.amount == null) {
-            this.amount = new SimpleIntegerProperty();
-        }
+        if (this.amount == null) this.amount = new SimpleIntegerProperty();
         this.amount.set(amount);
     }
 
@@ -109,9 +101,7 @@ public class ProductDto {
     }
 
     public void setResidue(int residue) {
-        if (this.residue == null) {
-            this.residue = new SimpleIntegerProperty();
-        }
+        if (this.residue == null) this.residue = new SimpleIntegerProperty();
         this.residue.set(residue);
     }
 
@@ -124,9 +114,7 @@ public class ProductDto {
     }
 
     public void setBarcode(String barcode) {
-        if (this.barcode == null) {
-            this.barcode = new SimpleStringProperty();
-        }
+        if (this.barcode == null) this.barcode = new SimpleStringProperty();
         this.barcode.set(barcode);
     }
 
@@ -139,9 +127,7 @@ public class ProductDto {
     }
 
     public void setPrice(BigDecimal price) {
-        if (this.price == null) {
-            this.price = new SimpleObjectProperty<>();
-        }
+        if (this.price == null) this.price = new SimpleObjectProperty<>();
         this.price.set(price);
     }
 
@@ -154,9 +140,7 @@ public class ProductDto {
     }
 
     public void setMargin(int margin) {
-        if (this.margin == null) {
-            this.margin = new SimpleIntegerProperty();
-        }
+        if (this.margin == null) this.margin = new SimpleIntegerProperty();
         this.margin.set(margin);
     }
 
@@ -169,9 +153,7 @@ public class ProductDto {
     }
 
     public void setVat(boolean vat) {
-        if (this.vat == null) {
-            this.vat = new SimpleBooleanProperty();
-        }
+        if (this.vat == null) this.vat = new SimpleBooleanProperty();
         this.vat.set(vat);
     }
 
@@ -184,9 +166,7 @@ public class ProductDto {
     }
 
     public void setFinalPrice(BigDecimal finalPrice) {
-        if (this.finalPrice == null) {
-            this.finalPrice = new SimpleObjectProperty<>();
-        }
+        if (this.finalPrice == null) this.finalPrice = new SimpleObjectProperty<>();
         this.finalPrice.set(finalPrice);
     }
 
@@ -197,9 +177,7 @@ public class ProductDto {
     }
 
     public void setTotalPrice(BigDecimal totalPrice) {
-        if (this.totalPrice == null) {
-            this.totalPrice = new SimpleObjectProperty<>();
-        }
+        if (this.totalPrice == null) this.totalPrice = new SimpleObjectProperty<>();
         this.totalPrice.set(totalPrice);
     }
 
@@ -220,9 +198,7 @@ public class ProductDto {
     }
 
     public void setOldAmount(int oldAmount) {
-        if (this.oldAmount == null) {
-            this.oldAmount = new SimpleIntegerProperty();
-        }
+        if (this.oldAmount == null) this.oldAmount = new SimpleIntegerProperty();
         this.oldAmount.set(oldAmount);
     }
 
@@ -235,9 +211,7 @@ public class ProductDto {
     }
 
     public void setUnitSymbol(String unitSymbol) {
-        if (this.unitSymbol == null) {
-            this.unitSymbol = new SimpleStringProperty();
-        }
+        if (this.unitSymbol == null) this.unitSymbol = new SimpleStringProperty();
         this.unitSymbol.set(unitSymbol);
     }
 
@@ -250,9 +224,7 @@ public class ProductDto {
     }
 
     public void setSumOfShopPrice(BigDecimal sumOfShopPrice) {
-        if (this.sumOfShopPrice == null) {
-            this.sumOfShopPrice = new SimpleObjectProperty<>();
-        }
+        if (this.sumOfShopPrice == null) this.sumOfShopPrice = new SimpleObjectProperty<>();
         this.sumOfShopPrice.set(sumOfShopPrice);
     }
 
@@ -265,9 +237,33 @@ public class ProductDto {
     }
 
     public void setSumOfCostPrice(BigDecimal sumOfCostPrice) {
-        if (this.sumOfCostPrice == null) {
-            this.sumOfCostPrice = new SimpleObjectProperty<>();
-        }
+        if (this.sumOfCostPrice == null) this.sumOfCostPrice = new SimpleObjectProperty<>();
         this.sumOfCostPrice.set(sumOfCostPrice);
+    }
+
+    public int getArrival() {
+        return arrival.get();
+    }
+
+    public IntegerProperty arrivalProperty() {
+        return arrival;
+    }
+
+    public void setArrival(int arrival) {
+        if (this.arrival == null) this.arrival = new SimpleIntegerProperty();
+        this.arrival.set(arrival);
+    }
+
+    public int getSoldAmount() {
+        return soldAmount.get();
+    }
+
+    public IntegerProperty soldAmountProperty() {
+        return soldAmount;
+    }
+
+    public void setSoldAmount(int soldAmount) {
+        if (this.soldAmount == null) this.soldAmount = new SimpleIntegerProperty();
+        this.soldAmount.set(soldAmount);
     }
 }

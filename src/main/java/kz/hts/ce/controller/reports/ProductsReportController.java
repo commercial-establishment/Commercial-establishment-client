@@ -20,8 +20,12 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 
+import static kz.hts.ce.util.JavaUtil.getEndOfDay;
+import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
+
 @Controller
 public class ProductsReportController {
+
 
     @FXML
     private DatePicker startDate;
@@ -29,6 +33,10 @@ public class ProductsReportController {
     private DatePicker endDate;
     @FXML
     private TreeTableView productsReport;
+    @FXML
+    private TreeTableColumn<ProductDto, Number> arrival;
+    @FXML
+    private TreeTableColumn<ProductDto, Number> sold;
     @FXML
     private TreeTableColumn<ProductDto, String> categoryProduct;
     @FXML
@@ -71,86 +79,97 @@ public class ProductsReportController {
     public void showReport() {
         LocalDate startLocaleDate = startDate.getValue();
         LocalDate endLocaleDate = endDate.getValue();
-        if (startLocaleDate == null && endLocaleDate == null) {
-            root = new TreeItem<>();
-            categoryTreeItem = new TreeItem<>();
-            productsReport.getStylesheets().add("style.css");
-            root.setExpanded(true);
-            productsReport.setShowRoot(false);
-            List<WarehouseProduct> warehouseProducts = warehouseProductService.findAll();
-            Set<Category> categories = new HashSet<>();
-            for (WarehouseProduct warehouseProduct : warehouseProducts) {
-                categories.add(warehouseProduct.getProduct().getCategory());
-            }
 
-            Map<String, List<WarehouseProduct>> categoryProductsMap = new HashMap<>();
-            for (Category category : categories) {
-                List<WarehouseProduct> warehouseProductsByCategory = warehouseProductService.findByCategoryId(category.getId());
-                categoryProductsMap.put(category.getName(), warehouseProductsByCategory);
-            }
-
-            ProductDto productDto1 = new ProductDto();
-            productDto1.setName("A");
-            productDto1.setUnitSymbol("");
-            productDto1.setOldAmount(0);
-            productDto1.setResidue(0);
-            productDto1.setFinalPrice(BigDecimal.ZERO);
-            productDto1.setPrice(BigDecimal.ZERO);
-            productDto1.setSumOfCostPrice(BigDecimal.ZERO);
-            productDto1.setSumOfShopPrice(BigDecimal.ZERO);
-            root.setValue(productDto1);
-
-            for (Map.Entry<String, List<WarehouseProduct>> map : categoryProductsMap.entrySet()) {
-                String categoryName = map.getKey();
-                List<WarehouseProduct> products = map.getValue();
-                ProductDto productDtoKey = new ProductDto();
-                productDtoKey.setName(categoryName);
-                productDtoKey.setAmount(0);
-                productDtoKey.setOldAmount(0);
-                productDtoKey.setResidue(0);
-                productDtoKey.setUnitSymbol("");
-                productDtoKey.setFinalPrice(BigDecimal.ZERO);
-                productDtoKey.setPrice(BigDecimal.ZERO);
-                productDtoKey.setSumOfCostPrice(BigDecimal.ZERO);
-                productDtoKey.setSumOfShopPrice(BigDecimal.ZERO);
-
-                TreeItem<ProductDto> categoryItem = new TreeItem<>(productDtoKey);
-                root.getChildren().add(categoryItem);
-                for (WarehouseProduct product : products) {
-                    ProductDto productDtoValue = new ProductDto();
-                    productDtoValue.setName(product.getProduct().getName());
-                    productDtoValue.setOldAmount(product.getArrival());
-                    productDtoValue.setResidue(product.getResidue());
-                    productDtoValue.setUnitSymbol(product.getProduct().getUnit().getSymbol());
-                    productDtoValue.setFinalPrice(product.getFinalPrice());
-                    productDtoValue.setPrice(product.getInitialPrice());
-                    productDtoValue.setSumOfCostPrice(product.getInitialPrice().multiply(BigDecimal.valueOf(product.getResidue())));
-                    productDtoValue.setSumOfShopPrice(product.getFinalPrice().multiply(BigDecimal.valueOf(product.getResidue())));
-
-                    TreeItem<ProductDto> categoryItem1 = new TreeItem<>(productDtoValue);
-                    categoryItem.getChildren().add(categoryItem1);
-                }
-            }
-
-            productsReport.setRoot(root);
-            categoryTreeItem.setExpanded(true);
-
-            categoryProduct.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProductDto, String> p) ->
-                    new ReadOnlyStringWrapper(p.getValue().getValue().getName()));
-            residueInitial.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getOldAmount()));
-            residueFinal.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getResidue()));
-            unitOfMeasure.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProductDto, String> p) ->
-                    new ReadOnlyStringWrapper(p.getValue().getValue().getUnitSymbol()));
-            costPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getPrice()));
-            shopPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getFinalPrice()));
-            sumCostPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSumOfCostPrice()));
-            sumShopPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSumOfShopPrice()));
-        } else {
-            Date startDateUtil = Date.from(startLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            Date endDateUtil = Date.from(endLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-            List<WarehouseProductHistory> productHistories = wphService.findByDateBetweenAndProductId(startDateUtil, endDateUtil, 1);
-            System.out.println(productHistories.size());
+        if (startLocaleDate == null || endLocaleDate == null) {
+            alert(Alert.AlertType.WARNING, "Ошибка периода", null, "Пожалуйста укажите период");
         }
+        Date startDateUtil = Date.from(startLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endDateUtil = getEndOfDay(Date.from(endLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+        root = new TreeItem<>();
+        categoryTreeItem = new TreeItem<>();
+        root.setExpanded(true);
+        productsReport.setShowRoot(false);
+        List<WarehouseProduct> warehouseProducts = warehouseProductService.findAll();
+        Set<Category> categories = new HashSet<>();
+        for (WarehouseProduct warehouseProduct : warehouseProducts) {
+            categories.add(warehouseProduct.getProduct().getCategory());
+        }
+
+        Map<String, List<WarehouseProduct>> categoryProductsMap = new HashMap<>();
+        for (Category category : categories) {
+            List<WarehouseProduct> warehouseProductsByCategory = warehouseProductService.findByCategoryId(category.getId());
+            categoryProductsMap.put(category.getName(), warehouseProductsByCategory);
+        }
+
+        ProductDto rootProductDto = new ProductDto();
+        rootProductDto.setName("");
+        rootProductDto.setUnitSymbol("");
+        rootProductDto.setOldAmount(0);
+        rootProductDto.setResidue(0);
+        rootProductDto.setArrival(0);
+        rootProductDto.setSoldAmount(0);
+        rootProductDto.setFinalPrice(BigDecimal.ZERO);
+        rootProductDto.setPrice(BigDecimal.ZERO);
+        rootProductDto.setSumOfCostPrice(BigDecimal.ZERO);
+        rootProductDto.setSumOfShopPrice(BigDecimal.ZERO);
+        root.setValue(rootProductDto);
+
+        for (Map.Entry<String, List<WarehouseProduct>> map : categoryProductsMap.entrySet()) {
+            String categoryName = map.getKey();
+            List<WarehouseProduct> warehouseProductsValue = map.getValue();
+            ProductDto productDtoKey = new ProductDto();
+            productDtoKey.setName(categoryName);
+            productDtoKey.setAmount(0);
+            productDtoKey.setOldAmount(0);
+            productDtoKey.setResidue(0);
+            productDtoKey.setArrival(0);
+            productDtoKey.setSoldAmount(0);
+            productDtoKey.setUnitSymbol("");
+            productDtoKey.setFinalPrice(BigDecimal.ZERO);
+            productDtoKey.setPrice(BigDecimal.ZERO);
+            productDtoKey.setSumOfCostPrice(BigDecimal.ZERO);
+            productDtoKey.setSumOfShopPrice(BigDecimal.ZERO);
+
+            TreeItem<ProductDto> categoryItem = new TreeItem<>(productDtoKey);
+            root.getChildren().add(categoryItem);
+            for (WarehouseProduct warehouseProduct : warehouseProductsValue) {
+                ProductDto productDtoValue = new ProductDto();
+                productDtoValue.setName(warehouseProduct.getProduct().getName());
+                productDtoValue.setOldAmount(warehouseProduct.getArrival());
+                productDtoValue.setResidue(warehouseProduct.getResidue());
+
+                List<WarehouseProductHistory> productHistories = wphService.findByDateBetweenAndProductId(startDateUtil, endDateUtil, warehouseProduct.getProduct().getId());
+                productDtoValue.setArrival(0);
+                for (WarehouseProductHistory productHistory : productHistories) {
+                    productDtoValue.setArrival(productDtoValue.getArrival() + productHistory.getArrival());
+                }
+                productDtoValue.setSoldAmount(productDtoValue.getOldAmount() + productDtoValue.getArrival() - productDtoValue.getResidue());
+                productDtoValue.setUnitSymbol(warehouseProduct.getProduct().getUnit().getSymbol());
+                productDtoValue.setFinalPrice(warehouseProduct.getFinalPrice());
+                productDtoValue.setPrice(warehouseProduct.getInitialPrice());
+                productDtoValue.setSumOfCostPrice(warehouseProduct.getInitialPrice().multiply(BigDecimal.valueOf(warehouseProduct.getResidue())));
+                productDtoValue.setSumOfShopPrice(warehouseProduct.getFinalPrice().multiply(BigDecimal.valueOf(warehouseProduct.getResidue())));
+
+                TreeItem<ProductDto> productItem = new TreeItem<>(productDtoValue);
+                categoryItem.getChildren().add(productItem);
+            }
+        }
+
+        productsReport.setRoot(root);
+        categoryTreeItem.setExpanded(true);
+
+        categoryProduct.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProductDto, String> p) ->
+                new ReadOnlyStringWrapper(p.getValue().getValue().getName()));
+        residueInitial.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getOldAmount()));
+        residueFinal.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getResidue()));
+        unitOfMeasure.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProductDto, String> p) ->
+                new ReadOnlyStringWrapper(p.getValue().getValue().getUnitSymbol()));
+        costPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getPrice()));
+        shopPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getFinalPrice()));
+        sumCostPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSumOfCostPrice()));
+        sumShopPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSumOfShopPrice()));
+        arrival.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getArrival()));
+        sold.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSoldAmount()));
     }
 }

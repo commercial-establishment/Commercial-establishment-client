@@ -233,12 +233,10 @@ public class AddReceiptController implements Initializable {
                 } else {
                     WarehouseProductHistory warehouseProductHistory = new WarehouseProductHistory();
                     warehouseProductHistory.setWarehouseProduct(warehouseProductFromDB);
-                    warehouseProductHistory.setEmployee(employee);
                     warehouseProductHistory.setVersion(warehouseProductFromDB.getVersion());
                     warehouseProductHistory.setArrival(warehouseProductFromDB.getArrival());
                     warehouseProductHistory.setResidue(warehouseProductFromDB.getResidue());
                     warehouseProductHistory.setDate(date);
-                    warehouseProductHistory.setTotalPrice(multiplyIntegerAndBigDecimal(warehouseProductFromDB.getResidue(), warehouseProductFromDB.getInitialPrice()));
                     warehouseProductHistoryService.save(warehouseProductHistory);
 
                     warehouseProductFromDB.setVersion(warehouseProductFromDB.getVersion() + 1);

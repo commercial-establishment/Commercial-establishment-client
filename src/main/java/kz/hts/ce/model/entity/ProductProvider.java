@@ -8,9 +8,6 @@ import java.math.BigDecimal;
 @Table(name = "product_provider")
 public class ProductProvider extends BaseEntity {
 
-    @NotNull
-    private long amount;
-
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
@@ -24,14 +21,6 @@ public class ProductProvider extends BaseEntity {
 
     public Product getProduct() {
         return product;
-    }
-
-    public long getAmount() {
-        return amount;
-    }
-
-    public void setAmount(long amount) {
-        this.amount = amount;
     }
 
     public void setProduct(Product product) {

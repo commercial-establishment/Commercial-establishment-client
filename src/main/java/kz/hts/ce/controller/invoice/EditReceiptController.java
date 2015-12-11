@@ -307,13 +307,10 @@ public class EditReceiptController implements Initializable {
 
                             WarehouseProductHistory warehouseProductHistory = new WarehouseProductHistory();
                             warehouseProductHistory.setWarehouseProduct(warehouseProduct);
-                            warehouseProductHistory.setEmployee(employee);
                             warehouseProductHistory.setVersion(warehouseProduct.getVersion());
                             warehouseProductHistory.setArrival(warehouseProduct.getArrival());
                             warehouseProductHistory.setResidue(warehouseProduct.getResidue());
                             warehouseProductHistory.setDate(date);
-                            warehouseProductHistory.setTotalPrice(multiplyIntegerAndBigDecimal(warehouseProduct.
-                                    getResidue(), warehouseProduct.getInitialPrice()));
                             warehouseProductHistoryService.save(warehouseProductHistory);
 
                             warehouseProduct.setVat(vat);
@@ -383,13 +380,10 @@ public class EditReceiptController implements Initializable {
                         } else {
                             WarehouseProductHistory warehouseProductHistory = new WarehouseProductHistory();
                             warehouseProductHistory.setWarehouseProduct(warehouseProductFromDB);
-                            warehouseProductHistory.setEmployee(employee);
                             warehouseProductHistory.setVersion(warehouseProductFromDB.getVersion());
                             warehouseProductHistory.setArrival(warehouseProductFromDB.getArrival());
                             warehouseProductHistory.setResidue(warehouseProductFromDB.getResidue());
                             warehouseProductHistory.setDate(date);
-                            warehouseProductHistory.setTotalPrice(multiplyIntegerAndBigDecimal(warehouseProductFromDB
-                                    .getResidue(), warehouseProductFromDB.getInitialPrice()));
                             warehouseProductHistoryService.save(warehouseProductHistory);
 
                             warehouseProductFromDB.setVersion(warehouseProductFromDB.getVersion() + ONE);
@@ -417,13 +411,10 @@ public class EditReceiptController implements Initializable {
 
                                 WarehouseProductHistory warehouseProductHistory = new WarehouseProductHistory();
                                 warehouseProductHistory.setWarehouseProduct(warehouseProduct);
-                                warehouseProductHistory.setEmployee(employee);
                                 warehouseProductHistory.setVersion(warehouseProduct.getVersion());
                                 warehouseProductHistory.setArrival(warehouseProduct.getArrival());
                                 warehouseProductHistory.setResidue(warehouseProduct.getResidue());
                                 warehouseProductHistory.setDate(date);
-                                warehouseProductHistory.setTotalPrice(multiplyIntegerAndBigDecimal(warehouseProduct
-                                        .getResidue(), warehouseProduct.getInitialPrice()));
                                 warehouseProductHistoryService.save(warehouseProductHistory);
 
                                 warehouseProduct.setVersion(warehouseProduct.getVersion() + ONE);
