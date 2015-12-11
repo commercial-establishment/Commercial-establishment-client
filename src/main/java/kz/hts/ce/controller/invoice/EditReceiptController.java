@@ -318,7 +318,7 @@ public class EditReceiptController implements Initializable {
                             warehouseProduct.setFinalPrice(priceWithMargin);
                             warehouseProduct.setVersion(warehouseProduct.getVersion() + ONE);
                             warehouseProduct.setInitialPrice(productDto.getPrice());
-                            warehouseProduct.setArrival(productDto.getAmount());
+                            warehouseProduct.setArrival(productDto.getAmount() - oldInvoiceProduct.getAmount());
                             warehouseProduct.setResidue(warehouseProduct.getResidue() - oldInvoiceProduct.
                                     getAmount() + productDto.getAmount());
                             warehouseProductService.save(warehouseProduct);

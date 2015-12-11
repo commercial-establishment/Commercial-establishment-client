@@ -26,6 +26,10 @@ import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 @Controller
 public class ProductsReportController {
 
+    private TreeItem<ProductDto> root = null;
+    private TreeItem<ProductDto> categoryTreeItem = null;
+    private TreeItem<ProductDto> productTreeItem = new TreeItem<>();
+    private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
 
     @FXML
     private DatePicker startDate;
@@ -53,14 +57,6 @@ public class ProductsReportController {
     private TreeTableColumn<ProductDto, BigDecimal> sumShopPrice;
     @FXML
     private TreeTableColumn<ProductDto, BigDecimal> sumCostPrice;
-
-
-    private TreeItem<ProductDto> root = null;
-    private TreeItem<ProductDto> categoryTreeItem = null;
-    private TreeItem<ProductDto> productTreeItem = new TreeItem<>();
-
-
-    private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
 
     @Autowired
     private CategoryService categoryService;
@@ -139,17 +135,21 @@ public class ProductsReportController {
                 productDtoValue.setOldAmount(warehouseProduct.getArrival());
                 productDtoValue.setResidue(warehouseProduct.getResidue());
 
-                List<WarehouseProductHistory> productHistories = wphService.findByDateBetweenAndProductId(startDateUtil, endDateUtil, warehouseProduct.getProduct().getId());
+                List<WarehouseProductHistory> productHistories = wphService.
+                        findByDateBetweenAndProductId(startDateUtil, endDateUtil, warehouseProduct.getProduct().getId());
                 productDtoValue.setArrival(0);
                 for (WarehouseProductHistory productHistory : productHistories) {
                     productDtoValue.setArrival(productDtoValue.getArrival() + productHistory.getArrival());
                 }
-                productDtoValue.setSoldAmount(productDtoValue.getOldAmount() + productDtoValue.getArrival() - productDtoValue.getResidue());
+                productDtoValue.setSoldAmount(productDtoValue.getOldAmount() + productDtoValue.getArrival()
+                        - productDtoValue.getResidue());
                 productDtoValue.setUnitSymbol(warehouseProduct.getProduct().getUnit().getSymbol());
                 productDtoValue.setFinalPrice(warehouseProduct.getFinalPrice());
                 productDtoValue.setPrice(warehouseProduct.getInitialPrice());
-                productDtoValue.setSumOfCostPrice(warehouseProduct.getInitialPrice().multiply(BigDecimal.valueOf(warehouseProduct.getResidue())));
-                productDtoValue.setSumOfShopPrice(warehouseProduct.getFinalPrice().multiply(BigDecimal.valueOf(warehouseProduct.getResidue())));
+                productDtoValue.setSumOfCostPrice(warehouseProduct.getInitialPrice()
+                        .multiply(BigDecimal.valueOf(warehouseProduct.getResidue())));
+                productDtoValue.setSumOfShopPrice(warehouseProduct.getFinalPrice()
+                        .multiply(BigDecimal.valueOf(warehouseProduct.getResidue())));
 
                 TreeItem<ProductDto> productItem = new TreeItem<>(productDtoValue);
                 categoryItem.getChildren().add(productItem);
@@ -171,5 +171,11 @@ public class ProductsReportController {
         sumShopPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSumOfShopPrice()));
         arrival.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getArrival()));
         sold.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSoldAmount()));
+
+        List<WarehouseProductHistory> startWPHistories = wphService.findNearestDate(startDateUtil, 1);
+        List<WarehouseProductHistory> endWPHistories = wphService.findNearestDate(endDateUtil, 1);
+        WarehouseProductHistory startNearestDate = startWPHistories.get(0);
+        WarehouseProductHistory endNearestDate = endWPHistories.get(startWPHistories.size() - 1);
+        System.out.println(startNearestDate);
     }
 }
