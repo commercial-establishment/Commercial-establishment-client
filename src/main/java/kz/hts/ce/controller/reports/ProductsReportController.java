@@ -71,6 +71,7 @@ public class ProductsReportController {
     public void showReport() {
         LocalDate startLocaleDate = startDate.getValue();
         LocalDate endLocaleDate = endDate.getValue();
+
         if (startLocaleDate == null && endLocaleDate == null) {
             root = new TreeItem<>();
             categoryTreeItem = new TreeItem<>();
@@ -150,6 +151,7 @@ public class ProductsReportController {
             Date endDateUtil = Date.from(endLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
             List<WarehouseProductHistory> productHistories = wphService.findByDateBetweenAndProductId(startDateUtil, endDateUtil, 1);
+            System.out.println(wphService.findFirst1ByDateLessThanEqual(startDateUtil));
             System.out.println(productHistories.size());
         }
     }

@@ -14,4 +14,6 @@ import java.util.List;
 public interface WarehouseProductHistoryRepository extends JpaRepository<WarehouseProductHistory, Long> {
 
     List<WarehouseProductHistory> findByDateBetweenAndWarehouseProduct_Product_Id(Date firstDate, Date secondDate, long productId);
+
+    WarehouseProductHistory findOneByDateLessThanEqual(Date date);
 }
