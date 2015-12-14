@@ -306,7 +306,7 @@ public class EditReceiptController implements Initializable {
                                     .findByProductBarcode(oldInvoiceProduct.getProduct().getBarcode());
                             warehouseProduct.setArrival(productDto.getAmount() - oldInvoiceProduct.getAmount());
                             if (warehouseProduct.getArrival() != 0 && !productDto.getPrice().equals(oldInvoiceProduct.getFinalPrice())) {
-                                warehouseProduct.setDate(newDate);
+                                warehouseProduct.setDate(date);
                                 warehouseProduct.setVat(vat);
                                 warehouseProduct.setMargin(Integer.parseInt(margin));
                                 warehouseProduct.setFinalPrice(priceWithMargin);
@@ -358,7 +358,7 @@ public class EditReceiptController implements Initializable {
                         warehouseProduct.setArrival(productDto.getAmount());
                         warehouseProduct.setResidue(productDto.getResidue());
                         warehouseProduct.setVersion(ONE);
-                        warehouseProduct.setDate(newDate);
+                        warehouseProduct.setDate(date);
                         if (product != null) {
                             warehouseProduct.setProduct(product);
                             invoiceProduct.setProduct(product);
@@ -385,7 +385,7 @@ public class EditReceiptController implements Initializable {
                             WarehouseProductHistory wphCurrentVersion = new WarehouseProductHistory();
                             wphCurrentVersion.setWarehouseProduct(savedWP);
                             wphCurrentVersion.setVersion(warehouseProduct.getVersion());
-                            wphCurrentVersion.setArrival(warehouseProduct.getArrival());
+                            wphCurrentVersion.setArrival(ZERO);
                             wphCurrentVersion.setResidue(warehouseProduct.getResidue());
                             wphCurrentVersion.setDate(warehouseProduct.getDate());
                             wphService.save(wphCurrentVersion);

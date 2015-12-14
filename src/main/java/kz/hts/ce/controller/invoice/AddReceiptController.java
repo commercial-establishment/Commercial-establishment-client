@@ -210,7 +210,7 @@ public class AddReceiptController implements Initializable {
                 warehouseProduct.setResidue(productDto.getResidue());
                 warehouseProduct.setVersion(1);
                 Date newDate = new Date();
-                warehouseProduct.setDate(newDate);
+                warehouseProduct.setDate(date);
                 if (product != null) {
                     warehouseProduct.setProduct(product);
                     invoiceProduct.setProduct(product);
@@ -236,7 +236,7 @@ public class AddReceiptController implements Initializable {
                     WarehouseProductHistory wphCurrentVersion = new WarehouseProductHistory();
                     wphCurrentVersion.setWarehouseProduct(savedWP);
                     wphCurrentVersion.setVersion(warehouseProduct.getVersion());
-                    wphCurrentVersion.setArrival(warehouseProduct.getArrival());
+                    wphCurrentVersion.setArrival(0);
                     wphCurrentVersion.setResidue(warehouseProduct.getResidue());
                     wphCurrentVersion.setDate(warehouseProduct.getDate());
                     warehouseProductHistoryService.save(wphCurrentVersion);

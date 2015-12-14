@@ -170,9 +170,9 @@ public class ProductsReportController {
                 productDtoValue.setFinalPrice(warehouseProduct.getFinalPrice());
                 productDtoValue.setPrice(warehouseProduct.getInitialPrice());
                 productDtoValue.setSumOfCostPrice(warehouseProduct.getInitialPrice()
-                        .multiply(BigDecimal.valueOf(productDtoValue.getResidue())));
+                        .multiply(BigDecimal.valueOf(warehouseProduct.getResidue())));
                 productDtoValue.setSumOfShopPrice(warehouseProduct.getFinalPrice()
-                        .multiply(BigDecimal.valueOf(productDtoValue.getResidue())));
+                        .multiply(BigDecimal.valueOf(warehouseProduct.getResidue())));
 
                 TreeItem<ProductDto> productItem = new TreeItem<>(productDtoValue);
                 categoryItem.getChildren().add(productItem);

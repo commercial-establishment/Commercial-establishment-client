@@ -88,13 +88,13 @@ public class PaymentController implements Initializable {
                     long warehouseProductId = productDto.getId();
                     WarehouseProduct warehouseProduct = warehouseProductService.findById(warehouseProductId);
 
-                    WarehouseProductHistory wphPreviousVersion = new WarehouseProductHistory();
-                    wphPreviousVersion.setWarehouseProduct(warehouseProduct);
-                    wphPreviousVersion.setVersion(warehouseProduct.getVersion());
+//                    WarehouseProductHistory wphPreviousVersion = new WarehouseProductHistory();
+//                    wphPreviousVersion.setWarehouseProduct(warehouseProduct);
+//                    wphPreviousVersion.setVersion(warehouseProduct.getVersion());
                     Date newDate = new Date();
-                    wphPreviousVersion.setDate(newDate);
-                    wphPreviousVersion.setResidue(warehouseProduct.getResidue());
-                    warehouseProductHistoryService.save(wphPreviousVersion);
+//                    wphPreviousVersion.setDate(newDate);
+//                    wphPreviousVersion.setResidue(warehouseProduct.getResidue());
+                    //warehouseProductHistoryService.save(wphPreviousVersion);
 
                     int productAmount = productDto.getAmount();
                     int residue = warehouseProduct.getResidue();
