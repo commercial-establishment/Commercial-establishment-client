@@ -1,5 +1,6 @@
 package kz.hts.ce.controller.sale;
 
+import com.sun.javafx.scene.control.skin.TableViewSkin;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -28,6 +29,7 @@ public class ProductCategoryController implements Initializable {
     private boolean flag;
     private ObservableList<String> categoriesData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
+    private Map<String, Integer> barcodeMap;
 
     @FXML
     private TableColumn<ProductDto, String> name;
@@ -90,12 +92,14 @@ public class ProductCategoryController implements Initializable {
                     }
                 }
                 if (warehouseProducts != null) {
-                    for (WarehouseProduct productWarehouse : warehouseProducts) {
+                    for (WarehouseProduct warehouseProduct : warehouseProducts) {
                         ProductDto productDto = new ProductDto();
-                        productDto.setId(productWarehouse.getId());
-                        productDto.setName(productWarehouse.getProduct().getName());
-                        productDto.setPrice(productWarehouse.getInitialPrice());
-                        productDto.setResidue(productWarehouse.getResidue());
+                        productDto.setBarcode(warehouseProduct.getProduct().getBarcode());
+                        productDto.setId(warehouseProduct.getProduct().getId());
+                        productDto.setName(warehouseProduct.getProduct().getName());
+                        productDto.setPrice(warehouseProduct.getInitialPrice());
+                        productDto.setAmount(0);
+                        productDto.setResidue(warehouseProduct.getResidue());
                         productsData.add(productDto);
                     }
                 }
@@ -112,9 +116,33 @@ public class ProductCategoryController implements Initializable {
         if (categoryProductsTable != null) {
             categoryProductsTable.setOnMousePressed(event -> {
                 if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                    ProductDto productDto = categoryProductsTable.getSelectionModel().getSelectedItem();
-                    productDto.setAmount(1);
-                    productsController.addProductIntProductDto(productDto);
+                    if (barcodeMap == null) {
+                        barcodeMap = new HashMap<>();
+                    }
+
+                    ProductDto productDtoRow = categoryProductsTable.getSelectionModel().getSelectedItem();
+
+                    if (barcodeMap.containsKey(productDtoRow.getBarcode())) {
+                        for (Map.Entry<String, Integer> barcodeAmount : barcodeMap.entrySet()) {
+                            if (barcodeAmount.getKey().equals(productDtoRow.getBarcode())) {
+                                productDtoRow.setAmount(barcodeAmount.getValue() + 1);
+                                barcodeAmount.setValue(barcodeAmount.getValue() + 1);
+
+                                Iterator<ProductDto> productDtoIterator = productsController.getProductsDto().iterator();
+                                while (productDtoIterator.hasNext()) {
+                                    ProductDto productDto = productDtoIterator.next();
+                                    if (productDto.getBarcode().equals(productDtoRow.getBarcode()))
+                                        productDtoIterator.remove();
+                                }
+
+                                productsController.addProductInProductsDto(productDtoRow);
+                            }
+                        }
+                    } else {
+                        productDtoRow.setAmount(1);
+                        barcodeMap.put(productDtoRow.getBarcode(), 1);
+                        productsController.addProductInProductsDto(productDtoRow);
+                    }
                     productsController.addProductsToTable();
                 }
             });

@@ -90,7 +90,23 @@ public class ProductsController {
         this.productsDto = productsDto;
     }
 
-    public void addProductIntProductDto(ProductDto productDto) {
+    public TableView<ProductDto> getProductTable() {
+        return productTable;
+    }
+
+    public void setProductTable(TableView<ProductDto> productTable) {
+        this.productTable = productTable;
+    }
+
+    public void addProductInProductsDto(ProductDto productDto) {
         productsDto.add(productDto);
+    }
+
+    public void removeProductFromProductsDto(ProductDto productDto) {
+        for (ProductDto dto : productsDto) {
+            if (dto.getBarcode().equals(productDto.getBarcode())) {
+                productsDto.remove(dto);
+            }
+        }
     }
 }
