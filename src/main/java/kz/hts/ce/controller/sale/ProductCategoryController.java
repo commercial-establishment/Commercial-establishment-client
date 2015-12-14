@@ -1,6 +1,5 @@
 package kz.hts.ce.controller.sale;
 
-import com.sun.javafx.scene.control.skin.TableViewSkin;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
