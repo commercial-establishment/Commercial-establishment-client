@@ -1,6 +1,7 @@
 package kz.hts.ce.model.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Employee extends BaseEntity {
@@ -19,6 +20,9 @@ public class Employee extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "employee")
+    private List<Check> checks;
 
     @Column(name = "is_blocked")
     private boolean blocked;
@@ -77,5 +81,13 @@ public class Employee extends BaseEntity {
 
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
+    }
+
+    public List<Check> getChecks() {
+        return checks;
+    }
+
+    public void setChecks(List<Check> checks) {
+        this.checks = checks;
     }
 }
