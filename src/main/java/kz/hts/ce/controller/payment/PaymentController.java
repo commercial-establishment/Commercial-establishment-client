@@ -88,25 +88,34 @@ public class PaymentController implements Initializable {
                     long warehouseProductId = productDto.getId();
                     WarehouseProduct warehouseProduct = warehouseProductService.findById(warehouseProductId);
 
-                    WarehouseProductHistory warehouseProductHistory = new WarehouseProductHistory();
-                    warehouseProductHistory.setWarehouseProduct(warehouseProduct);
-                    warehouseProductHistory.setVersion(warehouseProduct.getVersion());
-                    warehouseProductHistory.setArrival(productDto.getAmount());
-                    warehouseProductHistory.setDate(new Date());
-                    warehouseProductHistoryService.save(warehouseProductHistory);
+                    WarehouseProductHistory wphPreviousVersion = new WarehouseProductHistory();
+                    wphPreviousVersion.setWarehouseProduct(warehouseProduct);
+                    wphPreviousVersion.setVersion(warehouseProduct.getVersion());
+                    Date newDate = new Date();
+                    wphPreviousVersion.setDate(newDate);
+                    wphPreviousVersion.setResidue(warehouseProduct.getResidue());
+                    warehouseProductHistoryService.save(wphPreviousVersion);
 
                     int productAmount = productDto.getAmount();
                     int residue = warehouseProduct.getResidue();
                     warehouseProduct.setResidue(residue - productAmount);
 
                     warehouseProduct.setVersion(warehouseProduct.getVersion() + 1);
+                    warehouseProduct.setArrival(0);
                     warehouseProductService.save(warehouseProduct);
+
+                    WarehouseProductHistory wphCurrentVersion = new WarehouseProductHistory();
+                    wphCurrentVersion.setWarehouseProduct(warehouseProduct);
+                    wphCurrentVersion.setVersion(warehouseProduct.getVersion());
+                    wphCurrentVersion.setDate(newDate);
+                    wphCurrentVersion.setResidue(warehouseProduct.getResidue());
+                    warehouseProductHistoryService.save(wphCurrentVersion);
                 }
                 alert(Alert.AlertType.INFORMATION, "Товар успешно продан", null, "Сдача: " + change.getText() + " тенге");
                 productsController.deleteAllProductsFromTable();
                 productsController.getProductsDto().clear();
                 PagesConfiguration screens = getPagesConfiguration();
-                screens.payment().hide();
+                screens.payment().close();
             } else {
                 alert(Alert.AlertType.WARNING, "Недостаточно средств", null, "Недостаточно средств для оплаты товара");
             }

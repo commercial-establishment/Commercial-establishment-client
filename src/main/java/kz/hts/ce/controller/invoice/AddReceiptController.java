@@ -209,6 +209,8 @@ public class AddReceiptController implements Initializable {
                 warehouseProduct.setArrival(productDto.getAmount());
                 warehouseProduct.setResidue(productDto.getResidue());
                 warehouseProduct.setVersion(1);
+                Date newDate = new Date();
+                warehouseProduct.setDate(newDate);
                 if (product != null) {
                     warehouseProduct.setProduct(product);
                     invoiceProduct.setProduct(product);
@@ -229,15 +231,25 @@ public class AddReceiptController implements Initializable {
                 }
                 WarehouseProduct warehouseProductFromDB = warehouseProductService.findByProductBarcode(warehouseProduct.getProduct().getBarcode());
                 if (warehouseProductFromDB == null) {
-                    warehouseProductService.save(warehouseProduct);
+                    WarehouseProduct savedWP = warehouseProductService.save(warehouseProduct);
+
+                    WarehouseProductHistory wphCurrentVersion = new WarehouseProductHistory();
+                    wphCurrentVersion.setWarehouseProduct(savedWP);
+                    wphCurrentVersion.setVersion(warehouseProduct.getVersion());
+                    wphCurrentVersion.setArrival(warehouseProduct.getArrival());
+                    wphCurrentVersion.setResidue(warehouseProduct.getResidue());
+                    wphCurrentVersion.setDate(warehouseProduct.getDate());
+                    warehouseProductHistoryService.save(wphCurrentVersion);
                 } else {
-                    WarehouseProductHistory warehouseProductHistory = new WarehouseProductHistory();
-                    warehouseProductHistory.setWarehouseProduct(warehouseProductFromDB);
-                    warehouseProductHistory.setVersion(warehouseProductFromDB.getVersion());
-                    warehouseProductHistory.setArrival(warehouseProductFromDB.getArrival());
-                    warehouseProductHistory.setResidue(warehouseProductFromDB.getResidue());
-                    warehouseProductHistory.setDate(date);
-                    warehouseProductHistoryService.save(warehouseProductHistory);
+                    if (warehouseProductFromDB.getVersion() != 1) {
+                        WarehouseProductHistory wphPreviousVersion = new WarehouseProductHistory();
+                        wphPreviousVersion.setWarehouseProduct(warehouseProductFromDB);
+                        wphPreviousVersion.setVersion(warehouseProductFromDB.getVersion());
+                        wphPreviousVersion.setArrival(warehouseProductFromDB.getArrival());
+                        wphPreviousVersion.setResidue(warehouseProductFromDB.getResidue());
+                        wphPreviousVersion.setDate(warehouseProductFromDB.getDate());
+                        warehouseProductHistoryService.save(wphPreviousVersion);
+                    }
 
                     warehouseProductFromDB.setVersion(warehouseProductFromDB.getVersion() + 1);
                     warehouseProductFromDB.setArrival(warehouseProduct.getArrival());
@@ -246,7 +258,16 @@ public class AddReceiptController implements Initializable {
                     warehouseProductFromDB.setFinalPrice(warehouseProduct.getFinalPrice());
                     warehouseProductFromDB.setMargin(warehouseProduct.getMargin());
                     warehouseProductFromDB.setVat(warehouseProduct.isVat());
+                    warehouseProductFromDB.setDate(newDate);
                     warehouseProductService.save(warehouseProductFromDB);
+
+                    WarehouseProductHistory wphCurrentVersion = new WarehouseProductHistory();
+                    wphCurrentVersion.setWarehouseProduct(warehouseProductFromDB);
+                    wphCurrentVersion.setVersion(warehouseProductFromDB.getVersion());
+                    wphCurrentVersion.setArrival(warehouseProduct.getArrival());
+                    wphCurrentVersion.setResidue(warehouseProductFromDB.getResidue() + warehouseProduct.getResidue());
+                    wphCurrentVersion.setDate(newDate);
+                    warehouseProductHistoryService.save(wphCurrentVersion);
                 }
                 invoiceProductService.save(invoiceProduct);
             }

@@ -1,7 +1,10 @@
 package kz.hts.ce.model.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @Table(name = "warehouse_product")
@@ -20,6 +23,10 @@ public class WarehouseProduct extends BaseEntity {
 
     @Column(name = "final_price")
     private BigDecimal finalPrice;
+
+    @Column(name = "date", nullable = false)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private Date date;
 
     private int version;
     private int arrival;
@@ -98,5 +105,13 @@ public class WarehouseProduct extends BaseEntity {
 
     public void setFinalPrice(BigDecimal finalPrice) {
         this.finalPrice = finalPrice;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

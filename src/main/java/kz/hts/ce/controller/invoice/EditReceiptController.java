@@ -29,7 +29,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromProduct;
-import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
@@ -116,7 +115,7 @@ public class EditReceiptController implements Initializable {
     @Autowired
     private InvoiceProductService invoiceProductService;
     @Autowired
-    private WarehouseProductHistoryService warehouseProductHistoryService;
+    private WarehouseProductHistoryService wphService;
 
     @Autowired
     private ReceiptPageController receiptPageController;
@@ -286,6 +285,7 @@ public class EditReceiptController implements Initializable {
                 Invoice invoice = invoiceService.save(invoiceFromDB);
 
                 String marginPercentage = String.valueOf((Double.valueOf(margin) / 100) + ONE);
+                Date newDate = new Date();
                 for (ProductDto productDto : productsData) {
                     long id = productDto.getId();
                     for (InvoiceProduct oldInvoiceProduct : oldInvoiceProducts) {
@@ -304,24 +304,27 @@ public class EditReceiptController implements Initializable {
 
                             WarehouseProduct warehouseProduct = warehouseProductService
                                     .findByProductBarcode(oldInvoiceProduct.getProduct().getBarcode());
-
-                            WarehouseProductHistory warehouseProductHistory = new WarehouseProductHistory();
-                            warehouseProductHistory.setWarehouseProduct(warehouseProduct);
-                            warehouseProductHistory.setVersion(warehouseProduct.getVersion());
-                            warehouseProductHistory.setArrival(warehouseProduct.getArrival());
-                            warehouseProductHistory.setResidue(warehouseProduct.getResidue());
-                            warehouseProductHistory.setDate(date);
-                            warehouseProductHistoryService.save(warehouseProductHistory);
-
-                            warehouseProduct.setVat(vat);
-                            warehouseProduct.setMargin(Integer.parseInt(margin));
-                            warehouseProduct.setFinalPrice(priceWithMargin);
-                            warehouseProduct.setVersion(warehouseProduct.getVersion() + ONE);
-                            warehouseProduct.setInitialPrice(productDto.getPrice());
                             warehouseProduct.setArrival(productDto.getAmount() - oldInvoiceProduct.getAmount());
-                            warehouseProduct.setResidue(warehouseProduct.getResidue() - oldInvoiceProduct.
-                                    getAmount() + productDto.getAmount());
-                            warehouseProductService.save(warehouseProduct);
+                            if (warehouseProduct.getArrival() != 0 && !productDto.getPrice().equals(oldInvoiceProduct.getFinalPrice())) {
+                                warehouseProduct.setDate(newDate);
+                                warehouseProduct.setVat(vat);
+                                warehouseProduct.setMargin(Integer.parseInt(margin));
+                                warehouseProduct.setFinalPrice(priceWithMargin);
+                                warehouseProduct.setVersion(warehouseProduct.getVersion() + ONE);
+                                warehouseProduct.setInitialPrice(productDto.getPrice());
+                                warehouseProduct.setResidue(warehouseProduct.getResidue() - oldInvoiceProduct.
+                                        getAmount() + productDto.getAmount());
+                                warehouseProductService.save(warehouseProduct);
+
+                                WarehouseProductHistory warehouseProductHistory = new WarehouseProductHistory();
+                                warehouseProductHistory.setWarehouseProduct(warehouseProduct);
+                                warehouseProductHistory.setArrival(warehouseProduct.getArrival());
+                                warehouseProductHistory.setResidue(warehouseProduct.getResidue());
+                                warehouseProductHistory.setDate(newDate);
+                                warehouseProductHistory.setVersion(warehouseProduct.getVersion());
+                                wphService.save(warehouseProductHistory);
+                            }
+
                             oldInvoiceProduct.setAmount(productDto.getAmount());
                             invoiceProductService.save(oldInvoiceProduct);
                         }
@@ -339,8 +342,8 @@ public class EditReceiptController implements Initializable {
                         } else {
                             priceWithMargin = priceWithMargin.multiply(productDto.getPrice());
                         }
-                        productDto.setVat(productDto.getVat());
-                        productDto.setMargin(productDto.getMargin());
+                        productDto.setVat(vat);
+                        productDto.setMargin(Integer.parseInt(margin));
                         productDto.setFinalPrice(priceWithMargin);
                         invoiceProduct.setFinalPrice(productDto.getFinalPrice());
                         invoiceProduct.setMargin(productDto.getMargin());
@@ -355,6 +358,7 @@ public class EditReceiptController implements Initializable {
                         warehouseProduct.setArrival(productDto.getAmount());
                         warehouseProduct.setResidue(productDto.getResidue());
                         warehouseProduct.setVersion(ONE);
+                        warehouseProduct.setDate(newDate);
                         if (product != null) {
                             warehouseProduct.setProduct(product);
                             invoiceProduct.setProduct(product);
@@ -376,15 +380,24 @@ public class EditReceiptController implements Initializable {
                         WarehouseProduct warehouseProductFromDB = warehouseProductService
                                 .findByProductBarcode(warehouseProduct.getProduct().getBarcode());
                         if (warehouseProductFromDB == null) {
-                            warehouseProductService.save(warehouseProduct);
+                            WarehouseProduct savedWP = warehouseProductService.save(warehouseProduct);
+
+                            WarehouseProductHistory wphCurrentVersion = new WarehouseProductHistory();
+                            wphCurrentVersion.setWarehouseProduct(savedWP);
+                            wphCurrentVersion.setVersion(warehouseProduct.getVersion());
+                            wphCurrentVersion.setArrival(warehouseProduct.getArrival());
+                            wphCurrentVersion.setResidue(warehouseProduct.getResidue());
+                            wphCurrentVersion.setDate(warehouseProduct.getDate());
+                            wphService.save(wphCurrentVersion);
                         } else {
-                            WarehouseProductHistory warehouseProductHistory = new WarehouseProductHistory();
-                            warehouseProductHistory.setWarehouseProduct(warehouseProductFromDB);
-                            warehouseProductHistory.setVersion(warehouseProductFromDB.getVersion());
-                            warehouseProductHistory.setArrival(warehouseProductFromDB.getArrival());
-                            warehouseProductHistory.setResidue(warehouseProductFromDB.getResidue());
-                            warehouseProductHistory.setDate(date);
-                            warehouseProductHistoryService.save(warehouseProductHistory);
+                            if (warehouseProductFromDB.getVersion() != 1) {
+                                WarehouseProductHistory wphPreviousVersion = wphService.findByVersion(warehouseProductFromDB.getVersion());
+                                wphPreviousVersion.setWarehouseProduct(warehouseProductFromDB);
+                                wphPreviousVersion.setArrival(warehouseProductFromDB.getArrival());
+                                wphPreviousVersion.setResidue(warehouseProductFromDB.getResidue());
+                                wphPreviousVersion.setDate(warehouseProductFromDB.getDate());
+                                wphService.save(wphPreviousVersion);
+                            }
 
                             warehouseProductFromDB.setVersion(warehouseProductFromDB.getVersion() + ONE);
                             warehouseProductFromDB.setArrival(warehouseProduct.getArrival());
@@ -393,7 +406,15 @@ public class EditReceiptController implements Initializable {
                             warehouseProductFromDB.setFinalPrice(warehouseProduct.getFinalPrice());
                             warehouseProductFromDB.setVat(warehouseProduct.isVat());
                             warehouseProductFromDB.setMargin(warehouseProduct.getMargin());
+                            warehouseProductFromDB.setDate(newDate);
                             warehouseProductService.save(warehouseProductFromDB);
+
+                            WarehouseProductHistory wphCurrentVersion = new WarehouseProductHistory();
+                            wphCurrentVersion.setWarehouseProduct(warehouseProductFromDB);
+                            wphCurrentVersion.setVersion(warehouseProductFromDB.getVersion() + 1);
+                            wphCurrentVersion.setArrival(warehouseProduct.getArrival());
+                            wphCurrentVersion.setResidue(warehouseProductFromDB.getResidue() + warehouseProduct.getResidue());
+                            wphCurrentVersion.setDate(newDate);
                         }
                         invoiceProductService.save(invoiceProduct);
                     }
@@ -415,7 +436,7 @@ public class EditReceiptController implements Initializable {
                                 warehouseProductHistory.setArrival(warehouseProduct.getArrival());
                                 warehouseProductHistory.setResidue(warehouseProduct.getResidue());
                                 warehouseProductHistory.setDate(date);
-                                warehouseProductHistoryService.save(warehouseProductHistory);
+                                wphService.save(warehouseProductHistory);
 
                                 warehouseProduct.setVersion(warehouseProduct.getVersion() + ONE);
                                 warehouseProduct.setResidue(warehouseProduct.getResidue() - oldInvoiceProduct.getAmount());

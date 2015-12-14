@@ -131,9 +131,31 @@ public class ProductsReportController {
             root.getChildren().add(categoryItem);
             for (WarehouseProduct warehouseProduct : warehouseProductsValue) {
                 ProductDto productDtoValue = new ProductDto();
+                productDtoValue.setArrival(0);
+                productDtoValue.setId(warehouseProduct.getId());
                 productDtoValue.setName(warehouseProduct.getProduct().getName());
-                productDtoValue.setOldAmount(warehouseProduct.getArrival());
-                productDtoValue.setResidue(warehouseProduct.getResidue());
+
+                List<WarehouseProductHistory> startWPHistories = wphService.findPastNearestDate(startDateUtil, warehouseProduct.getProduct().getId());
+                List<WarehouseProductHistory> endWPHistories = wphService.findPastNearestDate(endDateUtil, warehouseProduct.getProduct().getId());
+
+                if (startWPHistories.size() != 0 && endWPHistories.size() == 0) {
+                    WarehouseProductHistory startNearestDate = startWPHistories.get(0);
+                    productDtoValue.setOldAmount(startNearestDate.getResidue());
+                    productDtoValue.setResidue(0);
+                } else if (startWPHistories.size() == 0 && endWPHistories.size() != 0) {
+                    WarehouseProductHistory endNearestDate = endWPHistories.get(endWPHistories.size() - 1);
+                    productDtoValue.setOldAmount(0);
+                    productDtoValue.setResidue(endNearestDate.getResidue());
+                } else if (startWPHistories.size() != 0 && endWPHistories.size() != 0) {
+                    WarehouseProductHistory endNearestDate = endWPHistories.get(endWPHistories.size() - 1);
+                    WarehouseProductHistory startNearestDate = startWPHistories.get(0);
+                    productDtoValue.setOldAmount(0);
+                    productDtoValue.setResidue(endNearestDate.getResidue());
+                    productDtoValue.setOldAmount(startNearestDate.getResidue());
+                } else {
+                    productDtoValue.setOldAmount(0);
+                    productDtoValue.setResidue(0);
+                }
 
                 List<WarehouseProductHistory> productHistories = wphService.
                         findByDateBetweenAndProductId(startDateUtil, endDateUtil, warehouseProduct.getProduct().getId());
@@ -141,6 +163,7 @@ public class ProductsReportController {
                 for (WarehouseProductHistory productHistory : productHistories) {
                     productDtoValue.setArrival(productDtoValue.getArrival() + productHistory.getArrival());
                 }
+
                 productDtoValue.setSoldAmount(productDtoValue.getOldAmount() + productDtoValue.getArrival()
                         - productDtoValue.getResidue());
                 productDtoValue.setUnitSymbol(warehouseProduct.getProduct().getUnit().getSymbol());
@@ -171,11 +194,5 @@ public class ProductsReportController {
         sumShopPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSumOfShopPrice()));
         arrival.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getArrival()));
         sold.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSoldAmount()));
-
-        List<WarehouseProductHistory> startWPHistories = wphService.findNearestDate(startDateUtil, 1);
-        List<WarehouseProductHistory> endWPHistories = wphService.findNearestDate(endDateUtil, 1);
-        WarehouseProductHistory startNearestDate = startWPHistories.get(0);
-        WarehouseProductHistory endNearestDate = endWPHistories.get(startWPHistories.size() - 1);
-        System.out.println(startNearestDate);
     }
 }

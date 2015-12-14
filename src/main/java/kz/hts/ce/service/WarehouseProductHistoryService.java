@@ -21,7 +21,16 @@ public class WarehouseProductHistoryService extends BaseService<WarehouseProduct
     public List<WarehouseProductHistory> findByDateBetweenAndProductId(Date firstDate, Date secondDate, long productId) {
         return repository.findByDateBetweenAndWarehouseProduct_Product_Id(firstDate, secondDate, productId);
     }
-    public List<WarehouseProductHistory> findNearestDate(Date date, long productId){
-        return repository.findNearestDate(date, productId);
+
+    public List<WarehouseProductHistory> findPastNearestDate(Date date, long productId) {
+        return repository.findPastNearestDate(date, productId);
+    }
+
+    public List<WarehouseProductHistory> findNextNearestDate(Date date, long productId) {
+        return repository.findNextNearestDate(date, productId);
+    }
+
+    public WarehouseProductHistory findByVersion(int version) {
+        return repository.findByVersion(version);
     }
 }
