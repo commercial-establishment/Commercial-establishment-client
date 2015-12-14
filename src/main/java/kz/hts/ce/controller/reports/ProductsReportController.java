@@ -149,7 +149,6 @@ public class ProductsReportController {
                 } else if (startWPHistories.size() != 0 && endWPHistories.size() != 0) {
                     WarehouseProductHistory endNearestDate = endWPHistories.get(endWPHistories.size() - 1);
                     WarehouseProductHistory startNearestDate = startWPHistories.get(0);
-                    productDtoValue.setOldAmount(0);
                     productDtoValue.setResidue(endNearestDate.getResidue());
                     productDtoValue.setOldAmount(startNearestDate.getResidue());
                 } else {

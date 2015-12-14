@@ -14,7 +14,7 @@ public interface WarehouseProductHistoryRepository extends JpaRepository<Warehou
     List<WarehouseProductHistory> findByDateBetweenAndWarehouseProduct_Product_Id(Date firstDate, Date secondDate, long productId);
     WarehouseProductHistory findByVersion(int version);
 
-    @Query("SELECT wph FROM WarehouseProductHistory wph WHERE wph.date <= ?1 AND wph.warehouseProduct.product.id = ?2 ORDER BY wph.date ASC")
+    @Query("SELECT wph FROM WarehouseProductHistory wph WHERE wph.date < ?1 AND wph.warehouseProduct.product.id = ?2 ORDER BY wph.date ASC")
     List<WarehouseProductHistory> findPastNearestDate(Date date, long productId);
 
     @Query("SELECT wph FROM WarehouseProductHistory wph WHERE wph.date >= ?1 AND wph.warehouseProduct.product.id = ?2 ORDER BY wph.date ASC")

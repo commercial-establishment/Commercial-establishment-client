@@ -285,7 +285,6 @@ public class EditReceiptController implements Initializable {
                 Invoice invoice = invoiceService.save(invoiceFromDB);
 
                 String marginPercentage = String.valueOf((Double.valueOf(margin) / 100) + ONE);
-                Date newDate = new Date();
                 for (ProductDto productDto : productsData) {
                     long id = productDto.getId();
                     for (InvoiceProduct oldInvoiceProduct : oldInvoiceProducts) {
@@ -320,7 +319,7 @@ public class EditReceiptController implements Initializable {
                                 warehouseProductHistory.setWarehouseProduct(warehouseProduct);
                                 warehouseProductHistory.setArrival(warehouseProduct.getArrival());
                                 warehouseProductHistory.setResidue(warehouseProduct.getResidue());
-                                warehouseProductHistory.setDate(newDate);
+                                warehouseProductHistory.setDate(date);
                                 warehouseProductHistory.setVersion(warehouseProduct.getVersion());
                                 wphService.save(warehouseProductHistory);
                             }
@@ -385,7 +384,7 @@ public class EditReceiptController implements Initializable {
                             WarehouseProductHistory wphCurrentVersion = new WarehouseProductHistory();
                             wphCurrentVersion.setWarehouseProduct(savedWP);
                             wphCurrentVersion.setVersion(warehouseProduct.getVersion());
-                            wphCurrentVersion.setArrival(ZERO);
+                            wphCurrentVersion.setArrival(warehouseProduct.getArrival());
                             wphCurrentVersion.setResidue(warehouseProduct.getResidue());
                             wphCurrentVersion.setDate(warehouseProduct.getDate());
                             wphService.save(wphCurrentVersion);
@@ -406,7 +405,7 @@ public class EditReceiptController implements Initializable {
                             warehouseProductFromDB.setFinalPrice(warehouseProduct.getFinalPrice());
                             warehouseProductFromDB.setVat(warehouseProduct.isVat());
                             warehouseProductFromDB.setMargin(warehouseProduct.getMargin());
-                            warehouseProductFromDB.setDate(newDate);
+                            warehouseProductFromDB.setDate(date);
                             warehouseProductService.save(warehouseProductFromDB);
 
                             WarehouseProductHistory wphCurrentVersion = new WarehouseProductHistory();
@@ -414,7 +413,7 @@ public class EditReceiptController implements Initializable {
                             wphCurrentVersion.setVersion(warehouseProductFromDB.getVersion() + 1);
                             wphCurrentVersion.setArrival(warehouseProduct.getArrival());
                             wphCurrentVersion.setResidue(warehouseProductFromDB.getResidue() + warehouseProduct.getResidue());
-                            wphCurrentVersion.setDate(newDate);
+                            wphCurrentVersion.setDate(date);
                         }
                         invoiceProductService.save(invoiceProduct);
                     }

@@ -85,19 +85,12 @@ public class PaymentController implements Initializable {
             if (shortage.getText().equals(ZERO)) {
                 ObservableList<ProductDto> productsData = productsController.getProductsData();
                 for (ProductDto productDto : productsData) {
-                    long warehouseProductId = productDto.getId();
-                    WarehouseProduct warehouseProduct = warehouseProductService.findById(warehouseProductId);
+                    long productId = productDto.getId();
+                    WarehouseProduct warehouseProduct = warehouseProductService.findByProductId(productId);
 
-//                    WarehouseProductHistory wphPreviousVersion = new WarehouseProductHistory();
-//                    wphPreviousVersion.setWarehouseProduct(warehouseProduct);
-//                    wphPreviousVersion.setVersion(warehouseProduct.getVersion());
                     Date newDate = new Date();
-//                    wphPreviousVersion.setDate(newDate);
-//                    wphPreviousVersion.setResidue(warehouseProduct.getResidue());
-                    //warehouseProductHistoryService.save(wphPreviousVersion);
-
                     int productAmount = productDto.getAmount();
-                    int residue = warehouseProduct.getResidue();
+                    int residue = productDto.getResidue();
                     warehouseProduct.setResidue(residue - productAmount);
 
                     warehouseProduct.setVersion(warehouseProduct.getVersion() + 1);
