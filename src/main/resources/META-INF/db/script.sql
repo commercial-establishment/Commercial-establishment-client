@@ -27,7 +27,7 @@ VALUES (2, 321321321321, FALSE, 'NeCoca-Cola', 2, 2);
 INSERT INTO product (id, BARCODE, is_blocked, name, category_id, UNIT_ID)
 VALUES (3, 333222111222, FALSE, 'Water', 1, 1);
 
-INSERT INTO shop (id, address, is_blocked, name, city_id, type_id) VALUES (1, 'Туркистан 8/2', FALSE, 'Gal Mart', 1, 1);
+INSERT INTO shop (id, address, is_blocked, name, city_id, type_id, IIN) VALUES (1, 'Туркистан 8/2', FALSE, 'Gal Mart', 1, 1, 123456789);
 
 INSERT INTO WAREHOUSE (id, shop_id) VALUES (1, 1);
 
