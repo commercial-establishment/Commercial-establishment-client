@@ -8,9 +8,13 @@ public class Shop extends BaseEntity {
 
     private String name;
     private String address;
+    private int iin;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "shop")
     private List<Employee> employees;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shop")
+    private List<Check> checks;
 
     @ManyToOne
     @JoinColumn(name = "type_id", nullable = false)
@@ -69,5 +73,21 @@ public class Shop extends BaseEntity {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public int getIin() {
+        return iin;
+    }
+
+    public void setIin(int iin) {
+        this.iin = iin;
+    }
+
+    public List<Check> getChecks() {
+        return checks;
+    }
+
+    public void setChecks(List<Check> checks) {
+        this.checks = checks;
     }
 }
