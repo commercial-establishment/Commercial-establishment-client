@@ -10,9 +10,8 @@ import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.controller.ControllerException;
 import kz.hts.ce.controller.sale.ProductsController;
 import kz.hts.ce.model.dto.ProductDto;
-import kz.hts.ce.model.entity.WarehouseProductHistory;
 import kz.hts.ce.model.entity.WarehouseProduct;
-import kz.hts.ce.service.EmployeeService;
+import kz.hts.ce.model.entity.WarehouseProductHistory;
 import kz.hts.ce.service.WarehouseProductHistoryService;
 import kz.hts.ce.service.WarehouseProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +22,9 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
-import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
 import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
+import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
-import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class PaymentController implements Initializable {
@@ -47,8 +44,6 @@ public class PaymentController implements Initializable {
     private WarehouseProductService warehouseProductService;
     @Autowired
     private WarehouseProductHistoryService warehouseProductHistoryService;
-    @Autowired
-    private EmployeeService employeeService;
 
     @Autowired
     private ProductsController productsController;
@@ -113,12 +108,14 @@ public class PaymentController implements Initializable {
                 alert(Alert.AlertType.WARNING, "Недостаточно средств", null, "Недостаточно средств для оплаты товара");
             }
         } catch (RuntimeException e) {
+            alert(Alert.AlertType.ERROR, "Внутренняя ошибка", null, "Оплата не произведена.");
             throw new ControllerException(e);
         }
     }
 
     @FXML
     public void print(ActionEvent event) {
+
     }
 
     @FXML

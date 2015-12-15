@@ -1,4 +1,4 @@
-package kz.hts.ce.util.javafx;
+package kz.hts.ce.util.javafx.fields;
 
 import javafx.scene.control.TextField;
 

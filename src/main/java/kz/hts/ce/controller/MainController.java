@@ -44,8 +44,6 @@ public class MainController implements Initializable {
     private StackPane contentContainer;
 
     @Autowired
-    private EmployeeService employeeService;
-    @Autowired
     private ShiftService shiftService;
 
     @Lazy
@@ -66,7 +64,7 @@ public class MainController implements Initializable {
                 flag = true;
             }
         });
-        Employee employee = employeeService.findByUsername(getPrincipal());
+        Employee employee = springUtil.getEmployee();
         role.setText(employee.getRole().getName());
     }
 

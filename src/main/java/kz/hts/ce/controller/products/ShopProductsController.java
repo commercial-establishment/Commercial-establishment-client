@@ -20,6 +20,7 @@ import kz.hts.ce.service.CategoryService;
 import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.WarehouseProductService;
 import kz.hts.ce.util.spring.JsonUtil;
+import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -65,8 +66,6 @@ public class ShopProductsController implements Initializable {
     private CategoryService categoryService;
     @Autowired
     private WarehouseProductService warehouseProductService;
-    @Autowired
-    private EmployeeService employeeService;
 
     @Autowired
     private MainController mainController;
@@ -75,6 +74,8 @@ public class ShopProductsController implements Initializable {
 
     @Autowired
     private JsonUtil jsonUtil;
+    @Autowired
+    private SpringUtil springUtil;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -82,7 +83,7 @@ public class ShopProductsController implements Initializable {
         List<String> categoryNames = categoriesFromDB.stream().map(Category::getName).collect(Collectors.toList());
         categories.getItems().addAll(categoryNames);
 
-        shopId = employeeService.findByUsername(getPrincipal()).getShop().getId();
+        shopId = springUtil.getEmployee().getShop().getId();
 
         showEditProductPage();
     }
@@ -107,13 +108,7 @@ public class ShopProductsController implements Initializable {
             productsData.add(productDto);
         }
 
-        barcode.setCellValueFactory(cellData -> cellData.getValue().barcodeProperty());
-        name.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        unit.setCellValueFactory(cellData -> cellData.getValue().unitNameProperty());
-        amount.setCellValueFactory(cellData -> cellData.getValue().amountProperty());
-        residue.setCellValueFactory(cellData -> cellData.getValue().residueProperty());
-        price.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
-        productTable.setItems(productsData);
+        initializeTableColumns();
 
         productTable.setRowFactory(new Callback<TableView<ProductDto>, TableRow<ProductDto>>() {
             @Override
@@ -152,6 +147,16 @@ public class ShopProductsController implements Initializable {
                 };
             }
         });
+    }
+
+    private void initializeTableColumns() {
+        barcode.setCellValueFactory(cellData -> cellData.getValue().barcodeProperty());
+        name.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        unit.setCellValueFactory(cellData -> cellData.getValue().unitNameProperty());
+        amount.setCellValueFactory(cellData -> cellData.getValue().amountProperty());
+        residue.setCellValueFactory(cellData -> cellData.getValue().residueProperty());
+        price.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
+        productTable.setItems(productsData);
     }
 
     private void showEditProductPage() {

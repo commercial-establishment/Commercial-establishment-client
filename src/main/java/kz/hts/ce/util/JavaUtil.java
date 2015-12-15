@@ -1,5 +1,6 @@
 package kz.hts.ce.util;
 
+import kz.hts.ce.controller.ControllerException;
 import kz.hts.ce.model.dto.InvoiceDto;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.dto.ProviderDto;
@@ -27,7 +28,7 @@ public class JavaUtil {
 
             return (BigDecimal) decimalFormat.parse(value);
         } catch (ParseException e) {
-            throw new RuntimeException(e);/*TODO add exception*/
+            throw new ControllerException(e);
         }
     }
 
@@ -115,7 +116,7 @@ public class JavaUtil {
             long difference = dateWithPostponement.getTime() - today.getTime();
             return (int) (difference / (24 * 60 * 60 * 1000));
         } catch (ParseException e) {
-            throw new RuntimeException(e);/*TODO*/
+            throw new ControllerException(e);
         }
     }
 

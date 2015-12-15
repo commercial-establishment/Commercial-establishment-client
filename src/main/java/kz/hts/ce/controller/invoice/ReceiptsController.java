@@ -15,10 +15,8 @@ import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.controller.MainController;
 import kz.hts.ce.controller.SettingsController;
 import kz.hts.ce.model.dto.InvoiceDto;
-import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.Invoice;
 import kz.hts.ce.model.entity.ShopProvider;
-import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.InvoiceService;
 import kz.hts.ce.service.ProviderService;
 import kz.hts.ce.service.ShopProviderService;
@@ -36,7 +34,6 @@ import java.util.ResourceBundle;
 import static kz.hts.ce.util.JavaUtil.countDays;
 import static kz.hts.ce.util.JavaUtil.createInvoiceDtoFromInvoice;
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
-import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class ReceiptsController implements Initializable {
@@ -48,7 +45,7 @@ public class ReceiptsController implements Initializable {
 
     private ObservableList<InvoiceDto> invoiceData = FXCollections.observableArrayList();
     private List<ShopProvider> shopProviders;
-    private Employee employee;
+    private long shopId;
 
     @FXML
     private TableView<InvoiceDto> receiptsTable;
@@ -65,8 +62,6 @@ public class ReceiptsController implements Initializable {
     @FXML
     private ComboBox<String> providers;
 
-    @Autowired
-    private EmployeeService employeeService;
     @Autowired
     private InvoiceService invoiceService;
     @Autowired
@@ -85,8 +80,8 @@ public class ReceiptsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        employee = employeeService.findByUsername(getPrincipal());
-        shopProviders = shopProviderService.findByShopId(employee.getShop().getId());
+        shopId = springUtil.getEmployee().getShop().getId();
+        shopProviders = shopProviderService.findByShopId(shopId);
         providers.getItems().add(ALL_PROVIDERS_RU);
         for (ShopProvider shopProvider : shopProviders) {
             providers.getItems().add(shopProvider.getProvider().getCompanyName());
@@ -161,7 +156,7 @@ public class ReceiptsController implements Initializable {
     }
 
     @FXML
-    public void showCreateReceiptPage() throws IOException {
+    private void showCreateReceiptPage() throws IOException {
         PagesConfiguration screens = getPagesConfiguration();
         mainController.getContentContainer().getChildren().setAll(screens.addReceipt());
     }
@@ -173,10 +168,10 @@ public class ReceiptsController implements Initializable {
         receiptsTable.getItems().clear();
         List<Invoice> invoices;
         if (providerCompanyName.equals(ALL_PROVIDERS_RU)) {
-            invoices = invoiceService.findByWarehouseShopId(employee.getShop().getId());
+            invoices = invoiceService.findByWarehouseShopId(shopId);
         } else {
             long providerId = providerService.findByCompanyName(providerCompanyName).getId();
-            invoices = invoiceService.findByWarehouseShopIdAndProviderId(employee.getShop().getId(), providerId);
+            invoices = invoiceService.findByWarehouseShopIdAndProviderId(shopId, providerId);
         }
         for (Invoice invoice : invoices) {
             InvoiceDto invoiceDto = createInvoiceDtoFromInvoice(invoice, null);

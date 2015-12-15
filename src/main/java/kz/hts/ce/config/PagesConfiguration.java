@@ -11,6 +11,7 @@ import kz.hts.ce.controller.invoice.ReceiptsController;
 import kz.hts.ce.controller.payment.PaymentController;
 import kz.hts.ce.controller.products.EditProductController;
 import kz.hts.ce.controller.products.ShopProductsController;
+import kz.hts.ce.controller.provider.AddProviderController;
 import kz.hts.ce.controller.sale.CalculatorController;
 import kz.hts.ce.controller.sale.ProductCategoryController;
 import kz.hts.ce.controller.sale.ProductsController;
@@ -146,6 +147,13 @@ public class PagesConfiguration {
     public Node addProvider() {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
         return (AnchorPane) springFxmlLoader.load("/view/provider-add.fxml");
+    }
+
+    @Bean
+    @Scope("prototype")
+    public Node createProvider() {
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        return (AnchorPane) springFxmlLoader.load("/view/provider-create.fxml");
     }
 
     @Bean

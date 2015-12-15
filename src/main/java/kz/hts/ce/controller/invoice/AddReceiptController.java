@@ -12,6 +12,7 @@ import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.*;
 import kz.hts.ce.service.*;
 import kz.hts.ce.util.spring.JsonUtil;
+import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +25,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromProduct;
-import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
-import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class AddReceiptController implements Initializable {
 
+    public static final int ZERO = 0;
+    public static final int ONE = 1;
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productDtosByCategory = FXCollections.observableArrayList();
     private Set<String> barcodes;
@@ -82,8 +83,6 @@ public class AddReceiptController implements Initializable {
     @Autowired
     private ShopProviderService shopProviderService;
     @Autowired
-    private EmployeeService employeeService;
-    @Autowired
     private CategoryService categoryService;
     @Autowired
     private ProductService productService;
@@ -107,6 +106,8 @@ public class AddReceiptController implements Initializable {
 
     @Autowired
     private JsonUtil jsonUtil;
+    @Autowired
+    private SpringUtil springUtil;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -114,15 +115,15 @@ public class AddReceiptController implements Initializable {
 
         initializeTableColumns();
 
-        postponement.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0));
-        amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10000, 1));
-        margin.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0));
+        postponement.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(ZERO, 1000, ZERO));
+        amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(ONE, 10000, ONE));
+        margin.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(ZERO, 100, ZERO));
 
         List<Unit> units = unitService.findAll();
         List<String> unitNames = units.stream().map(Unit::getName).collect(Collectors.toList());
         unitOfMeasure.getItems().addAll(unitNames);
 
-        long shopId = employeeService.findByUsername(getPrincipal()).getShop().getId();
+        long shopId = springUtil.getEmployee().getShop().getId();
         List<ShopProvider> shopProviders = shopProviderService.findByShopId(shopId);
         List<String> providerNames = shopProviders.stream().map(shopProvider -> shopProvider.getProvider().getCompanyName()).collect(Collectors.toList());
         providers.getItems().addAll(providerNames);
@@ -144,7 +145,7 @@ public class AddReceiptController implements Initializable {
         price.setDisable(false);
         amount.setDisable(false);
         add.setDisable(false);
-        price.setText("0");
+        price.setText(String.valueOf(ZERO));
 
         ComboBox<String> source = (ComboBox<String>) event.getSource();
         List<Product> products = productService.findByCategoryName(source.getValue());
@@ -157,40 +158,33 @@ public class AddReceiptController implements Initializable {
 
     @FXML
     @Transactional
-    private void saveInvoice(ActionEvent event) {
+    private void saveInvoice() {
         try {
             String providerCompanyName = providers.getValue();
             LocalDate localDate = this.date.getValue();
             Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.setTime(dateFromLocaleDate);
-//            calendar.set(Calendar.SECOND, 1);
-//            Date date = calendar.getTime();
             boolean vat = this.vat.isSelected();
             Integer postponement = this.postponement.getValue();
-
-            Employee employee = employeeService.findByUsername(getPrincipal());
-            long shopId = employee.getShop().getId();
+            String margin = this.margin.getEditor().getText();
+            long shopId = springUtil.getEmployee().getShop().getId();
             Warehouse warehouse = warehouseService.findByShopId(shopId);
 
-            Invoice invoiceEntity = new Invoice();
-            invoiceEntity.setDate(date);
-            invoiceEntity.setPostponement(postponement);
-            invoiceEntity.setProvider(providerService.findByCompanyName(providerCompanyName));
-            invoiceEntity.setVat(vat);
-            invoiceEntity.setWarehouse(warehouse);
+            Invoice invoice = new Invoice();
+            invoice.setDate(date);
+            invoice.setPostponement(postponement);
+            invoice.setProvider(providerService.findByCompanyName(providerCompanyName));
+            invoice.setVat(vat);
+            invoice.setWarehouse(warehouse);
+            invoice.setMargin(Integer.parseInt(margin));
+            Invoice savedInvoice = invoiceService.save(invoice);
 
-            String margin = this.margin.getEditor().getText();
-            invoiceEntity.setMargin(Integer.parseInt(margin));
-
-            Invoice invoice = invoiceService.save(invoiceEntity);
-
-            String marginPercentage = String.valueOf((Double.valueOf(margin) / 100) + 1);
+            String marginPercentage = String.valueOf((Double.valueOf(margin) / 100) + ONE);
             BigDecimal priceWithMargin = new BigDecimal(marginPercentage);
+
             for (ProductDto productDto : productsData) {
                 Product product = productService.findByBarcode(productDto.getBarcode());
                 InvoiceProduct invoiceProduct = new InvoiceProduct();
-                invoiceProduct.setInvoice(invoice);
+                invoiceProduct.setInvoice(savedInvoice);
                 invoiceProduct.setAmount(productDto.getAmount());
                 if (jsonUtil.isVatBoolean() && !vat) {
                     priceWithMargin = (priceWithMargin.multiply(productDto.getPrice())).multiply(BigDecimal.valueOf(1.12));
@@ -212,7 +206,7 @@ public class AddReceiptController implements Initializable {
                 warehouseProduct.setWarehouse(warehouse);
                 warehouseProduct.setArrival(productDto.getAmount());
                 warehouseProduct.setResidue(productDto.getResidue());
-                warehouseProduct.setVersion(1);
+                warehouseProduct.setVersion(ONE);
                 warehouseProduct.setDate(date);
                 if (product != null) {
                     warehouseProduct.setProduct(product);
@@ -244,7 +238,7 @@ public class AddReceiptController implements Initializable {
                     wphCurrentVersion.setDate(warehouseProduct.getDate());
                     warehouseProductHistoryService.save(wphCurrentVersion);
                 } else {
-                    if (warehouseProductFromDB.getVersion() != 1) {
+                    if (warehouseProductFromDB.getVersion() != ONE) {
                         WarehouseProductHistory wphPreviousVersion = new WarehouseProductHistory();
                         wphPreviousVersion.setWarehouseProduct(warehouseProductFromDB);
                         wphPreviousVersion.setVersion(warehouseProductFromDB.getVersion());
@@ -254,7 +248,7 @@ public class AddReceiptController implements Initializable {
                         warehouseProductHistoryService.save(wphPreviousVersion);
                     }
 
-                    warehouseProductFromDB.setVersion(warehouseProductFromDB.getVersion() + 1);
+                    warehouseProductFromDB.setVersion(warehouseProductFromDB.getVersion() + ONE);
                     warehouseProductFromDB.setArrival(warehouseProduct.getArrival());
                     warehouseProductFromDB.setResidue(warehouseProductFromDB.getResidue() + warehouseProduct.getResidue());
                     warehouseProductFromDB.setInitialPrice(warehouseProduct.getInitialPrice());
@@ -292,7 +286,6 @@ public class AddReceiptController implements Initializable {
 
         if (barcodes == null) barcodes = new HashSet<>();
         barcodes.clear();
-
         for (ProductDto dto : productsData) {
             barcodes.add(dto.getBarcode());
             if (barcode.equals(dto.getBarcode())) {
@@ -314,12 +307,12 @@ public class AddReceiptController implements Initializable {
             productsData.add(productDto);
             productsTable.setItems(productsData);
         }
-        deleteRowColumn.setDisable(false);
 
+        deleteRowColumn.setDisable(false);
         productComboBox.setValue("");
         this.barcode.setText("");
         this.unitOfMeasure.getEditor().setText("");
-        this.price.setText("0");
+        this.price.setText(String.valueOf(ZERO));
     }
 
     @FXML
@@ -411,9 +404,5 @@ public class AddReceiptController implements Initializable {
 
     public DatePicker getDate() {
         return date;
-    }
-
-    public ComboBox<String> getProviders() {
-        return providers;
     }
 }

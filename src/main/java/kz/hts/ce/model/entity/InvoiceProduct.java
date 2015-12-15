@@ -15,14 +15,15 @@ public class InvoiceProduct extends BaseEntity {
     @PrimaryKeyJoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
-    private int margin;
-    private int amount;
-
     @Column(name = "initial_price")
     private BigDecimal initialPrice;
 
     @Column(name = "final_price")
     private BigDecimal finalPrice;
+
+    private int margin;
+    private int amount;
+    private int version;
 
     public Invoice getInvoice() {
         return invoice;
@@ -70,5 +71,13 @@ public class InvoiceProduct extends BaseEntity {
 
     public void setMargin(int margin) {
         this.margin = margin;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

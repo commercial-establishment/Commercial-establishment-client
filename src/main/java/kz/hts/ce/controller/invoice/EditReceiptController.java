@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromProduct;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
-import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class EditReceiptController implements Initializable {
@@ -97,8 +96,6 @@ public class EditReceiptController implements Initializable {
     @Autowired
     private ShopProviderService shopProviderService;
     @Autowired
-    private EmployeeService employeeService;
-    @Autowired
     private CategoryService categoryService;
     @Autowired
     private ProductService productService;
@@ -140,7 +137,7 @@ public class EditReceiptController implements Initializable {
         List<String> unitNames = units.stream().map(Unit::getName).collect(Collectors.toList());
         unitOfMeasure.getItems().addAll(unitNames);
 
-        long shopId = employeeService.findByUsername(getPrincipal()).getShop().getId();
+        long shopId = springUtil.getEmployee().getShop().getId();
         List<ShopProvider> shopProviders = shopProviderService.findByShopId(shopId);
         List<String> providerNames = shopProviders.stream().map(shopProvider -> shopProvider.getProvider()
                 .getCompanyName()).collect(Collectors.toList());
@@ -227,8 +224,6 @@ public class EditReceiptController implements Initializable {
         BigDecimal price = new BigDecimal(this.price.getText());
         Integer amount = this.amount.getValue();
         String barcode = this.barcode.getText();
-        boolean vat = this.vat.isSelected();
-        int margin = this.margin.getValue();
 
         if (!productName.equals("") && !barcode.equals("") && !unit.equals("")) {
             barcodes.clear();
@@ -270,7 +265,7 @@ public class EditReceiptController implements Initializable {
             LocalDate localDate = this.date.getValue();
             Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             if (productsData.size() != ZERO) {
-                Employee employee = employeeService.findByUsername(getPrincipal());
+                Employee employee = springUtil.getEmployee();
                 long shopId = employee.getShop().getId();
                 Warehouse warehouse = warehouseService.findByShopId(shopId);
 
@@ -304,7 +299,7 @@ public class EditReceiptController implements Initializable {
                             WarehouseProduct warehouseProduct = warehouseProductService
                                     .findByProductBarcode(oldInvoiceProduct.getProduct().getBarcode());
                             warehouseProduct.setArrival(productDto.getAmount() - oldInvoiceProduct.getAmount());
-                            if (warehouseProduct.getArrival() != 0 && !productDto.getPrice().equals(oldInvoiceProduct.getFinalPrice())) {
+                            if (warehouseProduct.getArrival() != ZERO && !productDto.getPrice().equals(oldInvoiceProduct.getFinalPrice())) {
                                 warehouseProduct.setDate(date);
                                 warehouseProduct.setVat(vat);
                                 warehouseProduct.setMargin(Integer.parseInt(margin));
@@ -389,7 +384,7 @@ public class EditReceiptController implements Initializable {
                             wphCurrentVersion.setDate(warehouseProduct.getDate());
                             wphService.save(wphCurrentVersion);
                         } else {
-                            if (warehouseProductFromDB.getVersion() != 1) {
+                            if (warehouseProductFromDB.getVersion() != ONE) {
                                 WarehouseProductHistory wphPreviousVersion = wphService.findByVersion(warehouseProductFromDB.getVersion());
                                 wphPreviousVersion.setWarehouseProduct(warehouseProductFromDB);
                                 wphPreviousVersion.setArrival(warehouseProductFromDB.getArrival());
@@ -410,7 +405,7 @@ public class EditReceiptController implements Initializable {
 
                             WarehouseProductHistory wphCurrentVersion = new WarehouseProductHistory();
                             wphCurrentVersion.setWarehouseProduct(warehouseProductFromDB);
-                            wphCurrentVersion.setVersion(warehouseProductFromDB.getVersion() + 1);
+                            wphCurrentVersion.setVersion(warehouseProductFromDB.getVersion() + ONE);
                             wphCurrentVersion.setArrival(warehouseProduct.getArrival());
                             wphCurrentVersion.setResidue(warehouseProductFromDB.getResidue() + warehouseProduct.getResidue());
                             wphCurrentVersion.setDate(date);

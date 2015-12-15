@@ -78,35 +78,11 @@ public class ProductsController {
         return productsData;
     }
 
-    public void setProductsData(ObservableList<ProductDto> productsData) {
-        this.productsData = productsData;
-    }
-
     public List<ProductDto> getProductsDto() {
         return productsDto;
     }
 
-    public void setProductsDto(List<ProductDto> productsDto) {
-        this.productsDto = productsDto;
-    }
-
-    public TableView<ProductDto> getProductTable() {
-        return productTable;
-    }
-
-    public void setProductTable(TableView<ProductDto> productTable) {
-        this.productTable = productTable;
-    }
-
     public void addProductInProductsDto(ProductDto productDto) {
         productsDto.add(productDto);
-    }
-
-    public void removeProductFromProductsDto(ProductDto productDto) {
-        for (ProductDto dto : productsDto) {
-            if (dto.getBarcode().equals(productDto.getBarcode())) {
-                productsDto.remove(dto);
-            }
-        }
     }
 }

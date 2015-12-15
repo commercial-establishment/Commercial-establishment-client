@@ -3,8 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import kz.hts.ce.util.javafx.BarcodeTextField?>
-<?import kz.hts.ce.util.javafx.PriceTextField?>
+<?import kz.hts.ce.util.javafx.fields.BarcodeTextField?>
+<?import kz.hts.ce.util.javafx.fields.PriceTextField?>
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
             minWidth="-Infinity" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.invoice.AddReceiptController">

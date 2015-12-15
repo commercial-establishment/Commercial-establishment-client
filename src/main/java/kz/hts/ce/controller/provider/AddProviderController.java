@@ -1,4 +1,4 @@
-package kz.hts.ce.controller;
+package kz.hts.ce.controller.provider;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import kz.hts.ce.config.PagesConfiguration;
+import kz.hts.ce.controller.MainController;
 import kz.hts.ce.model.dto.ProviderDto;
 import kz.hts.ce.model.entity.Provider;
 import kz.hts.ce.model.entity.Shop;
@@ -148,5 +149,11 @@ public class AddProviderController implements Initializable {
 
     public void showMainPage() {
         mainController.getContentContainer().getChildren().setAll(mainController.getSales());
+    }
+
+    @FXML
+    private void createProvider() {
+        PagesConfiguration screens = getPagesConfiguration();
+        mainController.getContentContainer().getChildren().setAll(screens.createProvider());
     }
 }

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+
+<?import kz.hts.ce.util.javafx.fields.IntegerTextField?>
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.provider.CreateProviderController">
+    <children>
+        <Label layoutX="213.0" layoutY="119.0" text="Название компании:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="231.0" layoutY="168.0" text="Контактное лицо:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="305.0" layoutY="215.0" text="Email:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="302.0" layoutY="309.0" text="Адрес:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="307.0" layoutY="357.0" text="ИИН:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="308.0" layoutY="402.0" text="БИН:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <TextField fx:id="companyName" layoutX="353.0" layoutY="114.0" prefHeight="30.0" prefWidth="229.0" />
+        <TextField fx:id="contactPerson" layoutX="353.0" layoutY="163.0" prefHeight="30.0" prefWidth="229.0" />
+        <TextField fx:id="email" layoutX="353.0" layoutY="210.0" prefHeight="30.0" prefWidth="229.0" />
+        <TextField fx:id="address" layoutX="353.0" layoutY="304.0" prefHeight="30.0" prefWidth="229.0" />
+        <IntegerTextField fx:id="iin" layoutX="353.0" layoutY="352.0" prefHeight="30.0" prefWidth="229.0" />
+        <IntegerTextField fx:id="bin" layoutX="353.0" layoutY="397.0" prefHeight="30.0" prefWidth="229.0" />
+        <Label layoutX="58.0" layoutY="45.0" text="Создание поставщика">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Button layoutX="504.0" layoutY="462.0" mnemonicParsing="false" onAction="#save" prefHeight="35.0" prefWidth="113.0" text="Сохранить" />
+        <ComboBox fx:id="cities" layoutX="353.0" layoutY="255.0" prefHeight="30.0" prefWidth="229.0" promptText="Выберите город" />
+        <Label layoutX="306.0" layoutY="262.0" text="Город:" />
+      <Label layoutX="204.0" layoutY="115.0" text="*" textFill="RED">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="222.0" layoutY="165.0" text="*" textFill="RED">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="298.0" layoutY="212.0" text="*" textFill="RED">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="298.0" layoutY="257.0" text="*" textFill="RED">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="294.0" layoutY="306.0" text="*" textFill="RED">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="58.0" layoutY="80.0" text="Поля, помеченные символом " />
+      <Label layoutX="232.0" layoutY="80.0" text=", обязательны для заполнения." />
+      <Label layoutX="225.0" layoutY="75.0" text="*" textFill="RED">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="589.0" layoutY="120.0" text="- Любые символы. Максимальное количество - 30." />
+      <Label layoutX="589.0" layoutY="170.0" text="- Любые символы. Максимальное количество - 100." />
+      <Label layoutX="589.0" layoutY="217.0" text="- Ваш действующий email" />
+      <Label layoutX="589.0" layoutY="311.0" text="- Корретный адрес (пример: ул. Туркестан, дом 8/2, 4 этаж)" />
+    </children>
+</AnchorPane>

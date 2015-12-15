@@ -5,6 +5,7 @@ import kz.hts.ce.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -36,6 +37,10 @@ public class ProductService extends BaseService<Product, ProductRepository> {
     }
 
     public List<Product> findByCategoryName(String name) {
-        return repository.findByCategory_Name(name);
+        try {
+            return repository.findByCategory_Name(name);
+        } catch (ServiceException e) {
+            return Collections.emptyList();
+        }
     }
 }

@@ -30,11 +30,11 @@ public class PaymentCalculatorController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         button = new Button();
         PagesConfiguration screens = getPagesConfiguration();
-        buttonState = new StringBuilder("");
+        buttonState = new StringBuilder();
         EventHandler<KeyEvent> eventHandler = evt -> {
             buttonState.setLength(0);
             buttonState.append(evt.getCode().toString());
-            this.handleOnAnyButtonFromKeypad();
+            handleOnAnyButtonFromKeypad();
         };
         ChangeListener<Boolean> changeListener = (observable, oldValue, newValue) -> {
             if (newValue) screens.getPrimaryStage().getScene().addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
