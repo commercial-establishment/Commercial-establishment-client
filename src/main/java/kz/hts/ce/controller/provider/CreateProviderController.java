@@ -5,6 +5,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import kz.hts.ce.config.PagesConfiguration;
+import kz.hts.ce.controller.MainController;
 import kz.hts.ce.model.entity.City;
 import kz.hts.ce.model.entity.Provider;
 import kz.hts.ce.model.entity.Role;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.validation.ConstraintViolationException;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigInteger;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +28,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
+import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
 public class CreateProviderController implements Initializable {
@@ -52,6 +56,9 @@ public class CreateProviderController implements Initializable {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private MainController mainController;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         List<City> cities = cityService.findAll();
@@ -70,20 +77,22 @@ public class CreateProviderController implements Initializable {
             provider.setEmail(email.getText());
             provider.setAddress(address.getText());
             provider.setBlocked(false);
-            provider.setCity(cityService.findByName(this.cities.getEditor().getText()));
+            provider.setCity(cityService.findByName(cities.getValue()));
             String iin = this.iin.getText();
-            if (!iin.isEmpty()) {
-                int iinInt = Integer.parseInt(iin);
-                provider.setIin(iinInt);
-            }
+            if (!iin.isEmpty()) provider.setIin(iin);
             String bin = this.bin.getText();
-            if (!bin.isEmpty()) {
-                int binInt = Integer.parseInt(bin);
-                provider.setBin(binInt);
-            }
+            if (!bin.isEmpty()) provider.setBin(bin);
             providerService.save(provider);
+
+            addProviderPage();
         } catch (RuntimeException e) {
             alert(Alert.AlertType.WARNING, "Поля заполнены неверно", null, "Пожалуйста, введите данные корректно.");
         }
+    }
+
+
+    private void addProviderPage() {
+        PagesConfiguration screens = getPagesConfiguration();
+        mainController.getContentContainer().getChildren().setAll(screens.addProvider());
     }
 }

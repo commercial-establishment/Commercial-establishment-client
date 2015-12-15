@@ -10,17 +10,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.math.BigInteger;
 import java.util.Date;
 
 @Entity
 public class Provider extends BaseEntity {
 
-    @NotEmpty
     @Size(min = 3, max = 14)
     @Pattern(regexp = "^[a-z0-9_-]+[a-z0-9_-]$")
+    @Column(nullable = true)
     private String username;
 
-    @NotEmpty
+    @Column(nullable = true)
     private String password;
 
     @ManyToOne
@@ -59,11 +60,12 @@ public class Provider extends BaseEntity {
     private boolean blocked;
 
     @Size(max = 20)
-    private int iin;
+    @Column(nullable = true)
+    private String iin;
 
     @Size(max = 20)
     @Column(nullable = true)
-    private int bin;
+    private String bin;
 
     public String getUsername() {
         return username;
@@ -153,19 +155,19 @@ public class Provider extends BaseEntity {
         this.blocked = blocked;
     }
 
-    public int getIin() {
+    public String getIin() {
         return iin;
     }
 
-    public void setIin(int iin) {
+    public void setIin(String iin) {
         this.iin = iin;
     }
 
-    public int getBin() {
+    public String getBin() {
         return bin;
     }
 
-    public void setBin(int bin) {
+    public void setBin(String bin) {
         this.bin = bin;
     }
 }

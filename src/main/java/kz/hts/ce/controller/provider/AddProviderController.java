@@ -49,9 +49,9 @@ public class AddProviderController implements Initializable {
     @FXML
     private TableColumn<ProviderDto, String> address;
     @FXML
-    private TableColumn<ProviderDto, Number> iin;
+    private TableColumn<ProviderDto, String> iin;
     @FXML
-    private TableColumn<ProviderDto, Number> bin;
+    private TableColumn<ProviderDto, String> bin;
 
     @Autowired
     private ShopProviderService shopProviderService;
@@ -152,7 +152,7 @@ public class AddProviderController implements Initializable {
     }
 
     @FXML
-    private void createProvider() {
+    private void createProviderPage() {
         PagesConfiguration screens = getPagesConfiguration();
         mainController.getContentContainer().getChildren().setAll(screens.createProvider());
     }

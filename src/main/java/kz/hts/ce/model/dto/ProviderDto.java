@@ -12,8 +12,8 @@ public class ProviderDto {
     private StringProperty email;
     private StringProperty cityName;
     private StringProperty address;
-    private IntegerProperty iin;
-    private IntegerProperty bin;
+    private StringProperty iin;
+    private StringProperty bin;
 
     public String getCompanyName() {
         return companyName.get();
@@ -80,29 +80,29 @@ public class ProviderDto {
         this.address.set(address);
     }
 
-    public int getIin() {
+    public String getIin() {
         return iin.get();
     }
 
-    public IntegerProperty iinProperty() {
+    public StringProperty iinProperty() {
         return iin;
     }
 
-    public void setIin(int iin) {
-        if (this.iin == null) this.iin = new SimpleIntegerProperty();
+    public void setIin(String iin) {
+        if (this.iin == null) this.iin = new SimpleStringProperty();
         this.iin.set(iin);
     }
 
-    public int getBin() {
+    public String getBin() {
         return bin.get();
     }
 
-    public IntegerProperty binProperty() {
+    public StringProperty binProperty() {
         return bin;
     }
 
-    public void setBin(int bin) {
-        if (this.bin == null) this.bin = new SimpleIntegerProperty();
+    public void setBin(String bin) {
+        if (this.bin == null) this.bin = new SimpleStringProperty();
         this.bin.set(bin);
     }
 }

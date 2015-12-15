@@ -35,7 +35,7 @@
                 onAction="#addProviderToTable" prefHeight="34.0" prefWidth="140.0" text="Добавить"/>
         <Button layoutX="843.0" layoutY="483.0" mnemonicParsing="false" onAction="#save" prefHeight="34.0"
                 prefWidth="111.0" text="Сохранить"/>
-        <Button onAction="#createProvider" layoutX="840.0" layoutY="40.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="111.0"
+        <Button onAction="#createProviderPage" layoutX="840.0" layoutY="40.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="111.0"
                 text="Создать"/>
     </children>
 </AnchorPane>
