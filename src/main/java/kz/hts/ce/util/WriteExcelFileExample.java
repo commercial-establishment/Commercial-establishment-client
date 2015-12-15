@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class WriteExcelFileExample {
-    private static final String FILE_PATH = "/Users/Yakov/testWriteStudents.xlsx";
+    private static final String FILE_PATH = "/Users/Yakov/testWriteStudents.xlsx";/*TODO add path*/
 
     public static void writeProductsToExcel(List<ProductDto> products) {
         Workbook workbook = new XSSFWorkbook();
@@ -52,5 +52,4 @@ public class WriteExcelFileExample {
             e.printStackTrace();
         }
     }
-
 }
