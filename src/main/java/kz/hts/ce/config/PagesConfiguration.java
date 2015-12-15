@@ -70,8 +70,6 @@ public class PagesConfiguration {
     @Bean
     @Scope("prototype")
     public Stage payment() {
-//        primaryStage.initStyle(StageStyle.UTILITY);
-//        primaryStage.setResizable(false);
         showStage(primaryStage, "/view/payment.fxml");
         return primaryStage;
     }

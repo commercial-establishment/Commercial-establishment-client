@@ -163,4 +163,12 @@ public class ProductCategoryController implements Initializable {
     public void setPrice(TableColumn<ProductDto, BigDecimal> price) {
         this.price = price;
     }
+
+    public TableView<ProductDto> getCategoryProductsTable() {
+        return categoryProductsTable;
+    }
+
+    public void setCategoryProductsTable(TableView<ProductDto> categoryProductsTable) {
+        this.categoryProductsTable = categoryProductsTable;
+    }
 }

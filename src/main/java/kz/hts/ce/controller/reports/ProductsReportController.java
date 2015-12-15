@@ -7,9 +7,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import kz.hts.ce.model.dto.ProductDto;
-import kz.hts.ce.model.entity.*;
-import kz.hts.ce.service.CategoryService;
-import kz.hts.ce.service.ProductService;
+import kz.hts.ce.model.entity.Category;
+import kz.hts.ce.model.entity.WarehouseProduct;
+import kz.hts.ce.model.entity.WarehouseProductHistory;
 import kz.hts.ce.service.WarehouseProductHistoryService;
 import kz.hts.ce.service.WarehouseProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +21,14 @@ import java.time.ZoneId;
 import java.util.*;
 
 import static kz.hts.ce.util.JavaUtil.getEndOfDay;
+import static kz.hts.ce.util.WriteExcelFileExample.writeProductsToExcel;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 
 @Controller
 public class ProductsReportController {
 
+    public static final int ZERO = 0;
+    public static final int ONE = 1;
     private TreeItem<ProductDto> root = null;
     private TreeItem<ProductDto> categoryTreeItem = null;
     private TreeItem<ProductDto> productTreeItem = new TreeItem<>();
@@ -58,10 +61,6 @@ public class ProductsReportController {
     @FXML
     private TreeTableColumn<ProductDto, BigDecimal> sumCostPrice;
 
-    @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private ProductService productService;
     @Autowired
     private WarehouseProductService warehouseProductService;
     @Autowired
@@ -101,10 +100,10 @@ public class ProductsReportController {
         ProductDto rootProductDto = new ProductDto();
         rootProductDto.setName("");
         rootProductDto.setUnitSymbol("");
-        rootProductDto.setOldAmount(0);
-        rootProductDto.setResidue(0);
-        rootProductDto.setArrival(0);
-        rootProductDto.setSoldAmount(0);
+        rootProductDto.setOldAmount(ZERO);
+        rootProductDto.setResidue(ZERO);
+        rootProductDto.setArrival(ZERO);
+        rootProductDto.setSoldAmount(ZERO);
         rootProductDto.setFinalPrice(BigDecimal.ZERO);
         rootProductDto.setPrice(BigDecimal.ZERO);
         rootProductDto.setSumOfCostPrice(BigDecimal.ZERO);
@@ -116,11 +115,11 @@ public class ProductsReportController {
             List<WarehouseProduct> warehouseProductsValue = map.getValue();
             ProductDto productDtoKey = new ProductDto();
             productDtoKey.setName(categoryName);
-            productDtoKey.setAmount(0);
-            productDtoKey.setOldAmount(0);
-            productDtoKey.setResidue(0);
-            productDtoKey.setArrival(0);
-            productDtoKey.setSoldAmount(0);
+            productDtoKey.setAmount(ZERO);
+            productDtoKey.setOldAmount(ZERO);
+            productDtoKey.setResidue(ZERO);
+            productDtoKey.setArrival(ZERO);
+            productDtoKey.setSoldAmount(ZERO);
             productDtoKey.setUnitSymbol("");
             productDtoKey.setFinalPrice(BigDecimal.ZERO);
             productDtoKey.setPrice(BigDecimal.ZERO);
@@ -129,36 +128,40 @@ public class ProductsReportController {
 
             TreeItem<ProductDto> categoryItem = new TreeItem<>(productDtoKey);
             root.getChildren().add(categoryItem);
+
+            List<ProductDto> productDtos = new ArrayList<>();
             for (WarehouseProduct warehouseProduct : warehouseProductsValue) {
                 ProductDto productDtoValue = new ProductDto();
                 productDtoValue.setArrival(0);
                 productDtoValue.setId(warehouseProduct.getId());
                 productDtoValue.setName(warehouseProduct.getProduct().getName());
 
-                List<WarehouseProductHistory> startWPHistories = wphService.findPastNearestDate(startDateUtil, warehouseProduct.getProduct().getId());
-                List<WarehouseProductHistory> endWPHistories = wphService.findPastNearestDate(endDateUtil, warehouseProduct.getProduct().getId());
+                List<WarehouseProductHistory> startWPHistories = wphService.
+                        findPastNearestDate(startDateUtil, warehouseProduct.getProduct().getId());
+                List<WarehouseProductHistory> endWPHistories = wphService.
+                        findPastNearestDate(endDateUtil, warehouseProduct.getProduct().getId());
 
-                if (startWPHistories.size() != 0 && endWPHistories.size() == 0) {
-                    WarehouseProductHistory startNearestDate = startWPHistories.get(0);
+                if (startWPHistories.size() != ZERO && endWPHistories.size() == ZERO) {
+                    WarehouseProductHistory startNearestDate = startWPHistories.get(ZERO);
                     productDtoValue.setOldAmount(startNearestDate.getResidue());
-                    productDtoValue.setResidue(0);
-                } else if (startWPHistories.size() == 0 && endWPHistories.size() != 0) {
-                    WarehouseProductHistory endNearestDate = endWPHistories.get(endWPHistories.size() - 1);
-                    productDtoValue.setOldAmount(0);
+                    productDtoValue.setResidue(ZERO);
+                } else if (startWPHistories.size() == ZERO && endWPHistories.size() != ZERO) {
+                    WarehouseProductHistory endNearestDate = endWPHistories.get(endWPHistories.size() - ONE);
+                    productDtoValue.setOldAmount(ZERO);
                     productDtoValue.setResidue(endNearestDate.getResidue());
-                } else if (startWPHistories.size() != 0 && endWPHistories.size() != 0) {
-                    WarehouseProductHistory endNearestDate = endWPHistories.get(endWPHistories.size() - 1);
-                    WarehouseProductHistory startNearestDate = startWPHistories.get(0);
+                } else if (startWPHistories.size() != ZERO && endWPHistories.size() != ZERO) {
+                    WarehouseProductHistory endNearestDate = endWPHistories.get(endWPHistories.size() - ONE);
+                    WarehouseProductHistory startNearestDate = startWPHistories.get(ZERO);
                     productDtoValue.setResidue(endNearestDate.getResidue());
                     productDtoValue.setOldAmount(startNearestDate.getResidue());
                 } else {
-                    productDtoValue.setOldAmount(0);
-                    productDtoValue.setResidue(0);
+                    productDtoValue.setOldAmount(ZERO);
+                    productDtoValue.setResidue(ZERO);
                 }
 
                 List<WarehouseProductHistory> productHistories = wphService.
                         findByDateBetweenAndProductId(startDateUtil, endDateUtil, warehouseProduct.getProduct().getId());
-                productDtoValue.setArrival(0);
+                productDtoValue.setArrival(ZERO);
                 for (WarehouseProductHistory productHistory : productHistories) {
                     productDtoValue.setArrival(productDtoValue.getArrival() + productHistory.getArrival());
                 }
@@ -174,13 +177,21 @@ public class ProductsReportController {
                         .multiply(BigDecimal.valueOf(warehouseProduct.getResidue())));
 
                 TreeItem<ProductDto> productItem = new TreeItem<>(productDtoValue);
-                categoryItem.getChildren().add(productItem);
+                productDtos.add(productDtoValue);
+                if (!productHistories.isEmpty()) {
+                    categoryItem.getChildren().add(productItem);
+                }
             }
+            writeProductsToExcel(productDtos);
         }
 
         productsReport.setRoot(root);
         categoryTreeItem.setExpanded(true);
 
+        initializeTableFields();
+    }
+
+    private void initializeTableFields() {
         categoryProduct.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProductDto, String> p) ->
                 new ReadOnlyStringWrapper(p.getValue().getValue().getName()));
         residueInitial.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getOldAmount()));
