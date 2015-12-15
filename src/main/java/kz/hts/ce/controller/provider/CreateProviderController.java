@@ -72,10 +72,15 @@ public class CreateProviderController implements Initializable {
             provider.setBlocked(false);
             provider.setCity(cityService.findByName(this.cities.getEditor().getText()));
             String iin = this.iin.getText();
-            provider.setIin(Integer.parseInt(iin));
-//            if (!iin.isEmpty())
+            if (!iin.isEmpty()) {
+                int iinInt = Integer.parseInt(iin);
+                provider.setIin(iinInt);
+            }
             String bin = this.bin.getText();
-            if (!bin.isEmpty()) provider.setBin(Integer.parseInt(bin));
+            if (!bin.isEmpty()) {
+                int binInt = Integer.parseInt(bin);
+                provider.setBin(binInt);
+            }
             providerService.save(provider);
         } catch (RuntimeException e) {
             alert(Alert.AlertType.WARNING, "Поля заполнены неверно", null, "Пожалуйста, введите данные корректно.");
