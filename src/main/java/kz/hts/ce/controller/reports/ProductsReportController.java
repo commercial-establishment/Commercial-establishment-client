@@ -33,6 +33,7 @@ public class ProductsReportController {
     private TreeItem<ProductDto> categoryTreeItem = null;
     private TreeItem<ProductDto> productTreeItem = new TreeItem<>();
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
+    List<ProductDto> productDtos;
 
     @FXML
     private DatePicker startDate;
@@ -67,11 +68,12 @@ public class ProductsReportController {
     private WarehouseProductHistoryService wphService;
 
     @FXML
-    public void export() {
+    private void export() {
+        writeProductsToExcel(productDtos);
     }
 
     @FXML
-    public void showReport() {
+    private void showReport() {
         LocalDate startLocaleDate = startDate.getValue();
         LocalDate endLocaleDate = endDate.getValue();
 
@@ -129,7 +131,6 @@ public class ProductsReportController {
             TreeItem<ProductDto> categoryItem = new TreeItem<>(productDtoKey);
             root.getChildren().add(categoryItem);
 
-            List<ProductDto> productDtos = new ArrayList<>();
             for (WarehouseProduct warehouseProduct : warehouseProductsValue) {
                 ProductDto productDtoValue = new ProductDto();
                 productDtoValue.setArrival(0);
@@ -177,12 +178,12 @@ public class ProductsReportController {
                         .multiply(BigDecimal.valueOf(warehouseProduct.getResidue())));
 
                 TreeItem<ProductDto> productItem = new TreeItem<>(productDtoValue);
+                if (productDtos == null) productDtos = new ArrayList<>();
                 productDtos.add(productDtoValue);
                 if (!productHistories.isEmpty()) {
                     categoryItem.getChildren().add(productItem);
                 }
             }
-            writeProductsToExcel(productDtos);
         }
 
         productsReport.setRoot(root);
