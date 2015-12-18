@@ -30,9 +30,6 @@ public class ProductsReportController {
     public static final int ZERO = 0;
     public static final int ONE = 1;
     private TreeItem<ProductDto> root = null;
-    private TreeItem<ProductDto> categoryTreeItem = null;
-    private TreeItem<ProductDto> productTreeItem = new TreeItem<>();
-    private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
     List<ProductDto> productDtos;
 
     @FXML
@@ -84,7 +81,6 @@ public class ProductsReportController {
         Date endDateUtil = getEndOfDay(Date.from(endLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
         root = new TreeItem<>();
-        categoryTreeItem = new TreeItem<>();
         root.setExpanded(true);
         productsReport.setShowRoot(false);
         List<WarehouseProduct> warehouseProducts = warehouseProductService.findAll();
@@ -130,6 +126,7 @@ public class ProductsReportController {
 
             TreeItem<ProductDto> categoryItem = new TreeItem<>(productDtoKey);
             root.getChildren().add(categoryItem);
+            categoryItem.setExpanded(true);
 
             for (WarehouseProduct warehouseProduct : warehouseProductsValue) {
                 ProductDto productDtoValue = new ProductDto();
@@ -187,7 +184,6 @@ public class ProductsReportController {
         }
 
         productsReport.setRoot(root);
-        categoryTreeItem.setExpanded(true);
 
         initializeTableFields();
     }
