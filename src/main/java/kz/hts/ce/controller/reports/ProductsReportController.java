@@ -130,7 +130,7 @@ public class ProductsReportController {
 
             for (WarehouseProduct warehouseProduct : warehouseProductsValue) {
                 ProductDto productDtoValue = new ProductDto();
-                productDtoValue.setArrival(0);
+                productDtoValue.setArrival(ZERO);
                 productDtoValue.setId(warehouseProduct.getId());
                 productDtoValue.setName(warehouseProduct.getProduct().getName());
 

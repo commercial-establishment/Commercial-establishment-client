@@ -236,6 +236,7 @@ public class AddReceiptController implements Initializable {
                     wphCurrentVersion.setArrival(warehouseProduct.getArrival());
                     wphCurrentVersion.setResidue(warehouseProduct.getResidue());
                     wphCurrentVersion.setDate(warehouseProduct.getDate());
+                    wphCurrentVersion.setProvider(invoice.getProvider());
                     warehouseProductHistoryService.save(wphCurrentVersion);
                 } else {
                     if (warehouseProductFromDB.getVersion() != ONE) {
@@ -245,6 +246,7 @@ public class AddReceiptController implements Initializable {
                         wphPreviousVersion.setArrival(warehouseProductFromDB.getArrival());
                         wphPreviousVersion.setResidue(warehouseProductFromDB.getResidue());
                         wphPreviousVersion.setDate(warehouseProductFromDB.getDate());
+                        wphPreviousVersion.setProvider(invoice.getProvider());
                         warehouseProductHistoryService.save(wphPreviousVersion);
                     }
 
@@ -264,6 +266,7 @@ public class AddReceiptController implements Initializable {
                     wphCurrentVersion.setArrival(warehouseProduct.getArrival());
                     wphCurrentVersion.setResidue(warehouseProductFromDB.getResidue() + warehouseProduct.getResidue());
                     wphCurrentVersion.setDate(date);
+                    wphCurrentVersion.setProvider(invoice.getProvider());
                     warehouseProductHistoryService.save(wphCurrentVersion);
                 }
                 invoiceProductService.save(invoiceProduct);
