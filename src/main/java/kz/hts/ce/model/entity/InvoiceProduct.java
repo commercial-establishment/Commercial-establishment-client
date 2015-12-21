@@ -21,7 +21,6 @@ public class InvoiceProduct extends BaseEntity {
     @Column(name = "final_price")
     private BigDecimal finalPrice;
 
-    private int margin;
     private int amount;
     private int version;
 
@@ -63,14 +62,6 @@ public class InvoiceProduct extends BaseEntity {
 
     public void setFinalPrice(BigDecimal finalPrice) {
         this.finalPrice = finalPrice;
-    }
-
-    public int getMargin() {
-        return margin;
-    }
-
-    public void setMargin(int margin) {
-        this.margin = margin;
     }
 
     public int getVersion() {

@@ -19,14 +19,14 @@ public class Invoice extends BaseEntity {
     @JoinColumn(name = "provider_id", nullable = false)
     private Provider provider;
 
-    private int postponement;
-    private boolean vat;
-
     @ManyToOne
     @JoinColumn(name = "warehouse_id", nullable = false)
     private Warehouse warehouse;
 
     private int margin;
+    private int postponement;
+    private boolean vat;
+    private int version;
 
     public int getMargin() {
         return margin;
@@ -34,6 +34,30 @@ public class Invoice extends BaseEntity {
 
     public void setMargin(int margin) {
         this.margin = margin;
+    }
+
+    public int getPostponement() {
+        return postponement;
+    }
+
+    public void setPostponement(int postponement) {
+        this.postponement = postponement;
+    }
+
+    public boolean isVat() {
+        return vat;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public void setVat(boolean vat) {
+        this.vat = vat;
     }
 
     public Date getDate() {
@@ -50,22 +74,6 @@ public class Invoice extends BaseEntity {
 
     public void setProvider(Provider provider) {
         this.provider = provider;
-    }
-
-    public int getPostponement() {
-        return postponement;
-    }
-
-    public void setPostponement(int postponement) {
-        this.postponement = postponement;
-    }
-
-    public boolean isVat() {
-        return vat;
-    }
-
-    public void setVat(boolean vat) {
-        this.vat = vat;
     }
 
     public Warehouse getWarehouse() {

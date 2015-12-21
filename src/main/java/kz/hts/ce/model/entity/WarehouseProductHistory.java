@@ -3,6 +3,7 @@ package kz.hts.ce.model.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -20,6 +21,12 @@ public class WarehouseProductHistory extends BaseEntity {
     @Column(name = "date", nullable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date date;
+
+    @Column(name = "initial_price")
+    private BigDecimal initialPrice;
+
+    @Column(name = "final_price")
+    private BigDecimal finalPrice;
 
     private int arrival;
     private int version;
@@ -39,6 +46,22 @@ public class WarehouseProductHistory extends BaseEntity {
 
     public void setDate(Date saleDate) {
         this.date = saleDate;
+    }
+
+    public BigDecimal getInitialPrice() {
+        return initialPrice;
+    }
+
+    public void setInitialPrice(BigDecimal initialPrice) {
+        this.initialPrice = initialPrice;
+    }
+
+    public BigDecimal getFinalPrice() {
+        return finalPrice;
+    }
+
+    public void setFinalPrice(BigDecimal finalPrice) {
+        this.finalPrice = finalPrice;
     }
 
     public int getArrival() {

@@ -24,12 +24,7 @@ public class WarehouseProduct extends BaseEntity {
     @Column(name = "final_price")
     private BigDecimal finalPrice;
 
-    @Column(name = "date", nullable = false)
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private Date date;
-
     private int version;
-    private int arrival;
     private int residue;
 
     private int margin;
@@ -67,14 +62,6 @@ public class WarehouseProduct extends BaseEntity {
         this.version = version;
     }
 
-    public int getArrival() {
-        return arrival;
-    }
-
-    public void setArrival(int arrival) {
-        this.arrival = arrival;
-    }
-
     public int getResidue() {
         return residue;
     }
@@ -105,13 +92,5 @@ public class WarehouseProduct extends BaseEntity {
 
     public void setFinalPrice(BigDecimal finalPrice) {
         this.finalPrice = finalPrice;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 }
