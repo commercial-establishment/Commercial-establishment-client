@@ -12,10 +12,10 @@ public class WarehouseProductHistory extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "warehouse_product_id", nullable = false)
     private WarehouseProduct warehouseProduct;
-
-    @ManyToOne
-    @JoinColumn(name = "provider_id", nullable = false)
-    private Provider provider;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "provider_id", nullable = true)
+//    private Provider provider;
 
     @Column(name = "date", nullable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
@@ -64,12 +64,12 @@ public class WarehouseProductHistory extends BaseEntity {
     public void setResidue(int residue) {
         this.residue = residue;
     }
-
-    public Provider getProvider() {
-        return provider;
-    }
-
-    public void setProvider(Provider provider) {
-        this.provider = provider;
-    }
+//
+//    public Provider getProvider() {
+//        return provider;
+//    }
+//
+//    public void setProvider(Provider provider) {
+//        this.provider = provider;
+//    }
 }

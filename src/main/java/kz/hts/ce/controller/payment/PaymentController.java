@@ -97,6 +97,7 @@ public class PaymentController implements Initializable {
                     wphCurrentVersion.setVersion(warehouseProduct.getVersion());
                     wphCurrentVersion.setDate(newDate);
                     wphCurrentVersion.setResidue(warehouseProduct.getResidue());
+//                    wphCurrentVersion.setProvider(null);
                     warehouseProductHistoryService.save(wphCurrentVersion);
                 }
                 alert(Alert.AlertType.INFORMATION, "Товар успешно продан", null, "Сдача: " + change.getText() + " тенге");

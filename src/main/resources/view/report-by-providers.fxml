@@ -35,17 +35,17 @@
                       <TreeTableColumn prefWidth="70.0" text="Начало" />
                       <TreeTableColumn prefWidth="70.0" text="Конец " />
                </columns></TreeTableColumn>
-                <TreeTableColumn prefWidth="63.0" text="Реали-&#10;зовано" />
+                <TreeTableColumn fx:id="sold" prefWidth="63.0" text="Реали-&#10;зовано" />
             <TreeTableColumn prefWidth="81.0" text="Себестоимость">
                <columns>
-                  <TreeTableColumn  prefWidth="98.0" text="Цена" />
-                  <TreeTableColumn  prefWidth="64.0" text="Сумма" />
+                  <TreeTableColumn fx:id="initialPrice" prefWidth="98.0" text="Цена" />
+                  <TreeTableColumn fx:id="sumInitialPrice" prefWidth="64.0" text="Сумма" />
                </columns>
             </TreeTableColumn>
-            <TreeTableColumn  prefWidth="81.0" text="Продажи">
+            <TreeTableColumn prefWidth="81.0" text="Продажи">
                <columns>
-                  <TreeTableColumn  prefWidth="81.0" text="Цена" />
-                  <TreeTableColumn  prefWidth="81.0" text="Сумма" />
+                  <TreeTableColumn fx:id="finalPrice" prefWidth="81.0" text="Цена" />
+                  <TreeTableColumn fx:id="sumFinalPrice" prefWidth="81.0" text="Сумма" />
                </columns>
             </TreeTableColumn>
             </columns>

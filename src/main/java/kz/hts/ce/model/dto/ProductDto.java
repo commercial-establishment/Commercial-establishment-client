@@ -250,7 +250,7 @@ public class ProductDto {
     }
 
     public void setArrival(int arrival) {
-        if (this.arrival == null) this.arrival = new SimpleIntegerProperty();
+            if (this.arrival == null) this.arrival = new SimpleIntegerProperty();
         this.arrival.set(arrival);
     }
 

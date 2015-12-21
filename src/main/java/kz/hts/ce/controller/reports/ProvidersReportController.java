@@ -43,7 +43,16 @@ public class ProvidersReportController {
     private TreeTableColumn<ProductDto, String> unitOfMeasure;
     @FXML
     private TreeTableColumn<ProductDto, Number> arrival;
-
+    @FXML
+    private TreeTableColumn<ProductDto, Number> sold;
+    @FXML
+    private TreeTableColumn<ProductDto, BigDecimal> initialPrice;
+    @FXML
+    private TreeTableColumn<ProductDto, BigDecimal> sumInitialPrice;
+    @FXML
+    private TreeTableColumn<ProductDto, BigDecimal> finalPrice;
+    @FXML
+    private TreeTableColumn<ProductDto, BigDecimal> sumFinalPrice;
     @Autowired
     private ProductProviderService productProviderService;
     @Autowired
@@ -83,6 +92,8 @@ public class ProvidersReportController {
         rootProductDto.setName("");
         rootProductDto.setUnitSymbol("");
         rootProductDto.setArrival(ZERO);
+        rootProductDto.setSoldAmount(ZERO);
+        rootProductDto.setPrice(BigDecimal.ZERO);
         root.setValue(rootProductDto);
 
         for (Map.Entry<String, List<ProductProvider>> map : providerProductMap.entrySet()) {
@@ -92,6 +103,9 @@ public class ProvidersReportController {
             productDtoKey.setName(providersName);
             productDtoKey.setUnitSymbol("");
             productDtoKey.setArrival(ZERO);
+            productDtoKey.setSoldAmount(ZERO);
+            productDtoKey.setPrice(BigDecimal.ZERO);
+            ;
             TreeItem<ProductDto> providerItem = new TreeItem<>(productDtoKey);
             root.getChildren().add(providerItem);
             providerItem.setExpanded(true);
@@ -100,15 +114,21 @@ public class ProvidersReportController {
                 ProductDto productDtoValue = new ProductDto();
                 productDtoValue.setName(productProvider.getProduct().getName());
                 productDtoValue.setUnitSymbol(productProvider.getProduct().getUnit().getSymbol());
-                List<WarehouseProductHistory> productHistories =  wphService.findByDateBetweenAndProductId(
+                List<WarehouseProductHistory> productHistories = wphService.findByDateBetweenAndProductId(
                         startDateUtil, endDateUtil, productProvider.getProduct().getId());
-                WarehouseProduct byProductId = wpService
-                        .findByProductId(productProvider.getProduct().getId());
-                for (WarehouseProductHistory productHistory : productHistories) {
-                    productDtoValue.setArrival(byProductId.getArrival() + productHistory.getArrival());
+                productDtoValue.setArrival(ZERO);
+                productDtoValue.setSoldAmount(ZERO);
+                WarehouseProduct warehouseProduct = wpService.findByProductBarcode(productProvider.getProduct().getBarcode());
+                if (warehouseProduct != null) {
+                    for (WarehouseProductHistory productHistory : productHistories) {
+                        productDtoValue.setArrival(productDtoValue.getArrival() + productHistory.getArrival());
+                        productDtoValue.setSoldAmount(productDtoValue.getArrival() - warehouseProduct.getResidue());
+                    }
+                    productDtoValue.setPrice(warehouseProduct.getInitialPrice());
+
+                    TreeItem<ProductDto> productItem = new TreeItem<>(productDtoValue);
+                    providerItem.getChildren().add(productItem);
                 }
-                TreeItem<ProductDto> productItem = new TreeItem<>(productDtoValue);
-                providerItem.getChildren().add(productItem);
             }
         }
         providersReport.setRoot(root);
@@ -116,12 +136,14 @@ public class ProvidersReportController {
 
         initializeTableFields();
     }
-    public void initializeTableFields(){
-        providerProduct.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProductDto, String> p)->
+
+    public void initializeTableFields() {
+        providerProduct.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProductDto, String> p) ->
                 new ReadOnlyStringWrapper(p.getValue().getValue().getName()));
         unitOfMeasure.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProductDto, String> p) ->
                 new ReadOnlyStringWrapper(p.getValue().getValue().getUnitSymbol()));
         arrival.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getArrival()));
-
+        sold.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSoldAmount()));
+        initialPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getPrice()));
     }
 }

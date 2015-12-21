@@ -316,7 +316,7 @@ public class EditReceiptController implements Initializable {
                                 warehouseProductHistory.setResidue(warehouseProduct.getResidue());
                                 warehouseProductHistory.setDate(date);
                                 warehouseProductHistory.setVersion(warehouseProduct.getVersion());
-                                warehouseProductHistory.setProvider(invoice.getProvider());
+//                                warehouseProductHistory.setProvider(invoice.getProvider());
                                 wphService.save(warehouseProductHistory);
                             }
 
@@ -383,7 +383,7 @@ public class EditReceiptController implements Initializable {
                             wphCurrentVersion.setArrival(warehouseProduct.getArrival());
                             wphCurrentVersion.setResidue(warehouseProduct.getResidue());
                             wphCurrentVersion.setDate(warehouseProduct.getDate());
-                            wphCurrentVersion.setProvider(invoice.getProvider());
+//                            wphCurrentVersion.setProvider(invoice.getProvider());
                             wphService.save(wphCurrentVersion);
                         } else {
                             if (warehouseProductFromDB.getVersion() != ONE) {
@@ -391,8 +391,8 @@ public class EditReceiptController implements Initializable {
                                 wphPreviousVersion.setWarehouseProduct(warehouseProductFromDB);
                                 wphPreviousVersion.setArrival(warehouseProductFromDB.getArrival());
                                 wphPreviousVersion.setResidue(warehouseProductFromDB.getResidue());
-                                wphPreviousVersion.setDate(warehouseProductFromDB.getDate());
-                                wphPreviousVersion.setProvider(invoice.getProvider());
+                                wphPreviousVersion.setDate(new Date());
+//                                wphPreviousVersion.setProvider(invoice.getProvider());
 
                                 wphService.save(wphPreviousVersion);
                             }
@@ -412,8 +412,8 @@ public class EditReceiptController implements Initializable {
                             wphCurrentVersion.setVersion(warehouseProductFromDB.getVersion() + ONE);
                             wphCurrentVersion.setArrival(warehouseProduct.getArrival());
                             wphCurrentVersion.setResidue(warehouseProductFromDB.getResidue() + warehouseProduct.getResidue());
-                            wphCurrentVersion.setDate(date);
-                            wphCurrentVersion.setProvider(invoice.getProvider());
+                            wphCurrentVersion.setDate(new Date());
+//                            wphCurrentVersion.setProvider(invoice.getProvider());
                         }
                         invoiceProductService.save(invoiceProduct);
                     }
@@ -434,8 +434,8 @@ public class EditReceiptController implements Initializable {
                                 warehouseProductHistory.setVersion(warehouseProduct.getVersion());
                                 warehouseProductHistory.setArrival(warehouseProduct.getArrival());
                                 warehouseProductHistory.setResidue(warehouseProduct.getResidue());
-                                warehouseProductHistory.setDate(date);
-                                warehouseProductHistory.setProvider(invoice.getProvider());
+                                warehouseProductHistory.setDate(new Date());
+//                                warehouseProductHistory.setProvider(invoice.getProvider());
                                 wphService.save(warehouseProductHistory);
 
                                 warehouseProduct.setVersion(warehouseProduct.getVersion() + ONE);

@@ -8,3 +8,11 @@
 + открытие, закрытие смен
 - при закрытии смены подчищать categoryProductTable в main странице
 - экспорт отчетов в EXCEL
+
+-изменить таблицу WarehouseProduct
+-изменить таблицу WPHistory
+-изменить таблицу InvoiceProduct
+-изменить таблицу InvoiceProductHistory
+-изменить таблицу Invoice
+-изменить таблицу InvoiceHistory
+-сделать связку ProductProvider
