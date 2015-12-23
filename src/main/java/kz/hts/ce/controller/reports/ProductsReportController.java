@@ -164,7 +164,7 @@ public class ProductsReportController {
                 }
 
                 List<WarehouseProductHistory> productHistories = wphService.
-                        findByDateBetweenAndProductId(startDateUtil, endDateUtil, warehouseProduct.getProduct().getId());
+                        findByDateBetweenAndProductId(getStartOfDay(startDateUtil), endDateUtil, warehouseProduct.getProduct().getId());
 //                List<InvoiceProduct> invoiceProducts = invoiceProductService.
 //                        findByInvoiceDateBetweenAndProductBarcode(startDateUtil, endDateUtil, warehouseProduct.getProduct().getBarcode());
                 productDtoValue.setArrival(ZERO);
@@ -188,9 +188,9 @@ public class ProductsReportController {
                 TreeItem<ProductDto> productItem = new TreeItem<>(productDtoValue);
                 if (productDtos == null) productDtos = new ArrayList<>();
                 productDtos.add(productDtoValue);
-                if (!productHistories.isEmpty()) {
+//                if (!productHistories.isEmpty()) {
                     categoryItem.getChildren().add(productItem);
-                }
+//                }
             }
         }
 
