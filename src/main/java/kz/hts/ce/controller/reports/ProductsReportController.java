@@ -78,7 +78,7 @@ public class ProductsReportController {
         if (startLocaleDate == null || endLocaleDate == null) {
             alert(Alert.AlertType.WARNING, "Ошибка периода", null, "Пожалуйста укажите период");
         }
-        Date startDateUtil = getStartOfDay(Date.from(startLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        Date startDateUtil = Date.from(startLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date endDateUtil = getEndOfDay(Date.from(endLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
         root = new TreeItem<>();
@@ -136,7 +136,7 @@ public class ProductsReportController {
                 productDtoValue.setName(warehouseProduct.getProduct().getName());
 
                 List<WarehouseProductHistory> startWPHistories = wphService.
-                        findPastNearestDate(startDateUtil, warehouseProduct.getProduct().getId());
+                        findPastNearestDate(getStartOfDay(startDateUtil), warehouseProduct.getProduct().getId());
                 List<WarehouseProductHistory> endWPHistories = wphService.
                         findPastNearestDate(endDateUtil, warehouseProduct.getProduct().getId());
 
