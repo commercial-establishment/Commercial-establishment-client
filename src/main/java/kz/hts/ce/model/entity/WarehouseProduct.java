@@ -26,6 +26,7 @@ public class WarehouseProduct extends BaseEntity {
 
     private int version;
     private int residue;
+    private int dropped;
 
     private int margin;
     private boolean vat;
@@ -76,6 +77,14 @@ public class WarehouseProduct extends BaseEntity {
 
     public void setMargin(int margin) {
         this.margin = margin;
+    }
+
+    public int getDropped() {
+        return dropped;
+    }
+
+    public void setDropped(int dropped) {
+        this.dropped = dropped;
     }
 
     public boolean isVat() {
