@@ -79,14 +79,6 @@ public class WarehouseProduct extends BaseEntity {
         this.margin = margin;
     }
 
-    public int getDropped() {
-        return dropped;
-    }
-
-    public void setDropped(int dropped) {
-        this.dropped = dropped;
-    }
-
     public boolean isVat() {
         return vat;
     }
@@ -101,5 +93,13 @@ public class WarehouseProduct extends BaseEntity {
 
     public void setFinalPrice(BigDecimal finalPrice) {
         this.finalPrice = finalPrice;
+    }
+
+    public int getDropped() {
+        return dropped;
+    }
+
+    public void setDropped(int dropped) {
+        this.dropped = dropped;
     }
 }

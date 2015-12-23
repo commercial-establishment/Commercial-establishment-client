@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -16,8 +17,16 @@ public class InvoiceProductService extends BaseService<InvoiceProduct, InvoicePr
         super(repository);
     }
 
+    public List<InvoiceProduct> findByInvoiceDateBetweenAndProductBarcode(Date start, Date end, String barcode){
+        return repository.findByInvoice_DateBetweenAndProduct_Barcode(start, end, barcode);
+    }
+
     public List<InvoiceProduct> findByInvoiceId(long invoiceId) {
         return repository.findByInvoice_Id(invoiceId);
+    }
+
+    public List<InvoiceProduct> findByProductBarcode(String barcode) {
+        return repository.findByProduct_Barcode(barcode);
     }
 
     public void updatePriceById(BigDecimal price, long id){

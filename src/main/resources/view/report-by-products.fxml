@@ -47,7 +47,8 @@
                   <TreeTableColumn fx:id="sumShopPrice" prefWidth="95.0" text="Сумма" />
                </columns>
             </TreeTableColumn>
-            <TreeTableColumn fx:id="sold" minWidth="-1.0" prefWidth="58.0" text="Продано" />
+            <TreeTableColumn fx:id="sold" minWidth="-1.0" prefWidth="34.0" text="Про&#10;дано" />
+            <TreeTableColumn fx:id="dropped" minWidth="-1.0" prefWidth="28.0" text="У" />
             </columns>
         </TreeTableView>
         <Button id="export" fx:id="export" layoutX="763.0" layoutY="58.0" mnemonicParsing="false" onAction="#export" prefHeight="30.0" prefWidth="44.0" stylesheets="@../style.css">

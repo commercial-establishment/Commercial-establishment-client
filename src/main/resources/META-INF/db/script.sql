@@ -31,12 +31,12 @@ INSERT INTO shop (id, address, is_blocked, name, city_id, type_id, IIN) VALUES (
 
 INSERT INTO WAREHOUSE (id, shop_id) VALUES (1, 1);
 
-INSERT INTO warehouse_product (ID, RESIDUE, PRODUCT_ID, WAREHOUSE_ID, VERSION, INITIAL_PRICE, FINAL_PRICE, VAT, MARGIN)
-VALUES (1, 50, 1, 1, 1, 220, 220, TRUE, 20);
-INSERT INTO warehouse_product (ID, RESIDUE, PRODUCT_ID, WAREHOUSE_ID, VERSION, INITIAL_PRICE, FINAL_PRICE, VAT, MARGIN)
-VALUES (3, 25, 3, 1, 1, 220, 220, TRUE, 20);
-INSERT INTO warehouse_product (ID, RESIDUE, PRODUCT_ID, WAREHOUSE_ID, VERSION, INITIAL_PRICE, FINAL_PRICE, VAT, MARGIN)
-VALUES (2, 50, 2, 1, 1, 170, 220, TRUE, 20);
+-- INSERT INTO warehouse_product (ID, RESIDUE, PRODUCT_ID, WAREHOUSE_ID, VERSION, INITIAL_PRICE, FINAL_PRICE, VAT, MARGIN)
+-- VALUES (1, 50, 1, 1, 1, 220, 220, TRUE, 20);
+-- INSERT INTO warehouse_product (ID, RESIDUE, PRODUCT_ID, WAREHOUSE_ID, VERSION, INITIAL_PRICE, FINAL_PRICE, VAT, MARGIN)
+-- VALUES (3, 25, 3, 1, 1, 220, 220, TRUE, 20);
+-- INSERT INTO warehouse_product (ID, RESIDUE, PRODUCT_ID, WAREHOUSE_ID, VERSION, INITIAL_PRICE, FINAL_PRICE, VAT, MARGIN)
+-- VALUES (2, 50, 2, 1, 1, 170, 220, TRUE, 20);
 
 INSERT INTO provider (id, address, is_blocked, company_name, contact_person, email, end_work_date, password, start_work_date, username, city_id, role_id, iin, bin)
 VALUES (1, 'ул. Ташенова 5/2', FALSE, 'COMPANY NAME', 'PERSON NAME', 'yakov@gmail.com', NULL,

@@ -89,7 +89,6 @@ public class PaymentController implements Initializable {
                     warehouseProduct.setResidue(residue - productAmount);
 
                     warehouseProduct.setVersion(warehouseProduct.getVersion() + 1);
-//                    warehouseProduct.setArrival(0);
                     warehouseProductService.save(warehouseProduct);
 
                     WarehouseProductHistory wphCurrentVersion = new WarehouseProductHistory();
@@ -97,7 +96,6 @@ public class PaymentController implements Initializable {
                     wphCurrentVersion.setVersion(warehouseProduct.getVersion());
                     wphCurrentVersion.setDate(newDate);
                     wphCurrentVersion.setResidue(warehouseProduct.getResidue());
-//                    wphCurrentVersion.setProvider(null);
                     warehouseProductHistoryService.save(wphCurrentVersion);
                 }
                 alert(Alert.AlertType.INFORMATION, "Товар успешно продан", null, "Сдача: " + change.getText() + " тенге");

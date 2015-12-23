@@ -2,14 +2,14 @@ package kz.hts.ce.controller.reports;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Category;
+import kz.hts.ce.model.entity.InvoiceProduct;
 import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.model.entity.WarehouseProductHistory;
+import kz.hts.ce.service.InvoiceProductService;
 import kz.hts.ce.service.WarehouseProductHistoryService;
 import kz.hts.ce.service.WarehouseProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +30,8 @@ public class ProductsReportController {
 
     public static final int ZERO = 0;
     public static final int ONE = 1;
-    private TreeItem<ProductDto> root = null;
     List<ProductDto> productDtos;
-
+    private TreeItem<ProductDto> root = null;
     @FXML
     private DatePicker startDate;
     @FXML
@@ -59,11 +58,15 @@ public class ProductsReportController {
     private TreeTableColumn<ProductDto, BigDecimal> sumShopPrice;
     @FXML
     private TreeTableColumn<ProductDto, BigDecimal> sumCostPrice;
+    @FXML
+    private TreeTableColumn<ProductDto, Number> dropped;
 
     @Autowired
     private WarehouseProductService warehouseProductService;
     @Autowired
     private WarehouseProductHistoryService wphService;
+    @Autowired
+    private InvoiceProductService invoiceProductService;
 
     @FXML
     private void export() {
@@ -103,6 +106,7 @@ public class ProductsReportController {
         rootProductDto.setResidue(ZERO);
         rootProductDto.setArrival(ZERO);
         rootProductDto.setSoldAmount(ZERO);
+        rootProductDto.setDropped(ZERO);
         rootProductDto.setFinalPrice(BigDecimal.ZERO);
         rootProductDto.setPrice(BigDecimal.ZERO);
         rootProductDto.setSumOfCostPrice(BigDecimal.ZERO);
@@ -119,6 +123,7 @@ public class ProductsReportController {
             productDtoKey.setResidue(ZERO);
             productDtoKey.setArrival(ZERO);
             productDtoKey.setSoldAmount(ZERO);
+            productDtoKey.setDropped(ZERO);
             productDtoKey.setUnitSymbol("");
             productDtoKey.setFinalPrice(BigDecimal.ZERO);
             productDtoKey.setPrice(BigDecimal.ZERO);
@@ -160,11 +165,16 @@ public class ProductsReportController {
 
                 List<WarehouseProductHistory> productHistories = wphService.
                         findByDateBetweenAndProductId(startDateUtil, endDateUtil, warehouseProduct.getProduct().getId());
+//                List<InvoiceProduct> invoiceProducts = invoiceProductService.
+//                        findByInvoiceDateBetweenAndProductBarcode(startDateUtil, endDateUtil, warehouseProduct.getProduct().getBarcode());
                 productDtoValue.setArrival(ZERO);
+                productDtoValue.setDropped(ZERO);
                 for (WarehouseProductHistory productHistory : productHistories) {
                     productDtoValue.setArrival(productDtoValue.getArrival() + productHistory.getArrival());
                 }
-
+//                for (InvoiceProduct invoiceProduct : invoiceProducts) {
+//                    productDtoValue.setSoldAmount(invoiceProduct.getAmount() - productDtoValue.getResidue());
+//                }
                 productDtoValue.setSoldAmount(productDtoValue.getOldAmount() + productDtoValue.getArrival()
                         - productDtoValue.getResidue());
                 productDtoValue.setUnitSymbol(warehouseProduct.getProduct().getUnit().getSymbol());
@@ -202,5 +212,6 @@ public class ProductsReportController {
         sumShopPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSumOfShopPrice()));
         arrival.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getArrival()));
         sold.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSoldAmount()));
+        dropped.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getDropped()));
     }
 }

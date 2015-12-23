@@ -26,6 +26,7 @@ public class ProductDto {
     private StringProperty categoryName;
     private IntegerProperty arrival;
     private IntegerProperty soldAmount;
+    private IntegerProperty dropped;
 
     public long getId() {
         return id.get();
@@ -265,5 +266,18 @@ public class ProductDto {
     public void setSoldAmount(int soldAmount) {
         if (this.soldAmount == null) this.soldAmount = new SimpleIntegerProperty();
         this.soldAmount.set(soldAmount);
+    }
+
+    public int getDropped() {
+        return dropped.get();
+    }
+
+    public IntegerProperty droppedProperty() {
+        return dropped;
+    }
+
+    public void setDropped(int dropped) {
+        if (this.dropped == null) this.dropped = new SimpleIntegerProperty();
+        this.dropped.set(dropped);
     }
 }

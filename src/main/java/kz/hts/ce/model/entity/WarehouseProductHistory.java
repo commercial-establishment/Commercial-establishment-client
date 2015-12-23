@@ -33,6 +33,14 @@ public class WarehouseProductHistory extends BaseEntity {
     private int residue;
     private int dropped;
 
+    public int getDropped() {
+        return dropped;
+    }
+
+    public void setDropped(int dropped) {
+        this.dropped = dropped;
+    }
+
     public WarehouseProduct getWarehouseProduct() {
         return warehouseProduct;
     }
@@ -89,11 +97,4 @@ public class WarehouseProductHistory extends BaseEntity {
         this.residue = residue;
     }
 
-    public int getDropped() {
-        return dropped;
-    }
-
-    public void setDropped(int dropped) {
-        this.dropped = dropped;
-    }
 }
