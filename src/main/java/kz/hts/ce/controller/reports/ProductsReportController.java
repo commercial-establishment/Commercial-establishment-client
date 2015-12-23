@@ -21,6 +21,7 @@ import java.time.ZoneId;
 import java.util.*;
 
 import static kz.hts.ce.util.JavaUtil.getEndOfDay;
+import static kz.hts.ce.util.JavaUtil.getStartOfDay;
 import static kz.hts.ce.util.WriteExcelFileExample.writeProductsToExcel;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 
@@ -77,7 +78,7 @@ public class ProductsReportController {
         if (startLocaleDate == null || endLocaleDate == null) {
             alert(Alert.AlertType.WARNING, "Ошибка периода", null, "Пожалуйста укажите период");
         }
-        Date startDateUtil = Date.from(startLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date startDateUtil = getStartOfDay(Date.from(startLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
         Date endDateUtil = getEndOfDay(Date.from(endLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
         root = new TreeItem<>();

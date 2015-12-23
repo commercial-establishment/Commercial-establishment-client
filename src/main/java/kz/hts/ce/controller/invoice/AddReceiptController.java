@@ -91,6 +91,8 @@ public class AddReceiptController implements Initializable {
     @Autowired
     private InvoiceService invoiceService;
     @Autowired
+    private InvoiceHistoryService invoiceHistoryService;
+    @Autowired
     private ProviderService providerService;
     @Autowired
     private WarehouseProductService warehouseProductService;
@@ -98,6 +100,8 @@ public class AddReceiptController implements Initializable {
     private WarehouseService warehouseService;
     @Autowired
     private InvoiceProductService invoiceProductService;
+    @Autowired
+    private InvoiceProductHistoryService iphService;
     @Autowired
     private WarehouseProductHistoryService warehouseProductHistoryService;
 
@@ -179,6 +183,15 @@ public class AddReceiptController implements Initializable {
             invoice.setVersion(ONE);
             Invoice savedInvoice = invoiceService.save(invoice);
 
+            InvoiceHistory invoiceHistory = new InvoiceHistory();
+            invoiceHistory.setInvoice(invoice);
+            invoiceHistory.setDate(invoice.getDate());
+            invoiceHistory.setMargin(invoice.getMargin());
+            invoiceHistory.setVat(invoice.isVat());
+            invoiceHistory.setPostponement(invoice.getPostponement());
+            invoiceHistory.setVersion(invoice.getVersion());
+            invoiceHistoryService.save(invoiceHistory);
+
             String marginPercentage = String.valueOf((Double.valueOf(margin) / 100) + ONE);
             BigDecimal priceWithMargin = new BigDecimal(marginPercentage);
 
@@ -248,12 +261,12 @@ public class AddReceiptController implements Initializable {
                     if (warehouseProductFromDB.getVersion() != ONE) {
                         WarehouseProductHistory wphPreviousVersion = new WarehouseProductHistory();
                         wphPreviousVersion.setWarehouseProduct(warehouseProductFromDB);
-                        wphPreviousVersion.setDate(new Date());
+                        wphPreviousVersion.setDate(date);
                         wphPreviousVersion.setVersion(warehouseProductFromDB.getVersion());
                         wphPreviousVersion.setArrival(productDto.getAmount());
                         wphPreviousVersion.setResidue(warehouseProductFromDB.getResidue());
                         wphPreviousVersion.setInitialPrice(warehouseProductFromDB.getInitialPrice());
-                        warehouseProductFromDB.setFinalPrice(warehouseProductFromDB.getFinalPrice());
+                        wphPreviousVersion.setFinalPrice(warehouseProductFromDB.getFinalPrice());
 //                        wphPreviousVersion.setArrival(warehouseProductFromDB.getArrival());
 //                        wphPreviousVersion.setDate(warehouseProductFromDB.getDate());
 //                        wphPreviousVersion.setProvider(invoice.getProvider());

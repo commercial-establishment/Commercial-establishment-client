@@ -89,7 +89,7 @@ public class PaymentController implements Initializable {
                     warehouseProduct.setResidue(residue - productAmount);
 
                     warehouseProduct.setVersion(warehouseProduct.getVersion() + 1);
-                    warehouseProduct.setArrival(0);
+//                    warehouseProduct.setArrival(0);
                     warehouseProductService.save(warehouseProduct);
 
                     WarehouseProductHistory wphCurrentVersion = new WarehouseProductHistory();

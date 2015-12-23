@@ -10,6 +10,10 @@ import java.util.Date;
 @Table(name = "invoice_product_history")
 public class InvoiceProductHistory extends BaseEntity {
 
+    @ManyToOne
+    @JoinColumn(name = "invoice_product_id", nullable = false)
+    private InvoiceProduct invoiceProduct;
+
     @Column(nullable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date date;
@@ -25,6 +29,14 @@ public class InvoiceProductHistory extends BaseEntity {
 
     private int amount;
     private int version;
+
+    public InvoiceProduct getInvoiceProduct() {
+        return invoiceProduct;
+    }
+
+    public void setInvoiceProduct(InvoiceProduct invoiceProduct) {
+        this.invoiceProduct = invoiceProduct;
+    }
 
     public Date getDate() {
         return date;

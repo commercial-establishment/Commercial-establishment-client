@@ -2,14 +2,16 @@ package kz.hts.ce.model.entity;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "invoice_history")
-public class InvoiceHistory extends BaseEntity{
+public class InvoiceHistory extends BaseEntity {
+
+    @ManyToOne
+    @JoinColumn(name = "invoice_id", nullable = false)
+    private Invoice invoice;
 
     @Column(nullable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
@@ -19,6 +21,14 @@ public class InvoiceHistory extends BaseEntity{
     private boolean vat;
     private int margin;
     private int version;
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
 
     public Date getDate() {
         return date;
