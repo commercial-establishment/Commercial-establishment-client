@@ -9,7 +9,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.controller.ControllerException;
+import kz.hts.ce.controller.MainController;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.*;
 import kz.hts.ce.service.*;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
@@ -30,6 +33,7 @@ import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromProduct;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
+import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
 public class ReceiptController implements Initializable {
@@ -123,7 +127,8 @@ public class ReceiptController implements Initializable {
     private WarehouseProductHistoryService warehouseProductHistoryService;
 
     @Autowired
-    private ReceiptPageController receiptPageController;
+    private MainController mainController;
+
 
     @Autowired
     private SpringUtil springUtil;
@@ -394,7 +399,7 @@ public class ReceiptController implements Initializable {
                     invoiceProductService.save(invoiceProduct);
                 }
 
-                receiptPageController.showReceiptsPage();
+                showReceiptsPage();
             } catch (ControllerException e) {
                 alert(Alert.AlertType.ERROR, "Внутренная ошибка", null, "Пожалуйста, проверьте корректность введённых данных");
             }
@@ -575,7 +580,7 @@ public class ReceiptController implements Initializable {
                     alert(Alert.AlertType.WARNING, "Список товаров пуст", null, "Извините, " +
                             "но вы не можете сохранить изменения пока не добавите хотя бы один товар.");
                 }
-                receiptPageController.showReceiptsPage();
+                showReceiptsPage();
             } catch (ControllerException e) {
                 alert(Alert.AlertType.ERROR, "Внутренная ошибка", null, "Пожалуйста, проверьте корректность введённых данных");
             }
@@ -653,5 +658,14 @@ public class ReceiptController implements Initializable {
             this.price.setText(String.valueOf(ZERO));
         } else
             alert(Alert.AlertType.WARNING, "Ошибка добавления", null, "Пожалуйста, заполните все поля правильно.");
+    }
+
+    public void showReceiptsPage() {
+        PagesConfiguration screens = getPagesConfiguration();
+        try {
+            mainController.getContentContainer().getChildren().setAll(screens.receipts());
+        } catch (IOException e) {
+            throw new ControllerException(e);
+        }
     }
 }
