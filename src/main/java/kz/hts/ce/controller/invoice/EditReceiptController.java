@@ -29,7 +29,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaUtil.createProductDtoFromProduct;
-import static kz.hts.ce.util.JavaUtil.getStartOfDay;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 
 @Controller
@@ -266,7 +265,7 @@ public class EditReceiptController implements Initializable {
     private void updateInvoice() {
         try {
             LocalDate localDate = this.date.getValue();
-            Date date = getStartOfDay(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             if (productsData.size() != ZERO) {
                 Employee employee = springUtil.getEmployee();
                 long shopId = employee.getShop().getId();
