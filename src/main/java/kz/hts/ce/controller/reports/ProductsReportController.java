@@ -187,7 +187,6 @@ public class ProductsReportController {
         }
 
         productsReport.setRoot(root);
-
         initializeTableFields();
     }
 

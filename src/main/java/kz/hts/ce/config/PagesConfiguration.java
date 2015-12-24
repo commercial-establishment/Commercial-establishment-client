@@ -5,8 +5,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import kz.hts.ce.controller.*;
-import kz.hts.ce.controller.invoice.AddReceiptController;
-import kz.hts.ce.controller.invoice.EditReceiptController;
+import kz.hts.ce.controller.invoice.ReceiptController;
 import kz.hts.ce.controller.invoice.ReceiptsController;
 import kz.hts.ce.controller.payment.PaymentController;
 import kz.hts.ce.controller.products.EditProductController;
@@ -84,16 +83,9 @@ public class PagesConfiguration {
 
     @Bean
     @Scope("prototype")
-    public Node addReceipt() throws IOException {
+    public Node receipt() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
-        return (Node) springFxmlLoader.load("/view/receipt-add.fxml");
-    }
-
-    @Bean
-    @Scope("prototype")
-    public Node editReceipt() throws IOException {
-        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
-        return (Node) springFxmlLoader.load("/view/receipt-edit.fxml");
+        return (Node) springFxmlLoader.load("/view/receipt.fxml");
     }
 
     @Bean
@@ -196,18 +188,13 @@ public class PagesConfiguration {
     }
 
     @Bean
-    public AddReceiptController addReceiptController() {
-        return new AddReceiptController();
-    }
-
-    @Bean
-    public EditReceiptController editReceiptController() {
-        return new EditReceiptController();
-    }
-
-    @Bean
     public ReceiptsController receiptsController() {
         return new ReceiptsController();
+    }
+
+    @Bean
+    public ReceiptController receiptController() {
+        return new ReceiptController();
     }
 
     @Bean

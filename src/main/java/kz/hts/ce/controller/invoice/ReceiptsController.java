@@ -146,7 +146,8 @@ public class ReceiptsController implements Initializable {
             if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
                 try {
                     springUtil.setId(receiptsTable.getSelectionModel().getSelectedItem().getId());
-                    Node node = getPagesConfiguration().editReceipt();
+                    springUtil.setNewInvoice(false);
+                    Node node = getPagesConfiguration().receipt();
                     mainController.getContentContainer().getChildren().setAll(node);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -158,7 +159,8 @@ public class ReceiptsController implements Initializable {
     @FXML
     private void showCreateReceiptPage() throws IOException {
         PagesConfiguration screens = getPagesConfiguration();
-        mainController.getContentContainer().getChildren().setAll(screens.addReceipt());
+        springUtil.setNewInvoice(true);
+        mainController.getContentContainer().getChildren().setAll(screens.receipt());
     }
 
     public void findReceiptsByProvider(ActionEvent event) {

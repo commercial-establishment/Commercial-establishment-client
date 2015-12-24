@@ -5,9 +5,9 @@
 <?import javafx.scene.text.*?>
 <?import kz.hts.ce.util.javafx.fields.BarcodeTextField?>
 <?import kz.hts.ce.util.javafx.fields.PriceTextField?>
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+<AnchorPane fx:id="editPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
             minWidth="-Infinity" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.invoice.AddReceiptController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.invoice.ReceiptController">
     <children>
         <SplitPane dividerPositions="0.2630691399662732" layoutX="54.0" layoutY="173.0" orientation="VERTICAL"
                    prefHeight="595.0" prefWidth="1008.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
@@ -25,7 +25,7 @@
                                 <Font size="14.0"/>
                             </font>
                         </Label>
-                        <Spinner fx:id="postponement" disable="true" layoutX="288.0" layoutY="88.0" prefHeight="30.0"
+                        <Spinner fx:id="postponement" layoutX="288.0" layoutY="88.0" prefHeight="30.0"
                                  prefWidth="200.0"/>
                         <Label layoutX="388.0" layoutY="46.0" text="Дата:">
                             <font>
@@ -39,18 +39,20 @@
                                 <Font size="14.0"/>
                             </font>
                         </Label>
-                        <CheckBox fx:id="vat" disable="true" layoutX="622.0" layoutY="85.0" mnemonicParsing="false"
+                        <CheckBox fx:id="vat" layoutX="622.0" layoutY="85.0" mnemonicParsing="false"
                                   prefHeight="37.0" prefWidth="34.0"/>
-                        <ComboBox fx:id="providers" layoutX="174.0" layoutY="42.0" onAction="#enableAllFields"
+                        <ComboBox fx:id="providers" layoutX="174.0" layoutY="42.0"
+                                  onAction="#enableAllFields"
                                   prefHeight="30.0" prefWidth="200.0" promptText="Выберите поставщика"/>
                         <Label layoutX="639.0" layoutY="48.0" text="Наценка (%):"/>
-                        <Spinner fx:id="margin" disable="true" layoutX="717.0" layoutY="41.0" prefHeight="30.0"
+                        <Spinner fx:id="margin" layoutX="717.0" layoutY="41.0" prefHeight="30.0"
                                  prefWidth="200.0"/>
                     </children>
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                     <children>
-                        <TableView fx:id="productsTable" layoutX="38.0" layoutY="54.0" AnchorPane.bottomAnchor="149.0"
+                        <TableView fx:id="productsTable" editable="true" layoutX="38.0" layoutY="54.0"
+                                   AnchorPane.bottomAnchor="149.0"
                                    AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="37.0"
                                    AnchorPane.topAnchor="54.0">
                             <columns>
@@ -74,7 +76,7 @@
                         </PriceTextField>
                         <Spinner fx:id="amount" disable="true" layoutX="743.0" layoutY="299.0" prefHeight="30.0"
                                  prefWidth="102.0"/>
-                        <ComboBox fx:id="unitOfMeasure" editable="true" disable="true" layoutX="499.0" layoutY="299.0"
+                        <ComboBox fx:id="unitOfMeasure" disable="true" editable="true" layoutX="499.0" layoutY="299.0"
                                   prefHeight="30.0" prefWidth="115.0" promptText="Ед. измерения"/>
                         <Button fx:id="add" disable="true" layoutX="852.0" layoutY="299.0" mnemonicParsing="false"
                                 onAction="#addProductToTable" prefHeight="30.0" prefWidth="102.0" text="Добавить">
@@ -82,21 +84,20 @@
                                 <Font size="14.0"/>
                             </font>
                         </Button>
-                        <ComboBox fx:id="categories" disable="true" layoutX="53.0" layoutY="299.0"
-                                  onAction="#findProductsByCategory" prefHeight="30.0" prefWidth="160.0"
-                                  promptText="Выберите категорию"/>
+                        <ComboBox fx:id="categories" layoutX="53.0" layoutY="299.0" onAction="#findProductsByCategory"
+                                  prefHeight="30.0" prefWidth="160.0" promptText="Выберите категорию"/>
                         <ComboBox fx:id="productComboBox" disable="true" editable="true" layoutX="220.0" layoutY="299.0"
                                   prefHeight="30.0" prefWidth="147.0" promptText="Введите название товара"/>
                         <BarcodeTextField fx:id="barcode" disable="true" layoutX="375.0" layoutY="299.0"
                                           prefHeight="30.0" prefWidth="115.0" promptText="Штрих-код"/>
-                        <Button fx:id="deleteRowColumn" disable="true" layoutX="771.0" layoutY="14.0"
-                                mnemonicParsing="false" onAction="#deleteProductFromTable" prefHeight="30.0"
-                                prefWidth="183.0" text="Удалить выбранный товар" textAlignment="CENTER">
+                        <Button fx:id="deleteRowColumn" layoutX="771.0" layoutY="14.0" mnemonicParsing="false"
+                                onAction="#deleteProductFromTable" prefHeight="30.0" prefWidth="183.0"
+                                text="Удалить выбранный товар" textAlignment="CENTER">
                             <font>
                                 <Font name="System Bold" size="12.0"/>
                             </font>
                         </Button>
-                        <Button layoutX="807.0" layoutY="361.0" mnemonicParsing="false" onAction="#saveInvoice"
+                        <Button layoutX="807.0" layoutY="361.0" mnemonicParsing="false" onAction="#save"
                                 prefHeight="30.0" prefWidth="147.0" text="Сохранить накладную"/>
                     </children>
                 </AnchorPane>

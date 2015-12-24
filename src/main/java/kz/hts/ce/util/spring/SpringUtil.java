@@ -20,6 +20,7 @@ public class SpringUtil {
     private long id;
     private Shift shift;
     private Employee employee;
+    private boolean newInvoice;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -71,5 +72,13 @@ public class SpringUtil {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public boolean isNewInvoice() {
+        return newInvoice;
+    }
+
+    public void setNewInvoice(boolean newInvoice) {
+        this.newInvoice = newInvoice;
     }
 }
