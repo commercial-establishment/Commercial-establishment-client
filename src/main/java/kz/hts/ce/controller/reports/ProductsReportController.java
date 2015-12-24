@@ -170,7 +170,11 @@ public class ProductsReportController {
                 productDtoValue.setArrival(ZERO);
                 productDtoValue.setDropped(ZERO);
                 for (WarehouseProductHistory productHistory : productHistories) {
-                    productDtoValue.setArrival(productDtoValue.getArrival() + productHistory.getArrival());
+                    if (productHistory.getDropped() != 0 && productHistory.getArrival() == 0) {
+                        productDtoValue.setArrival(productDtoValue.getArrival() - productHistory.getDropped());
+                    } else {
+                        productDtoValue.setArrival(productDtoValue.getArrival() + productHistory.getArrival());
+                    }
                 }
 //                for (InvoiceProduct invoiceProduct : invoiceProducts) {
 //                    productDtoValue.setSoldAmount(invoiceProduct.getAmount() - productDtoValue.getResidue());
@@ -189,7 +193,7 @@ public class ProductsReportController {
                 if (productDtos == null) productDtos = new ArrayList<>();
                 productDtos.add(productDtoValue);
 //                if (!productHistories.isEmpty()) {
-                    categoryItem.getChildren().add(productItem);
+                categoryItem.getChildren().add(productItem);
 //                }
             }
         }
