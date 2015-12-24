@@ -2,16 +2,18 @@ package kz.hts.ce.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.*;
+import javafx.stage.DirectoryChooser;
 import javafx.util.StringConverter;
 import kz.hts.ce.util.spring.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
 public class SettingsController implements Initializable {
@@ -34,6 +36,10 @@ public class SettingsController implements Initializable {
     private Spinner<Integer> invoiceMax;
     @FXML
     private CheckBox vat;
+    @FXML
+    private TextField selectedDirectory;
+    @FXML
+    private Button choose;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -49,6 +55,7 @@ public class SettingsController implements Initializable {
         invoiceMax.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, jsonUtil.getInvoiceMaxInt()));
 
         vat.setSelected(jsonUtil.isVatBoolean());
+        selectedDirectory.setText(jsonUtil.getPathForExport());
     }
 
     @FXML
@@ -102,11 +109,27 @@ public class SettingsController implements Initializable {
         jsonUtil.setVatBoolean(vat);
 
         jsonUtil.update(jsonUtil.getProductMinInt(), jsonUtil.getProductMaxInt(),
-                jsonUtil.getInvoiceMinInt(), jsonUtil.getInvoiceMaxInt(), vat);
+                jsonUtil.getInvoiceMinInt(), jsonUtil.getInvoiceMaxInt(), vat, jsonUtil.getPathForExport());
+    }
+
+    @FXML
+    public void chooseDirectory() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File file = directoryChooser.showDialog(getPagesConfiguration().getPrimaryStage());
+        if (file == null)
+            selectedDirectory.setText("Не выбрана директория!");
+        else
+            selectedDirectory.setText(file.getAbsolutePath());
+
+        jsonUtil.setPathForExport(selectedDirectory.getText());
     }
 
     public Integer getProductMaxInt() {
         return productMaxInt;
+    }
+
+    public void setProductMaxInt(Integer productMaxInt) {
+        this.productMaxInt = productMaxInt;
     }
 
     public Integer getProductMinInt() {
@@ -115,10 +138,6 @@ public class SettingsController implements Initializable {
 
     public void setProductMinInt(Integer productMinInt) {
         this.productMinInt = productMinInt;
-    }
-
-    public void setProductMaxInt(Integer productMaxInt) {
-        this.productMaxInt = productMaxInt;
     }
 
     public Integer getInvoiceMaxInt() {
