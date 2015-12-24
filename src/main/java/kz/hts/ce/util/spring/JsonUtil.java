@@ -20,6 +20,7 @@ public class JsonUtil {
     public static final String INVOICE_MIN = "invoiceMin";
     public static final String INVOICE_MAX = "invoiceMax";
     public static final String VAT = "vat";
+    public static final String EXPORT_DIRECTORY = "pathForExport";
 
     private File file = new File(pathToJson);
     private int productMinInt;
@@ -27,6 +28,7 @@ public class JsonUtil {
     private int invoiceMinInt;
     private int invoiceMaxInt;
     private boolean vatBoolean;
+    private String pathForExport;
 
     public void fillFields() {
         try {
@@ -42,6 +44,7 @@ public class JsonUtil {
             long invoiceMaxLong = (long) jsonObject.get(INVOICE_MAX);
             invoiceMaxInt = (int) invoiceMaxLong;
             vatBoolean = (boolean) jsonObject.get(VAT);
+            pathForExport = (String) jsonObject.get(EXPORT_DIRECTORY);
         } catch (ParseException | IOException e) {
             throw new ControllerException(e);
         }
@@ -59,24 +62,25 @@ public class JsonUtil {
         return jsonObject;
     }
 
-    public void create(int productMin, int productMax, int invoiceMin, int invoiceMax, boolean vat) {
+    public void create(int productMin, int productMax, int invoiceMin, int invoiceMax, boolean vat, String pathForExport) {
         JSONObject json = new JSONObject();
-        createOrUpdateJson(json, productMin, productMax, invoiceMin, invoiceMax, vat);
+        createOrUpdateJson(json, productMin, productMax, invoiceMin, invoiceMax, vat, pathForExport);
     }
 
-    public void update(int productMin, int productMax, int invoiceMin, int invoiceMax, boolean vat) {
+    public void update(int productMin, int productMax, int invoiceMin, int invoiceMax, boolean vat, String pathForExport) {
         JSONObject json = read(pathToJson);
-        createOrUpdateJson(json, productMin, productMax, invoiceMin, invoiceMax, vat);
+        createOrUpdateJson(json, productMin, productMax, invoiceMin, invoiceMax, vat, pathForExport);
     }
 
     public void createOrUpdateJson(JSONObject jsonObject, int productMin, int productMax, int invoiceMin,
-                                   int invoiceMax, boolean vat) {
+                                   int invoiceMax, boolean vat, String pathForExport) {
         try {
             jsonObject.put(PRODUCT_MIN, productMin);
             jsonObject.put(PRODUCT_MAX, productMax);
             jsonObject.put(INVOICE_MIN, invoiceMin);
             jsonObject.put(INVOICE_MAX, invoiceMax);
             jsonObject.put(VAT, vat);
+            jsonObject.put(EXPORT_DIRECTORY, pathForExport);
             FileWriter fileWriter = new FileWriter(pathToJson);
             fileWriter.write(jsonObject.toJSONString());
             fileWriter.flush();
@@ -128,5 +132,13 @@ public class JsonUtil {
 
     public void setVatBoolean(boolean vatBoolean) {
         this.vatBoolean = vatBoolean;
+    }
+
+    public String getPathForExport() {
+        return pathForExport;
+    }
+
+    public void setPathForExport(String pathForExport) {
+        this.pathForExport = pathForExport;
     }
 }

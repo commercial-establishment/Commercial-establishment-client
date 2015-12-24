@@ -46,7 +46,7 @@ public class PagesConfiguration {
     public void initialize() {
         boolean isChecked = jsonUtil().checkJsonFile();
         if (!isChecked) {
-            jsonUtil().create(10, 30, 3, 10, false);
+            jsonUtil().create(10, 30, 3, 10, false, "");
         } else {
             jsonUtil().fillFields();
         }
