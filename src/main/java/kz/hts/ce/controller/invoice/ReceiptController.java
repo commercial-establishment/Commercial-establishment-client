@@ -51,7 +51,6 @@ public class ReceiptController implements Initializable {
 
     @FXML
     private TableView<ProductDto> productsTable;
-
     @FXML
     private TableColumn<ProductDto, String> barcodeColumn;
     @FXML
@@ -100,7 +99,6 @@ public class ReceiptController implements Initializable {
 
     @Autowired
     private ProductService productService;
-
     @Autowired
     private ShopProviderService shopProviderService;
     @Autowired
@@ -128,7 +126,6 @@ public class ReceiptController implements Initializable {
 
     @Autowired
     private MainController mainController;
-
 
     @Autowired
     private SpringUtil springUtil;
@@ -172,7 +169,6 @@ public class ReceiptController implements Initializable {
             barcodes = new HashSet<>();
             List<Product> products = productService.findAll();
             barcodes.addAll(products.stream().map(Product::getBarcode).collect(Collectors.toList()));
-
 
             providers.setValue(invoiceFromDB.getProvider().getCompanyName());
 
@@ -276,10 +272,11 @@ public class ReceiptController implements Initializable {
                 } else {
                     barcode.setDisable(false);
                     unitOfMeasure.setDisable(false);
-                    productDtosByCategory.stream().filter(dto -> dto.getName().toLowerCase().contains(newValue.toLowerCase())).forEach(dto -> {
-                        barcode.setDisable(true);
-                        unitOfMeasure.setDisable(true);
-                    });
+                    productDtosByCategory.stream().filter(dto -> dto.getName().toLowerCase().contains(newValue.toLowerCase()))
+                            .forEach(dto -> {
+                                barcode.setDisable(true);
+                                unitOfMeasure.setDisable(true);
+                            });
                     productDtosByCategory.stream().filter(dto -> name.toLowerCase().equals(dto.getName().toLowerCase()))
                             .forEach(dto -> productComboBox.getItems().remove(name));
                 }
@@ -364,7 +361,8 @@ public class ReceiptController implements Initializable {
 
                     setProductToInvoiceProduct(product, productDto, warehouseProduct, invoiceProduct);
 
-                    WarehouseProduct warehouseProductFromDB = warehouseProductService.findByProductBarcode(warehouseProduct.getProduct().getBarcode());
+                    WarehouseProduct warehouseProductFromDB = warehouseProductService.findByProductBarcode(warehouseProduct
+                            .getProduct().getBarcode());
                     if (warehouseProductFromDB == null) {
                         WarehouseProduct savedWP = warehouseProductService.save(warehouseProduct);
 
@@ -440,7 +438,8 @@ public class ReceiptController implements Initializable {
 
                                 WarehouseProduct warehouseProduct = warehouseProductService
                                         .findByProductBarcode(oldInvoiceProduct.getProduct().getBarcode());
-                                if ((productDto.getAmount() - oldInvoiceProduct.getAmount()) != ZERO && !productDto.getPrice().equals(oldInvoiceProduct.getFinalPrice())) {
+                                if ((productDto.getAmount() - oldInvoiceProduct.getAmount()) != ZERO && !productDto.getPrice()
+                                        .equals(oldInvoiceProduct.getFinalPrice())) {
                                     warehouseProduct.setVat(vat);
                                     warehouseProduct.setMargin(Integer.parseInt(margin));
                                     warehouseProduct.setFinalPrice(priceWithMargin);
@@ -660,7 +659,7 @@ public class ReceiptController implements Initializable {
             alert(Alert.AlertType.WARNING, "Ошибка добавления", null, "Пожалуйста, заполните все поля правильно.");
     }
 
-    public void showReceiptsPage() {
+    private void showReceiptsPage() {
         PagesConfiguration screens = getPagesConfiguration();
         try {
             mainController.getContentContainer().getChildren().setAll(screens.receipts());
