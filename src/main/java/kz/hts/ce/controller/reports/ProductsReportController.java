@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaUtil.getEndOfDay;
 import static kz.hts.ce.util.JavaUtil.getStartOfDay;
@@ -77,21 +78,15 @@ public class ProductsReportController {
     private void showReport() {
         LocalDate startLocaleDate = startDate.getValue();
         LocalDate endLocaleDate = endDate.getValue();
-
-        if (startLocaleDate == null || endLocaleDate == null) {
+        if (startLocaleDate == null || endLocaleDate == null)
             alert(Alert.AlertType.WARNING, "Ошибка периода", null, "Пожалуйста укажите период");
-        }
-        Date startDateUtil = Date.from(startLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date endDateUtil = getEndOfDay(Date.from(endLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
         root = new TreeItem<>();
         root.setExpanded(true);
         productsReport.setShowRoot(false);
         List<WarehouseProduct> warehouseProducts = warehouseProductService.findAll();
-        Set<Category> categories = new HashSet<>();
-        for (WarehouseProduct warehouseProduct : warehouseProducts) {
-            categories.add(warehouseProduct.getProduct().getCategory());
-        }
+        Set<Category> categories = warehouseProducts.stream().map(warehouseProduct -> warehouseProduct.getProduct().getCategory())
+                .collect(Collectors.toSet());
 
         Map<String, List<WarehouseProduct>> categoryProductsMap = new HashMap<>();
         for (Category category : categories) {
@@ -140,6 +135,8 @@ public class ProductsReportController {
                 productDtoValue.setId(warehouseProduct.getId());
                 productDtoValue.setName(warehouseProduct.getProduct().getName());
 
+                Date startDateUtil = Date.from(startLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                Date endDateUtil = getEndOfDay(Date.from(endLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
                 List<WarehouseProductHistory> startWPHistories = wphService.
                         findPastNearestDate(getStartOfDay(startDateUtil), warehouseProduct.getProduct().getId());
                 List<WarehouseProductHistory> endWPHistories = wphService.
@@ -165,20 +162,18 @@ public class ProductsReportController {
 
                 List<WarehouseProductHistory> productHistories = wphService.
                         findByDateBetweenAndProductId(getStartOfDay(startDateUtil), endDateUtil, warehouseProduct.getProduct().getId());
-//                List<InvoiceProduct> invoiceProducts = invoiceProductService.
-//                        findByInvoiceDateBetweenAndProductBarcode(startDateUtil, endDateUtil, warehouseProduct.getProduct().getBarcode());
                 productDtoValue.setArrival(ZERO);
                 productDtoValue.setDropped(ZERO);
                 for (WarehouseProductHistory productHistory : productHistories) {
-                    if (productHistory.getDropped() != 0 && productHistory.getArrival() == 0) {
+                    if (productHistory.getDropped() != 0 && productHistory.getArrival() == 0)
                         productDtoValue.setArrival(productDtoValue.getArrival() - productHistory.getDropped());
-                    } else {
-                        productDtoValue.setArrival(productDtoValue.getArrival() + productHistory.getArrival());
-                    }
+                    else productDtoValue.setArrival(productDtoValue.getArrival() + productHistory.getArrival());
                 }
-//                for (InvoiceProduct invoiceProduct : invoiceProducts) {
-//                    productDtoValue.setSoldAmount(invoiceProduct.getAmount() - productDtoValue.getResidue());
-//                }
+                if (productDtoValue.getArrival() < 0) {
+                    int arrival = productDtoValue.getArrival();
+                    productDtoValue.setArrival(0);
+                    productDtoValue.setOldAmount(productDtoValue.getOldAmount() + arrival);
+                }
                 productDtoValue.setSoldAmount(productDtoValue.getOldAmount() + productDtoValue.getArrival()
                         - productDtoValue.getResidue());
                 productDtoValue.setUnitSymbol(warehouseProduct.getProduct().getUnit().getSymbol());
@@ -192,9 +187,7 @@ public class ProductsReportController {
                 TreeItem<ProductDto> productItem = new TreeItem<>(productDtoValue);
                 if (productDtos == null) productDtos = new ArrayList<>();
                 productDtos.add(productDtoValue);
-//                if (!productHistories.isEmpty()) {
                 categoryItem.getChildren().add(productItem);
-//                }
             }
         }
 
