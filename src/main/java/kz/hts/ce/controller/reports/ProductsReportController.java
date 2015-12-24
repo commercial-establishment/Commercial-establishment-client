@@ -160,6 +160,7 @@ public class ProductsReportController {
                     }
                 }
                 productDtoValue.setResidue(ZERO);
+                productDtoValue.setSoldAmount(ZERO);
                 List<WarehouseProductHistory> endWPHistories = wphService.
                         findPastNearestAndEqualsDate(endDateUtil, warehouseProduct.getProduct().getId());
                 for (WarehouseProductHistory endWPHistory : endWPHistories) {
@@ -168,9 +169,8 @@ public class ProductsReportController {
                     } else {
                         productDtoValue.setResidue(productDtoValue.getResidue() + endWPHistory.getArrival() - endWPHistory.getSold());
                     }
+                    productDtoValue.setSoldAmount(productDtoValue.getSoldAmount() + endWPHistory.getSold());
                 }
-                productDtoValue.setSoldAmount(productDtoValue.getOldAmount() + productDtoValue.getArrival()
-                        - productDtoValue.getResidue());
                 productDtoValue.setUnitSymbol(warehouseProduct.getProduct().getUnit().getSymbol());
                 productDtoValue.setFinalPrice(warehouseProduct.getFinalPrice());
                 productDtoValue.setPrice(warehouseProduct.getInitialPrice());
