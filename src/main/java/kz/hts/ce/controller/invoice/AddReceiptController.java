@@ -30,8 +30,8 @@ import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 @Controller
 public class AddReceiptController implements Initializable {
 
-    public static final int ZERO = 0;
-    public static final int ONE = 1;
+    private static final int ZERO = 0;
+    private static final int ONE = 1;
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> productDtosByCategory = FXCollections.observableArrayList();
     private Set<String> barcodes;
@@ -208,7 +208,6 @@ public class AddReceiptController implements Initializable {
                 productDto.setMargin(Integer.parseInt(margin));
                 productDto.setVat(vat);
                 productDto.setFinalPrice(priceWithMargin);
-//                invoiceProduct.setMargin(productDto.getMargin());
                 invoiceProduct.setFinalPrice(productDto.getFinalPrice());
                 invoiceProduct.setInitialPrice(productDto.getPrice());
                 invoiceProduct.setVersion(ONE);
@@ -219,10 +218,8 @@ public class AddReceiptController implements Initializable {
                 warehouseProduct.setMargin(productDto.getMargin());
                 warehouseProduct.setFinalPrice(productDto.getFinalPrice());
                 warehouseProduct.setWarehouse(warehouse);
-//                warehouseProduct.setArrival(productDto.getAmount());
                 warehouseProduct.setResidue(productDto.getResidue());
                 warehouseProduct.setVersion(ONE);
-//                warehouseProduct.setDate(date);
                 if (product != null) {
                     warehouseProduct.setProduct(product);
                     invoiceProduct.setProduct(product);
@@ -253,34 +250,14 @@ public class AddReceiptController implements Initializable {
                     wphCurrentVersion.setInitialPrice(warehouseProduct.getInitialPrice());
                     wphCurrentVersion.setFinalPrice(warehouseProduct.getFinalPrice());
                     wphCurrentVersion.setVersion(warehouseProduct.getVersion());
-//                    wphCurrentVersion.setArrival(warehouseProduct.getArrival());
-//                    wphCurrentVersion.setDate(warehouseProduct.getDate());
-//                    wphCurrentVersion.setProvider(invoice.getProvider());
                     warehouseProductHistoryService.save(wphCurrentVersion);
                 } else {
-//                    if (warehouseProductFromDB.getVersion() != ONE) {
-//                        WarehouseProductHistory wphPreviousVersion = new WarehouseProductHistory();
-//                        wphPreviousVersion.setWarehouseProduct(warehouseProductFromDB);
-//                        wphPreviousVersion.setDate(date);
-//                        wphPreviousVersion.setVersion(warehouseProductFromDB.getVersion());
-//                        wphPreviousVersion.setArrival(productDto.getAmount());
-//                        wphPreviousVersion.setResidue(warehouseProductFromDB.getResidue());
-//                        wphPreviousVersion.setInitialPrice(warehouseProductFromDB.getInitialPrice());
-//                        wphPreviousVersion.setFinalPrice(warehouseProductFromDB.getFinalPrice());
-////                        wphPreviousVersion.setArrival(warehouseProductFromDB.getArrival());
-////                        wphPreviousVersion.setDate(warehouseProductFromDB.getDate());
-////                        wphPreviousVersion.setProvider(invoice.getProvider());
-//                        warehouseProductHistoryService.save(wphPreviousVersion);
-//                    }
-
                     warehouseProductFromDB.setVersion(warehouseProductFromDB.getVersion() + ONE);
-//                    warehouseProductFromDB.setArrival(warehouseProduct.getArrival());
                     warehouseProductFromDB.setResidue(warehouseProductFromDB.getResidue() + warehouseProduct.getResidue());
                     warehouseProductFromDB.setInitialPrice(warehouseProduct.getInitialPrice());
                     warehouseProductFromDB.setFinalPrice(warehouseProduct.getFinalPrice());
                     warehouseProductFromDB.setMargin(warehouseProduct.getMargin());
                     warehouseProductFromDB.setVat(warehouseProduct.isVat());
-//                    warehouseProductFromDB.setDate(date);
                     warehouseProductService.save(warehouseProductFromDB);
 
                     WarehouseProductHistory wphCurrentVersion = new WarehouseProductHistory();
@@ -291,8 +268,6 @@ public class AddReceiptController implements Initializable {
                     wphCurrentVersion.setInitialPrice(warehouseProductFromDB.getInitialPrice());
                     wphCurrentVersion.setFinalPrice(warehouseProductFromDB.getFinalPrice());
                     wphCurrentVersion.setVersion(warehouseProductFromDB.getVersion());
-//                    wphCurrentVersion.setArrival(warehouseProduct.getArrival());
-//                    wphCurrentVersion.setProvider(invoice.getProvider());
                     warehouseProductHistoryService.save(wphCurrentVersion);
                 }
                 invoiceProductService.save(invoiceProduct);

@@ -13,10 +13,6 @@ public class WarehouseProductHistory extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "warehouse_product_id", nullable = false)
     private WarehouseProduct warehouseProduct;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "provider_id", nullable = true)
-//    private Provider provider;
 
     @Column(name = "date", nullable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
@@ -32,6 +28,7 @@ public class WarehouseProductHistory extends BaseEntity {
     private int version;
     private int residue;
     private int dropped;
+    private int sold;
 
     public int getDropped() {
         return dropped;
@@ -97,4 +94,11 @@ public class WarehouseProductHistory extends BaseEntity {
         this.residue = residue;
     }
 
+    public int getSold() {
+        return sold;
+    }
+
+    public void setSold(int sold) {
+        this.sold = sold;
+    }
 }

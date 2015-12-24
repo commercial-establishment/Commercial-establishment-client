@@ -114,7 +114,7 @@ public class ProvidersReportController {
                 ProductDto productDtoValue = new ProductDto();
                 productDtoValue.setName(productProvider.getProduct().getName());
                 productDtoValue.setUnitSymbol(productProvider.getProduct().getUnit().getSymbol());
-                List<WarehouseProductHistory> productHistories = wphService.findByDateBetweenAndProductId(
+                List<WarehouseProductHistory> productHistories = wphService.findByDatesBetween(
                         startDateUtil, endDateUtil, productProvider.getProduct().getId());
                 productDtoValue.setArrival(ZERO);
                 productDtoValue.setSoldAmount(ZERO);
