@@ -1,15 +1,22 @@
 package kz.hts.ce.controller.sale;
 
+import com.sun.javafx.scene.control.skin.TableViewSkin;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import kz.hts.ce.model.dto.ProductDto;
+import kz.hts.ce.util.spring.JsonUtil;
+import kz.hts.ce.util.spring.SpringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 

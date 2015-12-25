@@ -1,5 +1,6 @@
 package kz.hts.ce.controller.sale;
 
+import com.sun.javafx.scene.control.skin.TableViewSkin;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -146,6 +147,10 @@ public class ProductCategoryController implements Initializable {
                 }
             });
         }
+    }
+    @FXML
+    public void refreshTable(){
+        getCategoryProductsTable().getProperties().put(TableViewSkin.RECREATE, Boolean.TRUE);
     }
 
     public TableColumn<ProductDto, String> getName() {

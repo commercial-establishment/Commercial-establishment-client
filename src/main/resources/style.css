@@ -15,6 +15,12 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position:center;
 }
+#refresh {
+    -fx-background-image: url("refresh-icon.png");
+    -fx-background-size: 18 18;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
 #unitM{
     -fx-text-alignment: center;
     -fx-font-style: italic;
