@@ -342,15 +342,7 @@ public class ReceiptController implements Initializable {
                     invoiceProduct.setInvoice(savedInvoice);
                     invoiceProduct.setAmount(productDto.getAmount());
 
-                    ProductProvider productProvider = new ProductProvider();
-                    ProductProvider oldProductProvider = productProviderService.
-                            findByProviderIdAndProductId(invoice.getProvider().getId(), product.getId());
-                    if(oldProductProvider == null) {
-                        productProvider.setProvider(invoice.getProvider());
-                        productProvider.setProduct(product);
-                        productProviderService.save(productProvider);
-                    }
-
+                    setProductAndProvider(product, invoice.getProvider());
 
                     if (jsonUtil.isVatBoolean() && !vat) {
                         priceWithMargin = (priceWithMargin.multiply(productDto.getPrice())).multiply(BigDecimal.valueOf(1.12));
@@ -516,6 +508,8 @@ public class ReceiptController implements Initializable {
                             warehouseProduct.setResidue(productDto.getResidue());
                             warehouseProduct.setVersion(ONE);
 
+                            setProductAndProvider(product, invoice.getProvider());
+
                             setProductToInvoiceProduct(product, productDto, warehouseProduct, invoiceProduct);
 
                             WarehouseProduct warehouseProductFromDB = warehouseProductService
@@ -618,6 +612,16 @@ public class ReceiptController implements Initializable {
             Product createdProduct = productService.save(newProduct);
             wp.setProduct(createdProduct);
             ip.setProduct(createdProduct);
+        }
+    }
+    private void setProductAndProvider(Product product, Provider provider){
+        ProductProvider productProvider = new ProductProvider();
+        ProductProvider oldProductProvider = productProviderService.
+                findByProviderIdAndProductId(provider.getId(), product.getId());
+        if(oldProductProvider == null) {
+            productProvider.setProvider(provider);
+            productProvider.setProduct(product);
+            productProviderService.save(productProvider);
         }
     }
 
