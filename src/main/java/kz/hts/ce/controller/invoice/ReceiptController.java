@@ -123,6 +123,8 @@ public class ReceiptController implements Initializable {
     private InvoiceProductHistoryService iphService;
     @Autowired
     private WarehouseProductHistoryService warehouseProductHistoryService;
+    @Autowired
+    private ProductProviderService productProviderService;
 
     @Autowired
     private MainController mainController;
@@ -321,6 +323,7 @@ public class ReceiptController implements Initializable {
                 invoice.setVersion(ONE);
                 Invoice savedInvoice = invoiceService.save(invoice);
 
+
                 InvoiceHistory invoiceHistory = new InvoiceHistory();
                 invoiceHistory.setInvoice(invoice);
                 invoiceHistory.setDate(invoice.getDate());
@@ -338,6 +341,17 @@ public class ReceiptController implements Initializable {
                     InvoiceProduct invoiceProduct = new InvoiceProduct();
                     invoiceProduct.setInvoice(savedInvoice);
                     invoiceProduct.setAmount(productDto.getAmount());
+
+                    ProductProvider productProvider = new ProductProvider();
+                    ProductProvider oldProductProvider = productProviderService.
+                            findByProviderIdAndProductId(invoice.getProvider().getId(), product.getId());
+                    if(oldProductProvider == null) {
+                        productProvider.setProvider(invoice.getProvider());
+                        productProvider.setProduct(product);
+                        productProviderService.save(productProvider);
+                    }
+
+
                     if (jsonUtil.isVatBoolean() && !vat) {
                         priceWithMargin = (priceWithMargin.multiply(productDto.getPrice())).multiply(BigDecimal.valueOf(1.12));
                     } else {
