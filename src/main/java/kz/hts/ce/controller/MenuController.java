@@ -47,40 +47,41 @@ public class MenuController {
         PagesConfiguration screens = getPagesConfiguration();
         Node node;
         if (event.getSource() == sales) {
-            mainController.getContentContainer().getChildren().setAll(mainController.getSales());
-            calculatorController.startEventHandler(screens.getPrimaryStage().getScene());
+            node = screens.sales();
+            mainController.getContentContainer().getChildren().setAll(node);
+            calculatorController.startEventHandler(node.getScene());
         } else if (event.getSource() == receipts) {
             node = screens.receipts();
             mainController.getContentContainer().getChildren().setAll(node);
-            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
+            calculatorController.stopEventHandler(node.getScene());
         } else if (event.getSource() == products) {
             node = screens.shopProducts();
             mainController.getContentContainer().getChildren().setAll(node);
-            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
+            calculatorController.stopEventHandler(node.getScene());
         } else if (event.getSource() == settings) {
             node = screens.settings();
             mainController.getContentContainer().getChildren().setAll(node);
-            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
+            calculatorController.stopEventHandler(node.getScene());
         } else if (event.getSource() == reportChecks) {
             node = screens.reportChecks();
             mainController.getContentContainer().getChildren().setAll(node);
-            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
+            calculatorController.stopEventHandler(node.getScene());
         } else if (event.getSource() == reportProducts) {
             node = screens.reportProducts();
             mainController.getContentContainer().getChildren().setAll(node);
-            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
+            calculatorController.stopEventHandler(node.getScene());
         } else if (event.getSource() == reportProviders) {
             node = screens.reportProviders();
             mainController.getContentContainer().getChildren().setAll(node);
-            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
+            calculatorController.stopEventHandler(node.getScene());
         } else if (event.getSource() == reportSales) {
             node = screens.reportSales();
             mainController.getContentContainer().getChildren().setAll(node);
-            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
+            calculatorController.stopEventHandler(node.getScene());
         } else if (event.getSource() == addProvider) {
             node = screens.addProvider();
             mainController.getContentContainer().getChildren().setAll(node);
-            calculatorController.stopEventHandler(screens.getPrimaryStage().getScene());
+            calculatorController.stopEventHandler(node.getScene());
         }
     }
 }

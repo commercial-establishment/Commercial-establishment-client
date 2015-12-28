@@ -74,6 +74,12 @@ public class PagesConfiguration {
     }
 
     @Bean
+    public Node sales() throws IOException {
+        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+        return (Node) springFxmlLoader.load("/view/sales.fxml");
+    }
+
+    @Bean
     @Scope("prototype")
     public Node receipts() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
@@ -160,6 +166,11 @@ public class PagesConfiguration {
     @Bean
     public MainController mainController() {
         return new MainController();
+    }
+
+    @Bean
+    public SalesController salesController(){
+        return new SalesController();
     }
 
     @Bean
