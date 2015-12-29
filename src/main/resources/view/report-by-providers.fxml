@@ -32,8 +32,8 @@
                 <TreeTableColumn fx:id="arrival" prefWidth="58.0" text="Поступ-&#10;ления" />
                 <TreeTableColumn prefWidth="181.0" text="Количество на период">
                <columns>
-                      <TreeTableColumn prefWidth="70.0" text="Начало" />
-                      <TreeTableColumn prefWidth="70.0" text="Конец " />
+                      <TreeTableColumn fx:id="initialResidue" prefWidth="70.0" text="Начало" />
+                      <TreeTableColumn fx:id="finalResidue" prefWidth="70.0" text="Конец " />
                </columns></TreeTableColumn>
                 <TreeTableColumn fx:id="sold" prefWidth="63.0" text="Реали-&#10;зовано" />
             <TreeTableColumn prefWidth="81.0" text="Себестоимость">

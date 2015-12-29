@@ -148,7 +148,12 @@ public class AddProviderController implements Initializable {
     }
 
     public void showMainPage() {
-        mainController.getContentContainer().getChildren().setAll(mainController.getSales());
+//        try {
+//            mainController.getContentContainer().getChildren().setAll(getPagesConfiguration().sales());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
     }
 
     @FXML
