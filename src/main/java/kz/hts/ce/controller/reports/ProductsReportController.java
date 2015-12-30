@@ -28,9 +28,8 @@ import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 @Controller
 public class ProductsReportController {
 
-    public static final int ZERO = 0;
-    public static final int ONE = 1;
-    List<ProductDto> productDtos;
+    private static final int ZERO = 0;
+    private List<ProductDto> productDtos;
     private TreeItem<ProductDto> root = null;
     @FXML
     private DatePicker startDate;
