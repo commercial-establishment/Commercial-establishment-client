@@ -21,6 +21,7 @@ import org.springframework.http.*;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -85,16 +86,15 @@ public class LoginController {
 
             /*POST*/
             City city = new City();
-            city.setId(555);
             city.setName("test name");
-            HttpHeaders requestHeaders = new HttpHeaders();
-            requestHeaders.setContentType(new MediaType("application","json"));
-            HttpEntity<City> requestEntity = new HttpEntity<>(city, requestHeaders);
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<City> requestEntity = new HttpEntity<>(city, headers);
+            System.out.println(requestEntity);
             RestTemplate restTemplateForPost = new RestTemplate();
             restTemplateForPost.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             restTemplateForPost.getMessageConverters().add(new StringHttpMessageConverter());
-            ResponseEntity<String> responseEntity = restTemplateForPost.exchange(url, HttpMethod.POST, requestEntity, String.class);
-            String result = responseEntity.getBody();
+            ResponseEntity<City> responseEntity = restTemplateForPost.exchange(url, HttpMethod.POST, requestEntity, City.class);
+            City result = responseEntity.getBody();
             System.out.println(result);
             /*POST*/
 
