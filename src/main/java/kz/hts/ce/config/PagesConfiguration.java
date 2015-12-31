@@ -59,6 +59,13 @@ public class PagesConfiguration {
     }
 
     @Bean
+    @Scope("prototype")
+    public Stage sales(){
+        showStage(primaryStage, "/view/sales.fxml");
+        return primaryStage;
+    }
+
+    @Bean
     public Stage login() {
         primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.setResizable(false);
@@ -73,11 +80,11 @@ public class PagesConfiguration {
         return primaryStage;
     }
 
-    @Bean
-    public Node sales() throws IOException {
-        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
-        return (Node) springFxmlLoader.load("/view/sales.fxml");
-    }
+//    @Bean
+//    public Node sales() throws IOException {
+//        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
+//        return (Node) springFxmlLoader.load("/view/sales.fxml");
+//    }
 
     @Bean
     @Scope("prototype")

@@ -2,12 +2,13 @@ package kz.hts.ce.controller.reports;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import kz.hts.ce.model.dto.ProductDto;
-import kz.hts.ce.model.entity.*;
+import kz.hts.ce.model.entity.ProductProvider;
+import kz.hts.ce.model.entity.Provider;
+import kz.hts.ce.model.entity.WarehouseProduct;
+import kz.hts.ce.model.entity.WarehouseProductHistory;
 import kz.hts.ce.service.ProductProviderService;
 import kz.hts.ce.service.WarehouseProductHistoryService;
 import kz.hts.ce.service.WarehouseProductService;
@@ -20,6 +21,7 @@ import java.time.ZoneId;
 import java.util.*;
 
 import static kz.hts.ce.util.JavaUtil.getEndOfDay;
+import static kz.hts.ce.util.JavaUtil.getStartOfDay;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 
 @Controller
@@ -27,10 +29,9 @@ public class ProvidersReportController {
 
     public static final int ZERO = 0;
     public static final int ONE = 1;
+    List<ProductDto> productDtos;
     private TreeItem<ProductDto> root = null;
     private TreeItem<ProductDto> providerTreeItem = null;
-    List<ProductDto> productDtos;
-
     @FXML
     private DatePicker startDate;
     @FXML
@@ -53,6 +54,11 @@ public class ProvidersReportController {
     private TreeTableColumn<ProductDto, BigDecimal> finalPrice;
     @FXML
     private TreeTableColumn<ProductDto, BigDecimal> sumFinalPrice;
+    @FXML
+    private TreeTableColumn<ProductDto, Number> initialResidue;
+    @FXML
+    private TreeTableColumn<ProductDto, Number> finalResidue;
+
     @Autowired
     private ProductProviderService productProviderService;
     @Autowired
@@ -68,9 +74,6 @@ public class ProvidersReportController {
         if (startLocaleDate == null || endLocaleDate == null) {
             alert(Alert.AlertType.WARNING, "Ошибка периода", null, "Пожалуйста укажите период");
         }
-
-        Date startDateUtil = Date.from(startLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date endDateUtil = getEndOfDay(Date.from(endLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
         root = new TreeItem<>();
         providerTreeItem = new TreeItem<>();
@@ -93,7 +96,12 @@ public class ProvidersReportController {
         rootProductDto.setUnitSymbol("");
         rootProductDto.setArrival(ZERO);
         rootProductDto.setSoldAmount(ZERO);
+        rootProductDto.setOldAmount(ZERO);
+        rootProductDto.setResidue(ZERO);
         rootProductDto.setPrice(BigDecimal.ZERO);
+        rootProductDto.setFinalPrice(BigDecimal.ZERO);
+        rootProductDto.setSumOfCostPrice(BigDecimal.ZERO);
+        rootProductDto.setSumOfShopPrice(BigDecimal.ZERO);
         root.setValue(rootProductDto);
 
         for (Map.Entry<String, List<ProductProvider>> map : providerProductMap.entrySet()) {
@@ -104,8 +112,14 @@ public class ProvidersReportController {
             productDtoKey.setUnitSymbol("");
             productDtoKey.setArrival(ZERO);
             productDtoKey.setSoldAmount(ZERO);
+            productDtoKey.setOldAmount(ZERO);
+            productDtoKey.setResidue(ZERO);
             productDtoKey.setPrice(BigDecimal.ZERO);
-            ;
+            productDtoKey.setFinalPrice(BigDecimal.ZERO);
+            productDtoKey.setSumOfCostPrice(BigDecimal.ZERO);
+            productDtoKey.setSumOfShopPrice(BigDecimal.ZERO);
+
+
             TreeItem<ProductDto> providerItem = new TreeItem<>(productDtoKey);
             root.getChildren().add(providerItem);
             providerItem.setExpanded(true);
@@ -114,21 +128,56 @@ public class ProvidersReportController {
                 ProductDto productDtoValue = new ProductDto();
                 productDtoValue.setName(productProvider.getProduct().getName());
                 productDtoValue.setUnitSymbol(productProvider.getProduct().getUnit().getSymbol());
-                List<WarehouseProductHistory> productHistories = wphService.findByDatesBetween(
-                        startDateUtil, endDateUtil, productProvider.getProduct().getId());
-                productDtoValue.setArrival(ZERO);
-                productDtoValue.setSoldAmount(ZERO);
-                WarehouseProduct warehouseProduct = wpService.findByProductBarcode(productProvider.getProduct().getBarcode());
-                if (warehouseProduct != null) {
-                    for (WarehouseProductHistory productHistory : productHistories) {
-                        productDtoValue.setArrival(productDtoValue.getArrival() + productHistory.getArrival());
-                        productDtoValue.setSoldAmount(productDtoValue.getArrival() - warehouseProduct.getResidue());
-                    }
-                    productDtoValue.setPrice(warehouseProduct.getInitialPrice());
 
-                    TreeItem<ProductDto> productItem = new TreeItem<>(productDtoValue);
-                    providerItem.getChildren().add(productItem);
+                Date startDateUtil = Date.from(startLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                Date endDateUtil = getEndOfDay(Date.from(endLocaleDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                List<WarehouseProductHistory> startWPHistories = wphService.
+                        findPastNearestAndEqualsDate(getStartOfDay(startDateUtil), productProvider.getProduct().getId());
+
+                productDtoValue.setOldAmount(ZERO);
+                for (WarehouseProductHistory startWPHistory : startWPHistories) {
+                    if (startWPHistory.getDropped() == 0) {
+                        productDtoValue.setOldAmount(productDtoValue.getOldAmount() + startWPHistory.getArrival());
+                    } else {
+                        productDtoValue.setOldAmount(productDtoValue.getOldAmount() - startWPHistory.getDropped());
+                    }
                 }
+
+                List<WarehouseProductHistory> productHistories = wphService.
+                        findByDatesBetween(startDateUtil, endDateUtil, productProvider.getProduct().getId());
+                productDtoValue.setArrival(ZERO);
+                productDtoValue.setDropped(ZERO);
+                for (WarehouseProductHistory productHistory : productHistories) {
+                    if (productHistory.getDropped() != 0 && productHistory.getArrival() == 0) {
+                        productDtoValue.setArrival(productDtoValue.getArrival() - productHistory.getDropped());
+                    } else {
+                        productDtoValue.setArrival(productDtoValue.getArrival() + productHistory.getArrival());
+                    }
+                }
+                productDtoValue.setResidue(ZERO);
+                productDtoValue.setSoldAmount(ZERO);
+                List<WarehouseProductHistory> endWPHistories = wphService.
+                        findPastNearestAndEqualsDate(endDateUtil, productProvider.getProduct().getId());
+                for (WarehouseProductHistory endWPHistory : endWPHistories) {
+                    if (endWPHistory.getDropped() != 0 && endWPHistory.getArrival() == 0) {
+                        productDtoValue.setResidue(productDtoValue.getResidue() - endWPHistory.getDropped());
+                    } else {
+                        productDtoValue.setResidue(productDtoValue.getResidue() + endWPHistory.getArrival() - endWPHistory.getSold());
+                    }
+                    productDtoValue.setSoldAmount(productDtoValue.getSoldAmount() + endWPHistory.getSold());
+                }
+                WarehouseProduct warehouseProduct = wpService.findByProductBarcode(productProvider.getProduct().getBarcode());
+                productDtoValue.setPrice(warehouseProduct.getInitialPrice());
+                productDtoValue.setFinalPrice(warehouseProduct.getFinalPrice());
+                productDtoValue.setPrice(warehouseProduct.getInitialPrice());
+                productDtoValue.setSumOfCostPrice(warehouseProduct.getInitialPrice()
+                        .multiply(BigDecimal.valueOf(warehouseProduct.getResidue())));
+                productDtoValue.setSumOfShopPrice(warehouseProduct.getFinalPrice()
+                        .multiply(BigDecimal.valueOf(warehouseProduct.getResidue())));
+
+                TreeItem<ProductDto> productItem = new TreeItem<>(productDtoValue);
+                providerItem.getChildren().add(productItem);
+
             }
         }
         providersReport.setRoot(root);
@@ -144,6 +193,11 @@ public class ProvidersReportController {
                 new ReadOnlyStringWrapper(p.getValue().getValue().getUnitSymbol()));
         arrival.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getArrival()));
         sold.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSoldAmount()));
+        initialResidue.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getOldAmount()));
+        finalResidue.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getResidue()));
         initialPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getPrice()));
+        finalPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getFinalPrice()));
+        sumInitialPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSumOfCostPrice()));
+        sumFinalPrice.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getSumOfShopPrice()));
     }
 }
