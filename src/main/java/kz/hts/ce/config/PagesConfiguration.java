@@ -36,6 +36,7 @@ public class PagesConfiguration {
 
     private Stage primaryStage;
     private Stage secondaryStage;
+
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
@@ -71,7 +72,7 @@ public class PagesConfiguration {
 
     @Bean
     @Scope("prototype")
-    public Stage sales(){
+    public Stage sales() {
         showStage(secondaryStage, "/view/sale.fxml");
         secondaryStage.setFullScreenExitHint("");
         secondaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
@@ -191,7 +192,7 @@ public class PagesConfiguration {
     }
 
     @Bean
-    public SalesController salesController(){
+    public SalesController salesController() {
         return new SalesController();
     }
 

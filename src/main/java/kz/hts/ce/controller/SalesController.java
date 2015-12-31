@@ -1,19 +1,18 @@
 package kz.hts.ce.controller;
 
-import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.SplitPane;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import kz.hts.ce.config.PagesConfiguration;
+import javafx.scene.image.Image;
 import org.springframework.stereotype.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
 
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 
@@ -26,17 +25,20 @@ public class SalesController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         DoubleProperty dividerPositionProperty = splitPane.getDividers().get(0).positionProperty();
+        double[] pos = splitPane.getDividerPositions();
         dividerPositionProperty.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-            splitPane.setDividerPositions(.92);
+            splitPane.setDividerPositions(pos);
         });
+
     }
 
     @FXML
-    public void exit(){
+    public void exit() {
         getPagesConfiguration().sales().close();
     }
+
     @FXML
-    public void changeMode(){
+    public void changeMode() {
         getPagesConfiguration().sales().close();
         getPagesConfiguration().main();
     }
