@@ -1,9 +1,11 @@
 package kz.hts.ce.config;
 
 import javafx.scene.Node;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import kz.hts.ce.controller.*;
 import kz.hts.ce.controller.invoice.ReceiptController;
 import kz.hts.ce.controller.invoice.ReceiptsController;
@@ -23,6 +25,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
+import java.beans.EventHandler;
 import java.io.IOException;
 
 import static kz.hts.ce.util.spring.SpringFxmlLoader.showStage;
@@ -32,13 +35,21 @@ import static kz.hts.ce.util.spring.SpringFxmlLoader.showStage;
 public class PagesConfiguration {
 
     private Stage primaryStage;
-
+    private Stage secondaryStage;
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
     public Stage getPrimaryStage() {
         return primaryStage;
+    }
+
+    public Stage getSecondaryStage() {
+        return secondaryStage;
+    }
+
+    public void setSecondaryStage(Stage secondaryStage) {
+        this.secondaryStage = secondaryStage;
     }
 
     @PostConstruct
@@ -61,8 +72,12 @@ public class PagesConfiguration {
     @Bean
     @Scope("prototype")
     public Stage sales(){
-        showStage(primaryStage, "/view/sales.fxml");
-        return primaryStage;
+        showStage(secondaryStage, "/view/sale.fxml");
+        secondaryStage.setFullScreenExitHint("");
+        secondaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        secondaryStage.setFullScreen(true);
+//        primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        return secondaryStage;
     }
 
     @Bean
