@@ -1,18 +1,31 @@
 package kz.hts.ce.util.spring;
 
 import kz.hts.ce.model.entity.Employee;
+import kz.hts.ce.model.entity.Provider;
 import kz.hts.ce.model.entity.Shift;
+import kz.hts.ce.model.entity.ShopProvider;
 import kz.hts.ce.security.AuthenticationService;
 import kz.hts.ce.security.CustomAuthenticationProvider;
+import kz.hts.ce.util.JavaUtil;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class SpringUtil {
@@ -21,6 +34,10 @@ public class SpringUtil {
     private Shift shift;
     private Employee employee;
     private boolean newInvoice;
+    private String password;
+
+    private List<Provider> providers;
+    private List<ShopProvider> shopProviders;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -48,6 +65,40 @@ public class SpringUtil {
             customAuthenticationProvider.authenticate(authToken);
             SecurityContextHolder.getContext().setAuthentication(authToken);
         } else throw new NullPointerException();
+    }
+
+    private HttpHeaders createHeadersForAuthentication() {
+        return new HttpHeaders() {
+            {
+                String auth = employee.getUsername() + ":" + password;
+                byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")));
+                String authHeader = "Basic " + new String(encodedAuth);
+                setContentType(MediaType.APPLICATION_JSON);
+                set("Authorization", authHeader);
+            }
+        };
+    }
+
+    public void sendProvidersToServer() {
+        HttpHeaders headers = createHeadersForAuthentication();
+        HttpEntity<List<Provider>> requestEntity = new HttpEntity<>(providers, headers);
+        RestTemplate template = new RestTemplate();
+        template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        template.getMessageConverters().add(new StringHttpMessageConverter());
+        String url = JavaUtil.URL + "/json/providers/add";
+        template.exchange(url, HttpMethod.POST, requestEntity, (Class<List<Provider>>) providers.getClass());
+        providers.clear();
+    }
+
+    public void sendShopProvidersToServer() {
+        HttpHeaders headers = createHeadersForAuthentication();
+        HttpEntity<List<ShopProvider>> requestEntity = new HttpEntity<>(shopProviders, headers);
+        RestTemplate template = new RestTemplate();
+        template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        template.getMessageConverters().add(new StringHttpMessageConverter());
+        String url = JavaUtil.URL + "/json/shop-providers/add";
+        template.exchange(url, HttpMethod.POST, requestEntity, (Class<List<ShopProvider>>) shopProviders.getClass());
+        shopProviders.clear();
     }
 
     public long getId() {
@@ -80,5 +131,41 @@ public class SpringUtil {
 
     public void setNewInvoice(boolean newInvoice) {
         this.newInvoice = newInvoice;
+    }
+
+    public List<Provider> getProviders() {
+        if (providers == null) providers = new ArrayList<>();
+        return providers;
+    }
+
+    public void setProviders(List<Provider> providers) {
+        this.providers = providers;
+    }
+
+    public void addProviderInProviders(Provider provider) {
+        if (providers == null) providers = new ArrayList<>();
+        providers.add(provider);
+    }
+
+    public List<ShopProvider> getShopProviders() {
+        if (shopProviders == null) shopProviders = new ArrayList<>();
+        return shopProviders;
+    }
+
+    public void setShopProviders(List<ShopProvider> shopProviders) {
+        this.shopProviders = shopProviders;
+    }
+
+    public void addShopProviderInShopProviders(ShopProvider shopProvider) {
+        if (shopProviders == null) shopProviders = new ArrayList<>();
+        shopProviders.add(shopProvider);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
