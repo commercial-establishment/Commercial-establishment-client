@@ -1,7 +1,6 @@
 package kz.hts.ce.controller.provider;
 
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -20,11 +19,11 @@ import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaUtil.createProviderDtoFromProvider;
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
@@ -80,20 +79,14 @@ public class AddProviderController implements Initializable {
     private void addProviderCompanyNames() {
         List<String> providerCompanyNames = new ArrayList<>();
         ObservableList<ProviderDto> providerDtosInTable = providerTable.getItems();
-        for (ProviderDto providerDto : providerDtosInTable) {
-            if (!providerCompanyNames.contains(providerDto.getCompanyName())) {
-                providerCompanyNames.add(providerDto.getCompanyName());
-            }
-        }
+        providerDtosInTable.stream().filter(providerDto -> !providerCompanyNames.contains(providerDto.getCompanyName()))
+                .forEach(providerDto -> providerCompanyNames.add(providerDto.getCompanyName()));
 
         List<Provider> providers = providerService.findAll();
         this.providers.getItems().clear();
         ObservableList<String> providerNames = this.providers.getItems();
-        for (Provider provider : providers) {
-            if (!providerCompanyNames.contains(provider.getCompanyName())) {
-                providerNames.add(provider.getCompanyName());
-            }
-        }
+        providerNames.addAll(providers.stream().filter(provider -> !providerCompanyNames.
+                contains(provider.getCompanyName())).map(Provider::getCompanyName).collect(Collectors.toList()));
         if (providerNames.size() == 0) {
             this.providers.setDisable(true);
             this.add.setDisable(true);
@@ -131,29 +124,17 @@ public class AddProviderController implements Initializable {
         Shop shop = springUtil.getEmployee().getShop();
 
         List<ShopProvider> shopProviders = shopProviderService.findByShopId(shop.getId());
-        List<String> companyNames = new ArrayList<>();
-        for (ShopProvider shopProvider : shopProviders) companyNames.add(shopProvider.getProvider().getCompanyName());
-        for (ProviderDto provider : providers) {
-            if (!companyNames.contains(provider.getCompanyName())) {
-                ShopProvider shopProvider = new ShopProvider();
-                shopProvider.setShop(shop);
-                Provider providerFromDB = providerService.findByCompanyName(provider.getCompanyName());
-                shopProvider.setProvider(providerFromDB);
-                shopProvider.setBlocked(false);
-                shopProviderService.save(shopProvider);
-            }
-        }
-
-        showMainPage();
-    }
-
-    public void showMainPage() {
-//        try {
-//            mainController.getContentContainer().getChildren().setAll(getPagesConfiguration().sales());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
+        List<String> companyNames = shopProviders.stream().map(shopProvider -> shopProvider.getProvider().getCompanyName()).collect(Collectors.toList());
+        providers.stream().filter(provider -> !companyNames.contains(provider.getCompanyName())).forEach(provider -> {
+            ShopProvider shopProvider = new ShopProvider();
+            shopProvider.setShop(shop);
+            Provider providerFromDB = providerService.findByCompanyName(provider.getCompanyName());
+            shopProvider.setProvider(providerFromDB);
+            shopProvider.setBlocked(false);
+            ShopProvider savedShopProvider = shopProviderService.save(shopProvider);
+            springUtil.addShopProviderInShopProviders(savedShopProvider);
+        });
+        /*TODO success alert*/
     }
 
     @FXML
