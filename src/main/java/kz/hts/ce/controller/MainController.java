@@ -1,37 +1,32 @@
 package kz.hts.ce.controller;
 
-import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import kz.hts.ce.config.PagesConfiguration;
-import kz.hts.ce.controller.sale.ProductCategoryController;
-import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.Shift;
-import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.ShiftService;
 import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import java.io.IOException;
-import java.net.InetAddress;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import static kz.hts.ce.util.JavaUtil.checkConnection;
+import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 import static kz.hts.ce.util.javafx.JavaFxUtil.getWatch;
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
-import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class MainController implements Initializable {
@@ -75,6 +70,8 @@ public class MainController implements Initializable {
     }
 
     public void logout() {
+        sendDataToServer();
+
         PagesConfiguration screens = getPagesConfiguration();
         Shift shift = springUtil.getShift();
         shift.setEnd(new Date());
@@ -83,11 +80,22 @@ public class MainController implements Initializable {
         screens.login().show();
     }
 
-    public StackPane getContentContainer() {
-        return contentContainer;
+    private void sendDataToServer() {
+        if (checkConnection()) {
+            if (!springUtil.getProviders().isEmpty()) {
+                springUtil.sendProvidersToServer();
+            }
+//
+//            if (!springUtil.getShopProviders().isEmpty()) {
+//                springUtil.sendShopProvidersToServer();
+//            }
+
+            alert(Alert.AlertType.INFORMATION, "Connection success", null, "Новые данные были переданы на сервер.");
+        } else
+            alert(Alert.AlertType.ERROR, "Connection failed", null, "Данные небыли переданы на сервер. Проверьте соединение.");
     }
 
-    public StackPane getSales() {
-        return sales;
+    public StackPane getContentContainer() {
+        return contentContainer;
     }
 }
