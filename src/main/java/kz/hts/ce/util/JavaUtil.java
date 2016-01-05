@@ -7,6 +7,8 @@ import kz.hts.ce.model.dto.ProviderDto;
 import kz.hts.ce.model.entity.*;
 
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
@@ -16,6 +18,8 @@ import java.util.Date;
 import java.util.List;
 
 public class JavaUtil {
+
+    public static final String URL = "http://localhost:8080";/*TODO change URL*/
 
     public static BigDecimal stringToBigDecimal(String value) {
         try {
@@ -138,5 +142,16 @@ public class JavaUtil {
         calendar.set(Calendar.SECOND, 1);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
+    }
+
+    public static boolean checkConnection() {
+        try {
+            URL url = new URL(URL);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.connect();
+            return con.getResponseCode() == 200;
+        } catch (Exception e) {
+            throw new ControllerException(e);
+        }
     }
 }
