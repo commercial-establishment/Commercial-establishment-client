@@ -11,6 +11,7 @@ import kz.hts.ce.controller.payment.PaymentController;
 import kz.hts.ce.controller.products.EditProductController;
 import kz.hts.ce.controller.products.ShopProductsController;
 import kz.hts.ce.controller.provider.AddProviderController;
+import kz.hts.ce.controller.provider.CreateProviderController;
 import kz.hts.ce.controller.sale.CalculatorController;
 import kz.hts.ce.controller.sale.ProductCategoryController;
 import kz.hts.ce.controller.sale.ProductsController;
@@ -218,6 +219,11 @@ public class PagesConfiguration {
     @Bean
     public SettingsController settingsController() {
         return new SettingsController();
+    }
+
+    @Bean
+    public CreateProviderController createProviderController() {
+        return new CreateProviderController();
     }
 
     @Bean
