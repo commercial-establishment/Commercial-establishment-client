@@ -13,6 +13,7 @@ import kz.hts.ce.service.CityService;
 import kz.hts.ce.service.ProviderService;
 import kz.hts.ce.service.RoleService;
 import kz.hts.ce.util.javafx.fields.IntegerTextField;
+import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -28,7 +29,8 @@ import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 @Controller
 public class CreateProviderController implements Initializable {
 
-    public static final String PROVIDER = "PROVIDER";
+    private static final String PROVIDER = "PROVIDER";
+
     @FXML
     private ComboBox<String> cities;
     @FXML
@@ -54,6 +56,9 @@ public class CreateProviderController implements Initializable {
     @Autowired
     private MainController mainController;
 
+    @Autowired
+    private SpringUtil springUtil;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         List<City> cities = cityService.findAll();
@@ -77,7 +82,8 @@ public class CreateProviderController implements Initializable {
             if (!iin.isEmpty()) provider.setIin(iin);
             String bin = this.bin.getText();
             if (!bin.isEmpty()) provider.setBin(bin);
-            providerService.save(provider);
+            Provider savedProvider = providerService.save(provider);
+            springUtil.addProviderInProviders(savedProvider);
 
             addProviderPage();
         } catch (RuntimeException e) {
