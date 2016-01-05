@@ -82,17 +82,10 @@ public class MainController implements Initializable {
 
     private void sendDataToServer() {
         if (checkConnection()) {
-            if (!springUtil.getProviders().isEmpty()) {
-                springUtil.sendProvidersToServer();
-            }
-//
-//            if (!springUtil.getShopProviders().isEmpty()) {
-//                springUtil.sendShopProvidersToServer();
-//            }
-
-            alert(Alert.AlertType.INFORMATION, "Connection success", null, "Новые данные были переданы на сервер.");
+            if (!springUtil.getProviders().isEmpty()) springUtil.sendProvidersToServer();
+            if (!springUtil.getShopProviders().isEmpty()) springUtil.sendShopProvidersToServer();
         } else
-            alert(Alert.AlertType.ERROR, "Connection failed", null, "Данные небыли переданы на сервер. Проверьте соединение.");
+            alert(Alert.AlertType.ERROR, "Проверьте интернет соединение", null, "Данные небыли переданы на сервер. Проверьте интернет соединение.");
     }
 
     public StackPane getContentContainer() {

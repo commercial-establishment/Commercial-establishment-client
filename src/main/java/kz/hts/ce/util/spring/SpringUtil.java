@@ -1,11 +1,13 @@
 package kz.hts.ce.util.spring;
 
-import kz.hts.ce.model.entity.Employee;
-import kz.hts.ce.model.entity.Provider;
-import kz.hts.ce.model.entity.Shift;
-import kz.hts.ce.model.entity.ShopProvider;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import kz.hts.ce.model.entity.*;
 import kz.hts.ce.security.AuthenticationService;
 import kz.hts.ce.security.CustomAuthenticationProvider;
+import kz.hts.ce.service.CategoryService;
+import kz.hts.ce.service.ProviderService;
 import kz.hts.ce.util.JavaUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class SpringUtil {
@@ -45,6 +49,11 @@ public class SpringUtil {
     private AuthenticationService authenticationService;
     @Autowired
     private CustomAuthenticationProvider customAuthenticationProvider;
+
+    @Autowired
+    private ProviderService providerService;
+    @Autowired
+    private CategoryService categoryService;
 
     public static String getPrincipal() {
         String userName;
@@ -99,6 +108,45 @@ public class SpringUtil {
         String url = JavaUtil.URL + "/json/shop-providers/add";
         template.exchange(url, HttpMethod.POST, requestEntity, (Class<List<ShopProvider>>) shopProviders.getClass());
         shopProviders.clear();
+    }
+
+    private JsonNode getAllProvidersFromServer() {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = createHeadersForAuthentication();
+        HttpEntity<List<ShopProvider>> request = new HttpEntity<>(headers);
+        String url = JavaUtil.URL + "/json/providers";
+        return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
+    }
+
+    private JsonNode getAllCategoriesFromServer() {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = createHeadersForAuthentication();
+        HttpEntity<List<Category>> request = new HttpEntity<>(headers);
+        String url = JavaUtil.URL + "/json/categories";
+        return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
+    }
+
+    public void checkAndUpdateNewDataFromServer() {
+        try {
+            JsonNode providersFromServerJson = getAllProvidersFromServer();
+            List<Provider> providers = providerService.findAll();
+            List<String> companyNames = providers.stream().map(Provider::getCompanyName).collect(Collectors.toList());
+            ObjectMapper mapper = new ObjectMapper();
+            List<Provider> providersFromServer = mapper.readValue(mapper.treeAsTokens(providersFromServerJson), new TypeReference<List<Provider>>() {
+            });
+            providersFromServer.stream().filter(provider -> !companyNames.contains(provider.getCompanyName()))
+                    .forEach(provider -> providerService.save(provider));
+
+            JsonNode categoriesFromServerJson = getAllCategoriesFromServer();
+            List<Category> categories = categoryService.findAll();
+            List<String> categoryNames = categories.stream().map(Category::getName).collect(Collectors.toList());
+            List<Category> categoriesFromServer = mapper.readValue(mapper.treeAsTokens(categoriesFromServerJson), new TypeReference<List<Category>>() {
+            });
+            categoriesFromServer.stream().filter(category -> !categoryNames.contains(category.getName()))
+                    .forEach(category -> categoryService.save(category));
+        } catch (IOException e) {
+            /*TODO exception*/
+        }
     }
 
     public long getId() {

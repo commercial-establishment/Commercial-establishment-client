@@ -151,7 +151,7 @@ public class JavaUtil {
             con.connect();
             return con.getResponseCode() == 200;
         } catch (Exception e) {
-            throw new ControllerException(e);
+            return false;
         }
     }
 }
