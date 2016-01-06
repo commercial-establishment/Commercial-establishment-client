@@ -2,26 +2,6 @@
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
 <persistence-unit name="primary" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <class>kz.hts.ce.model.entity.Gender</class>
-    <class>kz.hts.ce.model.entity.Role</class>
-    <class>kz.hts.ce.model.entity.Category</class>
-    <class>kz.hts.ce.model.entity.City</class>
-    <class>kz.hts.ce.model.entity.Employee</class>
-    <class>kz.hts.ce.model.entity.Producer</class>
-    <class>kz.hts.ce.model.entity.Product</class>
-    <class>kz.hts.ce.model.entity.ProductProvider</class>
-    <class>kz.hts.ce.model.entity.Provider</class>
-    <class>kz.hts.ce.model.entity.Shop</class>
-    <class>kz.hts.ce.model.entity.ShopProvider</class>
-    <class>kz.hts.ce.model.entity.Type</class>
-    <class>kz.hts.ce.model.entity.Warehouse</class>
-    <class>kz.hts.ce.model.entity.WarehouseProductHistory</class>
-    <class>kz.hts.ce.model.entity.WarehouseProduct</class>
-    <class>kz.hts.ce.model.entity.Invoice</class>
-    <class>kz.hts.ce.model.entity.InvoiceProduct</class>
-    <class>kz.hts.ce.model.entity.Shift</class>
-    <class>kz.hts.ce.model.entity.Check</class>
-    <class>kz.hts.ce.model.entity.CheckProduct</class>
     <properties>
         <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
         <property name="hibernate.hbm2ddl.auto" value="update"/>
