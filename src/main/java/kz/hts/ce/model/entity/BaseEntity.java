@@ -14,7 +14,7 @@ public abstract class BaseEntity {
     @Id
     @GeneratedValue(generator = "uuid-gen")
     @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
-    @Column(name = "id", columnDefinition = "uuid")/*TODO auto generation*/
+    @Column(name = "id", columnDefinition = "uuid")
     private UUID id;
 
     public UUID getId() {
