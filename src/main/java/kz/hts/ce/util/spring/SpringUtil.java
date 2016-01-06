@@ -1,12 +1,11 @@
 package kz.hts.ce.util.spring;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.control.Alert;
 import kz.hts.ce.model.entity.*;
 import kz.hts.ce.security.AuthenticationService;
 import kz.hts.ce.security.CustomAuthenticationProvider;
+import kz.hts.ce.service.BroadcastService;
 import kz.hts.ce.service.CategoryService;
 import kz.hts.ce.service.ProviderService;
 import kz.hts.ce.util.JavaUtil;
@@ -29,8 +28,8 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaUtil.checkConnection;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
@@ -58,6 +57,8 @@ public class SpringUtil {
     private ProviderService providerService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private BroadcastService broadcastService;
 
     public static String getPrincipal() {
         String userName;
@@ -121,40 +122,60 @@ public class SpringUtil {
         String url = JavaUtil.URL + "/json/providers";
         return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
     }
+//
+//    private JsonNode getAllCategoriesFromServer() {
+//        RestTemplate restTemplate = new RestTemplate();
+//        HttpHeaders headers = createHeadersForAuthentication();
+//        HttpEntity<List<Category>> request = new HttpEntity<>(headers);
+//        String url = JavaUtil.URL + "/json/categories";
+//        return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
+//    }
 
-    private JsonNode getAllCategoriesFromServer() {
+    private void sendLastBroadcastDateToServer() {
+        HttpHeaders headers = createHeadersForAuthentication();
+        Date broadcastDate = broadcastService.findByNearestDate(new Date()).getDate();
+        HttpEntity<Date> requestEntity = new HttpEntity<>(broadcastDate, headers);
+        RestTemplate template = new RestTemplate();
+        template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        template.getMessageConverters().add(new StringHttpMessageConverter());
+        String url = JavaUtil.URL + "/json/last-broadcast-date";
+        template.exchange(url, HttpMethod.POST, requestEntity, Date.class);
+    }
+
+    private JsonNode getCategoryChangesFromServer() {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = createHeadersForAuthentication();
         HttpEntity<List<Category>> request = new HttpEntity<>(headers);
-        String url = JavaUtil.URL + "/json/categories";
+        String url = JavaUtil.URL + "/json/category-changes";
         return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
     }
 
     public void checkAndUpdateNewDataFromServer() {
-        try {
-            JsonNode providersFromServerJson = getAllProvidersFromServer();
-            List<Provider> providers = providerService.findAll();
-            List<String> companyNames = providers.stream().map(Provider::getCompanyName).collect(Collectors.toList());
-            ObjectMapper mapper = new ObjectMapper();
-            List<Provider> providersFromServer = mapper.readValue(mapper.treeAsTokens(providersFromServerJson), new TypeReference<List<Provider>>() {
-            });
-            providersFromServer.stream().filter(provider -> !companyNames.contains(provider.getCompanyName()))
-                    .forEach(provider -> providerService.save(provider));
-
-            JsonNode categoriesFromServerJson = getAllCategoriesFromServer();
-            List<Category> categories = categoryService.findAll();
-            List<String> categoryNames = categories.stream().map(Category::getName).collect(Collectors.toList());
-            List<Category> categoriesFromServer = mapper.readValue(mapper.treeAsTokens(categoriesFromServerJson), new TypeReference<List<Category>>() {
-            });
-            categoriesFromServer.stream().filter(category -> !categoryNames.contains(category.getName()))
-                    .forEach(category -> categoryService.save(category));
-        } catch (IOException e) {
-            alert(Alert.AlertType.WARNING, "Данные не синхронизированны", null, "Ошибка синхронизации данных. Обратитесь в службу поддержки.");
-        }
+//        try {
+//            JsonNode providersFromServerJson = getAllProvidersFromServer();
+//            List<Provider> providers = providerService.findAll();
+//            List<String> companyNames = providers.stream().map(Provider::getCompanyName).collect(Collectors.toList());
+//            ObjectMapper mapper = new ObjectMapper();
+//            List<Provider> providersFromServer = mapper.readValue(mapper.treeAsTokens(providersFromServerJson), new TypeReference<List<Provider>>() {
+//            });
+//            providersFromServer.stream().filter(provider -> !companyNames.contains(provider.getCompanyName()))
+//                    .forEach(provider -> providerService.save(provider));
+//
+//            JsonNode categoriesFromServerJson = getAllCategoriesFromServer();
+//            List<Category> categories = categoryService.findAll();
+//            List<String> categoryNames = categories.stream().map(Category::getName).collect(Collectors.toList());
+//            List<Category> categoriesFromServer = mapper.readValue(mapper.treeAsTokens(categoriesFromServerJson), new TypeReference<List<Category>>() {
+//            });
+//            categoriesFromServer.stream().filter(category -> !categoryNames.contains(category.getName()))
+//                    .forEach(category -> categoryService.save(category));
+//        } catch (IOException e) {
+//            alert(Alert.AlertType.WARNING, "Данные не синхронизированны", null, "Ошибка синхронизации данных. Обратитесь в службу поддержки.");
+//        }
     }
 
     public void sendDataToServer() {
         if (checkConnection()) {
+            sendLastBroadcastDateToServer();
             if (!getProviders().isEmpty()) sendProvidersToServer();
             if (!getShopProviders().isEmpty()) sendShopProvidersToServer();
         } else

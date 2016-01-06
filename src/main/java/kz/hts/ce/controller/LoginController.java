@@ -9,8 +9,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.controller.sale.CalculatorController;
+import kz.hts.ce.model.entity.Broadcast;
 import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.Shift;
+import kz.hts.ce.service.BroadcastService;
 import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.ShiftService;
 import kz.hts.ce.util.spring.SpringUtil;
@@ -41,6 +43,8 @@ public class LoginController {
     private ShiftService shiftService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private BroadcastService broadcastService;
 
     @Autowired
     private CalculatorController calculatorController;
@@ -65,6 +69,10 @@ public class LoginController {
             shiftEntity.setEmployee(employee);
             Shift shift = shiftService.save(shiftEntity);
             springUtils.setShift(shift);
+
+            Broadcast broadcast = new Broadcast();
+            broadcast.setDate(new Date());
+            broadcastService.save(broadcast);
 
             if (checkConnection()) {
                 springUtils.checkAndUpdateNewDataFromServer();
