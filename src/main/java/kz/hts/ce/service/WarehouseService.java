@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class WarehouseService extends BaseService<Warehouse, WarehouseRepository> {
@@ -17,7 +18,7 @@ public class WarehouseService extends BaseService<Warehouse, WarehouseRepository
         super(repository);
     }
 
-    public Warehouse findByShopId(long id) {
+    public Warehouse findByShopId(UUID id) {
         return repository.findByShop_Id(id);
     }
 }

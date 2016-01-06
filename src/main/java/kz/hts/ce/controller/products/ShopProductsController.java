@@ -30,6 +30,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
@@ -42,7 +43,7 @@ public class ShopProductsController implements Initializable {
     public static final String ORANGE_COLOR = "orangeColor";
     public static final String RED_COLOR = "redColor";
 
-    private long shopId;
+    private UUID shopId;
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
 
     @FXML

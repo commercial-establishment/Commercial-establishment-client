@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductProviderService extends BaseService<ProductProvider, ProductProviderRepository> {
@@ -15,15 +16,15 @@ public class ProductProviderService extends BaseService<ProductProvider, Product
         super(repository);
     }
 
-    public List<ProductProvider> findByProviderId(long providerId) {
+    public List<ProductProvider> findByProviderId(UUID providerId) {
         return repository.findByProvider_Id(providerId);
     }
 
-    public ProductProvider findByProviderIdAndProductId(long providerId, long productId) {
+    public ProductProvider findByProviderIdAndProductId(UUID providerId, UUID productId) {
         return repository.findByProvider_IdAndProduct_Id(providerId, productId);
     }
 
-    public List<ProductProvider> findByProviderIdAndProductCategoryId(long providerId, long categoryId) {
+    public List<ProductProvider> findByProviderIdAndProductCategoryId(UUID providerId, UUID categoryId) {
         return repository.findByProvider_IdAndProduct_Category_Id(providerId, categoryId);
     }
 }

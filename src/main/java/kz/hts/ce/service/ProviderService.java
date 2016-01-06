@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProviderService extends BaseService<Provider, ProviderRepository> {
@@ -28,7 +29,7 @@ public class ProviderService extends BaseService<Provider, ProviderRepository> {
         return repository.findByUsernameAndBlocked(username, blocked);
     }
 
-    public void updatePasswordById(String password, long id) {
+    public void updatePasswordById(String password, UUID id) {
         repository.updatePasswordById(password, id);
     }
 
@@ -36,19 +37,19 @@ public class ProviderService extends BaseService<Provider, ProviderRepository> {
         return repository.findByRole_Name(roleName);
     }
 
-    public void lockById(long id) {
+    public void lockById(UUID id) {
         repository.lockById(id);
     }
 
-    public void reestablishById(long id) {
+    public void reestablishById(UUID id) {
         repository.reestablishById(id);
     }
 
-    public void updateStartAndEndWorkDate(Date startWorkDate, Date endWorkDate, long id) {
+    public void updateStartAndEndWorkDate(Date startWorkDate, Date endWorkDate, UUID id) {
         repository.updateStartAndEndWorkDate(startWorkDate, endWorkDate, id);
     }
 
-    public void updateEndWorkDate(Date endWorkDate, long id) {
+    public void updateEndWorkDate(Date endWorkDate, UUID id) {
         repository.updateEndWorkDate(endWorkDate, id);
     }
 }

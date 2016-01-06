@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 import static kz.hts.ce.util.JavaUtil.stringToBigDecimal;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
@@ -80,8 +81,8 @@ public class PaymentController implements Initializable {
             if (shortage.getText().equals(ZERO)) {
                 ObservableList<ProductDto> productsData = productsController.getProductsData();
                 for (ProductDto productDto : productsData) {
-                    long productId = productDto.getId();
-                    WarehouseProduct warehouseProduct = warehouseProductService.findByProductId(productId);
+                    String productId = productDto.getId();
+                    WarehouseProduct warehouseProduct = warehouseProductService.findByProductId(UUID.fromString(productId));
 
                     Date newDate = new Date();
                     int productAmount = productDto.getAmount();

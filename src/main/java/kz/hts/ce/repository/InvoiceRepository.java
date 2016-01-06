@@ -8,21 +8,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
+public interface InvoiceRepository extends JpaRepository<Invoice, UUID> {
 
-    List<Invoice> findByWarehouse_Shop_Id(long id);
+    List<Invoice> findByWarehouse_Shop_Id(UUID id);
 
-    List<Invoice> findByWarehouse_Shop_IdAndProvider_Id(long shopId, long providerId);
+    List<Invoice> findByWarehouse_Shop_IdAndProvider_Id(UUID shopId, UUID providerId);
 
     @Transactional
     @Modifying
     @Query("UPDATE Invoice i set i.postponement = ?1 where i.id = ?2")
-    void updatePostponementById(int postponement, long id);
+    void updatePostponementById(int postponement, UUID id);
 
     @Transactional
     @Modifying
     @Query("UPDATE Invoice i set i.vat = ?1 where i.id = ?2")
-    void updateVatById(boolean vat, long id);
+    void updateVatById(boolean vat, UUID id);
 }

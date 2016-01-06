@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ShopService extends BaseService<Shop, ShopRepository> {
@@ -19,11 +20,11 @@ public class ShopService extends BaseService<Shop, ShopRepository> {
         return repository.findAll();
     }
 
-    public void lockById(long id) {
+    public void lockById(UUID id) {
         repository.lockById(id);
     }
 
-    public void reestablishById(long id) {
+    public void reestablishById(UUID id) {
         repository.reestablishById(id);
     }
 }

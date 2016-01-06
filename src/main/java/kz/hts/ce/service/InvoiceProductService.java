@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class InvoiceProductService extends BaseService<InvoiceProduct, InvoiceProductRepository> {
@@ -21,7 +22,7 @@ public class InvoiceProductService extends BaseService<InvoiceProduct, InvoicePr
         return repository.findByInvoice_DateBetweenAndProduct_Barcode(start, end, barcode);
     }
 
-    public List<InvoiceProduct> findByInvoiceId(long invoiceId) {
+    public List<InvoiceProduct> findByInvoiceId(UUID invoiceId) {
         return repository.findByInvoice_Id(invoiceId);
     }
 
@@ -29,11 +30,11 @@ public class InvoiceProductService extends BaseService<InvoiceProduct, InvoicePr
         return repository.findByProduct_Barcode(barcode);
     }
 
-    public void updatePriceById(BigDecimal price, long id){
+    public void updatePriceById(BigDecimal price, UUID id){
         repository.updatePriceById(price, id);
     }
 
-    public void updateAmountById(int amount, long id){
+    public void updateAmountById(int amount, UUID id){
         repository.updateAmountById(amount, id);
     }
 }

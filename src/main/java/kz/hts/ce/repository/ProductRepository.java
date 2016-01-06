@@ -8,21 +8,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
-
-    @Transactional
-    @Modifying
-    @Query("UPDATE Product p set p.blocked = TRUE where p.id = ?1")
-    void lockById(long id);
-
-    @Transactional
-    @Modifying
-    @Query("UPDATE Product p set p.blocked = FALSE where p.id = ?1")
-    void reestablishById(long id);
+public interface ProductRepository extends JpaRepository<Product, UUID> {
 
     Product findByBarcode(String barcode);
 
     List<Product> findByCategory_Name(String name);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Product p set p.blocked = TRUE where p.id = ?1")
+    void lockById(UUID id);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Product p set p.blocked = FALSE where p.id = ?1")
+    void reestablishById(UUID id);
 }

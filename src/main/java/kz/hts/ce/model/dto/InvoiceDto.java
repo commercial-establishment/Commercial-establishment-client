@@ -3,29 +3,30 @@ package kz.hts.ce.model.dto;
 import javafx.beans.property.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class InvoiceDto {
 
-    private LongProperty id;
+    private StringProperty id;
     private StringProperty providerCompanyName;
     private StringProperty date;
     private IntegerProperty postponement;
     private BooleanProperty vat;
     private ObjectProperty<BigDecimal> totalPrice;
 
-    public long getId() {
+    public String getId() {
         return id.get();
     }
 
-    public LongProperty idProperty() {
+    public StringProperty idProperty() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(UUID id) {
         if (this.id == null) {
-            this.id = new SimpleLongProperty();
+            this.id = new SimpleStringProperty();
         }
-        this.id.set(id);
+        this.id.set(String.valueOf(id));
     }
 
     public String getProviderCompanyName() {

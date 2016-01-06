@@ -3,6 +3,7 @@ package kz.hts.ce.util.spring;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.scene.control.Alert;
 import kz.hts.ce.model.entity.*;
 import kz.hts.ce.security.AuthenticationService;
 import kz.hts.ce.security.CustomAuthenticationProvider;
@@ -31,10 +32,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static kz.hts.ce.util.JavaUtil.checkConnection;
+import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
+
 @Component
 public class SpringUtil {
 
-    private long id;
+    private String id;
     private Shift shift;
     private Employee employee;
     private boolean newInvoice;
@@ -88,7 +92,7 @@ public class SpringUtil {
         };
     }
 
-    public void sendProvidersToServer() {
+    private void sendProvidersToServer() {
         HttpHeaders headers = createHeadersForAuthentication();
         HttpEntity<List<Provider>> requestEntity = new HttpEntity<>(providers, headers);
         RestTemplate template = new RestTemplate();
@@ -99,7 +103,7 @@ public class SpringUtil {
         providers.clear();
     }
 
-    public void sendShopProvidersToServer() {
+    private void sendShopProvidersToServer() {
         HttpHeaders headers = createHeadersForAuthentication();
         HttpEntity<List<ShopProvider>> requestEntity = new HttpEntity<>(shopProviders, headers);
         RestTemplate template = new RestTemplate();
@@ -145,15 +149,23 @@ public class SpringUtil {
             categoriesFromServer.stream().filter(category -> !categoryNames.contains(category.getName()))
                     .forEach(category -> categoryService.save(category));
         } catch (IOException e) {
-            /*TODO exception*/
+            alert(Alert.AlertType.WARNING, "Данные не синхронизированны", null, "Ошибка синхронизации данных. Обратитесь в службу поддержки.");
         }
     }
 
-    public long getId() {
+    public void sendDataToServer() {
+        if (checkConnection()) {
+            if (!getProviders().isEmpty()) sendProvidersToServer();
+            if (!getShopProviders().isEmpty()) sendShopProvidersToServer();
+        } else
+            alert(Alert.AlertType.ERROR, "Проверьте интернет соединение", null, "Данные небыли переданы на сервер. Проверьте интернет соединение.");
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

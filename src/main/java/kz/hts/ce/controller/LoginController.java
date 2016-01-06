@@ -13,7 +13,6 @@ import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.Shift;
 import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.ShiftService;
-import kz.hts.ce.service.WarehouseProductHistoryService;
 import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

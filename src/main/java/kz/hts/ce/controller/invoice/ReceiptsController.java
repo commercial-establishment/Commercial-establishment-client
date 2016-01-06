@@ -30,6 +30,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 import static kz.hts.ce.util.JavaUtil.countDays;
 import static kz.hts.ce.util.JavaUtil.createInvoiceDtoFromInvoice;
@@ -45,12 +46,12 @@ public class ReceiptsController implements Initializable {
 
     private ObservableList<InvoiceDto> invoiceData = FXCollections.observableArrayList();
     private List<ShopProvider> shopProviders;
-    private long shopId;
+    private UUID shopId;
 
     @FXML
     private TableView<InvoiceDto> receiptsTable;
     @FXML
-    private TableColumn<InvoiceDto, Number> id;
+    private TableColumn<InvoiceDto, String> id;
     @FXML
     private TableColumn<InvoiceDto, String> providerCompanyName;
     @FXML
@@ -172,7 +173,7 @@ public class ReceiptsController implements Initializable {
         if (providerCompanyName.equals(ALL_PROVIDERS_RU)) {
             invoices = invoiceService.findByWarehouseShopId(shopId);
         } else {
-            long providerId = providerService.findByCompanyName(providerCompanyName).getId();
+            UUID providerId = providerService.findByCompanyName(providerCompanyName).getId();
             invoices = invoiceService.findByWarehouseShopIdAndProviderId(shopId, providerId);
         }
         for (Invoice invoice : invoices) {

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class WarehouseProductHistoryService extends BaseService<WarehouseProductHistory, WarehouseProductHistoryRepository> {
@@ -16,15 +17,15 @@ public class WarehouseProductHistoryService extends BaseService<WarehouseProduct
         super(repository);
     }
 
-    public List<WarehouseProductHistory> findByDatesBetween(Date firstDate, Date secondDate, long productId) {
+    public List<WarehouseProductHistory> findByDatesBetween(Date firstDate, Date secondDate, UUID productId) {
         return repository.findByDatesBetween(firstDate, secondDate, productId);
     }
 
-    public List<WarehouseProductHistory> findPastNearestAndEqualsDate(Date date, long productId) {
+    public List<WarehouseProductHistory> findPastNearestAndEqualsDate(Date date, UUID productId) {
         return repository.findPastNearestAndEqualsDate(date, productId);
     }
 
-    public List<WarehouseProductHistory> findNextNearestDate(Date date, long productId) {
+    public List<WarehouseProductHistory> findNextNearestDate(Date date, UUID productId) {
         return repository.findNextNearestDate(date, productId);
     }
 

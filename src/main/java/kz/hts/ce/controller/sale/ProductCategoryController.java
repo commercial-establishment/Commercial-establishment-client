@@ -80,7 +80,7 @@ public class ProductCategoryController implements Initializable {
         addProductToTable();
     }
 
-    public void categoriesListener(Map<String, List<WarehouseProduct>> productMap) {
+    private void categoriesListener(Map<String, List<WarehouseProduct>> productMap) {
         categories.getSelectionModel().selectedItemProperty().addListener((ov, oldVal, newVal) -> {
             if (flag) {
                 productsData.clear();
@@ -112,7 +112,7 @@ public class ProductCategoryController implements Initializable {
         });
     }
 
-    public void addProductToTable() {
+    private void addProductToTable() {
         if (categoryProductsTable != null) {
             categoryProductsTable.setOnMousePressed(event -> {
                 if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {

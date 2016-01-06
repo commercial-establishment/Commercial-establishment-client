@@ -136,7 +136,7 @@ public class ReceiptController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        long shopId = springUtil.getEmployee().getShop().getId();
+        UUID shopId = springUtil.getEmployee().getShop().getId();
         List<Unit> units = unitService.findAll();
         List<String> unitNames = units.stream().map(Unit::getName).collect(Collectors.toList());
         unitOfMeasure.getItems().addAll(unitNames);
@@ -166,7 +166,7 @@ public class ReceiptController implements Initializable {
             margin.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(ZERO, 100, ZERO));
         } else {
             providers.setDisable(true);
-            invoiceFromDB = invoiceService.findById(springUtil.getId());
+            invoiceFromDB = invoiceService.findById(UUID.fromString(springUtil.getId()));
 
             barcodes = new HashSet<>();
             List<Product> products = productService.findAll();
@@ -183,7 +183,7 @@ public class ReceiptController implements Initializable {
 
             vat.selectedProperty().setValue(invoiceFromDB.isVat());
 
-            oldInvoiceProducts = invoiceProductService.findByInvoiceId(springUtil.getId());
+            oldInvoiceProducts = invoiceProductService.findByInvoiceId(UUID.fromString(springUtil.getId()));
 
             for (InvoiceProduct invoiceProduct : oldInvoiceProducts) {
                 ProductDto productDto = createProductDtoFromProduct(invoiceProduct.getProduct());
@@ -305,7 +305,7 @@ public class ReceiptController implements Initializable {
         Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Integer postponement = this.postponement.getValue();
         boolean vat = this.vat.isSelected();
-        long shopId = springUtil.getEmployee().getShop().getId();
+        UUID shopId = springUtil.getEmployee().getShop().getId();
         Warehouse warehouse = warehouseService.findByShopId(shopId);
         if (springUtil.isNewInvoice()) {
             try {
@@ -429,9 +429,9 @@ public class ReceiptController implements Initializable {
 
                     String marginPercentage = String.valueOf((Double.valueOf(margin) / 100) + ONE);
                     for (ProductDto productDto : productsData) {
-                        long id = productDto.getId();
+                        String id = productDto.getId();
                         for (InvoiceProduct oldInvoiceProduct : oldInvoiceProducts) {
-                            if (id == oldInvoiceProduct.getId()) {
+                            if (UUID.fromString(id) == oldInvoiceProduct.getId()) {
                                 oldInvoiceProduct.setInitialPrice(productDto.getPrice());
                                 BigDecimal priceWithMargin = new BigDecimal(marginPercentage);
                                 if (jsonUtil.isVatBoolean() && !vat) {
@@ -480,7 +480,7 @@ public class ReceiptController implements Initializable {
                                 invoiceProductService.save(oldInvoiceProduct);
                             }
                         }
-                        if (id == ZERO) {
+                        if (id == null) {
                             Product product = productService.findByBarcode(productDto.getBarcode());
 
                             InvoiceProduct invoiceProduct = new InvoiceProduct();
@@ -559,9 +559,9 @@ public class ReceiptController implements Initializable {
 
                     if (removedProducts != null) {
                         for (ProductDto productDto : removedProducts) {
-                            long id = productDto.getId();
+                            String id = productDto.getId();
                             for (InvoiceProduct oldInvoiceProduct : oldInvoiceProducts) {
-                                if (oldInvoiceProduct.getId() == id) {
+                                if (oldInvoiceProduct.getId() == UUID.fromString(id)) {
                                     invoiceProductService.delete(oldInvoiceProduct.getId());
 
                                     WarehouseProduct warehouseProduct = warehouseProductService

@@ -5,7 +5,6 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
@@ -23,8 +22,6 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import static kz.hts.ce.util.JavaUtil.checkConnection;
-import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 import static kz.hts.ce.util.javafx.JavaFxUtil.getWatch;
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 
@@ -70,7 +67,7 @@ public class MainController implements Initializable {
     }
 
     public void logout() {
-        sendDataToServer();
+        springUtil.sendDataToServer();
 
         PagesConfiguration screens = getPagesConfiguration();
         Shift shift = springUtil.getShift();
@@ -78,14 +75,6 @@ public class MainController implements Initializable {
         shiftService.save(shift);
         screens.main().close();
         screens.login().show();
-    }
-
-    private void sendDataToServer() {
-        if (checkConnection()) {
-            if (!springUtil.getProviders().isEmpty()) springUtil.sendProvidersToServer();
-            if (!springUtil.getShopProviders().isEmpty()) springUtil.sendShopProvidersToServer();
-        } else
-            alert(Alert.AlertType.ERROR, "Проверьте интернет соединение", null, "Данные небыли переданы на сервер. Проверьте интернет соединение.");
     }
 
     public StackPane getContentContainer() {

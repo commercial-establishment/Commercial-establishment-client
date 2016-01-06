@@ -5,8 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
-public class BaseService<E extends BaseEntity, T extends JpaRepository<E, Long>> {
+public class BaseService<E extends BaseEntity, T extends JpaRepository<E, UUID>> {
 
     protected T repository;
 
@@ -15,17 +16,17 @@ public class BaseService<E extends BaseEntity, T extends JpaRepository<E, Long>>
     }
 
     @Transactional
-    public E findById(Long id) {
+    public E findById(UUID id) {
         return repository.findOne(id);
     }
 
     @Transactional
     public List<E> findAll() {
-        return (List<E>) repository.findAll();
+        return repository.findAll();
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(UUID id) {
         repository.delete(id);
     }
 

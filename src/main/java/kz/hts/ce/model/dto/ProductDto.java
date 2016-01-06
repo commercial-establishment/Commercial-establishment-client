@@ -3,12 +3,13 @@ package kz.hts.ce.model.dto;
 import javafx.beans.property.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static kz.hts.ce.util.JavaUtil.multiplyIntegerAndBigDecimal;
 
 public class ProductDto {
 
-    private LongProperty id;
+    private StringProperty id;
     private StringProperty name;
     private IntegerProperty amount;
     private IntegerProperty oldAmount;
@@ -28,17 +29,17 @@ public class ProductDto {
     private IntegerProperty soldAmount;
     private IntegerProperty dropped;
 
-    public long getId() {
+    public String getId() {
         return id.get();
     }
 
-    public LongProperty idProperty() {
+    public StringProperty idProperty() {
         return id;
     }
 
-    public void setId(long id) {
-        if (this.id == null) this.id = new SimpleLongProperty();
-        this.id.set(id);
+    public void setId(UUID id) {
+        if (this.id == null) this.id = new SimpleStringProperty();
+        this.id.set(String.valueOf(id));
     }
 
     public String getName() {

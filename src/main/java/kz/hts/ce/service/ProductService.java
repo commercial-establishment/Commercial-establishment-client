@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductService extends BaseService<Product, ProductRepository> {
@@ -20,11 +21,11 @@ public class ProductService extends BaseService<Product, ProductRepository> {
         return repository.findAll();
     }
 
-    public void lockById(long id) {
+    public void lockById(UUID id) {
         repository.lockById(id);
     }
 
-    public void reestablishById(long id) {
+    public void reestablishById(UUID id) {
         repository.reestablishById(id);
     }
 
