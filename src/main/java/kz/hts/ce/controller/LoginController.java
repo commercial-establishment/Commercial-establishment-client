@@ -43,8 +43,6 @@ public class LoginController {
     private ShiftService shiftService;
     @Autowired
     private EmployeeService employeeService;
-    @Autowired
-    private BroadcastService broadcastService;
 
     @Autowired
     private CalculatorController calculatorController;
@@ -69,10 +67,6 @@ public class LoginController {
             shiftEntity.setEmployee(employee);
             Shift shift = shiftService.save(shiftEntity);
             springUtils.setShift(shift);
-
-            Broadcast broadcast = new Broadcast();
-            broadcast.setDate(new Date());
-            broadcastService.save(broadcast);
 
             if (checkConnection()) {
                 springUtils.checkAndUpdateNewDataFromServer();

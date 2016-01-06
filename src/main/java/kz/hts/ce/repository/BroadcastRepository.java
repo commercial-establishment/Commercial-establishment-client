@@ -12,7 +12,7 @@ import java.util.UUID;
 @Repository
 public interface BroadcastRepository extends JpaRepository<Broadcast, UUID> {
 
-    @Query("SELECT b FROM Broadcast b WHERE b.date <= ?1")
+    @Query("SELECT b FROM Broadcast b WHERE b.date <= ?1 ORDER BY b.date DESC")
     List<Broadcast> findByNearestDate(Date date);
 }
 

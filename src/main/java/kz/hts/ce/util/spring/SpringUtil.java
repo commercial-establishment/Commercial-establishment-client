@@ -2,6 +2,7 @@ package kz.hts.ce.util.spring;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import javafx.scene.control.Alert;
+import kz.hts.ce.controller.ControllerException;
 import kz.hts.ce.model.entity.*;
 import kz.hts.ce.security.AuthenticationService;
 import kz.hts.ce.security.CustomAuthenticationProvider;
@@ -23,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -131,15 +133,21 @@ public class SpringUtil {
 //        return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
 //    }
 
-    private void sendLastBroadcastDateToServer() {
-        HttpHeaders headers = createHeadersForAuthentication();
-        Date broadcastDate = broadcastService.findByNearestDate(new Date()).getDate();
-        HttpEntity<Date> requestEntity = new HttpEntity<>(broadcastDate, headers);
-        RestTemplate template = new RestTemplate();
-        template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-        template.getMessageConverters().add(new StringHttpMessageConverter());
-        String url = JavaUtil.URL + "/json/last-broadcast-date";
-        template.exchange(url, HttpMethod.POST, requestEntity, Date.class);
+    private boolean sendLastBroadcastDateToServer() {
+        try {
+            HttpHeaders headers = createHeadersForAuthentication();
+            List<Broadcast> broadcastDates = broadcastService.findByNearestDate(new Date());/*TODO get 1 date*/
+            Date broadcastDate = broadcastDates.get(0).getDate();
+            HttpEntity<Date> requestEntity = new HttpEntity<>(broadcastDate, headers);
+            RestTemplate template = new RestTemplate();
+            template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+            template.getMessageConverters().add(new StringHttpMessageConverter());
+            String url = JavaUtil.URL + "/json/last-broadcast-date";
+            template.exchange(url, HttpMethod.POST, requestEntity, Date.class);
+            return true;
+        } catch (ControllerException e) {
+            return false;
+        }
     }
 
     private JsonNode getCategoryChangesFromServer() {
@@ -175,7 +183,6 @@ public class SpringUtil {
 
     public void sendDataToServer() {
         if (checkConnection()) {
-            sendLastBroadcastDateToServer();
             if (!getProviders().isEmpty()) sendProvidersToServer();
             if (!getShopProviders().isEmpty()) sendShopProvidersToServer();
         } else
