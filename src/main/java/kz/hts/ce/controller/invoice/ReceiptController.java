@@ -431,53 +431,55 @@ public class ReceiptController implements Initializable {
                     for (ProductDto productDto : productsData) {
                         String id = productDto.getId();
                         for (InvoiceProduct oldInvoiceProduct : oldInvoiceProducts) {
-                            if (UUID.fromString(id) == oldInvoiceProduct.getId()) {
-                                oldInvoiceProduct.setInitialPrice(productDto.getPrice());
-                                BigDecimal priceWithMargin = new BigDecimal(marginPercentage);
-                                if (jsonUtil.isVatBoolean() && !vat) {
-                                    priceWithMargin = (priceWithMargin.multiply(productDto.getPrice()))
-                                            .multiply(BigDecimal.valueOf(VAT));
-                                } else {
-                                    priceWithMargin = priceWithMargin.multiply(productDto.getPrice());
-                                }
-                                oldInvoiceProduct.setFinalPrice(priceWithMargin);
-
-                                WarehouseProduct warehouseProduct = warehouseProductService
-                                        .findByProductBarcode(oldInvoiceProduct.getProduct().getBarcode());
-                                if ((productDto.getAmount() - oldInvoiceProduct.getAmount()) != ZERO && !productDto.getPrice()
-                                        .equals(oldInvoiceProduct.getFinalPrice())) {
-                                    warehouseProduct.setVat(vat);
-                                    warehouseProduct.setMargin(Integer.parseInt(margin));
-                                    warehouseProduct.setFinalPrice(priceWithMargin);
-                                    warehouseProduct.setVersion(warehouseProduct.getVersion() + ONE);
-                                    warehouseProduct.setInitialPrice(productDto.getPrice());
-                                    warehouseProduct.setResidue(warehouseProduct.getResidue() - oldInvoiceProduct.
-                                            getAmount() + productDto.getAmount());
-                                    warehouseProductService.save(warehouseProduct);
-
-                                    WarehouseProductHistory warehouseProductHistory = new WarehouseProductHistory();
-                                    warehouseProductHistory.setWarehouseProduct(warehouseProduct);
-                                    if (productDto.getAmount() < oldInvoiceProduct.getAmount()) {
-                                        warehouseProductHistory.setArrival(0);
-                                        warehouseProductHistory.setDropped(oldInvoiceProduct.getAmount() - productDto.getAmount());
-                                    } else if (productDto.getAmount() > oldInvoiceProduct.getAmount()) {
-                                        int arrival = productDto.getAmount() - oldInvoiceProduct.getAmount();
-                                        warehouseProductHistory.setArrival(arrival);
-                                        warehouseProductHistory.setDropped(0);
+                            if (id != null) {
+                                if (UUID.fromString(id) == oldInvoiceProduct.getId()) {
+                                    oldInvoiceProduct.setInitialPrice(productDto.getPrice());
+                                    BigDecimal priceWithMargin = new BigDecimal(marginPercentage);
+                                    if (jsonUtil.isVatBoolean() && !vat) {
+                                        priceWithMargin = (priceWithMargin.multiply(productDto.getPrice()))
+                                                .multiply(BigDecimal.valueOf(VAT));
                                     } else {
-                                        warehouseProductHistory.setArrival(0);
-                                        warehouseProductHistory.setDropped(0);
+                                        priceWithMargin = priceWithMargin.multiply(productDto.getPrice());
                                     }
-                                    warehouseProductHistory.setResidue(warehouseProduct.getResidue());
-                                    warehouseProductHistory.setDate(date);
-                                    warehouseProductHistory.setInitialPrice(warehouseProduct.getInitialPrice());
-                                    warehouseProductHistory.setFinalPrice(warehouseProduct.getFinalPrice());
-                                    warehouseProductHistory.setVersion(warehouseProduct.getVersion());
-                                    wphService.save(warehouseProductHistory);
-                                }
+                                    oldInvoiceProduct.setFinalPrice(priceWithMargin);
 
-                                oldInvoiceProduct.setAmount(productDto.getAmount());
-                                invoiceProductService.save(oldInvoiceProduct);
+                                    WarehouseProduct warehouseProduct = warehouseProductService
+                                            .findByProductBarcode(oldInvoiceProduct.getProduct().getBarcode());
+                                    if ((productDto.getAmount() - oldInvoiceProduct.getAmount()) != ZERO && !productDto.getPrice()
+                                            .equals(oldInvoiceProduct.getFinalPrice())) {
+                                        warehouseProduct.setVat(vat);
+                                        warehouseProduct.setMargin(Integer.parseInt(margin));
+                                        warehouseProduct.setFinalPrice(priceWithMargin);
+                                        warehouseProduct.setVersion(warehouseProduct.getVersion() + ONE);
+                                        warehouseProduct.setInitialPrice(productDto.getPrice());
+                                        warehouseProduct.setResidue(warehouseProduct.getResidue() - oldInvoiceProduct.
+                                                getAmount() + productDto.getAmount());
+                                        warehouseProductService.save(warehouseProduct);
+
+                                        WarehouseProductHistory warehouseProductHistory = new WarehouseProductHistory();
+                                        warehouseProductHistory.setWarehouseProduct(warehouseProduct);
+                                        if (productDto.getAmount() < oldInvoiceProduct.getAmount()) {
+                                            warehouseProductHistory.setArrival(0);
+                                            warehouseProductHistory.setDropped(oldInvoiceProduct.getAmount() - productDto.getAmount());
+                                        } else if (productDto.getAmount() > oldInvoiceProduct.getAmount()) {
+                                            int arrival = productDto.getAmount() - oldInvoiceProduct.getAmount();
+                                            warehouseProductHistory.setArrival(arrival);
+                                            warehouseProductHistory.setDropped(0);
+                                        } else {
+                                            warehouseProductHistory.setArrival(0);
+                                            warehouseProductHistory.setDropped(0);
+                                        }
+                                        warehouseProductHistory.setResidue(warehouseProduct.getResidue());
+                                        warehouseProductHistory.setDate(date);
+                                        warehouseProductHistory.setInitialPrice(warehouseProduct.getInitialPrice());
+                                        warehouseProductHistory.setFinalPrice(warehouseProduct.getFinalPrice());
+                                        warehouseProductHistory.setVersion(warehouseProduct.getVersion());
+                                        wphService.save(warehouseProductHistory);
+                                    }
+
+                                    oldInvoiceProduct.setAmount(productDto.getAmount());
+                                    invoiceProductService.save(oldInvoiceProduct);
+                                }
                             }
                         }
                         if (id == null) {
@@ -613,11 +615,12 @@ public class ReceiptController implements Initializable {
             ip.setProduct(createdProduct);
         }
     }
-    private void setProviderAndProduct(Provider provider, Product product){
+
+    private void setProviderAndProduct(Provider provider, Product product) {
         ProductProvider productProvider = new ProductProvider();
         ProductProvider oldProductProvider = productProviderService.
                 findByProviderIdAndProductId(provider.getId(), product.getId());
-        if(oldProductProvider == null) {
+        if (oldProductProvider == null) {
             productProvider.setProvider(provider);
             productProvider.setProduct(product);
             productProviderService.save(productProvider);

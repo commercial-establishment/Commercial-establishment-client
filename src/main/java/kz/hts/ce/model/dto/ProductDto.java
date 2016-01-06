@@ -30,7 +30,11 @@ public class ProductDto {
     private IntegerProperty dropped;
 
     public String getId() {
-        return id.get();
+        try {
+            return id.get();
+        }catch (NullPointerException e){
+            return null;
+        }
     }
 
     public StringProperty idProperty() {
