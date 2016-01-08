@@ -17,6 +17,8 @@ public class CheckProduct extends BaseEntity{
     @PrimaryKeyJoinColumn(name = "check_id", referencedColumnName = "id")
     private Check check;
 
+    private int amount;
+
     public WarehouseProduct getWarehouseProduct() {
         return warehouseProduct;
     }
@@ -31,5 +33,13 @@ public class CheckProduct extends BaseEntity{
 
     public void setCheck(Check check) {
         this.check = check;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 }

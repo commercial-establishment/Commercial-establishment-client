@@ -10,16 +10,22 @@ import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.controller.ControllerException;
 import kz.hts.ce.controller.SalesController;
 import kz.hts.ce.model.dto.ProductDto;
+import kz.hts.ce.model.entity.Check;
+import kz.hts.ce.model.entity.CheckProduct;
 import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.model.entity.WarehouseProductHistory;
+import kz.hts.ce.service.CheckProductService;
+import kz.hts.ce.service.CheckService;
 import kz.hts.ce.service.WarehouseProductHistoryService;
 import kz.hts.ce.service.WarehouseProductService;
+import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -45,6 +51,14 @@ public class PaymentController implements Initializable {
     private WarehouseProductService warehouseProductService;
     @Autowired
     private WarehouseProductHistoryService warehouseProductHistoryService;
+    @Autowired
+    private CheckService checkService;
+    @Autowired
+    private CheckProductService checkProductService;
+
+    @Lazy
+    @Autowired
+    private SpringUtil springUtil;
 
 //    @Autowired
 //    private ProductsController productsController;
@@ -83,6 +97,14 @@ public class PaymentController implements Initializable {
         try {
             if (shortage.getText().equals(ZERO)) {
                 ObservableList<ProductDto> productsData = salesController.getProductsData();
+
+                Check check = new Check();
+                check.setDate(Calendar.getInstance().getTime());
+                check.setEmployee(springUtil.getEmployee());
+                check.setShop(springUtil.getEmployee().getShop());
+                check.setCheckNumber("123");
+                checkService.save(check);
+
                 for (ProductDto productDto : productsData) {
                     long productId = productDto.getId();
                     WarehouseProduct warehouseProduct = warehouseProductService.findByProductId(productId);
@@ -104,6 +126,12 @@ public class PaymentController implements Initializable {
                     wphCurrentVersion.setInitialPrice(warehouseProduct.getInitialPrice());
                     wphCurrentVersion.setFinalPrice(warehouseProduct.getFinalPrice());
                     warehouseProductHistoryService.save(wphCurrentVersion);
+
+                    CheckProduct checkProduct = new CheckProduct();
+                    checkProduct.setCheck(check);
+                    checkProduct.setWarehouseProduct(warehouseProduct);
+                    checkProduct.setAmount(productAmount);
+                    checkProductService.save(checkProduct);
                 }
                 alert(Alert.AlertType.INFORMATION, "Товар успешно продан", null, "Сдача: " + change.getText() + " тенге");
                 salesController.deleteAllProductsFromTable();

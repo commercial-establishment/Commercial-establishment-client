@@ -15,7 +15,7 @@
                             <items>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                     <children>
-                                        <SplitPane dividerPositions="0.62708719851577, 0.7458256029684601" layoutX="123.0" layoutY="115.0" orientation="VERTICAL" prefHeight="361.0" prefWidth="764.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <SplitPane dividerPositions="0.6289424860853432, 0.7458256029684601" layoutX="123.0" layoutY="115.0" orientation="VERTICAL" prefHeight="361.0" prefWidth="764.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <items>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                                     <children>
@@ -200,7 +200,7 @@
                     <children>
                         <Button layoutX="874.0" layoutY="4.0" mnemonicParsing="false" onAction="#exit" prefHeight="43.0" prefWidth="126.0" text="Выход" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="4.0" />
                         <Button layoutX="740.0" layoutY="4.0" mnemonicParsing="false" onAction="#changeMode" prefHeight="43.0" prefWidth="126.0" text="Режим менеджера" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="4.0" />
-                  <Button layoutX="606.0" layoutY="4.0" mnemonicParsing="false" onAction="#refreshTable" prefHeight="36.0" prefWidth="126.0" text="Обновить" />
+                  <Button layoutX="606.0" layoutY="4.0" mnemonicParsing="false" onAction="#refreshTable" prefHeight="36.0" prefWidth="126.0" text="Обновить" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="274.0" AnchorPane.topAnchor="4.0" />
                     </children>
                 </AnchorPane>
             </items>
