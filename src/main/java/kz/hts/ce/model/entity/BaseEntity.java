@@ -11,11 +11,9 @@ public abstract class BaseEntity {
     @Id
     private UUID id;
 
-    @PrePersist
+    @PrePersist//FIXME
     public void initializeUUID() {
-        if (id == null) {
-            id = UUID.randomUUID();
-        }
+        if (id == null) id = UUID.randomUUID();
     }
 
     public UUID getId() {
