@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CategoryService extends BaseService<Category, CategoryRepository>{
+public class CategoryService extends BaseService<Category, CategoryRepository> {
 
     @Autowired
     protected CategoryService(CategoryRepository repository) {
@@ -23,5 +23,11 @@ public class CategoryService extends BaseService<Category, CategoryRepository>{
         return repository.findByName(categoryName);
     }
 
-    public void delete(long id){ repository.delete(id); }
+    public void delete(long id) {
+        repository.delete(id);
+    }
+
+    public void saveOrUpdateList(List<Category> categories) {
+        categories.forEach(this::save);
+    }
 }

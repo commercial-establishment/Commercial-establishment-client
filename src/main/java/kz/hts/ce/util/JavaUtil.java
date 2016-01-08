@@ -93,7 +93,7 @@ public class JavaUtil {
         return invoiceDto;
     }
 
-    public static ProviderDto createProviderDtoFromProvider(Provider provider){
+    public static ProviderDto createProviderDtoFromProvider(Provider provider) {
         ProviderDto providerDto = new ProviderDto();
         providerDto.setAddress(provider.getAddress());
         providerDto.setBin(provider.getBin());

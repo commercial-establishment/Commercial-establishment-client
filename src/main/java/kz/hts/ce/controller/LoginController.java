@@ -9,12 +9,11 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.controller.sale.CalculatorController;
-import kz.hts.ce.model.entity.Broadcast;
 import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.Shift;
-import kz.hts.ce.service.BroadcastService;
 import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.ShiftService;
+import kz.hts.ce.service.TransferService;
 import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.UUID;
 
 import static kz.hts.ce.util.JavaUtil.checkConnection;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
@@ -43,6 +43,8 @@ public class LoginController {
     private ShiftService shiftService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private TransferService transferService;
 
     @Autowired
     private CalculatorController calculatorController;

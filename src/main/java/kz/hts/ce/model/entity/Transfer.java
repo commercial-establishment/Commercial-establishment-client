@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Broadcast extends BaseEntity {
+public class Transfer extends BaseEntity {
 
     @Column(nullable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy")

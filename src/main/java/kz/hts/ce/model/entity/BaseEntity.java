@@ -2,18 +2,15 @@ package kz.hts.ce.model.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.UUID;
 
 @MappedSuperclass
 public abstract class BaseEntity {
 
     @Id
-    @GeneratedValue(generator = "uuid-gen")
-    @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "id", columnDefinition = "uuid")
     private UUID id;
 
