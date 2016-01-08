@@ -1,18 +1,15 @@
 package kz.hts.ce.util.spring;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.control.Alert;
-import kz.hts.ce.controller.ControllerException;
 import kz.hts.ce.model.entity.*;
 import kz.hts.ce.security.AuthenticationService;
 import kz.hts.ce.security.CustomAuthenticationProvider;
-import kz.hts.ce.service.TransferService;
 import kz.hts.ce.service.CategoryService;
 import kz.hts.ce.service.ProviderService;
+import kz.hts.ce.service.TransferService;
 import kz.hts.ce.util.JavaUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +27,10 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.logging.Logger;
 
 import static kz.hts.ce.util.JavaUtil.checkConnection;
+import static kz.hts.ce.util.JavaUtil.getFixedDate;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 
 @Component
@@ -45,6 +44,8 @@ public class SpringUtil {
 
     private List<Provider> providers;
     private List<ShopProvider> shopProviders;
+
+    private static final Logger log = Logger.getLogger(SpringUtil.class.getName());
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -152,20 +153,10 @@ public class SpringUtil {
         try {
             Transfer transferDates = transferService.findByLastDate();
             long lastTransferDate;
-            if (transferDates == null) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(new Date());
-                calendar.set(Calendar.YEAR, 2000);
-                calendar.set(Calendar.HOUR_OF_DAY, 0);
-                calendar.set(Calendar.MINUTE, 0);
-                calendar.set(Calendar.SECOND, 1);
-                calendar.set(Calendar.MILLISECOND, 0);
-                Date transferDate = calendar.getTime();
-                lastTransferDate = transferDate.getTime();
-            } else {
-                Date transferDate = transferDates.getDate();
-                lastTransferDate = transferDate.getTime();
-            }
+            Date transferDate;
+            if (transferDates == null) transferDate = getFixedDate();
+            else transferDate = transferDates.getDate();
+            lastTransferDate = transferDate.getTime();
 
             HttpHeaders headers = createHeadersForAuthentication();
             HttpEntity<Long> requestEntity = new HttpEntity<>(headers);
@@ -183,13 +174,13 @@ public class SpringUtil {
             ObjectMapper mapper = new ObjectMapper();
             List<Category> categoryList = mapper.readValue(mapper.treeAsTokens(categoriesJson), new TypeReference<List<Category>>() {
             });
-            System.out.println("RESPONSE: " + categoriesJson);
+            log.info("category list response: " + categoriesJson);
 
             categoryService.saveOrUpdateList(categoryList);
             categoryList.clear();
             transferService.saveWithNewDate();
         } catch (IOException e) {
-//alert();TODO
+            alert(Alert.AlertType.WARNING, "Внутренняя ошибка", null, "Обратитесь в тех. поддержку");
         }
     }
 
@@ -203,26 +194,6 @@ public class SpringUtil {
 
     public void checkAndUpdateNewDataFromServer() {
         getCategoryChangesAfterDate();
-//        try {
-//            JsonNode providersFromServerJson = getAllProvidersFromServer();
-//            List<Provider> providers = providerService.findAll();
-//            List<String> companyNames = providers.stream().map(Provider::getCompanyName).collect(Collectors.toList());
-//            ObjectMapper mapper = new ObjectMapper();
-//            List<Provider> providersFromServer = mapper.readValue(mapper.treeAsTokens(providersFromServerJson), new TypeReference<List<Provider>>() {
-//            });
-//            providersFromServer.stream().filter(provider -> !companyNames.contains(provider.getCompanyName()))
-//                    .forEach(provider -> providerService.save(provider));
-//
-//            JsonNode categoriesFromServerJson = getAllCategoriesFromServer();
-//            List<Category> categories = categoryService.findAll();
-//            List<String> categoryNames = categories.stream().map(Category::getName).collect(Collectors.toList());
-//            List<Category> categoriesFromServer = mapper.readValue(mapper.treeAsTokens(categoriesFromServerJson), new TypeReference<List<Category>>() {
-//            });
-//            categoriesFromServer.stream().filter(category -> !categoryNames.contains(category.getName()))
-//                    .forEach(category -> categoryService.save(category));
-//        } catch (IOException e) {
-//            alert(Alert.AlertType.WARNING, "Данные не синхронизированны", null, "Ошибка синхронизации данных. Обратитесь в службу поддержки.");
-//        }
     }
 
     public void sendDataToServer() {
