@@ -8,13 +8,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.controller.ControllerException;
-import kz.hts.ce.controller.sale.ProductsController;
+import kz.hts.ce.controller.SalesController;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.model.entity.WarehouseProductHistory;
 import kz.hts.ce.service.WarehouseProductHistoryService;
 import kz.hts.ce.service.WarehouseProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
@@ -45,12 +46,15 @@ public class PaymentController implements Initializable {
     @Autowired
     private WarehouseProductHistoryService warehouseProductHistoryService;
 
+//    @Autowired
+//    private ProductsController productsController;
+    @Lazy
     @Autowired
-    private ProductsController productsController;
+    private SalesController salesController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        total.setText(productsController.getPriceResult().getText());
+        total.setText(salesController.getPriceResult().getText());
         shortage.setText(total.getText());
         given.setText(ZERO);
         change.setText(ZERO);
@@ -78,7 +82,7 @@ public class PaymentController implements Initializable {
     public void success() {
         try {
             if (shortage.getText().equals(ZERO)) {
-                ObservableList<ProductDto> productsData = productsController.getProductsData();
+                ObservableList<ProductDto> productsData = salesController.getProductsData();
                 for (ProductDto productDto : productsData) {
                     long productId = productDto.getId();
                     WarehouseProduct warehouseProduct = warehouseProductService.findByProductId(productId);
@@ -102,8 +106,8 @@ public class PaymentController implements Initializable {
                     warehouseProductHistoryService.save(wphCurrentVersion);
                 }
                 alert(Alert.AlertType.INFORMATION, "Товар успешно продан", null, "Сдача: " + change.getText() + " тенге");
-                productsController.deleteAllProductsFromTable();
-                productsController.getProductsDto().clear();
+                salesController.deleteAllProductsFromTable();
+                salesController.getProductsDto().clear();
                 PagesConfiguration screens = getPagesConfiguration();
                 screens.payment().close();
             } else {

@@ -2,16 +2,17 @@ package kz.hts.ce.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
-import kz.hts.ce.controller.sale.CalculatorController;
 import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.Shift;
-import kz.hts.ce.model.entity.WarehouseProductHistory;
-import kz.hts.ce.repository.ShiftRepository;
 import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.ShiftService;
 import kz.hts.ce.service.WarehouseProductHistoryService;
@@ -22,15 +23,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Date;
-import java.util.List;
+import java.util.ResourceBundle;
 
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
-public class LoginController {
+public class LoginController implements Initializable{
 
+    @FXML
+    private AnchorPane root;
     @FXML
     private TextField username;
     @FXML
@@ -43,17 +47,18 @@ public class LoginController {
     @Autowired
     private EmployeeService employeeService;
 
-    @Autowired
-    private CalculatorController calculatorController;
+//    @Autowired
+//    private CalculatorController calculatorController;
 
     @Autowired
     private SpringUtil springUtils;
     @Autowired
     private WarehouseProductHistoryService wphService;
 
+
     @FXML
     @Transactional
-    private void loginAction(ActionEvent event) throws IOException {
+    private void loginAction() throws IOException {
         PagesConfiguration screens = getPagesConfiguration();
         try {
             springUtils.authorize(username.getText(), password.getText());
@@ -71,9 +76,22 @@ public class LoginController {
             screens.login().hide();
             screens.main().show();
             message.setText("");
-            calculatorController.startEventHandler(screens.getPrimaryStage().getScene());
+//            calculatorController.startEventHandler(screens.getPrimaryStage().getScene());
         } catch (NullPointerException | UsernameNotFoundException e) {
             message.setText("Неверное имя пользователя или пароль:");
         }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        root.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER){
+                try{
+                    loginAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

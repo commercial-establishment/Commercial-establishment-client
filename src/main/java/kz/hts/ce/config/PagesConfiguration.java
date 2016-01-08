@@ -1,21 +1,19 @@
 package kz.hts.ce.config;
 
 import javafx.scene.Node;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
-import kz.hts.ce.controller.*;
+import kz.hts.ce.controller.LoginController;
+import kz.hts.ce.controller.MainController;
+import kz.hts.ce.controller.SalesController;
+import kz.hts.ce.controller.SettingsController;
 import kz.hts.ce.controller.invoice.ReceiptController;
 import kz.hts.ce.controller.invoice.ReceiptsController;
 import kz.hts.ce.controller.payment.PaymentController;
 import kz.hts.ce.controller.products.EditProductController;
 import kz.hts.ce.controller.products.ShopProductsController;
 import kz.hts.ce.controller.provider.AddProviderController;
-import kz.hts.ce.controller.sale.CalculatorController;
-import kz.hts.ce.controller.sale.ProductCategoryController;
-import kz.hts.ce.controller.sale.ProductsController;
 import kz.hts.ce.util.spring.JsonUtil;
 import kz.hts.ce.util.spring.SpringFxmlLoader;
 import kz.hts.ce.util.spring.SpringUtil;
@@ -25,10 +23,12 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
-import java.beans.EventHandler;
 import java.io.IOException;
 
 import static kz.hts.ce.util.spring.SpringFxmlLoader.showStage;
+
+//import kz.hts.ce.controller.sale.CalculatorController;
+//import kz.hts.ce.controller.sale.ProductsController;
 
 @Lazy
 @Configuration
@@ -75,7 +75,7 @@ public class PagesConfiguration {
     public Stage sales() {
         showStage(secondaryStage, "/view/sale.fxml");
         secondaryStage.setFullScreenExitHint("");
-        secondaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+//        secondaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         secondaryStage.setFullScreen(true);
 //        primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         return secondaryStage;
@@ -195,26 +195,26 @@ public class PagesConfiguration {
     public SalesController salesController() {
         return new SalesController();
     }
-
-    @Bean
-    public CalculatorController calculatorController() {
-        return new CalculatorController();
-    }
+//
+//    @Bean
+//    public CalculatorController calculatorController() {
+//        return new CalculatorController();
+//    }
 
     @Bean
     public PaymentController paymentController() {
         return new PaymentController();
     }
 
-    @Bean
-    public ProductsController productsController() {
-        return new ProductsController();
-    }
-
-    @Bean
-    public ProductCategoryController productCategoryController() {
-        return new ProductCategoryController();
-    }
+//    @Bean
+//    public ProductsController productsController() {
+//        return new ProductsController();
+//    }
+//
+//    @Bean
+//    public ProductCategoryController productCategoryController() {
+//        return new ProductCategoryController();
+//    }
 
     @Bean
     public ShopProductsController shopProductsController() {
