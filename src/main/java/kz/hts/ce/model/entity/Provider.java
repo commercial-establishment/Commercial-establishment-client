@@ -1,5 +1,7 @@
 package kz.hts.ce.model.entity;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,6 +16,7 @@ import java.math.BigInteger;
 import java.util.Date;
 
 @Entity
+@Audited
 public class Provider extends BaseEntity {
 
     @Size(min = 3, max = 14)
@@ -26,6 +29,7 @@ public class Provider extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "city_id", nullable = false)
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private City city;
 
     @Size(max = 100)
@@ -42,6 +46,7 @@ public class Provider extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Role role;
 
     @Size(max = 30)
