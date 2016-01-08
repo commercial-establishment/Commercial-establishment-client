@@ -9,10 +9,14 @@ import java.util.UUID;
 public abstract class BaseEntity {
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "id", columnDefinition = "uuid")
     private UUID id;
+
+    @PrePersist
+    public void initializeUUID() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 
     public UUID getId() {
         return id;
