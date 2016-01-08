@@ -9,6 +9,7 @@ import java.util.UUID;
 public abstract class BaseEntity {
 
     @Id
+    @Column(columnDefinition = "uuid")
     private UUID id;
 
     @PrePersist//FIXME
