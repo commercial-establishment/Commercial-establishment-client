@@ -149,28 +149,11 @@ public class SpringUtil {
 //        }
 //    }
 
-    private void getCategoryChangesAfterDate() {
+    private void getCategoryChangesAfterDate(long lastTransferDate) {
         try {
-            Transfer transferDates = transferService.findByLastDate();
-            long lastTransferDate;
-            Date transferDate;
-            if (transferDates == null) transferDate = getFixedDate();
-            else transferDate = transferDates.getDate();
-            lastTransferDate = transferDate.getTime();
+            String urlPart = "/replication/categories/time={time}";
+            JsonNode categoriesJson = getJsonNodeFromServer(lastTransferDate, urlPart);
 
-            HttpHeaders headers = createHeadersForAuthentication();
-            HttpEntity<Long> requestEntity = new HttpEntity<>(headers);
-
-            RestTemplate template = new RestTemplate();
-            template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-            template.getMessageConverters().add(new StringHttpMessageConverter());
-
-            Map<String, Long> uriVariables = new HashMap<>();
-            uriVariables.put("time", lastTransferDate);
-            String url = JavaUtil.URL + "/replication/categories/time={time}";
-
-            ResponseEntity<JsonNode> exchange = template.exchange(url, HttpMethod.GET, requestEntity, JsonNode.class, uriVariables);
-            JsonNode categoriesJson = exchange.getBody();
             ObjectMapper mapper = new ObjectMapper();
             List<Category> categoryList = mapper.readValue(mapper.treeAsTokens(categoriesJson), new TypeReference<List<Category>>() {
             });
@@ -178,10 +161,38 @@ public class SpringUtil {
 
             categoryService.saveOrUpdateList(categoryList);
             categoryList.clear();
-            transferService.saveWithNewDate();
         } catch (IOException e) {
             alert(Alert.AlertType.WARNING, "Внутренняя ошибка", null, "Обратитесь в тех. поддержку");
         }
+    }
+
+    private void getProviderChangesAfterDate(long lastTransferDate) {
+        try {
+            String urlPart = "/replication/providers/time={time}";
+            JsonNode providersJson = getJsonNodeFromServer(lastTransferDate, urlPart);
+
+            ObjectMapper mapper = new ObjectMapper();
+            List<Provider> providerList = mapper.readValue(mapper.treeAsTokens(providersJson), new TypeReference<List<Provider>>() {
+            });
+            log.info("provider list response: " + providersJson);
+
+            providerService.saveOrUpdateList(providerList);
+            providerList.clear();
+        } catch (IOException e) {
+            alert(Alert.AlertType.WARNING, "Внутренняя ошибка", null, "Обратитесь в тех. поддержку");
+        }
+    }
+
+    private HttpEntity<Long> createHttpEntityWithAuthHeaders() {
+        HttpHeaders headers = createHeadersForAuthentication();
+        return new HttpEntity<>(headers);
+    }
+
+    private RestTemplate createRestTemplateWithMessageConverters() {
+        RestTemplate template = new RestTemplate();
+        template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        template.getMessageConverters().add(new StringHttpMessageConverter());
+        return template;
     }
 
     private JsonNode getCategoryChangesFromServer() {
@@ -192,8 +203,20 @@ public class SpringUtil {
         return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
     }
 
-    public void checkAndUpdateNewDataFromServer() {
-        getCategoryChangesAfterDate();
+    private JsonNode getJsonNodeFromServer(long lastTransferDate, String urlPart) {
+        HttpEntity<Long> requestEntity = createHttpEntityWithAuthHeaders();
+        RestTemplate template = createRestTemplateWithMessageConverters();
+
+        Map<String, Long> uriVariables = new HashMap<>();
+        uriVariables.put("time", lastTransferDate);
+        String url = JavaUtil.URL + urlPart;/*TODO fix '+'*/
+
+        return template.exchange(url, HttpMethod.GET, requestEntity, JsonNode.class, uriVariables).getBody();
+    }
+
+    public void checkAndUpdateNewDataFromServer(long lastTransferDate) {
+        getCategoryChangesAfterDate(lastTransferDate);
+        getProviderChangesAfterDate(lastTransferDate);
     }
 
     public void sendDataToServer() {

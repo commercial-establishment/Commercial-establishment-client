@@ -52,4 +52,8 @@ public class ProviderService extends BaseService<Provider, ProviderRepository> {
     public void updateEndWorkDate(Date endWorkDate, UUID id) {
         repository.updateEndWorkDate(endWorkDate, id);
     }
+
+    public void saveOrUpdateList(List<Provider> providers) {
+        providers.forEach(this::save);
+    }
 }

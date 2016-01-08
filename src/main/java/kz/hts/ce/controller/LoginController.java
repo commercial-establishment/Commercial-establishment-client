@@ -11,6 +11,7 @@ import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.controller.sale.CalculatorController;
 import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.Shift;
+import kz.hts.ce.model.entity.Transfer;
 import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.ShiftService;
 import kz.hts.ce.service.TransferService;
@@ -22,9 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.UUID;
 
 import static kz.hts.ce.util.JavaUtil.checkConnection;
+import static kz.hts.ce.util.JavaUtil.getFixedDate;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
@@ -71,7 +72,9 @@ public class LoginController {
             springUtils.setShift(shift);
 
             if (checkConnection()) {
-                springUtils.checkAndUpdateNewDataFromServer();
+                long lastTransferDate = transferService.findLastTransferDate();
+                springUtils.checkAndUpdateNewDataFromServer(lastTransferDate);
+                transferService.saveWithNewDate();
             } else {
                 alert(Alert.AlertType.WARNING, "Проверьте интернет соединение", null, "Данные с сервера небыли подгружены.");
             }
