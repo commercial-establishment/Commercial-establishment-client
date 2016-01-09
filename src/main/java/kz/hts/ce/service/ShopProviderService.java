@@ -1,5 +1,6 @@
 package kz.hts.ce.service;
 
+import kz.hts.ce.model.entity.Provider;
 import kz.hts.ce.model.entity.ShopProvider;
 import kz.hts.ce.repository.ShopProviderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ShopProviderService extends BaseService<ShopProvider, ShopProviderRepository> {
@@ -34,5 +36,10 @@ public class ShopProviderService extends BaseService<ShopProvider, ShopProviderR
 
     public List<ShopProvider> findByShopId(UUID shopId) {
        return repository.findByShop_Id(shopId);
+    }
+
+    public List<Provider> findProvidersByShopId(UUID id) {
+        List<ShopProvider> shopProviders = repository.findByShop_Id(id);
+        return shopProviders.stream().map(ShopProvider::getProvider).collect(Collectors.toList());
     }
 }

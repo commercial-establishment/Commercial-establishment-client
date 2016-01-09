@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.math.BigInteger;
 import java.util.Date;
 
 @Entity
@@ -21,10 +20,8 @@ public class Provider extends BaseEntity {
 
     @Size(min = 3, max = 14)
     @Pattern(regexp = "^[a-z0-9_-]+[a-z0-9_-]$")
-    @Column(nullable = true)
     private String username;
 
-    @Column(nullable = true)
     private String password;
 
     @ManyToOne
@@ -57,7 +54,7 @@ public class Provider extends BaseEntity {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date startWorkDate;
 
-    @Column(name = "end_work_date", nullable = true)
+    @Column(name = "end_work_date")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date endWorkDate;
 
@@ -65,11 +62,9 @@ public class Provider extends BaseEntity {
     private boolean blocked;
 
     @Size(max = 20)
-    @Column(nullable = true)
     private String iin;
 
     @Size(max = 20)
-    @Column(nullable = true)
     private String bin;
 
     public String getUsername() {

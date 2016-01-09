@@ -4,16 +4,19 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.control.Alert;
+import kz.hts.ce.model.dto.TransferDto;
 import kz.hts.ce.model.entity.*;
 import kz.hts.ce.security.AuthenticationService;
 import kz.hts.ce.security.CustomAuthenticationProvider;
-import kz.hts.ce.service.CategoryService;
-import kz.hts.ce.service.ProviderService;
-import kz.hts.ce.service.TransferService;
+import kz.hts.ce.service.*;
 import kz.hts.ce.util.JavaUtil;
+import kz.hts.ce.util.javafx.fields.IntegerTextField;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +33,6 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import static kz.hts.ce.util.JavaUtil.checkConnection;
-import static kz.hts.ce.util.JavaUtil.getFixedDate;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 
 @Component
@@ -59,7 +61,11 @@ public class SpringUtil {
     @Autowired
     private CategoryService categoryService;
     @Autowired
-    private TransferService transferService;
+    private ShopProviderService shopProviderService;
+    @Autowired
+    private ProductProviderService productProviderService;
+    @Autowired
+    private WarehouseProductService warehouseProductService;
 
     public static String getPrincipal() {
         String userName;
@@ -123,31 +129,6 @@ public class SpringUtil {
         String url = JavaUtil.URL + "/json/providers";
         return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
     }
-//
-//    private JsonNode getAllCategoriesFromServer() {
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = createHeadersForAuthentication();
-//        HttpEntity<List<Category>> request = new HttpEntity<>(headers);
-//        String url = JavaUtil.URL + "/json/categories";
-//        return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
-//    }
-
-//    private boolean sendLastBroadcastDateToServer() {
-//        try {
-//            HttpHeaders headers = createHeadersForAuthentication();
-//            List<Transfer> transferDates = transferService.findByLastDate(new Date());/*TODO get 1 date*/
-//            Date broadcastDate = transferDates.get(0).getDate();
-//            HttpEntity<Date> requestEntity = new HttpEntity<>(broadcastDate, headers);
-//            RestTemplate template = new RestTemplate();
-//            template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-//            template.getMessageConverters().add(new StringHttpMessageConverter());
-//            String url = JavaUtil.URL + "/json/last-transfer-date";
-//            template.exchange(url, HttpMethod.POST, requestEntity, Date.class);
-//            return true;
-//        } catch (ControllerException e) {
-//            return false;
-//        }
-//    }
 
     private void getCategoryChangesAfterDate(long lastTransferDate) {
         try {
@@ -203,6 +184,31 @@ public class SpringUtil {
         return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
     }
 
+    private void sendProductsProvidersToServer() {
+        HttpHeaders headers = createHeadersForAuthentication();
+        List<Provider> providers = shopProviderService.findProvidersByShopId(employee.getShop().getId());
+        List<TransferDto> residues = new ArrayList<>();
+        for (Provider provider : providers) {
+            List<ProductProvider> providerProducts = productProviderService.findByProviderId(provider.getId());
+            for (ProductProvider providerProduct : providerProducts) {
+                int residue = warehouseProductService.findByProductId(providerProduct.getProduct().getId()).getResidue();
+                TransferDto transferDto = new TransferDto();
+                transferDto.setProductId(providerProduct.getProduct().getId());
+                transferDto.setShopId(employee.getShop().getId());
+                transferDto.setProviderId(providerProduct.getProvider().getId());
+                transferDto.setResidue(residue);
+                residues.add(transferDto);
+            }
+        }
+        HttpEntity<List<TransferDto>> requestEntity = new HttpEntity<>(residues, headers);
+        RestTemplate template = new RestTemplate();
+        template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        template.getMessageConverters().add(new StringHttpMessageConverter());
+        String url = JavaUtil.URL + "/replication/provider-products";
+        template.exchange(url, HttpMethod.POST, requestEntity, (Class<List<TransferDto>>) residues.getClass());
+        this.shopProviders.clear();
+    }
+
     private JsonNode getJsonNodeFromServer(long lastTransferDate, String urlPart) {
         HttpEntity<Long> requestEntity = createHttpEntityWithAuthHeaders();
         RestTemplate template = createRestTemplateWithMessageConverters();
@@ -223,6 +229,7 @@ public class SpringUtil {
         if (checkConnection()) {
             if (!getProviders().isEmpty()) sendProvidersToServer();
             if (!getShopProviders().isEmpty()) sendShopProvidersToServer();
+            sendProductsProvidersToServer();
         } else
             alert(Alert.AlertType.ERROR, "Проверьте интернет соединение", null, "Данные небыли переданы на сервер. Проверьте интернет соединение.");
     }
