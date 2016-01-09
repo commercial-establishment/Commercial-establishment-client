@@ -22,7 +22,7 @@ public class Shop extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "city_id", nullable = false)
-    private City city;
+    private City city;/*TODO add area entity*/
 
     @Column(name = "is_blocked", nullable = false)
     private boolean blocked;
