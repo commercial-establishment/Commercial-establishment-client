@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Category;
@@ -88,6 +89,8 @@ public class SalesController implements Initializable {
     private SpringUtil springUtil;
 
     private EventHandler<KeyEvent> eventHandler;
+    private Map<String, List<WarehouseProduct>> productMap = new HashMap<>();
+    private ProductDto tempProducts;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -124,7 +127,7 @@ public class SalesController implements Initializable {
 
         Employee employee = springUtil.getEmployee();
 
-        Map<String, List<WarehouseProduct>> productMap = new HashMap<>();
+
         List<Category> categoriesFromDB = categoryService.findAll();
         for (Category category : categoriesFromDB) {
             List<WarehouseProduct> warehouseProducts = warehouseProductService.
@@ -136,6 +139,7 @@ public class SalesController implements Initializable {
         addProductToTable();
 
     }
+
     public void startEventHandler(Scene scene) {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, eventHandler);
 //        scene.setOnKeyPressed(eventHandler);
@@ -145,6 +149,16 @@ public class SalesController implements Initializable {
         productsData.clear();
         BigDecimal priceResultBD = BigDecimal.ZERO;
         for (ProductDto productDto : productsDto) {
+//            WarehouseProduct byProductBarcode = warehouseProductService.findByProductBarcode(productDto.getBarcode());
+//            for (List<WarehouseProduct> warehouseProducts : productMap.values()) {
+//                for (WarehouseProduct warehouseProduct : warehouseProducts) {
+//                    if(productDto.getBarcode() == warehouseProduct.getProduct().getBarcode())
+//                        if(productDto.getAmount() > warehouseProduct.getResidue()){
+//                            productDto.setAmount(warehouseProduct.getResidue());
+//                            warehouseProduct.setResidue(warehouseProduct.getResidue()-productDto.getAmount());
+//                        }
+//                }
+//            }
             productsData.add(productDto);
             BigDecimal totalPrice = productDto.getTotalPrice();
             priceResultBD = priceResultBD.add(totalPrice);
@@ -164,7 +178,7 @@ public class SalesController implements Initializable {
     }
 
     public void deleteSelectedProductFromTable() {
-        if(productTable != null) {
+        if (productTable != null) {
             ProductDto productDto = productTable.getSelectionModel().getSelectedItem();
             BigDecimal priceResultBD = new BigDecimal(priceResult.getText());
             priceResultBD = priceResultBD.subtract(productDto.getTotalPrice());
@@ -211,17 +225,15 @@ public class SalesController implements Initializable {
             calculator(buttonText, txtDisplay, txtAdditionalDisplay);
 //        } else if (buttonText.matches("ADD")) {
 //            addProductPage();
-        }
-        else if (buttonText.matches("ENTER")) {
+        } else if (buttonText.matches("ENTER")) {
             findAndAddProductByBarcode();
-        }
-        else if (buttonText.matches("SUBTRACT")) {
+        } else if (buttonText.matches("SUBTRACT")) {
             deleteSelectedProductFromTable();
-        }
-        else if (buttonText.matches("SPACE")) {
+        } else if (buttonText.matches("SPACE")) {
             paymentPage();
         }
     }
+
     public void paymentPage() {
         if (!getPriceResult().getText().equals("")) {
             PagesConfiguration screens = getPagesConfiguration();
@@ -269,74 +281,84 @@ public class SalesController implements Initializable {
 
     public void categoriesListener(Map<String, List<WarehouseProduct>> productMap) {
         categories.getSelectionModel().selectedItemProperty().addListener((ov, oldVal, newVal) -> {
-            if (flag) {
-                categoryProductsData.clear();
-
-                List<WarehouseProduct> warehouseProducts = null;
-                for (Map.Entry<String, List<WarehouseProduct>> productMapEntry : productMap.entrySet()) {
-                    if (newVal.equals(productMapEntry.getKey())) {
-                        warehouseProducts = productMapEntry.getValue();
-                    }
+//            if (flag) {
+            categoryProductsData.clear();
+            List<WarehouseProduct> warehouseProducts = null;
+            for (Map.Entry<String, List<WarehouseProduct>> productMapEntry : productMap.entrySet()) {
+                if (newVal.equals(productMapEntry.getKey())) {
+                    warehouseProducts = productMapEntry.getValue();
                 }
-                if (warehouseProducts != null) {
-                    for (WarehouseProduct warehouseProduct : warehouseProducts) {
-                        ProductDto productDto = new ProductDto();
-                        productDto.setBarcode(warehouseProduct.getProduct().getBarcode());
-                        productDto.setId(warehouseProduct.getProduct().getId());
-                        productDto.setName(warehouseProduct.getProduct().getName());
-                        productDto.setPrice(warehouseProduct.getInitialPrice());
-                        productDto.setAmount(0);
-                        productDto.setResidue(warehouseProduct.getResidue());
-                        categoryProductsData.add(productDto);
-                    }
-                }
-                nameFromCategory.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-                priceFromCategory.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
-                residueFromCategory.setCellValueFactory(cellData -> cellData.getValue().residueProperty());
-                categoryProductsTable.setItems(categoryProductsData);
             }
-            flag = true;
+            if (warehouseProducts != null) {
+                for (WarehouseProduct warehouseProduct : warehouseProducts) {
+                    ProductDto productDto = new ProductDto();
+                    productDto.setBarcode(warehouseProduct.getProduct().getBarcode());
+                    productDto.setId(warehouseProduct.getProduct().getId());
+                    productDto.setName(warehouseProduct.getProduct().getName());
+                    productDto.setPrice(warehouseProduct.getInitialPrice());
+                    productDto.setAmount(warehouseProduct.getResidue());
+                    productDto.setResidue(warehouseProduct.getResidue());
+                    categoryProductsData.add(productDto);
+                }
+            }
+            nameFromCategory.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+            priceFromCategory.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
+            residueFromCategory.setCellValueFactory(cellData -> cellData.getValue().residueProperty());
+            categoryProductsTable.setItems(categoryProductsData);
+//            }
+//            flag = true;
         });
     }
 
     public void addProductToTable() {
-        if (categoryProductsTable != null) {
-            categoryProductsTable.setOnMousePressed(event -> {
-                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                    if (barcodeMap == null) {
-                        barcodeMap = new HashMap<>();
-                    }
+        categoryProductsTable.setOnMousePressed(event -> {
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                if (barcodeMap == null) {
+                    barcodeMap = new HashMap<>();
+                }
 
-                    ProductDto productDtoRow = categoryProductsTable.getSelectionModel().getSelectedItem();
-
-                    if (barcodeMap.containsKey(productDtoRow.getBarcode())) {
-                        for (Map.Entry<String, Integer> barcodeAmount : barcodeMap.entrySet()) {
-                            if (barcodeAmount.getKey().equals(productDtoRow.getBarcode())) {
+                ProductDto productDtoRow = categoryProductsTable.getSelectionModel().getSelectedItem();
+                WarehouseProduct warehouseProduct = warehouseProductService.findByProductBarcode(productDtoRow.getBarcode());
+                if (barcodeMap.containsKey(productDtoRow.getBarcode())) {
+                    for (Map.Entry<String, Integer> barcodeAmount : barcodeMap.entrySet()) {
+                        if (barcodeAmount.getKey().equals(productDtoRow.getBarcode())) {
+                            if (barcodeAmount.getValue() < warehouseProduct.getResidue()) {
                                 productDtoRow.setAmount(barcodeAmount.getValue() + 1);
                                 barcodeAmount.setValue(barcodeAmount.getValue() + 1);
-
-                                Iterator<ProductDto> productDtoIterator = getProductsDto().iterator();
-                                while (productDtoIterator.hasNext()) {
-                                    ProductDto productDto = productDtoIterator.next();
-                                    if (productDto.getBarcode().equals(productDtoRow.getBarcode()))
-                                        productDtoIterator.remove();
-                                }
-
-                                addProductInProductsDto(productDtoRow);
+                            } else {
+                                productDtoRow.setAmount(barcodeAmount.getValue());
+                                barcodeAmount.setValue(barcodeAmount.getValue());
+                                alert(Alert.AlertType.WARNING, "Внимание!", null, "Количество добавляемого товара превышает остаток");
                             }
+                            Iterator<ProductDto> productDtoIterator = getProductsDto().iterator();
+                            while (productDtoIterator.hasNext()) {
+                                ProductDto productDto = productDtoIterator.next();
+                                if (productDto.getBarcode().equals(productDtoRow.getBarcode()))
+                                    productDtoIterator.remove();
+                            }
+
+
+                            addProductInProductsDto(productDtoRow);
                         }
-                    } else {
-                        productDtoRow.setAmount(1);
-                        barcodeMap.put(productDtoRow.getBarcode(), 1);
-                        addProductInProductsDto(productDtoRow);
                     }
-                    addProductsToTable();
+                } else {
+                    productDtoRow.setAmount(1);
+                    barcodeMap.put(productDtoRow.getBarcode(), 1);
+                    addProductInProductsDto(productDtoRow);
                 }
-            });
-        }
+                addProductsToTable();
+//                    if (selectedItem.getResidue() != 0)
+//                        selectedItem.setResidue(selectedItem.getResidue() - 1);
+//                    else
+//                        selectedItem.setResidue(selectedItem.getResidue());
+
+            }
+        });
     }
+
+
     @FXML
-    public void refreshTable(){
+    public void refreshTable() {
         getCategoryProductsTable().getProperties().put(TableViewSkin.RECREATE, Boolean.TRUE);
     }
 
@@ -376,6 +398,7 @@ public class SalesController implements Initializable {
     public void exit() {
         getPagesConfiguration().sales().close();
     }
+
     @FXML
     public void changeMode() {
         getPagesConfiguration().sales().close();
