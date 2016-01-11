@@ -91,6 +91,7 @@ public class SalesController implements Initializable {
     private EventHandler<KeyEvent> eventHandler;
     private Map<String, List<WarehouseProduct>> productMap = new HashMap<>();
     private ProductDto tempProducts;
+    private int count;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -203,7 +204,7 @@ public class SalesController implements Initializable {
     public void handleOnAnyButtonClicked(ActionEvent evt) {
         Button button = (Button) evt.getSource();
         final String buttonText = button.getText();
-        if (buttonText.matches("^[0-9CE\\s[*+.]\\s]*$")) {
+        if (buttonText.matches("^[0-9CE\\s[*+./]\\s]*$")) {
             calculator(buttonText, txtDisplay, txtAdditionalDisplay);
         }
     }
@@ -229,6 +230,22 @@ public class SalesController implements Initializable {
             deleteSelectedProductFromTable();
         } else if (buttonText.matches("ADD")) {
             paymentPage();
+        }
+        else if (buttonText.matches("DIVIDE")){
+            deleteSpecificAmount();
+        }
+    }
+
+    public void deleteSpecificAmount(){
+        if (productTable != null) {
+            ProductDto productDto = productTable.getSelectionModel().getSelectedItem();
+            BigDecimal priceResultBD = new BigDecimal(priceResult.getText());
+            priceResultBD = priceResultBD.subtract(productDto.getTotalPrice());
+            priceResult.setText(String.valueOf(priceResultBD));
+//            productsDto.remove(productDto);
+//            productsData.remove(productDto);
+            productDto.setAmount(10);
+            productTable.setItems(productsData);
         }
     }
 

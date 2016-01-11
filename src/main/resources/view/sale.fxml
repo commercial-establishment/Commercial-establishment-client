@@ -95,75 +95,75 @@
                                             </columnConstraints>
                                             <rowConstraints>
                                                 <RowConstraints maxHeight="101.0" minHeight="10.0" prefHeight="101.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
                                                 <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="1" GridPane.rowIndex="4">
+                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="1" GridPane.rowIndex="5">
                                                     <font>
                                                         <Font name="Arial Black" size="16.0" />
                                                     </font>
                                                 </Button>
-                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="2" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="2" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                     <font>
                                                         <Font name="Arial Black" size="16.0" />
                                                     </font>
                                                 </Button>
-                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="3" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="3" GridPane.columnIndex="2" GridPane.rowIndex="5">
                                                     <font>
                                                         <Font name="Arial Black" size="16.0" />
                                                     </font>
                                                 </Button>
-                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="4" GridPane.rowIndex="3">
+                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="4" GridPane.rowIndex="4">
                                                     <font>
                                                         <Font name="Arial Black" size="16.0" />
                                                     </font>
                                                 </Button>
-                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="5" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                                     <font>
                                                         <Font name="Arial Black" size="16.0" />
                                                     </font>
                                                 </Button>
-                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="6" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="6" GridPane.columnIndex="2" GridPane.rowIndex="4">
                                                     <font>
                                                         <Font name="Arial Black" size="16.0" />
                                                     </font>
                                                 </Button>
-                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="7" GridPane.rowIndex="2">
+                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="7" GridPane.rowIndex="3">
                                                     <font>
                                                         <Font name="Arial Black" size="16.0" />
                                                     </font>
                                                 </Button>
-                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="8" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="8" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                     <font>
                                                         <Font name="Arial Black" size="16.0" />
                                                     </font>
                                                 </Button>
-                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="73.0" prefWidth="93.0" text="9" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" prefHeight="73.0" prefWidth="93.0" text="9" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                                     <font>
                                                         <Font name="Arial Black" size="16.0" />
                                                     </font>
                                                 </Button>
-                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="0" GridPane.rowIndex="5">
+                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                                                     <font>
                                                         <Font name="Arial Black" size="16.0" />
                                                     </font>
                                                 </Button>
-                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="," GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="," GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                     <font>
                                                         <Font name="Arial Black" size="16.0" />
                                                     </font>
                                                 </Button>
-                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="CE" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="CE" GridPane.rowIndex="2">
                                                     <font>
                                                         <Font name="Arial Black" size="16.0" />
                                                     </font>
                                                 </Button>
-                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="+" GridPane.rowIndex="1">
+                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="+" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                                     <font>
                                                         <Font name="Arial Black" size="16.0" />
                                                     </font>
@@ -173,7 +173,7 @@
                                                         <Font name="Arial Black" size="16.0" />
                                                     </font>
                                                 </Button>
-                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="-" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="-" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                                     <font>
                                                         <Font name="Arial Black" size="16.0" />
                                                     </font>
@@ -188,6 +188,11 @@
                                                         <Font name="System Bold" size="18.0" />
                                                     </font>
                                                 </TextField>
+                                    <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="/" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font name="Arial Black" size="16.0" />
+                                       </font>
+                                    </Button>
                                             </children>
                                         </GridPane>
                                     </children>
