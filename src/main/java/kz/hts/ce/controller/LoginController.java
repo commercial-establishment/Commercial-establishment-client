@@ -74,6 +74,7 @@ public class LoginController {
             if (checkConnection()) {
                 long lastTransferDate = transferService.findLastTransferDate();
                 springUtils.checkAndUpdateNewDataFromServer(lastTransferDate);
+                springUtils.sendDataToServer(lastTransferDate);
                 transferService.saveWithNewDate();
             } else {
                 alert(Alert.AlertType.WARNING, "Проверьте интернет соединение", null, "Данные с сервера небыли подгружены.");

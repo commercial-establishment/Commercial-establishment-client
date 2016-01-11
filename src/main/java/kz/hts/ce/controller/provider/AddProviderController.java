@@ -131,8 +131,7 @@ public class AddProviderController implements Initializable {
             Provider providerFromDB = providerService.findByCompanyName(provider.getCompanyName());
             shopProvider.setProvider(providerFromDB);
             shopProvider.setBlocked(false);
-            ShopProvider savedShopProvider = shopProviderService.save(shopProvider);
-            springUtil.addShopProviderInShopProviders(savedShopProvider);
+            shopProviderService.save(shopProvider);
         });
         /*TODO success alert*/
     }

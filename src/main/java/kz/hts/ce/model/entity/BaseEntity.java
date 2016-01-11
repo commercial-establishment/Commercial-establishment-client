@@ -1,8 +1,9 @@
 package kz.hts.ce.model.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import java.util.UUID;
 
 @MappedSuperclass

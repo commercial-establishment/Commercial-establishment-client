@@ -2,9 +2,10 @@ package kz.hts.ce.model.dto;
 
 import java.util.UUID;
 
-public class TransferDto {
+public class ShopProductProviderDto {
 
     private UUID providerId;
+    private UUID productProviderId;
     private UUID productId;
     private UUID shopId;
     private int residue;
@@ -15,6 +16,14 @@ public class TransferDto {
 
     public void setProviderId(UUID providerId) {
         this.providerId = providerId;
+    }
+
+    public UUID getProductProviderId() {
+        return productProviderId;
+    }
+
+    public void setProductProviderId(UUID productProviderId) {
+        this.productProviderId = productProviderId;
     }
 
     public UUID getProductId() {

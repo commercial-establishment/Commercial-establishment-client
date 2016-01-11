@@ -138,7 +138,7 @@ public class ReceiptController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         UUID shopId = springUtil.getEmployee().getShop().getId();
         List<Unit> units = unitService.findAll();
-        List<String> unitNames = units.stream().map(Unit::getName).collect(Collectors.toList());
+        List<String> unitNames = units.stream().map((unit) -> unit.getName()).collect(Collectors.toList());
         unitOfMeasure.getItems().addAll(unitNames);
         List<ShopProvider> shopProviders = shopProviderService.findByShopId(shopId);
         List<String> providerNames = shopProviders.stream().map(shopProvider -> shopProvider.getProvider().getCompanyName()).collect(Collectors.toList());

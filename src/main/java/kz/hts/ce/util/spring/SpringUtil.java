@@ -4,13 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.control.Alert;
-import kz.hts.ce.model.dto.TransferDto;
+import kz.hts.ce.model.dto.ShopProductProviderDto;
 import kz.hts.ce.model.entity.*;
 import kz.hts.ce.security.AuthenticationService;
 import kz.hts.ce.security.CustomAuthenticationProvider;
 import kz.hts.ce.service.*;
 import kz.hts.ce.util.JavaUtil;
-import kz.hts.ce.util.javafx.fields.IntegerTextField;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -27,6 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
@@ -38,16 +38,25 @@ import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 @Component
 public class SpringUtil {
 
+    public static Map<String, Role> roleMap;
+
     private String id;
     private Shift shift;
     private Employee employee;
     private boolean newInvoice;
     private String password;
 
-    private List<Provider> providers;
-    private List<ShopProvider> shopProviders;
+//    private List<Provider> providers;
+//    private List<ShopProvider> shopProviders;
 
     private static final Logger log = Logger.getLogger(SpringUtil.class.getName());
+
+    @PostConstruct
+    public void initialize() {
+        List<Role> roles = roleService.findAll();
+        roleMap = new HashMap<>();
+        for (Role role : roles) roleMap.put(role.getName(), role);
+    }
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -66,6 +75,10 @@ public class SpringUtil {
     private ProductProviderService productProviderService;
     @Autowired
     private WarehouseProductService warehouseProductService;
+    @Autowired
+    private TransferService transferService;
+    @Autowired
+    private RoleService roleService;
 
     public static String getPrincipal() {
         String userName;
@@ -100,26 +113,39 @@ public class SpringUtil {
         };
     }
 
-    private void sendProvidersToServer() {
+    private void sendProvidersToServer(long lastTransferDate) {
         HttpHeaders headers = createHeadersForAuthentication();
+
+        List<Provider> providers = providerService.getHistory(lastTransferDate);
         HttpEntity<List<Provider>> requestEntity = new HttpEntity<>(providers, headers);
         RestTemplate template = new RestTemplate();
         template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         template.getMessageConverters().add(new StringHttpMessageConverter());
-        String url = JavaUtil.URL + "/json/providers/add";
-        template.exchange(url, HttpMethod.POST, requestEntity, (Class<List<Provider>>) providers.getClass());
-        providers.clear();
+        String url = JavaUtil.URL + "/replication/providers";
+        template.exchange(url, HttpMethod.POST, requestEntity, providers.getClass());
     }
+//
+//    private void sendShopProvidersToServer() {
+//        HttpHeaders headers = createHeadersForAuthentication();
+//        HttpEntity<List<ShopProvider>> requestEntity = new HttpEntity<>(shopProviders, headers);
+//        RestTemplate template = new RestTemplate();
+//        template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+//        template.getMessageConverters().add(new StringHttpMessageConverter());
+//        String url = JavaUtil.URL + "/json/shop-providers/add";
+//        template.exchange(url, HttpMethod.POST, requestEntity, (Class<List<ShopProvider>>) shopProviders.getClass());
+//        shopProviders.clear();
+//    }
 
-    private void sendShopProvidersToServer() {
+    private void sendProductProviderListToServer() {
         HttpHeaders headers = createHeadersForAuthentication();
-        HttpEntity<List<ShopProvider>> requestEntity = new HttpEntity<>(shopProviders, headers);
+        List<ProductProvider> productProviderList = productProviderService.findAll();/*TODO findByHistories*/
+        HttpEntity<List<ProductProvider>> requestEntity = new HttpEntity<>(productProviderList, headers);
         RestTemplate template = new RestTemplate();
         template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         template.getMessageConverters().add(new StringHttpMessageConverter());
-        String url = JavaUtil.URL + "/json/shop-providers/add";
-        template.exchange(url, HttpMethod.POST, requestEntity, (Class<List<ShopProvider>>) shopProviders.getClass());
-        shopProviders.clear();
+        String url = JavaUtil.URL + "/replication/product-provider-list/add";
+        List<ProductProvider> ppList = new ArrayList<>();/*FIXME add generic .class*/
+        template.exchange(url, HttpMethod.POST, requestEntity, ppList.getClass());
     }
 
     private JsonNode getAllProvidersFromServer() {
@@ -187,26 +213,26 @@ public class SpringUtil {
     private void sendProductsProvidersToServer() {
         HttpHeaders headers = createHeadersForAuthentication();
         List<Provider> providers = shopProviderService.findProvidersByShopId(employee.getShop().getId());
-        List<TransferDto> residues = new ArrayList<>();
+        List<ShopProductProviderDto> residues = new ArrayList<>();
         for (Provider provider : providers) {
             List<ProductProvider> providerProducts = productProviderService.findByProviderId(provider.getId());
             for (ProductProvider providerProduct : providerProducts) {
                 int residue = warehouseProductService.findByProductId(providerProduct.getProduct().getId()).getResidue();
-                TransferDto transferDto = new TransferDto();
-                transferDto.setProductId(providerProduct.getProduct().getId());
-                transferDto.setShopId(employee.getShop().getId());
-                transferDto.setProviderId(providerProduct.getProvider().getId());
-                transferDto.setResidue(residue);
-                residues.add(transferDto);
+                ShopProductProviderDto shopProductProviderDto = new ShopProductProviderDto();
+                shopProductProviderDto.setProductId(providerProduct.getProduct().getId());
+                shopProductProviderDto.setShopId(employee.getShop().getId());
+                shopProductProviderDto.setProviderId(providerProduct.getProvider().getId());
+                shopProductProviderDto.setProductProviderId(providerProduct.getId());
+                shopProductProviderDto.setResidue(residue);
+                residues.add(shopProductProviderDto);
             }
         }
-        HttpEntity<List<TransferDto>> requestEntity = new HttpEntity<>(residues, headers);
+        HttpEntity<List<ShopProductProviderDto>> requestEntity = new HttpEntity<>(residues, headers);
         RestTemplate template = new RestTemplate();
         template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         template.getMessageConverters().add(new StringHttpMessageConverter());
-        String url = JavaUtil.URL + "/replication/provider-products";
-        template.exchange(url, HttpMethod.POST, requestEntity, (Class<List<TransferDto>>) residues.getClass());
-        this.shopProviders.clear();
+        String url = JavaUtil.URL + "/replication/residues";
+        template.exchange(url, HttpMethod.POST, requestEntity, (Class<List<ShopProductProviderDto>>) residues.getClass());
     }
 
     private JsonNode getJsonNodeFromServer(long lastTransferDate, String urlPart) {
@@ -221,14 +247,15 @@ public class SpringUtil {
     }
 
     public void checkAndUpdateNewDataFromServer(long lastTransferDate) {
-        getCategoryChangesAfterDate(lastTransferDate);
         getProviderChangesAfterDate(lastTransferDate);
+        getCategoryChangesAfterDate(lastTransferDate);
     }
 
-    public void sendDataToServer() {
+    public void sendDataToServer(long transferDate) {
         if (checkConnection()) {
-            if (!getProviders().isEmpty()) sendProvidersToServer();
-            if (!getShopProviders().isEmpty()) sendShopProvidersToServer();
+            sendProvidersToServer(transferDate);
+//            sendShopProvidersToServer();
+            sendProductProviderListToServer();
             sendProductsProvidersToServer();
         } else
             alert(Alert.AlertType.ERROR, "Проверьте интернет соединение", null, "Данные небыли переданы на сервер. Проверьте интернет соединение.");
@@ -266,33 +293,33 @@ public class SpringUtil {
         this.newInvoice = newInvoice;
     }
 
-    public List<Provider> getProviders() {
-        if (providers == null) providers = new ArrayList<>();
-        return providers;
-    }
-
-    public void setProviders(List<Provider> providers) {
-        this.providers = providers;
-    }
-
-    public void addProviderInProviders(Provider provider) {
-        if (providers == null) providers = new ArrayList<>();
-        providers.add(provider);
-    }
-
-    public List<ShopProvider> getShopProviders() {
-        if (shopProviders == null) shopProviders = new ArrayList<>();
-        return shopProviders;
-    }
-
-    public void setShopProviders(List<ShopProvider> shopProviders) {
-        this.shopProviders = shopProviders;
-    }
-
-    public void addShopProviderInShopProviders(ShopProvider shopProvider) {
-        if (shopProviders == null) shopProviders = new ArrayList<>();
-        shopProviders.add(shopProvider);
-    }
+//    public List<Provider> getProviders() {
+//        if (providers == null) providers = new ArrayList<>();
+//        return providers;
+//    }
+//
+//    public void setProviders(List<Provider> providers) {
+//        this.providers = providers;
+//    }
+//
+//    public void addProviderInProviders(Provider provider) {
+//        if (providers == null) providers = new ArrayList<>();
+//        providers.add(provider);
+//    }
+//
+//    public List<ShopProvider> getShopProviders() {
+//        if (shopProviders == null) shopProviders = new ArrayList<>();
+//        return shopProviders;
+//    }
+//
+//    public void setShopProviders(List<ShopProvider> shopProviders) {
+//        this.shopProviders = shopProviders;
+//    }
+//
+//    public void addShopProviderInShopProviders(ShopProvider shopProvider) {
+//        if (shopProviders == null) shopProviders = new ArrayList<>();
+//        shopProviders.add(shopProvider);
+//    }
 
     public String getPassword() {
         return password;

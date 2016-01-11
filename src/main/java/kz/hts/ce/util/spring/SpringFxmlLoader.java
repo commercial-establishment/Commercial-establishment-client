@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.config.PersistenceConfig;
 import org.springframework.context.ApplicationContext;

@@ -67,8 +67,6 @@ public class MainController implements Initializable {
     }
 
     public void logout() {
-        springUtil.sendDataToServer();
-
         PagesConfiguration screens = getPagesConfiguration();
         Shift shift = springUtil.getShift();
         shift.setEnd(new Date());

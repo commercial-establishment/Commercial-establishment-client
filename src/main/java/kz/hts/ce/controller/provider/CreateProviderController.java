@@ -56,9 +56,6 @@ public class CreateProviderController implements Initializable {
     @Autowired
     private MainController mainController;
 
-    @Autowired
-    private SpringUtil springUtil;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         List<City> cities = cityService.findAll();
@@ -82,8 +79,7 @@ public class CreateProviderController implements Initializable {
             if (!iin.isEmpty()) provider.setIin(iin);
             String bin = this.bin.getText();
             if (!bin.isEmpty()) provider.setBin(bin);
-            Provider savedProvider = providerService.save(provider);
-            springUtil.addProviderInProviders(savedProvider);
+            providerService.save(provider);
 
             addProviderPage();
         } catch (RuntimeException e) {
