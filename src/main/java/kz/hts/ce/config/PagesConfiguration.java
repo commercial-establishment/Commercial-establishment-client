@@ -15,9 +15,6 @@ import kz.hts.ce.controller.products.EditProductController;
 import kz.hts.ce.controller.products.ShopProductsController;
 import kz.hts.ce.controller.provider.AddProviderController;
 import kz.hts.ce.controller.provider.CreateProviderController;
-import kz.hts.ce.controller.sale.CalculatorController;
-import kz.hts.ce.controller.sale.ProductCategoryController;
-import kz.hts.ce.controller.sale.ProductsController;
 import kz.hts.ce.util.spring.JsonUtil;
 import kz.hts.ce.util.spring.SpringFxmlLoader;
 import kz.hts.ce.util.spring.SpringUtil;
@@ -25,15 +22,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.repository.history.RevisionRepository;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 import static kz.hts.ce.util.spring.SpringFxmlLoader.showStage;
-
-//import kz.hts.ce.controller.sale.CalculatorController;
-//import kz.hts.ce.controller.sale.ProductsController;
 
 @Lazy
 @Configuration
@@ -210,16 +203,6 @@ public class PagesConfiguration {
     public PaymentController paymentController() {
         return new PaymentController();
     }
-
-//    @Bean
-//    public ProductsController productsController() {
-//        return new ProductsController();
-//    }
-//
-//    @Bean
-//    public ProductCategoryController productCategoryController() {
-//        return new ProductCategoryController();
-//    }
 
     @Bean
     public ShopProductsController shopProductsController() {
