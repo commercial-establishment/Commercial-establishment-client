@@ -4,8 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 import kz.hts.ce.config.PagesConfiguration;
-import kz.hts.ce.controller.sale.CalculatorController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -39,8 +39,10 @@ public class MenuController {
 
     @Autowired
     private MainController mainController;
-    @Autowired
-    private CalculatorController calculatorController;
+//    @Autowired
+//    private CalculatorController calculatorController;
+//    @Autowired
+//    private SalesController salesController;
 
     @FXML
     private void showContent(ActionEvent event) throws IOException {
@@ -50,8 +52,13 @@ public class MenuController {
             //node = screens.sales();
 //            mainController.getContentContainer().getChildren().setAll(node);
 //            calculatorController.startEventHandler(node.getScene());
+            Stage stage = new Stage();
+            screens.setSecondaryStage(stage);
             screens.sales();
-            calculatorController.startEventHandler(screens.sales().getScene());
+//            salesController.startEventHandler(screens.sales().getScene());
+            screens.main().close();
+
+//            calculatorController.startEventHandler(screens.sales().getScene());
         } else if (event.getSource() == receipts) {
             node = screens.receipts();
             mainController.getContentContainer().getChildren().setAll(node);

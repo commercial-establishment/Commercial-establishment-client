@@ -5,6 +5,7 @@ import javafx.animation.Timeline;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.util.Duration;
 
 import java.math.BigDecimal;
@@ -121,6 +122,7 @@ public class JavaFxUtil {
         else alert.setHeaderText(headerText);
 
         alert.setContentText(contentText);
+        alert.initModality(Modality.APPLICATION_MODAL);
         alert.showAndWait();
     }
 }

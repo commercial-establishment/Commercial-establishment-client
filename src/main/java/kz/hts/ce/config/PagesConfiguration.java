@@ -4,7 +4,10 @@ import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import kz.hts.ce.controller.*;
+import kz.hts.ce.controller.LoginController;
+import kz.hts.ce.controller.MainController;
+import kz.hts.ce.controller.SalesController;
+import kz.hts.ce.controller.SettingsController;
 import kz.hts.ce.controller.invoice.ReceiptController;
 import kz.hts.ce.controller.invoice.ReceiptsController;
 import kz.hts.ce.controller.payment.PaymentController;
@@ -29,11 +32,15 @@ import java.io.IOException;
 
 import static kz.hts.ce.util.spring.SpringFxmlLoader.showStage;
 
+//import kz.hts.ce.controller.sale.CalculatorController;
+//import kz.hts.ce.controller.sale.ProductsController;
+
 @Lazy
 @Configuration
 public class PagesConfiguration {
 
     private Stage primaryStage;
+    private Stage secondaryStage;
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -41,6 +48,14 @@ public class PagesConfiguration {
 
     public Stage getPrimaryStage() {
         return primaryStage;
+    }
+
+    public Stage getSecondaryStage() {
+        return secondaryStage;
+    }
+
+    public void setSecondaryStage(Stage secondaryStage) {
+        this.secondaryStage = secondaryStage;
     }
 
     @PostConstruct
@@ -62,9 +77,13 @@ public class PagesConfiguration {
 
     @Bean
     @Scope("prototype")
-    public Stage sales(){
-        showStage(primaryStage, "/view/sales.fxml");
-        return primaryStage;
+    public Stage sales() {
+        showStage(secondaryStage, "/view/sale.fxml");
+        secondaryStage.setFullScreenExitHint("");
+//        secondaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        secondaryStage.setFullScreen(true);
+//        primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        return secondaryStage;
     }
 
     @Bean
@@ -178,29 +197,29 @@ public class PagesConfiguration {
     }
 
     @Bean
-    public SalesController salesController(){
+    public SalesController salesController() {
         return new SalesController();
     }
-
-    @Bean
-    public CalculatorController calculatorController() {
-        return new CalculatorController();
-    }
+//
+//    @Bean
+//    public CalculatorController calculatorController() {
+//        return new CalculatorController();
+//    }
 
     @Bean
     public PaymentController paymentController() {
         return new PaymentController();
     }
 
-    @Bean
-    public ProductsController productsController() {
-        return new ProductsController();
-    }
-
-    @Bean
-    public ProductCategoryController productCategoryController() {
-        return new ProductCategoryController();
-    }
+//    @Bean
+//    public ProductsController productsController() {
+//        return new ProductsController();
+//    }
+//
+//    @Bean
+//    public ProductCategoryController productCategoryController() {
+//        return new ProductCategoryController();
+//    }
 
     @Bean
     public ShopProductsController shopProductsController() {
