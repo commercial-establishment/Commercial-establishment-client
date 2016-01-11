@@ -223,13 +223,11 @@ public class SalesController implements Initializable {
         }
         if (buttonText.matches("^[0-9CE\\s[*+.]\\s]*$")) {
             calculator(buttonText, txtDisplay, txtAdditionalDisplay);
-//        } else if (buttonText.matches("ADD")) {
-//            addProductPage();
         } else if (buttonText.matches("ENTER")) {
             findAndAddProductByBarcode();
         } else if (buttonText.matches("SUBTRACT")) {
             deleteSelectedProductFromTable();
-        } else if (buttonText.matches("SPACE")) {
+        } else if (buttonText.matches("ADD")) {
             paymentPage();
         }
     }
