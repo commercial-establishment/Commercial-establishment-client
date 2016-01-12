@@ -1,4 +1,4 @@
-package kz.hts.ce.controller.invoice;
+package kz.hts.ce.controller.receipt;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

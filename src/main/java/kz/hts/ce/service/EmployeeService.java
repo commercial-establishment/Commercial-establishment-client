@@ -38,6 +38,7 @@ public class EmployeeService extends BaseService<Employee, EmployeeRepository> {
                 if (time < dateTimeInMillis) {
                     employee = revision.getEntity();
                     employee.setRole(employeeFromAllEmployees.getRole());
+                    employee.setShop(employeeFromAllEmployees.getShop());
                 }
             }
             if (employee != null) employees.add(employee);

@@ -1,58 +1,36 @@
 package kz.hts.ce.model.entity;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
+@Audited
 public class Employee extends BaseEntity {
 
     private String username;
     private String password;
+    private String surname;
 
     @Column(name = "first_name")
     private String firstName;
-    private String surname;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne
     @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Role role;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "employee")
-    private List<Check> checks;
 
     @Column(name = "is_blocked")
     private boolean blocked;
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public Shop getShop() {
-        return shop;
-    }
-
-    public void setShop(Shop shop) {
-        this.shop = shop;
-    }
 
     public String getUsername() {
         return username;
@@ -68,6 +46,30 @@ public class Employee extends BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
 
     public Role getRole() {
@@ -86,11 +88,16 @@ public class Employee extends BaseEntity {
         this.blocked = blocked;
     }
 
-    public List<Check> getChecks() {
-        return checks;
-    }
-
-    public void setChecks(List<Check> checks) {
-        this.checks = checks;
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", surname='" + surname + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", shop=" + shop +
+                ", role=" + role +
+                ", blocked=" + blocked +
+                '}';
     }
 }

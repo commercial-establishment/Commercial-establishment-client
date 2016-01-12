@@ -48,30 +48,30 @@ public class LoginController implements Initializable {
     private TransferService transferService;
 
     @Autowired
-    private SpringHelper springUtils;
+    private SpringHelper springHelper;
 
     @FXML
     @Transactional
     private void loginAction() throws IOException {
         try {
             PagesConfiguration screens = getPagesConfiguration();
-            springUtils.authorize(username.getText(), password.getText());
-            springUtils.setPassword(password.getText());
+            springHelper.authorize(username.getText(), password.getText());
+            springHelper.setPassword(password.getText());
             Stage stage = new Stage();
             screens.setPrimaryStage(stage);
 
             Shift shiftEntity = new Shift();
             shiftEntity.setStart(new Date());
             Employee employee = employeeService.findByUsername(getPrincipal());
-            springUtils.setEmployee(employee);
+            springHelper.setEmployee(employee);
             shiftEntity.setEmployee(employee);
             Shift shift = shiftService.save(shiftEntity);
-            springUtils.setShift(shift);
-
-            springUtils.transmitAndReceiveData();
+            springHelper.setShift(shift);
 
             screens.login().hide();
             screens.main().show();
+
+            springHelper.transmitAndReceiveData();
             message.setText("");
         } catch (NullPointerException | UsernameNotFoundException e) {
             message.setText("Неверное имя пользователя или пароль:");

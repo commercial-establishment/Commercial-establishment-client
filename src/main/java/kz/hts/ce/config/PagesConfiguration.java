@@ -8,8 +8,8 @@ import kz.hts.ce.controller.LoginController;
 import kz.hts.ce.controller.MainController;
 import kz.hts.ce.controller.SalesController;
 import kz.hts.ce.controller.SettingsController;
-import kz.hts.ce.controller.invoice.ReceiptController;
-import kz.hts.ce.controller.invoice.ReceiptsController;
+import kz.hts.ce.controller.receipt.ReceiptController;
+import kz.hts.ce.controller.receipt.ReceiptsController;
 import kz.hts.ce.controller.payment.PaymentController;
 import kz.hts.ce.controller.products.EditProductController;
 import kz.hts.ce.controller.products.ShopProductsController;
@@ -172,6 +172,11 @@ public class PagesConfiguration {
     }
 
     @Bean
+    public SpringHelper springHelper() {
+        return new SpringHelper();
+    }
+
+    @Bean
     public LoginController loginController() {
         return new LoginController();
     }
@@ -231,10 +236,5 @@ public class PagesConfiguration {
     @Bean
     public JsonUtil jsonUtil() {
         return new JsonUtil();
-    }
-
-    @Bean
-    public SpringHelper springHelper() {
-        return new SpringHelper();
     }
 }

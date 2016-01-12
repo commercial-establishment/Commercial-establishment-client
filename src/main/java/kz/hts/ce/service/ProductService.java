@@ -67,4 +67,9 @@ public class ProductService extends BaseService<Product, ProductRepository> {
         }
         return products;
     }
+
+    public void saveOrUpdateList(List<Product> products) {
+        products.forEach(this::save);
+    }
+
 }

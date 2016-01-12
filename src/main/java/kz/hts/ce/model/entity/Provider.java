@@ -1,5 +1,6 @@
 package kz.hts.ce.model.entity;
 
+import org.hibernate.annotations.Proxy;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 import org.hibernate.validator.constraints.Email;
@@ -16,6 +17,7 @@ import java.util.Date;
 
 @Entity
 @Audited
+@Proxy(lazy = false)
 public class Provider extends BaseEntity {
 
     @Size(min = 3, max = 14)

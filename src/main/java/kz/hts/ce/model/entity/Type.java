@@ -1,8 +1,11 @@
 package kz.hts.ce.model.entity;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.Entity;
 
 @Entity
+@Proxy(lazy = false)
 public class Type extends BaseEntity {
 
     private String name;

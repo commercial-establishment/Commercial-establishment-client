@@ -7,7 +7,7 @@
 <?import kz.hts.ce.util.javafx.fields.PriceTextField?>
 <AnchorPane fx:id="editPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
             minWidth="-Infinity" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.invoice.ReceiptController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.receipt.ReceiptController">
     <children>
         <SplitPane dividerPositions="0.2630691399662732" layoutX="54.0" layoutY="173.0" orientation="VERTICAL"
                    prefHeight="595.0" prefWidth="1008.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"

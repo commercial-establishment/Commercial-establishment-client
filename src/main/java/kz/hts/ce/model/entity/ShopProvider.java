@@ -43,5 +43,14 @@ public class ShopProvider extends BaseEntity {
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
     }
+
+    @Override
+    public String toString() {
+        return "ShopProvider{" +
+                "shop=" + shop +
+                ", provider=" + provider +
+                ", blocked=" + blocked +
+                '}';
+    }
 }
 

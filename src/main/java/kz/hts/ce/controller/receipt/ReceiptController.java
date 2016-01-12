@@ -1,4 +1,4 @@
-package kz.hts.ce.controller.invoice;
+package kz.hts.ce.controller.receipt;
 
 import com.sun.javafx.scene.control.skin.TableViewSkin;
 import javafx.collections.FXCollections;
@@ -323,7 +323,6 @@ public class ReceiptController implements Initializable {
                 invoice.setVersion(ONE);
                 Invoice savedInvoice = invoiceService.save(invoice);
 
-
                 InvoiceHistory invoiceHistory = new InvoiceHistory();
                 invoiceHistory.setInvoice(invoice);
                 invoiceHistory.setDate(invoice.getDate());
@@ -611,6 +610,11 @@ public class ReceiptController implements Initializable {
             newProduct.setUnit(unit);
 
             Product createdProduct = productService.save(newProduct);
+            ProductProvider productProvider = new ProductProvider();
+            productProvider.setProduct(createdProduct);
+            productProvider.setProvider(providerService.findByCompanyName(providers.getValue()));
+            productProvider.setBlocked(false);
+            productProviderService.save(productProvider);
             wp.setProduct(createdProduct);
             ip.setProduct(createdProduct);
         }

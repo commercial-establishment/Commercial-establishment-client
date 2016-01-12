@@ -12,18 +12,17 @@ import kz.hts.ce.service.*;
 import kz.hts.ce.util.JavaUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
@@ -83,6 +82,8 @@ public class SpringHelper {
     private TransferService transferService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private ShopService shopService;
 
     public static String getPrincipal() {
         String userName;
@@ -152,7 +153,7 @@ public class SpringHelper {
         List<Provider> providers;
         if (lastTransferDate == 0) providers = providerService.findAll();
         else providers = providerService.getHistory(lastTransferDate);
-        log.info("Providers' data for server: " + providers);
+        log.info("PROVIDERS' DATA FOR SERVER: " + providers);
 
         HttpEntity<List<Provider>> requestEntity = new HttpEntity<>(providers, headers);
         RestTemplate template = new RestTemplate();
@@ -161,29 +162,28 @@ public class SpringHelper {
         String url = JavaUtil.URL + "/replication/providers";
         template.exchange(url, HttpMethod.POST, requestEntity, providers.getClass());
     }
-
-    private JsonNode getAllProvidersFromServer() {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = createHeadersForAuthentication();
-        HttpEntity<List<ShopProvider>> request = new HttpEntity<>(headers);
-        String url = JavaUtil.URL + "/json/providers";
-        return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
-    }
+//
+//    private JsonNode getAllProvidersFromServer() {
+//        RestTemplate restTemplate = new RestTemplate();
+//        HttpHeaders headers = createHeadersForAuthentication();
+//        HttpEntity<List<ShopProvider>> request = new HttpEntity<>(headers);
+//        String url = JavaUtil.URL + "/json/providers";
+//        return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
+//    }
 
     private void getNewCategoriesDataFromServer(long lastTransferDate) {
         try {
             String urlPart = "/replication/categories/time={time}";
             JsonNode categoriesJson = getJsonNodeFromServer(lastTransferDate, urlPart);
-            log.info("category list response: " + categoriesJson);
 
             ObjectMapper mapper = new ObjectMapper();
             List<Category> categoryList = mapper.readValue(mapper.treeAsTokens(categoriesJson), new TypeReference<List<Category>>() {
             });
 
             categoryService.saveOrUpdateList(categoryList);
-            categoryList.clear();
+            log.info("CATEGORY LIST FROM SERVER WAS SAVED: " + categoriesJson);
         } catch (IOException e) {
-            alert(Alert.AlertType.WARNING, "Внутренняя ошибка", null, "Обратитесь в тех. поддержку");
+            alert(Alert.AlertType.WARNING, "Внутренняя ошибка", null, "Данные о категориях небыли взяты с сервера");
         }
     }
 
@@ -191,16 +191,31 @@ public class SpringHelper {
         try {
             String urlPart = "/replication/providers/time={time}";
             JsonNode providersJson = getJsonNodeFromServer(lastTransferDate, urlPart);
-            log.info("provider list response: " + providersJson);
 
             ObjectMapper mapper = new ObjectMapper();
-            List<Provider> providerList = mapper.readValue(mapper.treeAsTokens(providersJson), new TypeReference<List<Provider>>() {
+            List<Provider> providers = mapper.readValue(mapper.treeAsTokens(providersJson), new TypeReference<List<Provider>>() {
             });
 
-            providerService.saveOrUpdateList(providerList);
-            providerList.clear();
+            providerService.saveOrUpdateList(providers);
+            log.info("PROVIDER LIST FROM SERVER WAS SAVED: " + providersJson);
         } catch (IOException e) {
-            alert(Alert.AlertType.WARNING, "Внутренняя ошибка", null, "Обратитесь в тех. поддержку");
+            alert(Alert.AlertType.WARNING, "Внутренняя ошибка", null, "Данные о поставщиках небыли взяты с сервера");
+        }
+    }
+
+    private void getNewProductsDataFromServer(long lastTransferDate) {
+        try {
+            String urlPart = "/replication/products/time={time}";
+            JsonNode productsJson = getJsonNodeFromServer(lastTransferDate, urlPart);
+            log.info("PRODUCT LIST FROM SERVER: " + productsJson);
+
+            ObjectMapper mapper = new ObjectMapper();
+            List<Product> products = mapper.readValue(mapper.treeAsTokens(productsJson), new TypeReference<List<Product>>() {
+            });
+
+            productService.saveOrUpdateList(products);
+        } catch (IOException e) {
+            alert(Alert.AlertType.WARNING, "Внутренняя ошибка", null, "Данные о поставщиках небыли взяты с сервера");
         }
     }
 
@@ -244,44 +259,58 @@ public class SpringHelper {
         RestTemplate template = createRestTemplateWithMessageConverters();
         String url = JavaUtil.URL + "/replication/residues";
         template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
+        log.info("RESIDUES TO SERVER WERE SENT: " + residues);
     }
 
     private void sendNewProductsDataToServer(long transferDate) {
         List<Product> products;
         if (transferDate == 0) products = productService.findAll();
         else products = productService.getHistory(transferDate);
-        log.info("Product data for server: " + products);
 
         HttpHeaders headers = createHeadersForAuthentication();
         HttpEntity<List<Product>> requestEntity = new HttpEntity<>(products, headers);
         RestTemplate template = createRestTemplateWithMessageConverters();
         String url = JavaUtil.URL + "/replication/products";
         template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
+        log.info("PRODUCT DATA FOR SERVER: " + products);
     }
 
     private void sendNewProductProviderListDataToServer(long transferDate) {
         List<ProductProvider> productProviderList;
         if (transferDate == 0) productProviderList = productProviderService.findAll();
         else productProviderList = productProviderService.getHistory(transferDate);
-        log.info("Product Provider List data for server: " + productProviderList);
 
         HttpHeaders headers = createHeadersForAuthentication();
         HttpEntity<List<ProductProvider>> requestEntity = new HttpEntity<>(productProviderList, headers);
         RestTemplate template = createRestTemplateWithMessageConverters();
         String url = JavaUtil.URL + "/replication/product-provider-list";
         template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
+        log.info("PRODUCT PROVIDER LIST DATA FOR SERVER: " + productProviderList);
     }
 
-    private void sendNewEmployeesDataToServer(long transferDate) {
+    private void sendNewEmployeesDataToServer(long transferDate) {/*TODO not working*/
         List<Employee> employees;
         if (transferDate == 0) employees = employeeService.findAll();
         else employees = employeeService.getHistory(transferDate);
-        log.info("Employees data for server: " + employees);
 
         HttpHeaders headers = createHeadersForAuthentication();
         HttpEntity<List<Employee>> requestEntity = new HttpEntity<>(employees, headers);
         RestTemplate template = createRestTemplateWithMessageConverters();
         String url = JavaUtil.URL + "/replication/employees";
+        template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
+        log.info("EMPLOYEES' DATA FOR SERVER: " + employees);
+    }
+
+    private void sendNewShopDataToServer(long transferDate) {
+        List<Shop> shops;
+        if (transferDate == 0) shops = shopService.findAll();
+        else shops = shopService.getHistory(transferDate);
+        log.info("SHOP LIST DATA FOR SERVER: " + shops);
+
+        HttpHeaders headers = createHeadersForAuthentication();
+        HttpEntity<List<Shop>> requestEntity = new HttpEntity<>(shops, headers);
+        RestTemplate template = createRestTemplateWithMessageConverters();
+        String url = JavaUtil.URL + "/replication/shops";
         template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
     }
 
@@ -289,21 +318,21 @@ public class SpringHelper {
         List<ShopProvider> shopProviderList;
         if (transferDate == 0) shopProviderList = shopProviderService.findAll();
         else shopProviderList = shopProviderService.getHistory(transferDate);
-        log.info("Shop Product List data for server: " + shopProviderList);
 
         HttpHeaders headers = createHeadersForAuthentication();
         HttpEntity<List<ShopProvider>> requestEntity = new HttpEntity<>(shopProviderList, headers);
         RestTemplate template = createRestTemplateWithMessageConverters();
         String url = JavaUtil.URL + "/replication/shop-provider-list";
         template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
+        log.info("SHOP PRODUCT LIST DATA FOR SERVER: " + shopProviderList);
     }
 
     private void checkAndUpdateNewDataFromServer(long lastTransferDate) {
         getNewCategoriesDataFromServer(lastTransferDate);
         getNewProvidersDataFromServer(lastTransferDate);
+        getNewProductsDataFromServer(lastTransferDate);
         /*TODO shop_provider data from server*/
         /*TODO product_provider data from server*/
-        /*TODO product data from server*/
         /*TODO shop data from server*/
     }
 
@@ -311,8 +340,9 @@ public class SpringHelper {
         if (checkConnection()) {
             sendNewProvidersDataToServer(transferDate);
             sendNewProductsDataToServer(transferDate);
-            sendNewProductProviderListDataToServer(transferDate);
             sendNewEmployeesDataToServer(transferDate);
+            sendNewProductProviderListDataToServer(transferDate);
+            sendNewShopDataToServer(transferDate);
             sendNewShopProviderListDataToServer(transferDate);
             sendResiduesToServer(transferDate);
         } else

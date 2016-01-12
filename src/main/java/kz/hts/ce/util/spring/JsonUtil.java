@@ -14,13 +14,13 @@ import java.io.IOException;
 @Component
 public class JsonUtil {
 
-    public static final String pathToJson = "src/main/resources/settings.json";
-    public static final String PRODUCT_MIN = "productMin";
-    public static final String PRODUCT_MAX = "productMax";
-    public static final String INVOICE_MIN = "invoiceMin";
-    public static final String INVOICE_MAX = "invoiceMax";
-    public static final String VAT = "vat";
-    public static final String EXPORT_DIRECTORY = "pathForExport";
+    private static final String pathToJson = "src/main/resources/settings.json";
+    private static final String PRODUCT_MIN = "productMin";
+    private static final String PRODUCT_MAX = "productMax";
+    private static final String INVOICE_MIN = "invoiceMin";
+    private static final String INVOICE_MAX = "invoiceMax";
+    private static final String VAT = "vat";
+    private static final String EXPORT_DIRECTORY = "pathForExport";
 
     private File file = new File(pathToJson);
     private int productMinInt;
@@ -50,7 +50,7 @@ public class JsonUtil {
         }
     }
 
-    public JSONObject read(String filePath) {
+    private JSONObject read(String filePath) {
         JSONObject jsonObject;
         try {
             FileReader fileReader = new FileReader(filePath);
@@ -72,8 +72,8 @@ public class JsonUtil {
         createOrUpdateJson(json, productMin, productMax, invoiceMin, invoiceMax, vat, pathForExport);
     }
 
-    public void createOrUpdateJson(JSONObject jsonObject, int productMin, int productMax, int invoiceMin,
-                                   int invoiceMax, boolean vat, String pathForExport) {
+    private void createOrUpdateJson(JSONObject jsonObject, int productMin, int productMax, int invoiceMin,
+                                    int invoiceMax, boolean vat, String pathForExport) {
         try {
             jsonObject.put(PRODUCT_MIN, productMin);
             jsonObject.put(PRODUCT_MAX, productMax);

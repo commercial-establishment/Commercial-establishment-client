@@ -1,6 +1,5 @@
 package kz.hts.ce.service;
 
-import kz.hts.ce.model.entity.ProductProvider;
 import kz.hts.ce.model.entity.Provider;
 import kz.hts.ce.model.entity.ShopProvider;
 import kz.hts.ce.repository.ShopProviderRepository;
