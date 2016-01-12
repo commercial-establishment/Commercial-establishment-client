@@ -21,7 +21,7 @@ import kz.hts.ce.service.InvoiceService;
 import kz.hts.ce.service.ProviderService;
 import kz.hts.ce.service.ShopProviderService;
 import kz.hts.ce.util.spring.JsonUtil;
-import kz.hts.ce.util.spring.SpringUtil;
+import kz.hts.ce.util.spring.SpringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -77,11 +77,11 @@ public class ReceiptsController implements Initializable {
     @Autowired
     private JsonUtil jsonUtil;
     @Autowired
-    private SpringUtil springUtil;
+    private SpringHelper springHelper;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        shopId = springUtil.getEmployee().getShop().getId();
+        shopId = springHelper.getEmployee().getShop().getId();
         shopProviders = shopProviderService.findByShopId(shopId);
         providers.getItems().add(ALL_PROVIDERS_RU);
         for (ShopProvider shopProvider : shopProviders) {
@@ -146,8 +146,8 @@ public class ReceiptsController implements Initializable {
         receiptsTable.setOnMousePressed(event -> {
             if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
                 try {
-                    springUtil.setId(receiptsTable.getSelectionModel().getSelectedItem().getId());
-                    springUtil.setNewInvoice(false);
+                    springHelper.setId(receiptsTable.getSelectionModel().getSelectedItem().getId());
+                    springHelper.setNewInvoice(false);
                     Node node = getPagesConfiguration().receipt();
                     mainController.getContentContainer().getChildren().setAll(node);
                 } catch (IOException e) {
@@ -160,7 +160,7 @@ public class ReceiptsController implements Initializable {
     @FXML
     private void showCreateReceiptPage() throws IOException {
         PagesConfiguration screens = getPagesConfiguration();
-        springUtil.setNewInvoice(true);
+        springHelper.setNewInvoice(true);
         mainController.getContentContainer().getChildren().setAll(screens.receipt());
     }
 

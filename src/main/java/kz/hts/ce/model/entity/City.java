@@ -1,7 +1,5 @@
 package kz.hts.ce.model.entity;
 
-import org.hibernate.envers.Audited;
-
 import javax.persistence.Entity;
 
 @Entity

@@ -29,14 +29,17 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import static kz.hts.ce.util.JavaUtil.checkConnection;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 
 @Component
-public class SpringUtil {
+public class SpringHelper {
 
     public static Map<String, Role> roleMap;
 
@@ -46,10 +49,7 @@ public class SpringUtil {
     private boolean newInvoice;
     private String password;
 
-//    private List<Provider> providers;
-//    private List<ShopProvider> shopProviders;
-
-    private static final Logger log = Logger.getLogger(SpringUtil.class.getName());
+    private static final Logger log = Logger.getLogger(SpringHelper.class.getName());
 
     @PostConstruct
     public void initialize() {
@@ -76,9 +76,13 @@ public class SpringUtil {
     @Autowired
     private WarehouseProductService warehouseProductService;
     @Autowired
+    private RoleService roleService;
+    @Autowired
+    private ProductService productService;
+    @Autowired
     private TransferService transferService;
     @Autowired
-    private RoleService roleService;
+    private EmployeeService employeeService;
 
     public static String getPrincipal() {
         String userName;
@@ -113,39 +117,49 @@ public class SpringUtil {
         };
     }
 
-    private void sendProvidersToServer(long lastTransferDate) {
+    private HttpEntity<Long> createHttpEntityWithAuthHeaders() {
+        HttpHeaders headers = createHeadersForAuthentication();
+        return new HttpEntity<>(headers);
+    }
+
+    private JsonNode getJsonNodeFromServer(long lastTransferDate, String urlPart) {
+        HttpEntity<Long> requestEntity = createHttpEntityWithAuthHeaders();
+        RestTemplate template = createRestTemplateWithMessageConverters();
+
+        Map<String, Long> uriVariables = new HashMap<>();
+        uriVariables.put("time", lastTransferDate);
+        String url = JavaUtil.URL + urlPart;/*TODO fix '+'*/
+
+        return template.exchange(url, HttpMethod.GET, requestEntity, JsonNode.class, uriVariables).getBody();
+    }
+
+    public void transmitAndReceiveData() {
+        if (checkConnection()) {
+            Transfer transfer = transferService.findByLastDate();
+            long lastTransferDate = 0;
+            if (transfer != null) lastTransferDate = transfer.getDate().getTime();
+            checkAndUpdateNewDataFromServer(lastTransferDate);
+            sendDataToServer(lastTransferDate);
+            transferService.saveWithNewDate();
+        } else {
+            alert(Alert.AlertType.WARNING, "Проверьте интернет соединение", null, "Данные с сервера небыли подгружены.");
+        }
+    }
+
+    private void sendNewProvidersDataToServer(long lastTransferDate) {
         HttpHeaders headers = createHeadersForAuthentication();
 
-        List<Provider> providers = providerService.getHistory(lastTransferDate);
+        List<Provider> providers;
+        if (lastTransferDate == 0) providers = providerService.findAll();
+        else providers = providerService.getHistory(lastTransferDate);
+        log.info("Providers' data for server: " + providers);
+
         HttpEntity<List<Provider>> requestEntity = new HttpEntity<>(providers, headers);
         RestTemplate template = new RestTemplate();
         template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         template.getMessageConverters().add(new StringHttpMessageConverter());
         String url = JavaUtil.URL + "/replication/providers";
         template.exchange(url, HttpMethod.POST, requestEntity, providers.getClass());
-    }
-//
-//    private void sendShopProvidersToServer() {
-//        HttpHeaders headers = createHeadersForAuthentication();
-//        HttpEntity<List<ShopProvider>> requestEntity = new HttpEntity<>(shopProviders, headers);
-//        RestTemplate template = new RestTemplate();
-//        template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-//        template.getMessageConverters().add(new StringHttpMessageConverter());
-//        String url = JavaUtil.URL + "/json/shop-providers/add";
-//        template.exchange(url, HttpMethod.POST, requestEntity, (Class<List<ShopProvider>>) shopProviders.getClass());
-//        shopProviders.clear();
-//    }
-
-    private void sendProductProviderListToServer() {
-        HttpHeaders headers = createHeadersForAuthentication();
-        List<ProductProvider> productProviderList = productProviderService.findAll();/*TODO findByHistories*/
-        HttpEntity<List<ProductProvider>> requestEntity = new HttpEntity<>(productProviderList, headers);
-        RestTemplate template = new RestTemplate();
-        template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-        template.getMessageConverters().add(new StringHttpMessageConverter());
-        String url = JavaUtil.URL + "/replication/product-provider-list/add";
-        List<ProductProvider> ppList = new ArrayList<>();/*FIXME add generic .class*/
-        template.exchange(url, HttpMethod.POST, requestEntity, ppList.getClass());
     }
 
     private JsonNode getAllProvidersFromServer() {
@@ -156,15 +170,15 @@ public class SpringUtil {
         return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
     }
 
-    private void getCategoryChangesAfterDate(long lastTransferDate) {
+    private void getNewCategoriesDataFromServer(long lastTransferDate) {
         try {
             String urlPart = "/replication/categories/time={time}";
             JsonNode categoriesJson = getJsonNodeFromServer(lastTransferDate, urlPart);
+            log.info("category list response: " + categoriesJson);
 
             ObjectMapper mapper = new ObjectMapper();
             List<Category> categoryList = mapper.readValue(mapper.treeAsTokens(categoriesJson), new TypeReference<List<Category>>() {
             });
-            log.info("category list response: " + categoriesJson);
 
             categoryService.saveOrUpdateList(categoryList);
             categoryList.clear();
@@ -173,26 +187,21 @@ public class SpringUtil {
         }
     }
 
-    private void getProviderChangesAfterDate(long lastTransferDate) {
+    private void getNewProvidersDataFromServer(long lastTransferDate) {
         try {
             String urlPart = "/replication/providers/time={time}";
             JsonNode providersJson = getJsonNodeFromServer(lastTransferDate, urlPart);
+            log.info("provider list response: " + providersJson);
 
             ObjectMapper mapper = new ObjectMapper();
             List<Provider> providerList = mapper.readValue(mapper.treeAsTokens(providersJson), new TypeReference<List<Provider>>() {
             });
-            log.info("provider list response: " + providersJson);
 
             providerService.saveOrUpdateList(providerList);
             providerList.clear();
         } catch (IOException e) {
             alert(Alert.AlertType.WARNING, "Внутренняя ошибка", null, "Обратитесь в тех. поддержку");
         }
-    }
-
-    private HttpEntity<Long> createHttpEntityWithAuthHeaders() {
-        HttpHeaders headers = createHeadersForAuthentication();
-        return new HttpEntity<>(headers);
     }
 
     private RestTemplate createRestTemplateWithMessageConverters() {
@@ -210,53 +219,102 @@ public class SpringUtil {
         return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
     }
 
-    private void sendProductsProvidersToServer() {
+    private void sendResiduesToServer(long lastTransferDate) {
+        List<WarehouseProduct> warehouseProducts;
+        if (lastTransferDate == 0) warehouseProducts = warehouseProductService.findAll();
+        else warehouseProducts = warehouseProductService.getHistory(lastTransferDate);
+
         HttpHeaders headers = createHeadersForAuthentication();
-        List<Provider> providers = shopProviderService.findProvidersByShopId(employee.getShop().getId());
         List<ShopProductProviderDto> residues = new ArrayList<>();
-        for (Provider provider : providers) {
-            List<ProductProvider> providerProducts = productProviderService.findByProviderId(provider.getId());
-            for (ProductProvider providerProduct : providerProducts) {
-                int residue = warehouseProductService.findByProductId(providerProduct.getProduct().getId()).getResidue();
+        for (WarehouseProduct warehouseProduct : warehouseProducts) {
+            List<ProductProvider> productProviderList = productProviderService.findByProductId(warehouseProduct.getProduct().getId());
+            for (ProductProvider productProvider : productProviderList) {
                 ShopProductProviderDto shopProductProviderDto = new ShopProductProviderDto();
-                shopProductProviderDto.setProductId(providerProduct.getProduct().getId());
+                shopProductProviderDto.setProductId(warehouseProduct.getProduct().getId());
                 shopProductProviderDto.setShopId(employee.getShop().getId());
-                shopProductProviderDto.setProviderId(providerProduct.getProvider().getId());
-                shopProductProviderDto.setProductProviderId(providerProduct.getId());
-                shopProductProviderDto.setResidue(residue);
+                shopProductProviderDto.setResidue(warehouseProduct.getResidue());
+
+                shopProductProviderDto.setProductProviderId(productProvider.getId());
+                shopProductProviderDto.setProviderId(productProvider.getProvider().getId());
                 residues.add(shopProductProviderDto);
             }
         }
+
         HttpEntity<List<ShopProductProviderDto>> requestEntity = new HttpEntity<>(residues, headers);
-        RestTemplate template = new RestTemplate();
-        template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-        template.getMessageConverters().add(new StringHttpMessageConverter());
-        String url = JavaUtil.URL + "/replication/residues";
-        template.exchange(url, HttpMethod.POST, requestEntity, (Class<List<ShopProductProviderDto>>) residues.getClass());
-    }
-
-    private JsonNode getJsonNodeFromServer(long lastTransferDate, String urlPart) {
-        HttpEntity<Long> requestEntity = createHttpEntityWithAuthHeaders();
         RestTemplate template = createRestTemplateWithMessageConverters();
-
-        Map<String, Long> uriVariables = new HashMap<>();
-        uriVariables.put("time", lastTransferDate);
-        String url = JavaUtil.URL + urlPart;/*TODO fix '+'*/
-
-        return template.exchange(url, HttpMethod.GET, requestEntity, JsonNode.class, uriVariables).getBody();
+        String url = JavaUtil.URL + "/replication/residues";
+        template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
     }
 
-    public void checkAndUpdateNewDataFromServer(long lastTransferDate) {
-        getProviderChangesAfterDate(lastTransferDate);
-        getCategoryChangesAfterDate(lastTransferDate);
+    private void sendNewProductsDataToServer(long transferDate) {
+        List<Product> products;
+        if (transferDate == 0) products = productService.findAll();
+        else products = productService.getHistory(transferDate);
+        log.info("Product data for server: " + products);
+
+        HttpHeaders headers = createHeadersForAuthentication();
+        HttpEntity<List<Product>> requestEntity = new HttpEntity<>(products, headers);
+        RestTemplate template = createRestTemplateWithMessageConverters();
+        String url = JavaUtil.URL + "/replication/products";
+        template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
     }
 
-    public void sendDataToServer(long transferDate) {
+    private void sendNewProductProviderListDataToServer(long transferDate) {
+        List<ProductProvider> productProviderList;
+        if (transferDate == 0) productProviderList = productProviderService.findAll();
+        else productProviderList = productProviderService.getHistory(transferDate);
+        log.info("Product Provider List data for server: " + productProviderList);
+
+        HttpHeaders headers = createHeadersForAuthentication();
+        HttpEntity<List<ProductProvider>> requestEntity = new HttpEntity<>(productProviderList, headers);
+        RestTemplate template = createRestTemplateWithMessageConverters();
+        String url = JavaUtil.URL + "/replication/product-provider-list";
+        template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
+    }
+
+    private void sendNewEmployeesDataToServer(long transferDate) {
+        List<Employee> employees;
+        if (transferDate == 0) employees = employeeService.findAll();
+        else employees = employeeService.getHistory(transferDate);
+        log.info("Employees data for server: " + employees);
+
+        HttpHeaders headers = createHeadersForAuthentication();
+        HttpEntity<List<Employee>> requestEntity = new HttpEntity<>(employees, headers);
+        RestTemplate template = createRestTemplateWithMessageConverters();
+        String url = JavaUtil.URL + "/replication/employees";
+        template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
+    }
+
+    private void sendNewShopProviderListDataToServer(long transferDate) {
+        List<ShopProvider> shopProviderList;
+        if (transferDate == 0) shopProviderList = shopProviderService.findAll();
+        else shopProviderList = shopProviderService.getHistory(transferDate);
+        log.info("Shop Product List data for server: " + shopProviderList);
+
+        HttpHeaders headers = createHeadersForAuthentication();
+        HttpEntity<List<ShopProvider>> requestEntity = new HttpEntity<>(shopProviderList, headers);
+        RestTemplate template = createRestTemplateWithMessageConverters();
+        String url = JavaUtil.URL + "/replication/shop-provider-list";
+        template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
+    }
+
+    private void checkAndUpdateNewDataFromServer(long lastTransferDate) {
+        getNewCategoriesDataFromServer(lastTransferDate);
+        getNewProvidersDataFromServer(lastTransferDate);
+        /*TODO shop_provider data from server*/
+        /*TODO product_provider data from server*/
+        /*TODO product data from server*/
+        /*TODO shop data from server*/
+    }
+
+    private void sendDataToServer(long transferDate) {
         if (checkConnection()) {
-            sendProvidersToServer(transferDate);
-//            sendShopProvidersToServer();
-            sendProductProviderListToServer();
-            sendProductsProvidersToServer();
+            sendNewProvidersDataToServer(transferDate);
+            sendNewProductsDataToServer(transferDate);
+            sendNewProductProviderListDataToServer(transferDate);
+            sendNewEmployeesDataToServer(transferDate);
+            sendNewShopProviderListDataToServer(transferDate);
+            sendResiduesToServer(transferDate);
         } else
             alert(Alert.AlertType.ERROR, "Проверьте интернет соединение", null, "Данные небыли переданы на сервер. Проверьте интернет соединение.");
     }
@@ -292,34 +350,6 @@ public class SpringUtil {
     public void setNewInvoice(boolean newInvoice) {
         this.newInvoice = newInvoice;
     }
-
-//    public List<Provider> getProviders() {
-//        if (providers == null) providers = new ArrayList<>();
-//        return providers;
-//    }
-//
-//    public void setProviders(List<Provider> providers) {
-//        this.providers = providers;
-//    }
-//
-//    public void addProviderInProviders(Provider provider) {
-//        if (providers == null) providers = new ArrayList<>();
-//        providers.add(provider);
-//    }
-//
-//    public List<ShopProvider> getShopProviders() {
-//        if (shopProviders == null) shopProviders = new ArrayList<>();
-//        return shopProviders;
-//    }
-//
-//    public void setShopProviders(List<ShopProvider> shopProviders) {
-//        this.shopProviders = shopProviders;
-//    }
-//
-//    public void addShopProviderInShopProviders(ShopProvider shopProvider) {
-//        if (shopProviders == null) shopProviders = new ArrayList<>();
-//        shopProviders.add(shopProvider);
-//    }
 
     public String getPassword() {
         return password;

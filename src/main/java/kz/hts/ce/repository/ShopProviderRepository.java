@@ -4,6 +4,7 @@ import kz.hts.ce.model.entity.ShopProvider;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface ShopProviderRepository extends JpaRepository<ShopProvider, UUID> {
+public interface ShopProviderRepository extends RevisionRepository<ShopProvider, UUID, Integer>, JpaRepository<ShopProvider, UUID> {
 
     List<ShopProvider> findByProvider_Id(UUID id);
 

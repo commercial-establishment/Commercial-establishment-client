@@ -1,11 +1,12 @@
 package kz.hts.ce.model.entity;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "product_provider")
+@Audited
 public class ProductProvider extends BaseEntity {
 
     @ManyToOne

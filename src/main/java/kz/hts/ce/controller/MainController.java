@@ -13,7 +13,7 @@ import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.Shift;
 import kz.hts.ce.service.ShiftService;
-import kz.hts.ce.util.spring.SpringUtil;
+import kz.hts.ce.util.spring.SpringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
@@ -46,7 +46,7 @@ public class MainController implements Initializable {
 
     @Lazy
     @Autowired
-    private SpringUtil springUtil;
+    private SpringHelper springHelper;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -62,13 +62,13 @@ public class MainController implements Initializable {
                 flag = true;
             }
         });
-        Employee employee = springUtil.getEmployee();
+        Employee employee = springHelper.getEmployee();
         role.setText(employee.getRole().getName());
     }
 
     public void logout() {
         PagesConfiguration screens = getPagesConfiguration();
-        Shift shift = springUtil.getShift();
+        Shift shift = springHelper.getShift();
         shift.setEnd(new Date());
         shiftService.save(shift);
         screens.main().close();

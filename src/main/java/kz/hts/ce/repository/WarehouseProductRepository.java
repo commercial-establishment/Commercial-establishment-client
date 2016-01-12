@@ -2,13 +2,14 @@ package kz.hts.ce.repository;
 
 import kz.hts.ce.model.entity.WarehouseProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface WarehouseProductRepository extends JpaRepository<WarehouseProduct, UUID> {
+public interface WarehouseProductRepository extends RevisionRepository<WarehouseProduct, UUID, Integer>, JpaRepository<WarehouseProduct, UUID> {
 
     WarehouseProduct findByProduct_Barcode(String barcode);
 

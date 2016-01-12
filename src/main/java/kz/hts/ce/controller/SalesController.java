@@ -13,7 +13,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Category;
@@ -21,7 +20,7 @@ import kz.hts.ce.model.entity.Employee;
 import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.service.CategoryService;
 import kz.hts.ce.service.WarehouseProductService;
-import kz.hts.ce.util.spring.SpringUtil;
+import kz.hts.ce.util.spring.SpringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -86,7 +85,7 @@ public class SalesController implements Initializable {
     private CategoryService categoryService;
 
     @Autowired
-    private SpringUtil springUtil;
+    private SpringHelper springHelper;
 
     private EventHandler<KeyEvent> eventHandler;
     private Map<String, List<WarehouseProduct>> productMap = new HashMap<>();
@@ -126,7 +125,7 @@ public class SalesController implements Initializable {
         categoriesData.addAll(categoryNames.stream().collect(Collectors.toList()));
         categories.setItems(categoriesData);
 
-        Employee employee = springUtil.getEmployee();
+        Employee employee = springHelper.getEmployee();
 
 
         List<Category> categoriesFromDB = categoryService.findAll();

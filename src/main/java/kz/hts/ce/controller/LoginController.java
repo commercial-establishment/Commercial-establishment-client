@@ -2,7 +2,6 @@ package kz.hts.ce.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -15,7 +14,7 @@ import kz.hts.ce.model.entity.Shift;
 import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.ShiftService;
 import kz.hts.ce.service.TransferService;
-import kz.hts.ce.util.spring.SpringUtil;
+import kz.hts.ce.util.spring.SpringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -26,13 +25,11 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import static kz.hts.ce.util.JavaUtil.checkConnection;
-import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
-import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
+import static kz.hts.ce.util.spring.SpringHelper.getPrincipal;
 
 @Controller
-public class LoginController implements Initializable{
+public class LoginController implements Initializable {
 
     @FXML
     private AnchorPane root;
@@ -51,7 +48,7 @@ public class LoginController implements Initializable{
     private TransferService transferService;
 
     @Autowired
-    private SpringUtil springUtils;
+    private SpringHelper springUtils;
 
     @FXML
     @Transactional
@@ -71,14 +68,7 @@ public class LoginController implements Initializable{
             Shift shift = shiftService.save(shiftEntity);
             springUtils.setShift(shift);
 
-            if (checkConnection()) {
-                long lastTransferDate = transferService.findLastTransferDate();
-                springUtils.checkAndUpdateNewDataFromServer(lastTransferDate);
-                springUtils.sendDataToServer(lastTransferDate);
-                transferService.saveWithNewDate();
-            } else {
-                alert(Alert.AlertType.WARNING, "Проверьте интернет соединение", null, "Данные с сервера небыли подгружены.");
-            }
+            springUtils.transmitAndReceiveData();
 
             screens.login().hide();
             screens.main().show();
@@ -88,11 +78,12 @@ public class LoginController implements Initializable{
         }
     }
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         root.setOnKeyPressed(event -> {
-            if(event.getCode() == KeyCode.ENTER){
-                try{
+            if (event.getCode() == KeyCode.ENTER) {
+                try {
                     loginAction();
                 } catch (IOException e) {
                     e.printStackTrace();

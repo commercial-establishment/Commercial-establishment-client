@@ -17,7 +17,7 @@ public class TransferService extends BaseService<Transfer, TransferRepository> {
         super(repository);
     }
 
-    private Transfer findByLastDate() {
+    public Transfer findByLastDate() {
         return repository.findByLastDate();
     }
 
@@ -25,13 +25,5 @@ public class TransferService extends BaseService<Transfer, TransferRepository> {
         Transfer transfer = new Transfer();
         transfer.setDate(new Date());
         return save(transfer);
-    }
-
-    public long findLastTransferDate() {
-        Transfer transfer = findByLastDate();
-        Date transferDate;
-        if (transfer == null) transferDate = getFixedDate();
-        else transferDate = transfer.getDate();
-        return transferDate.getTime();
     }
 }

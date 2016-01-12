@@ -1,9 +1,12 @@
 package kz.hts.ce.model.entity;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "shop_provider")
+@Audited
 public class ShopProvider extends BaseEntity {
 
     @ManyToOne

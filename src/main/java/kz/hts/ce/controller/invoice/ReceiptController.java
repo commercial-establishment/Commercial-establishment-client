@@ -18,7 +18,7 @@ import kz.hts.ce.service.*;
 import kz.hts.ce.util.javafx.EditingBigDecimalCell;
 import kz.hts.ce.util.javafx.EditingNumberCell;
 import kz.hts.ce.util.spring.JsonUtil;
-import kz.hts.ce.util.spring.SpringUtil;
+import kz.hts.ce.util.spring.SpringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -130,13 +130,13 @@ public class ReceiptController implements Initializable {
     private MainController mainController;
 
     @Autowired
-    private SpringUtil springUtil;
+    private SpringHelper springHelper;
     @Autowired
     private JsonUtil jsonUtil;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        UUID shopId = springUtil.getEmployee().getShop().getId();
+        UUID shopId = springHelper.getEmployee().getShop().getId();
         List<Unit> units = unitService.findAll();
         List<String> unitNames = units.stream().map((unit) -> unit.getName()).collect(Collectors.toList());
         unitOfMeasure.getItems().addAll(unitNames);
@@ -161,12 +161,12 @@ public class ReceiptController implements Initializable {
             t.getTableView().getItems().get(t.getTablePosition().getRow()).setPrice(t.getNewValue());
             productsTable.getProperties().put(TableViewSkin.RECREATE, Boolean.TRUE);
         });
-        if (springUtil.isNewInvoice()) {
+        if (springHelper.isNewInvoice()) {
             postponement.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(ZERO, 1000, ZERO));
             margin.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(ZERO, 100, ZERO));
         } else {
             providers.setDisable(true);
-            invoiceFromDB = invoiceService.findById(UUID.fromString(springUtil.getId()));
+            invoiceFromDB = invoiceService.findById(UUID.fromString(springHelper.getId()));
 
             barcodes = new HashSet<>();
             List<Product> products = productService.findAll();
@@ -183,7 +183,7 @@ public class ReceiptController implements Initializable {
 
             vat.selectedProperty().setValue(invoiceFromDB.isVat());
 
-            oldInvoiceProducts = invoiceProductService.findByInvoiceId(UUID.fromString(springUtil.getId()));
+            oldInvoiceProducts = invoiceProductService.findByInvoiceId(UUID.fromString(springHelper.getId()));
 
             for (InvoiceProduct invoiceProduct : oldInvoiceProducts) {
                 ProductDto productDto = createProductDtoFromProduct(invoiceProduct.getProduct());
@@ -305,9 +305,9 @@ public class ReceiptController implements Initializable {
         Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Integer postponement = this.postponement.getValue();
         boolean vat = this.vat.isSelected();
-        UUID shopId = springUtil.getEmployee().getShop().getId();
+        UUID shopId = springHelper.getEmployee().getShop().getId();
         Warehouse warehouse = warehouseService.findByShopId(shopId);
-        if (springUtil.isNewInvoice()) {
+        if (springHelper.isNewInvoice()) {
             try {
                 String providerCompanyName = providers.getValue();
 
@@ -629,14 +629,14 @@ public class ReceiptController implements Initializable {
 
     @FXML
     private void deleteProductFromTable() {
-        if (!springUtil.isNewInvoice()) {
+        if (!springHelper.isNewInvoice()) {
             if (removedProducts == null) removedProducts = new ArrayList<>();
         }
         ProductDto productDto = productsTable.getSelectionModel().getSelectedItem();
         if (productDto == null) {
             alert(Alert.AlertType.WARNING, "Товар не выбран", null, "Пожалуйста, выберите товар, который хотите удалить.");
         } else {
-            if (!springUtil.isNewInvoice()) {
+            if (!springHelper.isNewInvoice()) {
                 removedProducts.add(productDto);
             }
             productsData.remove(productDto);

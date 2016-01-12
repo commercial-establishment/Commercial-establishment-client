@@ -17,10 +17,9 @@ import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Category;
 import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.service.CategoryService;
-import kz.hts.ce.service.EmployeeService;
 import kz.hts.ce.service.WarehouseProductService;
 import kz.hts.ce.util.spring.JsonUtil;
-import kz.hts.ce.util.spring.SpringUtil;
+import kz.hts.ce.util.spring.SpringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -34,7 +33,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
-import static kz.hts.ce.util.spring.SpringUtil.getPrincipal;
 
 @Controller
 public class ShopProductsController implements Initializable {
@@ -76,7 +74,7 @@ public class ShopProductsController implements Initializable {
     @Autowired
     private JsonUtil jsonUtil;
     @Autowired
-    private SpringUtil springUtil;
+    private SpringHelper springHelper;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -84,7 +82,7 @@ public class ShopProductsController implements Initializable {
         List<String> categoryNames = categoriesFromDB.stream().map(Category::getName).collect(Collectors.toList());
         categories.getItems().addAll(categoryNames);
 
-        shopId = springUtil.getEmployee().getShop().getId();
+        shopId = springHelper.getEmployee().getShop().getId();
 
         showEditProductPage();
     }

@@ -13,7 +13,6 @@ import kz.hts.ce.service.CityService;
 import kz.hts.ce.service.ProviderService;
 import kz.hts.ce.service.RoleService;
 import kz.hts.ce.util.javafx.fields.IntegerTextField;
-import kz.hts.ce.util.spring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 

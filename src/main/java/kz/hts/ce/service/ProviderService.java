@@ -2,7 +2,7 @@ package kz.hts.ce.service;
 
 import kz.hts.ce.model.entity.Provider;
 import kz.hts.ce.repository.ProviderRepository;
-import kz.hts.ce.util.spring.SpringUtil;
+import kz.hts.ce.util.spring.SpringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.history.Revision;
 import org.springframework.data.history.Revisions;
@@ -75,7 +75,7 @@ public class ProviderService extends BaseService<Provider, ProviderRepository> {
                 if (time < dateTimeInMillis) {
                     provider = revision.getEntity();
                     provider.setCity(providerFromAllProviders.getCity());/*FIXME*/
-                    provider.setRole(SpringUtil.roleMap.get(PROVIDER));
+                    provider.setRole(SpringHelper.roleMap.get(PROVIDER));
                 }
             }
             if (provider != null) providers.add(provider);

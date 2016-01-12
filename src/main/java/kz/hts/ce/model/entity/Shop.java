@@ -1,27 +1,36 @@
 package kz.hts.ce.model.entity;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Audited
 public class Shop extends BaseEntity {
 
     private String name;
     private String address;
     private int iin;
 
+    @NotAudited
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "shop")
     private List<Employee> employees;
 
+    @NotAudited
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "shop")
     private List<Check> checks;
 
     @ManyToOne
     @JoinColumn(name = "type_id", nullable = false)
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Type type;
 
     @OneToOne
     @JoinColumn(name = "city_id", nullable = false)
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private City city;/*TODO add area entity*/
 
     @Column(name = "is_blocked", nullable = false)

@@ -17,7 +17,7 @@ import kz.hts.ce.controller.provider.AddProviderController;
 import kz.hts.ce.controller.provider.CreateProviderController;
 import kz.hts.ce.util.spring.JsonUtil;
 import kz.hts.ce.util.spring.SpringFxmlLoader;
-import kz.hts.ce.util.spring.SpringUtil;
+import kz.hts.ce.util.spring.SpringHelper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -73,9 +73,7 @@ public class PagesConfiguration {
     public Stage sales() {
         showStage(secondaryStage, "/view/sale.fxml");
         secondaryStage.setFullScreenExitHint("");
-//        secondaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         secondaryStage.setFullScreen(true);
-//        primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         return secondaryStage;
     }
 
@@ -93,12 +91,6 @@ public class PagesConfiguration {
         showStage(primaryStage, "/view/payment.fxml");
         return primaryStage;
     }
-
-//    @Bean
-//    public Node sales() throws IOException {
-//        SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
-//        return (Node) springFxmlLoader.load("/view/sales.fxml");
-//    }
 
     @Bean
     @Scope("prototype")
@@ -193,11 +185,6 @@ public class PagesConfiguration {
     public SalesController salesController() {
         return new SalesController();
     }
-//
-//    @Bean
-//    public CalculatorController calculatorController() {
-//        return new CalculatorController();
-//    }
 
     @Bean
     public PaymentController paymentController() {
@@ -247,7 +234,7 @@ public class PagesConfiguration {
     }
 
     @Bean
-    public SpringUtil springUtil() {
-        return new SpringUtil();
+    public SpringHelper springHelper() {
+        return new SpringHelper();
     }
 }

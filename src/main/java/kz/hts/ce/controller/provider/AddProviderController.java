@@ -15,7 +15,7 @@ import kz.hts.ce.model.entity.Shop;
 import kz.hts.ce.model.entity.ShopProvider;
 import kz.hts.ce.service.ProviderService;
 import kz.hts.ce.service.ShopProviderService;
-import kz.hts.ce.util.spring.SpringUtil;
+import kz.hts.ce.util.spring.SpringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -61,11 +61,11 @@ public class AddProviderController implements Initializable {
     private MainController mainController;
 
     @Autowired
-    private SpringUtil springUtil;
+    private SpringHelper springHelper;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        List<ShopProvider> shopProviders = shopProviderService.findByShopId(springUtil.getEmployee().getShop().getId());
+        List<ShopProvider> shopProviders = shopProviderService.findByShopId(springHelper.getEmployee().getShop().getId());
 
         for (ShopProvider shopProvider : shopProviders) {
             ProviderDto providerDto = createProviderDtoFromProvider(shopProvider.getProvider());
@@ -121,7 +121,7 @@ public class AddProviderController implements Initializable {
     private void save() {
         ObservableList<ProviderDto> providers = providerTable.getItems();
 
-        Shop shop = springUtil.getEmployee().getShop();
+        Shop shop = springHelper.getEmployee().getShop();
 
         List<ShopProvider> shopProviders = shopProviderService.findByShopId(shop.getId());
         List<String> companyNames = shopProviders.stream().map(shopProvider -> shopProvider.getProvider().getCompanyName()).collect(Collectors.toList());

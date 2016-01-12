@@ -170,4 +170,23 @@ public class Provider extends BaseEntity {
     public void setBin(String bin) {
         this.bin = bin;
     }
+
+    @Override
+    public String toString() {
+        return "Provider{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", city=" + city +
+                ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
+                ", contactPerson='" + contactPerson + '\'' +
+                ", role=" + role +
+                ", companyName='" + companyName + '\'' +
+                ", startWorkDate=" + startWorkDate +
+                ", endWorkDate=" + endWorkDate +
+                ", blocked=" + blocked +
+                ", iin='" + iin + '\'' +
+                ", bin='" + bin + '\'' +
+                '}';
+    }
 }

@@ -1,11 +1,15 @@
 package kz.hts.ce.model.entity;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
+@Audited
 public class Product extends BaseEntity {
 
     private String name;
@@ -13,10 +17,12 @@ public class Product extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Category category;
 
     @ManyToOne
     @JoinColumn(name = "unit_id", nullable = false)
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Unit unit;
 
     @Column(name = "is_blocked")
@@ -60,5 +66,16 @@ public class Product extends BaseEntity {
 
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", barcode='" + barcode + '\'' +
+                ", category=" + category +
+                ", unit=" + unit +
+                ", blocked=" + blocked +
+                '}';
     }
 }

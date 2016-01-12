@@ -18,7 +18,7 @@ import kz.hts.ce.service.CheckProductService;
 import kz.hts.ce.service.CheckService;
 import kz.hts.ce.service.WarehouseProductHistoryService;
 import kz.hts.ce.service.WarehouseProductService;
-import kz.hts.ce.util.spring.SpringUtil;
+import kz.hts.ce.util.spring.SpringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
@@ -59,10 +59,8 @@ public class PaymentController implements Initializable {
 
     @Lazy
     @Autowired
-    private SpringUtil springUtil;
+    private SpringHelper springHelper;
 
-//    @Autowired
-//    private ProductsController productsController;
     @Lazy
     @Autowired
     private SalesController salesController;
@@ -101,8 +99,8 @@ public class PaymentController implements Initializable {
 
                 Check check = new Check();
                 check.setDate(Calendar.getInstance().getTime());
-                check.setEmployee(springUtil.getEmployee());
-                check.setShop(springUtil.getEmployee().getShop());
+                check.setEmployee(springHelper.getEmployee());
+                check.setShop(springHelper.getEmployee().getShop());
                 check.setCheckNumber("123");
                 checkService.save(check);
 
