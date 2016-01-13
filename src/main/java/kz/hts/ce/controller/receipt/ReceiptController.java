@@ -431,7 +431,7 @@ public class ReceiptController implements Initializable {
                         String id = productDto.getId();
                         for (InvoiceProduct oldInvoiceProduct : oldInvoiceProducts) {
                             if (id != null) {
-                                if (UUID.fromString(id) == oldInvoiceProduct.getId()) {
+                                if (UUID.fromString(id).equals(oldInvoiceProduct.getId())) {
                                     oldInvoiceProduct.setInitialPrice(productDto.getPrice());
                                     BigDecimal priceWithMargin = new BigDecimal(marginPercentage);
                                     if (jsonUtil.isVatBoolean() && !vat) {

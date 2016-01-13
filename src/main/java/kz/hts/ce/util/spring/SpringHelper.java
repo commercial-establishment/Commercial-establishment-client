@@ -363,7 +363,7 @@ public class SpringHelper {
         RestTemplate template = createRestTemplateWithMessageConverters();
         String url = JavaUtil.URL + "/replication/shop-provider-list";
         template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
-        log.info("SHOP PRODUCT LIST DATA FOR SERVER: " + shopProviderList);
+        log.info("SHOP PROVIDER LIST DATA FOR SERVER: " + shopProviderList);
     }
 
     private void checkAndUpdateNewDataFromServer(long lastTransferDate) {
@@ -371,8 +371,8 @@ public class SpringHelper {
         getNewProvidersDataFromServer(lastTransferDate);
         getNewProductsDataFromServer(lastTransferDate);
         getNewEmployeesDataFromServer(lastTransferDate);
-        getNewProductProviderDataFromServer(lastTransferDate);
         getNewShopProviderDataFromServer(lastTransferDate);
+        getNewProductProviderDataFromServer(lastTransferDate);
     }
 
     private void sendDataToServer(long transferDate) {
@@ -424,4 +424,6 @@ public class SpringHelper {
     public void setPassword(String password) {
         this.password = password;
     }
+
+
 }

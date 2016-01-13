@@ -3,6 +3,7 @@ package kz.hts.ce.service;
 import kz.hts.ce.model.entity.Provider;
 import kz.hts.ce.model.entity.ShopProvider;
 import kz.hts.ce.repository.ShopProviderRepository;
+import kz.hts.ce.util.spring.SpringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.history.Revision;
 import org.springframework.data.history.Revisions;
@@ -15,6 +16,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class ShopProviderService extends BaseService<ShopProvider, ShopProviderRepository> {
+
+    @Autowired
+    private SpringHelper springHelper;
 
     @Autowired
     protected ShopProviderService(ShopProviderRepository repository) {
@@ -57,6 +61,7 @@ public class ShopProviderService extends BaseService<ShopProvider, ShopProviderR
                 long dateTimeInMillis = revision.getMetadata().getRevisionDate().getMillis();
                 if (time < dateTimeInMillis) {
                     shopProvider = revision.getEntity();
+                    shopProvider.setShop(springHelper.getEmployee().getShop());
                 }
             }
             if (shopProvider != null) shopProviderList.add(shopProvider);

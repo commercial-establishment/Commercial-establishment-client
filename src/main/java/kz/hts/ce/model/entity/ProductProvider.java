@@ -1,5 +1,6 @@
 package kz.hts.ce.model.entity;
 
+import org.hibernate.annotations.Proxy;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "product_provider")
 @Audited
+@Proxy(lazy = false)
 public class ProductProvider extends BaseEntity {
 
     @ManyToOne

@@ -85,4 +85,16 @@ public class Shop extends BaseEntity {
     public void setIin(int iin) {
         this.iin = iin;
     }
+
+    @Override
+    public String toString() {
+        return "Shop{" +
+                "blocked=" + blocked +
+                ", area=" + area +
+                ", type=" + type +
+                ", address='" + address + '\'' +
+                ", name='" + name + '\'' +
+                ", iin=" + iin +
+                '}';
+    }
 }
