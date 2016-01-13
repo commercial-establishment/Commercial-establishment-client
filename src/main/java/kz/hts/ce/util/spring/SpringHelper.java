@@ -363,7 +363,7 @@ public class SpringHelper {
         RestTemplate template = createRestTemplateWithMessageConverters();
         String url = JavaUtil.URL + "/replication/shop-provider-list";
         template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
-        log.info("SHOP PRODUCT LIST DATA FOR SERVER: " + shopProviderList);
+        log.info("SHOP PROVIDER LIST DATA FOR SERVER: " + shopProviderList);
     }
 
     private void checkAndUpdateNewDataFromServer(long lastTransferDate) {
