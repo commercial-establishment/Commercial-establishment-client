@@ -27,7 +27,7 @@ public class CategoryService extends BaseService<Category, CategoryRepository> {
         repository.delete(id);
     }
 
-    public void saveOrUpdateList(List<Category> categories) {
-        categories.forEach(this::save);
-    }
+//    public void saveOrUpdateList(List<Category> categories) {
+//        categories.forEach(this::save);
+//    }
 }

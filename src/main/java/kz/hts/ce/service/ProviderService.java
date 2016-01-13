@@ -59,9 +59,9 @@ public class ProviderService extends BaseService<Provider, ProviderRepository> {
         repository.updateEndWorkDate(endWorkDate, id);
     }
 
-    public void saveOrUpdateList(List<Provider> providers) {
-        providers.forEach(this::save);
-    }
+//    public void saveOrUpdateList(List<Provider> providers) {
+//        providers.forEach(this::save);
+//    }
 
     public List<Provider> getHistory(long time) {
         List<Provider> allProviders = findAll();

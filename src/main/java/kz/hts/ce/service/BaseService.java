@@ -34,4 +34,9 @@ public class BaseService<E extends BaseEntity, T extends JpaRepository<E, UUID>>
     public E save(E e) {
         return repository.save(e);
     }
+
+    @Transactional
+    public void saveList(List<E> list) {
+        list.forEach(this::save);
+    }
 }

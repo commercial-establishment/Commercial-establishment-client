@@ -45,4 +45,8 @@ public class EmployeeService extends BaseService<Employee, EmployeeRepository> {
         }
         return employees;
     }
+
+//    public void saveOrUpdateList(List<Employee> employees) {
+//        employees.forEach(this::save);
+//    }
 }

@@ -143,7 +143,7 @@ public class SpringHelper {
             sendDataToServer(lastTransferDate);
             transferService.saveWithNewDate();
         } else {
-            alert(Alert.AlertType.WARNING, "Проверьте интернет соединение", null, "Данные с сервера небыли подгружены.");
+            alert(Alert.AlertType.WARNING, "Проверьте интернет соединение", null, "Данные с сервера небыли подгружены/переданы.");
         }
     }
 
@@ -162,14 +162,6 @@ public class SpringHelper {
         String url = JavaUtil.URL + "/replication/providers";
         template.exchange(url, HttpMethod.POST, requestEntity, providers.getClass());
     }
-//
-//    private JsonNode getAllProvidersFromServer() {
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = createHeadersForAuthentication();
-//        HttpEntity<List<ShopProvider>> request = new HttpEntity<>(headers);
-//        String url = JavaUtil.URL + "/json/providers";
-//        return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
-//    }
 
     private void getNewCategoriesDataFromServer(long lastTransferDate) {
         try {
@@ -180,7 +172,7 @@ public class SpringHelper {
             List<Category> categoryList = mapper.readValue(mapper.treeAsTokens(categoriesJson), new TypeReference<List<Category>>() {
             });
 
-            categoryService.saveOrUpdateList(categoryList);
+            categoryService.saveList(categoryList);
             log.info("CATEGORY LIST FROM SERVER WAS SAVED: " + categoriesJson);
         } catch (IOException e) {
             alert(Alert.AlertType.WARNING, "Внутренняя ошибка", null, "Данные о категориях небыли взяты с сервера");
@@ -196,7 +188,7 @@ public class SpringHelper {
             List<Provider> providers = mapper.readValue(mapper.treeAsTokens(providersJson), new TypeReference<List<Provider>>() {
             });
 
-            providerService.saveOrUpdateList(providers);
+            providerService.saveList(providers);
             log.info("PROVIDER LIST FROM SERVER WAS SAVED: " + providersJson);
         } catch (IOException e) {
             alert(Alert.AlertType.WARNING, "Внутренняя ошибка", null, "Данные о поставщиках небыли взяты с сервера");
@@ -213,9 +205,64 @@ public class SpringHelper {
             List<Product> products = mapper.readValue(mapper.treeAsTokens(productsJson), new TypeReference<List<Product>>() {
             });
 
-            productService.saveOrUpdateList(products);
+            productService.saveList(products);
         } catch (IOException e) {
             alert(Alert.AlertType.WARNING, "Внутренняя ошибка", null, "Данные о поставщиках небыли взяты с сервера");
+        }
+    }
+
+    private void getNewEmployeesDataFromServer(long lastTransferDate) {
+        try {
+            String urlPart = "/replication/employees/time={time}";
+            JsonNode employeesJson = getJsonNodeFromServer(lastTransferDate, urlPart);
+            log.info("EMPLOYEES FROM SERVER: " + employeesJson);
+
+            ObjectMapper mapper = new ObjectMapper();
+            List<Employee> employees = mapper.readValue(mapper.treeAsTokens(employeesJson), new TypeReference<List<Employee>>() {
+            });
+
+            employeeService.saveList(employees);
+        } catch (IOException e) {
+            alert(Alert.AlertType.WARNING, "Внутренняя ошибка", null, "Данные о сотрудниках магазина небыли взяты с сервера");
+        }
+    }
+
+    private void getNewProductProviderDataFromServer(long lastTransferDate) {
+        try {
+            String urlPart = "/replication/product-provider-list/time={time}";
+            JsonNode productProviderListJson = getJsonNodeFromServer(lastTransferDate, urlPart);
+            log.info("PRODUCT PROVIDER LIST FROM SERVER: " + productProviderListJson);
+
+            ObjectMapper mapper = new ObjectMapper();
+            List<ProductProvider> productProviderList = mapper.readValue(mapper.treeAsTokens(productProviderListJson), new TypeReference<List<ProductProvider>>() {
+            });
+
+            productProviderService.saveList(productProviderList);
+        } catch (IOException e) {
+            alert(Alert.AlertType.WARNING, "Внутренняя ошибка", null, "Данные о товарах поставщиков небыли взяты с сервера");
+        }
+    }
+
+    private void getNewShopProviderDataFromServer(long lastTransferDate) {
+        try {
+            HttpEntity<Long> requestEntity = createHttpEntityWithAuthHeaders();
+            RestTemplate template = createRestTemplateWithMessageConverters();
+
+            Map<String, Object> uriVariables = new HashMap<>();
+            uriVariables.put("time", lastTransferDate);
+            uriVariables.put("shopId", employee.getShop().getId());
+            String url = JavaUtil.URL + "/replication/shops-provider-list/time={time}&shop={shopId}";/*TODO fix '+'*/
+
+            JsonNode productProviderListJson = template.exchange(url, HttpMethod.GET, requestEntity, JsonNode.class, uriVariables).getBody();
+            log.info("SHOP PROVIDER LIST FROM SERVER: " + productProviderListJson);
+
+            ObjectMapper mapper = new ObjectMapper();
+            List<ShopProvider> shopProviderList = mapper.readValue(mapper.treeAsTokens(productProviderListJson), new TypeReference<List<ShopProvider>>() {
+            });
+
+            shopProviderService.saveList(shopProviderList);
+        } catch (IOException e) {
+            alert(Alert.AlertType.WARNING, "Внутренняя ошибка", null, "Данные о товарах поставщиков небыли взяты с сервера");
         }
     }
 
@@ -224,14 +271,6 @@ public class SpringHelper {
         template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         template.getMessageConverters().add(new StringHttpMessageConverter());
         return template;
-    }
-
-    private JsonNode getCategoryChangesFromServer() {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = createHeadersForAuthentication();
-        HttpEntity<List<Category>> request = new HttpEntity<>(headers);
-        String url = JavaUtil.URL + "/json/category-changes";
-        return restTemplate.exchange(url, HttpMethod.GET, request, JsonNode.class).getBody();
     }
 
     private void sendResiduesToServer(long lastTransferDate) {
@@ -331,13 +370,12 @@ public class SpringHelper {
         getNewCategoriesDataFromServer(lastTransferDate);
         getNewProvidersDataFromServer(lastTransferDate);
         getNewProductsDataFromServer(lastTransferDate);
-        /*TODO shop_provider data from server*/
-        /*TODO product_provider data from server*/
-        /*TODO shop data from server*/
+        getNewEmployeesDataFromServer(lastTransferDate);
+        getNewProductProviderDataFromServer(lastTransferDate);
+        getNewShopProviderDataFromServer(lastTransferDate);
     }
 
     private void sendDataToServer(long transferDate) {
-        if (checkConnection()) {
             sendNewProvidersDataToServer(transferDate);
             sendNewProductsDataToServer(transferDate);
             sendNewEmployeesDataToServer(transferDate);
@@ -345,8 +383,6 @@ public class SpringHelper {
             sendNewShopDataToServer(transferDate);
             sendNewShopProviderListDataToServer(transferDate);
             sendResiduesToServer(transferDate);
-        } else
-            alert(Alert.AlertType.ERROR, "Проверьте интернет соединение", null, "Данные небыли переданы на сервер. Проверьте интернет соединение.");
     }
 
     public String getId() {

@@ -52,4 +52,8 @@ public class ProductProviderService extends BaseService<ProductProvider, Product
         }
         return productProviderList;
     }
+//
+//    public void saveOrUpdateList(List<ProductProvider> productProviderList) {
+//        productProviderList.forEach(this::save);
+//    }
 }
