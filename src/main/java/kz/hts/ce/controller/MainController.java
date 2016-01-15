@@ -28,10 +28,10 @@ import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 @Controller
 public class MainController implements Initializable {
 
-    @FXML
-    private StackPane sales;
     private boolean flag;
 
+    @FXML
+    private StackPane sales;
     @FXML
     private Label dateLabel;
     @FXML
@@ -71,6 +71,7 @@ public class MainController implements Initializable {
         Shift shift = springHelper.getShift();
         shift.setEnd(new Date());
         shiftService.save(shift);
+        springHelper.transmitAndReceiveData();
         screens.main().close();
         screens.login().show();
     }
