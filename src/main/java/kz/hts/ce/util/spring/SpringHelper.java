@@ -327,7 +327,7 @@ public class SpringHelper {
         log.info("PRODUCT PROVIDER LIST DATA FOR SERVER: " + productProviderList);
     }
 
-    private void sendNewEmployeesDataToServer(long transferDate) {/*TODO not working*/
+    private void sendNewEmployeesDataToServer(long transferDate) {
         List<Employee> employees;
         if (transferDate == 0) employees = employeeService.findAll();
         else employees = employeeService.getHistory(transferDate);

@@ -251,7 +251,7 @@ public class ReceiptController implements Initializable {
                 if (name.toLowerCase().contains(newValue.toLowerCase())) {
                     if (name.toLowerCase().equals(newValue.toLowerCase())) {
                         productComboBox.getEditor().setText(name);
-                        barcode.setText(String.valueOf(Long.valueOf(productDto.getBarcode())));
+                        barcode.setText(productDto.getBarcode());
                         String unitName = productDto.getUnitName();
                         unitOfMeasure.getEditor().setText(unitName);
                         barcode.setDisable(true);

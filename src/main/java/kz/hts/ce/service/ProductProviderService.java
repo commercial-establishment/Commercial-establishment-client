@@ -46,14 +46,11 @@ public class ProductProviderService extends BaseService<ProductProvider, Product
                 long dateTimeInMillis = revision.getMetadata().getRevisionDate().getMillis();
                 if (time < dateTimeInMillis) {
                     productProvider = revision.getEntity();
+                    productProvider.setProduct(ppFromAllProductProviderList.getProduct());
                 }
             }
             if (productProvider != null) productProviderList.add(productProvider);
         }
         return productProviderList;
     }
-//
-//    public void saveOrUpdateList(List<ProductProvider> productProviderList) {
-//        productProviderList.forEach(this::save);
-//    }
 }
