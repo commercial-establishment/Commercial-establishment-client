@@ -28,10 +28,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static kz.hts.ce.util.JavaUtil.checkConnection;
@@ -47,7 +44,6 @@ public class SpringHelper {
     private Employee employee;
     private boolean newInvoice;
     private String password;
-
     private static final Logger log = Logger.getLogger(SpringHelper.class.getName());
 
     @PostConstruct
@@ -95,6 +91,17 @@ public class SpringHelper {
             userName = principal.toString();
         }
         return userName;
+    }
+
+    @PostConstruct
+    private void transferDataByTimer() {
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                transmitAndReceiveData();
+            }
+        }, 2 * 60 * 1000, 60 * 1000);
     }
 
     public void authorize(String username, String password) {
@@ -153,14 +160,16 @@ public class SpringHelper {
         List<Provider> providers;
         if (lastTransferDate == 0) providers = providerService.findAll();
         else providers = providerService.getHistory(lastTransferDate);
-        log.info("PROVIDERS' DATA FOR SERVER: " + providers);
 
         HttpEntity<List<Provider>> requestEntity = new HttpEntity<>(providers, headers);
         RestTemplate template = new RestTemplate();
         template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         template.getMessageConverters().add(new StringHttpMessageConverter());
         String url = JavaUtil.URL + "/replication/providers";
-        template.exchange(url, HttpMethod.POST, requestEntity, providers.getClass());
+        if (providers.size() != 0) {
+            template.exchange(url, HttpMethod.POST, requestEntity, providers.getClass());
+            log.info("PROVIDERS' DATA FOR SERVER: " + providers);
+        }
     }
 
     private void getNewCategoriesDataFromServer(long lastTransferDate) {
@@ -297,8 +306,10 @@ public class SpringHelper {
         HttpEntity<List<ShopProductProviderDto>> requestEntity = new HttpEntity<>(residues, headers);
         RestTemplate template = createRestTemplateWithMessageConverters();
         String url = JavaUtil.URL + "/replication/residues";
-        template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
-        log.info("RESIDUES TO SERVER WERE SENT: " + residues);
+        if (warehouseProducts.size() != 0) {
+            template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
+            log.info("RESIDUES TO SERVER WERE SENT: " + residues);
+        }
     }
 
     private void sendNewProductsDataToServer(long transferDate) {
@@ -310,8 +321,10 @@ public class SpringHelper {
         HttpEntity<List<Product>> requestEntity = new HttpEntity<>(products, headers);
         RestTemplate template = createRestTemplateWithMessageConverters();
         String url = JavaUtil.URL + "/replication/products";
-        template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
-        log.info("PRODUCT DATA FOR SERVER: " + products);
+        if (products.size() != 0) {
+            template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
+            log.info("PRODUCT DATA FOR SERVER: " + products);
+        }
     }
 
     private void sendNewProductProviderListDataToServer(long transferDate) {
@@ -323,8 +336,10 @@ public class SpringHelper {
         HttpEntity<List<ProductProvider>> requestEntity = new HttpEntity<>(productProviderList, headers);
         RestTemplate template = createRestTemplateWithMessageConverters();
         String url = JavaUtil.URL + "/replication/product-provider-list";
-        template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
-        log.info("PRODUCT PROVIDER LIST DATA FOR SERVER: " + productProviderList);
+        if (productProviderList.size() != 0) {
+            template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
+            log.info("PRODUCT PROVIDER LIST DATA FOR SERVER: " + productProviderList);
+        }
     }
 
     private void sendNewEmployeesDataToServer(long transferDate) {
@@ -336,21 +351,25 @@ public class SpringHelper {
         HttpEntity<List<Employee>> requestEntity = new HttpEntity<>(employees, headers);
         RestTemplate template = createRestTemplateWithMessageConverters();
         String url = JavaUtil.URL + "/replication/employees";
-        template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
-        log.info("EMPLOYEES' DATA FOR SERVER: " + employees);
+        if (employees.size() != 0) {
+            template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
+            log.info("EMPLOYEES' DATA FOR SERVER: " + employees);
+        }
     }
 
     private void sendNewShopDataToServer(long transferDate) {
         List<Shop> shops;
         if (transferDate == 0) shops = shopService.findAll();
         else shops = shopService.getHistory(transferDate);
-        log.info("SHOP LIST DATA FOR SERVER: " + shops);
 
         HttpHeaders headers = createHeadersForAuthentication();
         HttpEntity<List<Shop>> requestEntity = new HttpEntity<>(shops, headers);
         RestTemplate template = createRestTemplateWithMessageConverters();
         String url = JavaUtil.URL + "/replication/shops";
-        template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
+        if (shops.size() != 0) {
+            template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
+            log.info("SHOP LIST DATA FOR SERVER: " + shops);
+        }
     }
 
     private void sendNewShopProviderListDataToServer(long transferDate) {
@@ -362,8 +381,10 @@ public class SpringHelper {
         HttpEntity<List<ShopProvider>> requestEntity = new HttpEntity<>(shopProviderList, headers);
         RestTemplate template = createRestTemplateWithMessageConverters();
         String url = JavaUtil.URL + "/replication/shop-provider-list";
-        template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
-        log.info("SHOP PROVIDER LIST DATA FOR SERVER: " + shopProviderList);
+        if (shopProviderList.size() != 0) {
+            template.exchange(url, HttpMethod.POST, requestEntity, ArrayList.class);
+            log.info("SHOP PROVIDER LIST DATA FOR SERVER: " + shopProviderList);
+        }
     }
 
     private void checkAndUpdateNewDataFromServer(long lastTransferDate) {
@@ -376,13 +397,13 @@ public class SpringHelper {
     }
 
     private void sendDataToServer(long transferDate) {
-            sendNewProvidersDataToServer(transferDate);
-            sendNewProductsDataToServer(transferDate);
-            sendNewEmployeesDataToServer(transferDate);
-            sendNewProductProviderListDataToServer(transferDate);
-            sendNewShopDataToServer(transferDate);
-            sendNewShopProviderListDataToServer(transferDate);
-            sendResiduesToServer(transferDate);
+        sendNewProvidersDataToServer(transferDate);
+        sendNewProductsDataToServer(transferDate);
+        sendNewEmployeesDataToServer(transferDate);
+        sendNewProductProviderListDataToServer(transferDate);
+        sendNewShopDataToServer(transferDate);
+        sendNewShopProviderListDataToServer(transferDate);
+        sendResiduesToServer(transferDate);
     }
 
     public String getId() {
