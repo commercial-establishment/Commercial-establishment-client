@@ -21,13 +21,13 @@ public class WriteExcelFileExample {
         int rowIndex = 0;
         Row rowTitle = studentsSheet.createRow(rowIndex++);
         int cellIndex = 0;
-        rowTitle.createCell(cellIndex++).setCellValue("Название");
-        rowTitle.createCell(cellIndex++).setCellValue("Прибыло");
-        rowTitle.createCell(cellIndex++).setCellValue("Начальный остаток");
-        rowTitle.createCell(cellIndex++).setCellValue("Конечный остаток");
-        rowTitle.createCell(cellIndex++).setCellValue("Начальная цена");
-        rowTitle.createCell(cellIndex++).setCellValue("Конечная цена");
-        rowTitle.createCell(cellIndex++).setCellValue("Продано");
+        rowTitle.createCell(cellIndex++).setCellValue("Some Field");
+        rowTitle.createCell(cellIndex++).setCellValue("Some Field");
+        rowTitle.createCell(cellIndex++).setCellValue("Some Field");
+        rowTitle.createCell(cellIndex++).setCellValue("Some Field");
+        rowTitle.createCell(cellIndex++).setCellValue("Some Field");
+        rowTitle.createCell(cellIndex++).setCellValue("Some Field");
+        rowTitle.createCell(cellIndex++).setCellValue("Some Field");
         for (ProductDto product : products) {
             Row row = studentsSheet.createRow(rowIndex++);
             cellIndex = 0;

@@ -14,7 +14,7 @@ import java.io.IOException;
 @Component
 public class JsonUtil {
 
-    private static final String pathToJson = "src/main/resources/settings.json";
+    private static final String pathToJson = "settings.json";
     private static final String PRODUCT_MIN = "productMin";
     private static final String PRODUCT_MAX = "productMax";
     private static final String INVOICE_MIN = "invoiceMin";
