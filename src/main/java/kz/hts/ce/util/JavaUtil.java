@@ -19,7 +19,7 @@ import java.util.List;
 
 public class JavaUtil {
 
-    public static final String URL = "http://batys.pro";/*TODO change URL*/
+    public static final String URL = "http://batys.pro";
 
     public static BigDecimal stringToBigDecimal(String value) {
         try {
