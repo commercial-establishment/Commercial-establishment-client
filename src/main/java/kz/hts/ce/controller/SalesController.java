@@ -39,7 +39,6 @@ public class SalesController implements Initializable {
 
     private StringBuilder buttonState;
     private Button button;
-    private boolean flag;
     private ObservableList<String> categoriesData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> categoryProductsData = FXCollections.observableArrayList();
     private Map<String, Integer> barcodeMap;
@@ -89,16 +88,9 @@ public class SalesController implements Initializable {
 
     private EventHandler<KeyEvent> eventHandler;
     private Map<String, List<WarehouseProduct>> productMap = new HashMap<>();
-    private ProductDto tempProducts;
-    private int count;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        DoubleProperty dividerPositionProperty = splitPane.getDividers().get(0).positionProperty();
-//        double[] pos = splitPane.getDividerPositions();
-//        dividerPositionProperty.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-//            splitPane.setDividerPositions(pos);
-//        });
         button = new Button();
         buttonState = new StringBuilder("");
         eventHandler = event -> {
@@ -107,12 +99,7 @@ public class SalesController implements Initializable {
             handleOnAnyButtonFromKeypad();
         };
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                startEventHandler(root.getScene());
-            }
-        });
+        Platform.runLater(() -> startEventHandler(root.getScene()));
 
         categoriesData.clear();
         List<Category> categoriesFromDb = categoryService.findAll();
@@ -142,23 +129,12 @@ public class SalesController implements Initializable {
 
     public void startEventHandler(Scene scene) {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, eventHandler);
-//        scene.setOnKeyPressed(eventHandler);
     }
 
     public void addProductsToTable() {
         productsData.clear();
         BigDecimal priceResultBD = BigDecimal.ZERO;
         for (ProductDto productDto : productsDto) {
-//            WarehouseProduct byProductBarcode = warehouseProductService.findByProductBarcode(productDto.getBarcode());
-//            for (List<WarehouseProduct> warehouseProducts : productMap.values()) {
-//                for (WarehouseProduct warehouseProduct : warehouseProducts) {
-//                    if(productDto.getBarcode() == warehouseProduct.getProduct().getBarcode())
-//                        if(productDto.getAmount() > warehouseProduct.getResidue()){
-//                            productDto.setAmount(warehouseProduct.getResidue());
-//                            warehouseProduct.setResidue(warehouseProduct.getResidue()-productDto.getAmount());
-//                        }
-//                }
-//            }
             productsData.add(productDto);
             BigDecimal totalPrice = productDto.getTotalPrice();
             priceResultBD = priceResultBD.add(totalPrice);
@@ -173,11 +149,11 @@ public class SalesController implements Initializable {
         productTable.setItems(productsData);
     }
 
-    public void setProductDtoToProductsDto(ProductDto productDto) {
+    private void setProductDtoToProductsDto(ProductDto productDto) {
         productsDto.add(productDto);
     }
 
-    public void deleteSelectedProductFromTable() {
+    private void deleteSelectedProductFromTable() {
         if (productTable != null) {
             ProductDto productDto = productTable.getSelectionModel().getSelectedItem();
             BigDecimal priceResultBD = new BigDecimal(priceResult.getText());
@@ -195,7 +171,7 @@ public class SalesController implements Initializable {
         priceResult.setText("0.00");
     }
 
-    public void addProductInProductsDto(ProductDto productDto) {
+    private void addProductInProductsDto(ProductDto productDto) {
         productsDto.add(productDto);
     }
 
@@ -208,7 +184,7 @@ public class SalesController implements Initializable {
         }
     }
 
-    public void handleOnAnyButtonFromKeypad() {
+    private void handleOnAnyButtonFromKeypad() {
         button.setText(String.valueOf(buttonState));
         String buttonText = button.getText();
         if (buttonText.startsWith("NUMPAD")) {
@@ -235,20 +211,18 @@ public class SalesController implements Initializable {
         }
     }
 
-    public void deleteSpecificAmount(){
+    private void deleteSpecificAmount(){
         if (productTable != null) {
             ProductDto productDto = productTable.getSelectionModel().getSelectedItem();
             BigDecimal priceResultBD = new BigDecimal(priceResult.getText());
             priceResultBD = priceResultBD.subtract(productDto.getTotalPrice());
             priceResult.setText(String.valueOf(priceResultBD));
-//            productsDto.remove(productDto);
-//            productsData.remove(productDto);
             productDto.setAmount(10);
             productTable.setItems(productsData);
         }
     }
 
-    public void paymentPage() {
+    private void paymentPage() {
         if (!getPriceResult().getText().equals("")) {
             PagesConfiguration screens = getPagesConfiguration();
             Stage stage = new Stage();
@@ -257,7 +231,7 @@ public class SalesController implements Initializable {
         } else alert(Alert.AlertType.WARNING, "Товар не выбран", null, "Извините, список товаров пуст.");
     }
 
-    public void findAndAddProductByBarcode() {
+    private void findAndAddProductByBarcode() {
         try {
             String barcode = txtDisplay.getText();
             WarehouseProduct warehouseProduct = warehouseProductService.findByProductBarcode(barcode);
@@ -293,9 +267,8 @@ public class SalesController implements Initializable {
     }
 
 
-    public void categoriesListener(Map<String, List<WarehouseProduct>> productMap) {
+    private void categoriesListener(Map<String, List<WarehouseProduct>> productMap) {
         categories.getSelectionModel().selectedItemProperty().addListener((ov, oldVal, newVal) -> {
-//            if (flag) {
             categoryProductsData.clear();
             List<WarehouseProduct> warehouseProducts = null;
             for (Map.Entry<String, List<WarehouseProduct>> productMapEntry : productMap.entrySet()) {
@@ -319,12 +292,10 @@ public class SalesController implements Initializable {
             priceFromCategory.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
             residueFromCategory.setCellValueFactory(cellData -> cellData.getValue().residueProperty());
             categoryProductsTable.setItems(categoryProductsData);
-//            }
-//            flag = true;
         });
     }
 
-    public void addProductToTable() {
+    private void addProductToTable() {
         categoryProductsTable.setOnMousePressed(event -> {
             if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
                 if (barcodeMap == null) {
@@ -361,51 +332,13 @@ public class SalesController implements Initializable {
                     addProductInProductsDto(productDtoRow);
                 }
                 addProductsToTable();
-//                    if (selectedItem.getResidue() != 0)
-//                        selectedItem.setResidue(selectedItem.getResidue() - 1);
-//                    else
-//                        selectedItem.setResidue(selectedItem.getResidue());
-
             }
         });
     }
 
-
     @FXML
     public void refreshTable() {
-        getCategoryProductsTable().getProperties().put(TableViewSkin.RECREATE, Boolean.TRUE);
-    }
-
-    public TableColumn<ProductDto, String> getNameFromCategory() {
-        return nameFromCategory;
-    }
-
-    public void setNameFromCategory(TableColumn<ProductDto, String> nameFromCategory) {
-        this.nameFromCategory = nameFromCategory;
-    }
-
-    public TableColumn<ProductDto, BigDecimal> getPriceFromCategory() {
-        return priceFromCategory;
-    }
-
-    public void setPriceFromCategory(TableColumn<ProductDto, BigDecimal> priceFromCategory) {
-        this.priceFromCategory = priceFromCategory;
-    }
-
-    public TableColumn<ProductDto, Number> getResidueFromCategory() {
-        return residueFromCategory;
-    }
-
-    public void setResidueFromCategory(TableColumn<ProductDto, Number> residueFromCategory) {
-        this.residueFromCategory = residueFromCategory;
-    }
-
-    public TableView<ProductDto> getCategoryProductsTable() {
-        return categoryProductsTable;
-    }
-
-    public void setCategoryProductsTable(TableView<ProductDto> categoryProductsTable) {
-        this.categoryProductsTable = categoryProductsTable;
+        categoryProductsTable.getProperties().put(TableViewSkin.RECREATE, Boolean.TRUE);
     }
 
     @FXML

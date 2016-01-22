@@ -10,8 +10,7 @@ public class ProviderDto {
     private StringProperty email;
     private StringProperty cityName;
     private StringProperty address;
-    private StringProperty iin;
-    private StringProperty bin;
+    private StringProperty identificationNumber;
 
     public String getCompanyName() {
         return companyName.get();
@@ -78,29 +77,16 @@ public class ProviderDto {
         this.address.set(address);
     }
 
-    public String getIin() {
-        return iin.get();
+    public String getIdentificationNumber() {
+        return identificationNumber.get();
     }
 
-    public StringProperty iinProperty() {
-        return iin;
+    public StringProperty identificationNumberProperty() {
+        return identificationNumber;
     }
 
-    public void setIin(String iin) {
-        if (this.iin == null) this.iin = new SimpleStringProperty();
-        this.iin.set(iin);
-    }
-
-    public String getBin() {
-        return bin.get();
-    }
-
-    public StringProperty binProperty() {
-        return bin;
-    }
-
-    public void setBin(String bin) {
-        if (this.bin == null) this.bin = new SimpleStringProperty();
-        this.bin.set(bin);
+    public void setIdentificationNumber(String iin) {
+        if (this.identificationNumber == null) this.identificationNumber = new SimpleStringProperty();
+        this.identificationNumber.set(iin);
     }
 }

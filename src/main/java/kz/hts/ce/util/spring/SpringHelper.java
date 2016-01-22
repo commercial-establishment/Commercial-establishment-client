@@ -93,16 +93,16 @@ public class SpringHelper {
         for (Role role : roles) roleMap.put(role.getName(), role);
     }
 
-    @PostConstruct
-    private void transferDataByTimer() {
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                transmitAndReceiveData();
-            }
-        }, 2 * 60 * 1000, 60 * 1000);
-    }
+//    @PostConstruct
+//    private void transferDataByTimer() {
+//        Timer timer = new Timer();
+//        timer.scheduleAtFixedRate(new TimerTask() {
+//            @Override
+//            public void run() {
+//                transmitAndReceiveData();
+//            }
+//        }, 2 * 60 * 1000, 60 * 1000);
+//    }
 
     public void authorize(String username, String password) {
         UserDetails user = authenticationService.loadUserByUsername(username);

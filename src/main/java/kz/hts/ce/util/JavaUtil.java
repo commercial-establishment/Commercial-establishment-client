@@ -19,7 +19,7 @@ import java.util.List;
 
 public class JavaUtil {
 
-    public static final String URL = "http://batys.pro";
+    public static final String URL = "http://localhost:8080";
 
     public static BigDecimal stringToBigDecimal(String value) {
         try {
@@ -96,12 +96,11 @@ public class JavaUtil {
     public static ProviderDto createProviderDtoFromProvider(Provider provider) {
         ProviderDto providerDto = new ProviderDto();
         providerDto.setAddress(provider.getAddress());
-        providerDto.setBin(provider.getBin());
         providerDto.setCityName(provider.getCity().getName());
         providerDto.setCompanyName(provider.getCompanyName());
         providerDto.setContactPerson(provider.getContactPerson());
         providerDto.setEmail(provider.getEmail());
-        providerDto.setIin(provider.getIin());
+        providerDto.setIdentificationNumber(provider.getIdentificationNumber());
 
         return providerDto;
     }
