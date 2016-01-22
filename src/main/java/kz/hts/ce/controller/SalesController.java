@@ -351,6 +351,4 @@ public class SalesController implements Initializable {
         getPagesConfiguration().sales().close();
         getPagesConfiguration().main();
     }
-
 }
-
