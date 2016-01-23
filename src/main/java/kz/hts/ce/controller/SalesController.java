@@ -39,12 +39,12 @@ public class SalesController implements Initializable {
 
     private StringBuilder buttonState;
     private Button button;
-    private boolean flag;
     private ObservableList<String> categoriesData = FXCollections.observableArrayList();
     private ObservableList<ProductDto> categoryProductsData = FXCollections.observableArrayList();
     private Map<String, Integer> barcodeMap;
 
     private List<ProductDto> productsDto = new ArrayList<>();
+    private List<ProductDto> categoryProductsDto = new ArrayList<>();
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
 
     @FXML
@@ -91,14 +91,10 @@ public class SalesController implements Initializable {
     private Map<String, List<WarehouseProduct>> productMap = new HashMap<>();
     private ProductDto tempProducts;
     private int count;
+    private boolean isLaunched = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        DoubleProperty dividerPositionProperty = splitPane.getDividers().get(0).positionProperty();
-//        double[] pos = splitPane.getDividerPositions();
-//        dividerPositionProperty.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-//            splitPane.setDividerPositions(pos);
-//        });
         button = new Button();
         buttonState = new StringBuilder("");
         eventHandler = event -> {
@@ -134,31 +130,22 @@ public class SalesController implements Initializable {
                     findByCategoryIdAndShopId(category.getId(), employee.getShop().getId());
             productMap.put(category.getName(), warehouseProducts);
         }
-
-        categoriesListener(productMap);
-        addProductToTable();
-
+        /*TODO make research why this method being called twice?*/
+        if (!isLaunched) {
+            categoriesListener(productMap);
+            addProductToTable();
+        }
+        isLaunched = true;
     }
 
     public void startEventHandler(Scene scene) {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, eventHandler);
-//        scene.setOnKeyPressed(eventHandler);
     }
 
     public void addProductsToTable() {
         productsData.clear();
         BigDecimal priceResultBD = BigDecimal.ZERO;
         for (ProductDto productDto : productsDto) {
-//            WarehouseProduct byProductBarcode = warehouseProductService.findByProductBarcode(productDto.getBarcode());
-//            for (List<WarehouseProduct> warehouseProducts : productMap.values()) {
-//                for (WarehouseProduct warehouseProduct : warehouseProducts) {
-//                    if(productDto.getBarcode() == warehouseProduct.getProduct().getBarcode())
-//                        if(productDto.getAmount() > warehouseProduct.getResidue()){
-//                            productDto.setAmount(warehouseProduct.getResidue());
-//                            warehouseProduct.setResidue(warehouseProduct.getResidue()-productDto.getAmount());
-//                        }
-//                }
-//            }
             productsData.add(productDto);
             BigDecimal totalPrice = productDto.getTotalPrice();
             priceResultBD = priceResultBD.add(totalPrice);
@@ -190,8 +177,9 @@ public class SalesController implements Initializable {
     }
 
     public void deleteAllProductsFromTable() {
-        ObservableList<ProductDto> productDto = productTable.getSelectionModel().getTableView().getItems();
-        productDto.clear();
+        productsData.clear();
+        barcodeMap.clear();
+        productsDto.clear();
         priceResult.setText("0.00");
     }
 
@@ -229,20 +217,17 @@ public class SalesController implements Initializable {
             deleteSelectedProductFromTable();
         } else if (buttonText.matches("ADD")) {
             paymentPage();
-        }
-        else if (buttonText.matches("DIVIDE")){
+        } else if (buttonText.matches("DIVIDE")) {
             deleteSpecificAmount();
         }
     }
 
-    public void deleteSpecificAmount(){
+    public void deleteSpecificAmount() {
         if (productTable != null) {
             ProductDto productDto = productTable.getSelectionModel().getSelectedItem();
             BigDecimal priceResultBD = new BigDecimal(priceResult.getText());
             priceResultBD = priceResultBD.subtract(productDto.getTotalPrice());
             priceResult.setText(String.valueOf(priceResultBD));
-//            productsDto.remove(productDto);
-//            productsData.remove(productDto);
             productDto.setAmount(10);
             productTable.setItems(productsData);
         }
@@ -295,7 +280,6 @@ public class SalesController implements Initializable {
 
     public void categoriesListener(Map<String, List<WarehouseProduct>> productMap) {
         categories.getSelectionModel().selectedItemProperty().addListener((ov, oldVal, newVal) -> {
-//            if (flag) {
             categoryProductsData.clear();
             List<WarehouseProduct> warehouseProducts = null;
             for (Map.Entry<String, List<WarehouseProduct>> productMapEntry : productMap.entrySet()) {
@@ -319,8 +303,6 @@ public class SalesController implements Initializable {
             priceFromCategory.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
             residueFromCategory.setCellValueFactory(cellData -> cellData.getValue().residueProperty());
             categoryProductsTable.setItems(categoryProductsData);
-//            }
-//            flag = true;
         });
     }
 
@@ -361,15 +343,22 @@ public class SalesController implements Initializable {
                     addProductInProductsDto(productDtoRow);
                 }
                 addProductsToTable();
-//                    if (selectedItem.getResidue() != 0)
-//                        selectedItem.setResidue(selectedItem.getResidue() - 1);
-//                    else
-//                        selectedItem.setResidue(selectedItem.getResidue());
-
             }
         });
     }
 
+    @FXML
+    public void refreshResidues(ProductDto productDto){
+        List<WarehouseProduct> wpList = new ArrayList<>();
+        for (List<WarehouseProduct> warehouseProducts : productMap.values()) {
+            wpList = warehouseProducts;
+        }
+        for (WarehouseProduct warehouseProduct : wpList) {
+            if(productDto.getBarcode().equals(warehouseProduct.getProduct().getBarcode())){
+
+            }
+        }
+    }
 
     @FXML
     public void refreshTable() {
