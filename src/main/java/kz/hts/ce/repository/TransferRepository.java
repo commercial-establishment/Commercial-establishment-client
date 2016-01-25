@@ -11,7 +11,6 @@ import java.util.UUID;
 public interface TransferRepository extends JpaRepository<Transfer, UUID> {
 
     @Query("SELECT t FROM Transfer  t WHERE t.date IN (SELECT max(date) FROM Transfer)")
-//    @Query("SELECT b FROM Transfer b WHERE b.date <= ?1 ORDER BY b.date DESC")
     Transfer findByLastDate();
 }
 
