@@ -33,7 +33,7 @@ public class Employee extends BaseEntity {
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Role role;
 
-    @Column(name = "start_work_date", nullable = false)
+    @Column(name = "start_work_date")/*TODO nullable = false*/
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date startWorkDate;
 
