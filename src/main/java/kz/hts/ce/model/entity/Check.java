@@ -3,6 +3,7 @@ package kz.hts.ce.model.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +28,16 @@ public class Check extends BaseEntity{
 
     public long getCheckNumber() {
         return checkNumber;
+    }
+
+    public BigDecimal price;
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public void setCheckNumber(long checkNumber) {

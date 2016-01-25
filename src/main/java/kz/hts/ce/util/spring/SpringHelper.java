@@ -51,6 +51,13 @@ public class SpringHelper {
         List<Role> roles = roleService.findAll();
         roleMap = new HashMap<>();
         for (Role role : roles) roleMap.put(role.getName(), role);
+//        Timer timer = new Timer();
+//        timer.scheduleAtFixedRate(new TimerTask() {
+//            @Override
+//            public void run() {
+//                transmitAndReceiveData();
+//            }
+//        }, 2 * 60 * 1000, 60 * 1000);
     }
 
     @Autowired
@@ -91,17 +98,6 @@ public class SpringHelper {
             userName = principal.toString();
         }
         return userName;
-    }
-
-    @PostConstruct
-    private void transferDataByTimer() {
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                transmitAndReceiveData();
-            }
-        }, 2 * 60 * 1000, 60 * 1000);
     }
 
     public void authorize(String username, String password) {

@@ -17,4 +17,8 @@ public class CheckService extends BaseService<Check, CheckRepository> {
     public List<Check> findByCheckNumber(String checkNumber){
         return repository.findByCheckNumber(checkNumber);
     }
+
+    public Check findByLastDate(){
+        return repository.findByLastDate();
+    }
 }

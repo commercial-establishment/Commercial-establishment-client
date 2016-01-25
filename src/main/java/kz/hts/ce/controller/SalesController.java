@@ -252,7 +252,8 @@ public class SalesController implements Initializable {
                 ProductDto productDto = createProductDtoFromWarehouseProduct(warehouseProduct, Integer.parseInt(splittedAmount[1]));
                 setProductDtoToProductsDto(productDto);
                 addProductsToTable();
-                refreshResidues(productDto);
+//                productDto.setResidue(warehouseProduct.getResidue());
+//                refreshResidues(productDto);
             } else
                 alert(Alert.AlertType.WARNING, "Товар не найден", null, "Товар с данным штрих-кодом отсутствует!");
         } catch (NumberFormatException e) {
@@ -350,7 +351,7 @@ public class SalesController implements Initializable {
     }
 
     public void refreshResidues(ProductDto productDto){
-        if(productDto.getResidue() < 0) {
+        if(productDto.getResidue() > 0) {
             for (ProductDto dto : categoryProductsData) {
                 if (dto.getBarcode().equals(productDto.getBarcode())) {
                     dto.setResidue(dto.getResidue() - 1);

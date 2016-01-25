@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import javax.persistence.Convert;
+import javax.persistence.Converter;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Calendar;
@@ -97,11 +99,17 @@ public class PaymentController implements Initializable {
             if (shortage.getText().equals(ZERO)) {
                 ObservableList<ProductDto> productsData = salesController.getProductsData();
 
+                Check lastCheck = checkService.findByLastDate();
+                long counter = -1;
+                if (lastCheck != null) {
+                    counter = lastCheck.getCheckNumber();
+                }
                 Check check = new Check();
                 check.setDate(Calendar.getInstance().getTime());
                 check.setEmployee(springHelper.getEmployee());
                 check.setShop(springHelper.getEmployee().getShop());
-                check.setCheckNumber(check.getCheckNumber()+1);
+                check.setCheckNumber(counter + 1);
+                check.setPrice(stringToBigDecimal(total.getText()));
                 checkService.save(check);
 
                 for (ProductDto productDto : productsData) {
