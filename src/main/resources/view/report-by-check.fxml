@@ -1,49 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0"
-            prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.reports.ChecksReportController">
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.reports.ChecksReportController">
     <children>
-        <Button fx:id="compile" layoutX="819.0" layoutY="57.0" mnemonicParsing="false" prefHeight="25.0"
-                prefWidth="150.0" text="Скомпилировать">
+        <Button fx:id="compile" layoutX="819.0" layoutY="57.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Скомпилировать">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Button>
-        <DatePicker layoutX="109.0" layoutY="57.0" prefHeight="30.0" prefWidth="174.0"/>
+        <DatePicker fx:id="startDate" layoutX="109.0" layoutY="57.0" prefHeight="30.0" prefWidth="174.0" />
         <Label layoutX="40.0" layoutY="62.0" text="Период с:">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Label>
-        <DatePicker layoutX="324.0" layoutY="57.0" prefHeight="30.0" prefWidth="174.0"/>
+        <DatePicker fx:id="endDate" layoutX="324.0" layoutY="57.0" prefHeight="30.0" prefWidth="174.0" />
         <Label layoutX="296.0" layoutY="63.0" text="по:">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Label>
-        <TreeTableView fx:id="checksReport" layoutX="27.0" layoutY="98.0" maxHeight="1.7976931348623157E308"
-                       maxWidth="1.7976931348623157E308" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="49.0"
-                       AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="98.0">
+        <TreeTableView fx:id="checkReport" layoutX="27.0" layoutY="98.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="98.0">
             <columns>
-                <TreeTableColumn prefWidth="416.0" text="ФИО Сотрудника"/>
-                <TreeTableColumn prefWidth="204.0" text="№ чека"/>
-                <TreeTableColumn prefWidth="145.0" text="Дата продажи"/>
-                <TreeTableColumn prefWidth="187.0" text="Сумма"/>
+                <TreeTableColumn fx:id="fullName" prefWidth="416.0" text="ФИО Сотрудника" />
+                <TreeTableColumn fx:id="checkNumber" prefWidth="204.0" text="№ чека" />
+                <TreeTableColumn fx:id="dateOfSale" prefWidth="145.0" text="Дата продажи" />
+                <TreeTableColumn fx:id="sumOfCheck" prefWidth="187.0" text="Сумма" />
             </columns>
         </TreeTableView>
-        <Button id="export" fx:id="export" layoutX="763.0" layoutY="58.0" mnemonicParsing="false" prefHeight="30.0"
-                prefWidth="44.0" stylesheets="@../style.css">
+        <Button id="export" fx:id="export" layoutX="763.0" layoutY="58.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="44.0" stylesheets="@../style.css">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Button>
         <Label layoutX="40.0" layoutY="21.0" text="Отчеты по чекам">
             <font>
-                <Font name="System Bold" size="15.0"/>
+                <Font name="System Bold" size="15.0" />
             </font>
         </Label>
     </children>
