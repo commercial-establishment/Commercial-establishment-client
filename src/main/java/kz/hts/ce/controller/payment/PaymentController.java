@@ -101,7 +101,7 @@ public class PaymentController implements Initializable {
                 check.setDate(Calendar.getInstance().getTime());
                 check.setEmployee(springHelper.getEmployee());
                 check.setShop(springHelper.getEmployee().getShop());
-                check.setCheckNumber("123");
+                check.setCheckNumber(check.getCheckNumber()+1);
                 checkService.save(check);
 
                 for (ProductDto productDto : productsData) {
