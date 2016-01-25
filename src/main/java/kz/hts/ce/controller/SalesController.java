@@ -101,12 +101,7 @@ public class SalesController implements Initializable {
             handleOnAnyButtonFromKeypad();
         };
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                startEventHandler(root.getScene());
-            }
-        });
+        Platform.runLater(() -> startEventHandler(root.getScene()));
 
         categoriesData.clear();
         List<Category> categoriesFromDb = categoryService.findAll();
@@ -158,11 +153,11 @@ public class SalesController implements Initializable {
         productTable.setItems(productsData);
     }
 
-    public void setProductDtoToProductsDto(ProductDto productDto) {
+    private void setProductDtoToProductsDto(ProductDto productDto) {
         productsDto.add(productDto);
     }
 
-    public void deleteSelectedProductFromTable() {
+    private void deleteSelectedProductFromTable() {
         if (productTable != null) {
             ProductDto productDto = productTable.getSelectionModel().getSelectedItem();
             BigDecimal priceResultBD = new BigDecimal(priceResult.getText());
@@ -181,7 +176,7 @@ public class SalesController implements Initializable {
         priceResult.setText("0.00");
     }
 
-    public void addProductInProductsDto(ProductDto productDto) {
+    private void addProductInProductsDto(ProductDto productDto) {
         productsDto.add(productDto);
     }
 
@@ -194,7 +189,7 @@ public class SalesController implements Initializable {
         }
     }
 
-    public void handleOnAnyButtonFromKeypad() {
+    private void handleOnAnyButtonFromKeypad() {
         button.setText(String.valueOf(buttonState));
         String buttonText = button.getText();
         if (buttonText.startsWith("NUMPAD")) {
@@ -220,7 +215,7 @@ public class SalesController implements Initializable {
         }
     }
 
-    public void deleteSpecificAmount() {
+    private void deleteSpecificAmount(){
         if (productTable != null) {
             ProductDto productDto = productTable.getSelectionModel().getSelectedItem();
             BigDecimal priceResultBD = new BigDecimal(priceResult.getText());
@@ -231,7 +226,7 @@ public class SalesController implements Initializable {
         }
     }
 
-    public void paymentPage() {
+    private void paymentPage() {
         if (!getPriceResult().getText().equals("")) {
             PagesConfiguration screens = getPagesConfiguration();
             Stage stage = new Stage();
@@ -240,7 +235,7 @@ public class SalesController implements Initializable {
         } else alert(Alert.AlertType.WARNING, "Товар не выбран", null, "Извините, список товаров пуст.");
     }
 
-    public void findAndAddProductByBarcode() {
+    private void findAndAddProductByBarcode() {
         try {
             String barcode = txtDisplay.getText();
             WarehouseProduct warehouseProduct = warehouseProductService.findByProductBarcode(barcode);
@@ -252,8 +247,6 @@ public class SalesController implements Initializable {
                 ProductDto productDto = createProductDtoFromWarehouseProduct(warehouseProduct, Integer.parseInt(splittedAmount[1]));
                 setProductDtoToProductsDto(productDto);
                 addProductsToTable();
-//                productDto.setResidue(warehouseProduct.getResidue());
-//                refreshResidues(productDto);
             } else
                 alert(Alert.AlertType.WARNING, "Товар не найден", null, "Товар с данным штрих-кодом отсутствует!");
         } catch (NumberFormatException e) {
@@ -278,7 +271,7 @@ public class SalesController implements Initializable {
     }
 
 
-    public void categoriesListener(Map<String, List<WarehouseProduct>> productMap) {
+    private void categoriesListener(Map<String, List<WarehouseProduct>> productMap) {
         categories.getSelectionModel().selectedItemProperty().addListener((ov, oldVal, newVal) -> {
             categoryProductsData.clear();
             List<WarehouseProduct> warehouseProducts = null;
@@ -306,7 +299,7 @@ public class SalesController implements Initializable {
         });
     }
 
-    public void addProductToTable() {
+    private void addProductToTable() {
         categoryProductsTable.setOnMousePressed(event -> {
             if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
                 if (barcodeMap == null) {
@@ -370,39 +363,7 @@ public class SalesController implements Initializable {
 
     @FXML
     public void refreshTable() {
-        getCategoryProductsTable().getProperties().put(TableViewSkin.RECREATE, Boolean.TRUE);
-    }
-
-    public TableColumn<ProductDto, String> getNameFromCategory() {
-        return nameFromCategory;
-    }
-
-    public void setNameFromCategory(TableColumn<ProductDto, String> nameFromCategory) {
-        this.nameFromCategory = nameFromCategory;
-    }
-
-    public TableColumn<ProductDto, BigDecimal> getPriceFromCategory() {
-        return priceFromCategory;
-    }
-
-    public void setPriceFromCategory(TableColumn<ProductDto, BigDecimal> priceFromCategory) {
-        this.priceFromCategory = priceFromCategory;
-    }
-
-    public TableColumn<ProductDto, Number> getResidueFromCategory() {
-        return residueFromCategory;
-    }
-
-    public void setResidueFromCategory(TableColumn<ProductDto, Number> residueFromCategory) {
-        this.residueFromCategory = residueFromCategory;
-    }
-
-    public TableView<ProductDto> getCategoryProductsTable() {
-        return categoryProductsTable;
-    }
-
-    public void setCategoryProductsTable(TableView<ProductDto> categoryProductsTable) {
-        this.categoryProductsTable = categoryProductsTable;
+        categoryProductsTable.getProperties().put(TableViewSkin.RECREATE, Boolean.TRUE);
     }
 
     @FXML
@@ -415,6 +376,4 @@ public class SalesController implements Initializable {
         getPagesConfiguration().sales().close();
         getPagesConfiguration().main();
     }
-
 }
-

@@ -24,6 +24,7 @@ public class Provider extends BaseEntity {
     @Pattern(regexp = "^[a-z0-9_-]+[a-z0-9_-]$")
     private String username;
 
+    @NotEmpty
     private String password;
 
     @ManyToOne
@@ -39,6 +40,11 @@ public class Provider extends BaseEntity {
     @Pattern(regexp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
     private String email;
 
+    @Size(max = 30)
+    @NotEmpty
+    @Column(name = "company_name", nullable = false)
+    private String companyName;
+
     @Size(max = 100)
     @Column(name = "contact_person", nullable = false)
     private String contactPerson;
@@ -48,10 +54,6 @@ public class Provider extends BaseEntity {
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Role role;
 
-    @Size(max = 30)
-    @Column(name = "company_name", nullable = false)
-    private String companyName;
-
     @Column(name = "start_work_date", nullable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date startWorkDate;
@@ -60,14 +62,13 @@ public class Provider extends BaseEntity {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date endWorkDate;
 
+    @Size(min = 12, max = 12)
+    @Pattern(regexp = "^[\\d]{12}$")
+    @Column(name = "identification_number", nullable = false)
+    private String identificationNumber;
+
     @Column(name = "is_blocked", nullable = false)
     private boolean blocked;
-
-    @Size(max = 20)
-    private String iin;
-
-    @Size(max = 20)
-    private String bin;
 
     public String getUsername() {
         return username;
@@ -157,38 +158,12 @@ public class Provider extends BaseEntity {
         this.blocked = blocked;
     }
 
-    public String getIin() {
-        return iin;
+    public String getIdentificationNumber() {
+        return identificationNumber;
     }
 
-    public void setIin(String iin) {
-        this.iin = iin;
-    }
-
-    public String getBin() {
-        return bin;
-    }
-
-    public void setBin(String bin) {
-        this.bin = bin;
-    }
-
-    @Override
-    public String toString() {
-        return "Provider{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", city=" + city +
-                ", address='" + address + '\'' +
-                ", email='" + email + '\'' +
-                ", contactPerson='" + contactPerson + '\'' +
-                ", role=" + role +
-                ", companyName='" + companyName + '\'' +
-                ", startWorkDate=" + startWorkDate +
-                ", endWorkDate=" + endWorkDate +
-                ", blocked=" + blocked +
-                ", iin='" + iin + '\'' +
-                ", bin='" + bin + '\'' +
-                '}';
+    public void setIdentificationNumber(String identificationNumber) {
+        this.identificationNumber = identificationNumber;
     }
 }
+

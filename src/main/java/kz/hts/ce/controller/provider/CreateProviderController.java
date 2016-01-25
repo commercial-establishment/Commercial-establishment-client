@@ -41,9 +41,7 @@ public class CreateProviderController implements Initializable {
     @FXML
     private TextField address;
     @FXML
-    private IntegerTextField iin;
-    @FXML
-    private IntegerTextField bin;
+    private IntegerTextField identificationNumber;
 
     @Autowired
     private ProviderService providerService;
@@ -74,10 +72,8 @@ public class CreateProviderController implements Initializable {
             provider.setAddress(address.getText());
             provider.setBlocked(false);
             provider.setCity(cityService.findByName(cities.getValue()));
-            String iin = this.iin.getText();
-            if (!iin.isEmpty()) provider.setIin(iin);
-            String bin = this.bin.getText();
-            if (!bin.isEmpty()) provider.setBin(bin);
+            String identificationNumber = this.identificationNumber.getText();
+            provider.setIdentificationNumber(identificationNumber);
             providerService.save(provider);
 
             addProviderPage();

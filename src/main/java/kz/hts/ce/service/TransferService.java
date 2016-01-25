@@ -5,9 +5,7 @@ import kz.hts.ce.repository.TransferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
-import static kz.hts.ce.util.JavaUtil.getFixedDate;
+import static kz.hts.ce.util.JavaUtil.getDateFromInternet;
 
 @Service
 public class TransferService extends BaseService<Transfer, TransferRepository> {
@@ -23,7 +21,7 @@ public class TransferService extends BaseService<Transfer, TransferRepository> {
 
     public Transfer saveWithNewDate() {
         Transfer transfer = new Transfer();
-        transfer.setDate(new Date());
+        transfer.setDate(getDateFromInternet());
         return save(transfer);
     }
 }

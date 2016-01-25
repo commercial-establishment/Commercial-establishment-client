@@ -5,7 +5,9 @@ import kz.hts.ce.model.dto.InvoiceDto;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.dto.ProviderDto;
 import kz.hts.ce.model.entity.*;
+import org.apache.commons.net.time.TimeTCPClient;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -16,10 +18,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class JavaUtil {
 
-    public static final String URL = "http://batys.pro";/*TODO change URL*/
+    public static final String URL = "http://localhost:8080";
 
     public static BigDecimal stringToBigDecimal(String value) {
         try {
@@ -96,12 +99,11 @@ public class JavaUtil {
     public static ProviderDto createProviderDtoFromProvider(Provider provider) {
         ProviderDto providerDto = new ProviderDto();
         providerDto.setAddress(provider.getAddress());
-        providerDto.setBin(provider.getBin());
         providerDto.setCityName(provider.getCity().getName());
         providerDto.setCompanyName(provider.getCompanyName());
         providerDto.setContactPerson(provider.getContactPerson());
         providerDto.setEmail(provider.getEmail());
-        providerDto.setIin(provider.getIin());
+        providerDto.setIdentificationNumber(provider.getIdentificationNumber());
 
         return providerDto;
     }
@@ -144,7 +146,7 @@ public class JavaUtil {
         return calendar.getTime();
     }
 
-    public static Date getFixedDate(){
+    public static Date getFixedDate() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, 2000);
         calendar.set(Calendar.MONTH, 1);
@@ -165,5 +167,22 @@ public class JavaUtil {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public static Date getDateFromInternet() {
+        try {
+            TimeTCPClient client = new TimeTCPClient();
+            try {
+                client.setDefaultTimeout(60000);
+                TimeZone.setDefault(TimeZone.getTimeZone("Asia/Almaty"));
+                client.connect("time.nist.gov");
+                return client.getDate();
+            } finally {
+                client.disconnect();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

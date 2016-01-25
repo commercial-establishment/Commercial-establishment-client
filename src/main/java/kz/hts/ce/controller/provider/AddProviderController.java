@@ -3,10 +3,7 @@ package kz.hts.ce.controller.provider;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.controller.MainController;
 import kz.hts.ce.model.dto.ProviderDto;
@@ -26,11 +23,14 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static kz.hts.ce.util.JavaUtil.createProviderDtoFromProvider;
+import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 
 @Controller
 public class AddProviderController implements Initializable {
 
+    @FXML
+    private Button saveButton;
     @FXML
     private Button add;
     @FXML
@@ -49,8 +49,6 @@ public class AddProviderController implements Initializable {
     private TableColumn<ProviderDto, String> address;
     @FXML
     private TableColumn<ProviderDto, String> iin;
-    @FXML
-    private TableColumn<ProviderDto, String> bin;
 
     @Autowired
     private ShopProviderService shopProviderService;
@@ -99,8 +97,7 @@ public class AddProviderController implements Initializable {
         email.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
         city.setCellValueFactory(cellData -> cellData.getValue().cityNameProperty());
         address.setCellValueFactory(cellData -> cellData.getValue().addressProperty());
-        iin.setCellValueFactory(cellData -> cellData.getValue().iinProperty());
-        bin.setCellValueFactory(cellData -> cellData.getValue().binProperty());
+        iin.setCellValueFactory(cellData -> cellData.getValue().identificationNumberProperty());
     }
 
     @FXML
@@ -133,7 +130,9 @@ public class AddProviderController implements Initializable {
             shopProvider.setBlocked(false);
             shopProviderService.save(shopProvider);
         });
-        /*TODO success alert*/
+        alert(Alert.AlertType.INFORMATION, "Поставщик(и) добавлен(ы)", null, "Добавленные в таблицу поставщики сохранены. Теперь вы можете с ними работать.");
+        ObservableList<String> providerNames = this.providers.getItems();
+        if (providerNames.size() == 0)             saveButton.setDisable(true);
     }
 
     @FXML
