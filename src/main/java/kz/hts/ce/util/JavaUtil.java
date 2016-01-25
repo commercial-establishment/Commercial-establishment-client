@@ -22,8 +22,8 @@ import java.util.TimeZone;
 
 public class JavaUtil {
 
-//    public static final String URL = "http://localhost:8080";
-    public static final String URL = "http://batys.pro";
+    public static final String URL = "http://localhost:8080";
+//    public static final String URL = "http://batys.pro";
 
     public static BigDecimal stringToBigDecimal(String value) {
         try {
