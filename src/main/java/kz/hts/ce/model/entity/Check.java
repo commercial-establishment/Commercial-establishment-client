@@ -9,7 +9,9 @@ import java.util.List;
 @Entity
 public class Check extends BaseEntity{
 
-    private String checkNumber;
+//    @Column(columnDefinition = "serial")
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long checkNumber;
 
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
@@ -23,11 +25,11 @@ public class Check extends BaseEntity{
     @DateTimeFormat(pattern = "dd-MM-yyyy hh-mm-ss")
     private Date date;
 
-    public String getCheckNumber() {
+    public long getCheckNumber() {
         return checkNumber;
     }
 
-    public void setCheckNumber(String checkNumber) {
+    public void setCheckNumber(long checkNumber) {
         this.checkNumber = checkNumber;
     }
 
