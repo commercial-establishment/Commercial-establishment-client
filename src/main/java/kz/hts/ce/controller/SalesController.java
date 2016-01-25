@@ -252,6 +252,7 @@ public class SalesController implements Initializable {
                 ProductDto productDto = createProductDtoFromWarehouseProduct(warehouseProduct, Integer.parseInt(splittedAmount[1]));
                 setProductDtoToProductsDto(productDto);
                 addProductsToTable();
+                refreshResidues(productDto);
             } else
                 alert(Alert.AlertType.WARNING, "Товар не найден", null, "Товар с данным штрих-кодом отсутствует!");
         } catch (NumberFormatException e) {
