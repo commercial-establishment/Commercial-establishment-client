@@ -4,11 +4,13 @@ import org.hibernate.annotations.Proxy;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.hibernate.envers.RelationTargetAuditMode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.util.Date;
 
 @Entity
 @Audited
@@ -30,6 +32,14 @@ public class Employee extends BaseEntity {
     @JoinColumn(name = "role_id", nullable = false)
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Role role;
+
+    @Column(name = "start_work_date", nullable = false)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private Date startWorkDate;
+
+    @Column(name = "end_work_date")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private Date endWorkDate;
 
     @Column(name = "is_blocked")
     private boolean blocked;
@@ -88,6 +98,22 @@ public class Employee extends BaseEntity {
 
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
+    }
+
+    public Date getStartWorkDate() {
+        return startWorkDate;
+    }
+
+    public void setStartWorkDate(Date startWorkDate) {
+        this.startWorkDate = startWorkDate;
+    }
+
+    public Date getEndWorkDate() {
+        return endWorkDate;
+    }
+
+    public void setEndWorkDate(Date endWorkDate) {
+        this.endWorkDate = endWorkDate;
     }
 
     @Override

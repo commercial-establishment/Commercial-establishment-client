@@ -32,12 +32,10 @@ public class WriteExcelFileExample {
             Row row = studentsSheet.createRow(rowIndex++);
             cellIndex = 0;
             row.createCell(cellIndex++).setCellValue(product.getName());
-//            row.createCell(cellIndex++).setCellValue(product.getUnitName());
             row.createCell(cellIndex++).setCellValue(product.getArrival());
             row.createCell(cellIndex++).setCellValue(product.getOldAmount());
             row.createCell(cellIndex++).setCellValue(product.getResidue());
             row.createCell(cellIndex++).setCellValue(String.valueOf(product.getPrice()));
-//            row.createCell(cellIndex++).setCellValue(String.valueOf(product.getTotalPrice()));
             row.createCell(cellIndex++).setCellValue(String.valueOf(product.getFinalPrice()));
             row.createCell(cellIndex++).setCellValue(product.getSoldAmount());
         }

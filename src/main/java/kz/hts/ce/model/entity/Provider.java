@@ -54,7 +54,6 @@ public class Provider extends BaseEntity {
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Role role;
 
-
     @Column(name = "start_work_date", nullable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date startWorkDate;
