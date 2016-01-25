@@ -17,6 +17,7 @@ import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.dto.ProductDto;
 import kz.hts.ce.model.entity.Category;
 import kz.hts.ce.model.entity.Employee;
+import kz.hts.ce.model.entity.Product;
 import kz.hts.ce.model.entity.WarehouseProduct;
 import kz.hts.ce.service.CategoryService;
 import kz.hts.ce.service.WarehouseProductService;
@@ -44,7 +45,6 @@ public class SalesController implements Initializable {
     private Map<String, Integer> barcodeMap;
 
     private List<ProductDto> productsDto = new ArrayList<>();
-    private List<ProductDto> categoryProductsDto = new ArrayList<>();
     private ObservableList<ProductDto> productsData = FXCollections.observableArrayList();
 
     @FXML
@@ -89,8 +89,6 @@ public class SalesController implements Initializable {
 
     private EventHandler<KeyEvent> eventHandler;
     private Map<String, List<WarehouseProduct>> productMap = new HashMap<>();
-    private ProductDto tempProducts;
-    private int count;
     private boolean isLaunched = false;
 
     @Override
@@ -335,29 +333,37 @@ public class SalesController implements Initializable {
 
 
                             addProductInProductsDto(productDtoRow);
+                            refreshResidues(productDtoRow);
                         }
                     }
                 } else {
                     productDtoRow.setAmount(1);
                     barcodeMap.put(productDtoRow.getBarcode(), 1);
                     addProductInProductsDto(productDtoRow);
+                    refreshResidues(productDtoRow);
                 }
                 addProductsToTable();
+
             }
         });
     }
 
-    @FXML
     public void refreshResidues(ProductDto productDto){
-        List<WarehouseProduct> wpList = new ArrayList<>();
-        for (List<WarehouseProduct> warehouseProducts : productMap.values()) {
-            wpList = warehouseProducts;
-        }
-        for (WarehouseProduct warehouseProduct : wpList) {
-            if(productDto.getBarcode().equals(warehouseProduct.getProduct().getBarcode())){
-
+        if(productDto.getResidue() < 0) {
+            for (ProductDto dto : categoryProductsData) {
+                if (dto.getBarcode().equals(productDto.getBarcode())) {
+                    dto.setResidue(dto.getResidue() - 1);
+                }
+            }
+            for (List<WarehouseProduct> warehouseProducts : productMap.values()) {
+                for (WarehouseProduct warehouseProduct : warehouseProducts) {
+                    if (warehouseProduct.getProduct().getBarcode().equals(productDto.getBarcode())) {
+                        warehouseProduct.setResidue(warehouseProduct.getResidue() - 1);
+                    }
+                }
             }
         }
+
     }
 
     @FXML
