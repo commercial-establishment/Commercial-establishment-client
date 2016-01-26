@@ -62,6 +62,9 @@ public class MainController implements Initializable {
                 flag = true;
             }
         });
+        screens.getPrimaryStage().setOnCloseRequest(event -> {
+            logout();
+        });
         Employee employee = springHelper.getEmployee();
         role.setText(employee.getRole().getName());
     }

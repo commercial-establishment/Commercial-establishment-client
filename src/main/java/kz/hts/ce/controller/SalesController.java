@@ -83,9 +83,11 @@ public class SalesController implements Initializable {
     private WarehouseProductService warehouseProductService;
     @Autowired
     private CategoryService categoryService;
-
     @Autowired
     private SpringHelper springHelper;
+    @Autowired
+    private MainController mainController;
+
 
     private EventHandler<KeyEvent> eventHandler;
     private Map<String, List<WarehouseProduct>> productMap = new HashMap<>();
@@ -157,6 +159,7 @@ public class SalesController implements Initializable {
         productsDto.add(productDto);
     }
 
+    @FXML
     private void deleteSelectedProductFromTable() {
         if (productTable != null) {
             ProductDto productDto = productTable.getSelectionModel().getSelectedItem();
@@ -226,6 +229,7 @@ public class SalesController implements Initializable {
         }
     }
 
+    @FXML
     private void paymentPage() {
         if (!getPriceResult().getText().equals("")) {
             PagesConfiguration screens = getPagesConfiguration();
@@ -368,11 +372,13 @@ public class SalesController implements Initializable {
 
     @FXML
     public void exit() {
+        mainController.logout();
         getPagesConfiguration().sales().close();
     }
 
     @FXML
     public void changeMode() {
+        deleteAllProductsFromTable();
         getPagesConfiguration().sales().close();
         getPagesConfiguration().main();
     }
