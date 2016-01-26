@@ -5,6 +5,7 @@
 <?import javafx.scene.text.*?>
 <?import kz.hts.ce.util.javafx.fields.BarcodeTextField?>
 <?import kz.hts.ce.util.javafx.fields.PriceTextField?>
+<?import kz.hts.ce.util.javafx.fields.IntegerTextField?>
 <AnchorPane fx:id="editPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
             minWidth="-Infinity" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.40"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.receipt.ReceiptController">
@@ -74,8 +75,8 @@
                                 <Font size="14.0"/>
                             </font>
                         </PriceTextField>
-                        <Spinner fx:id="amount" disable="true" layoutX="743.0" layoutY="299.0" prefHeight="30.0"
-                                 prefWidth="102.0"/>
+                        <IntegerTextField fx:id="amount" disable="true" layoutX="743.0" layoutY="299.0" prefHeight="30.0"
+                                 prefWidth="102.0" promptText="Количество"/>
                         <ComboBox fx:id="unitOfMeasure" disable="true" editable="true" layoutX="499.0" layoutY="299.0"
                                   prefHeight="30.0" prefWidth="115.0" promptText="Ед. измерения"/>
                         <Button fx:id="add" disable="true" layoutX="852.0" layoutY="299.0" mnemonicParsing="false"
