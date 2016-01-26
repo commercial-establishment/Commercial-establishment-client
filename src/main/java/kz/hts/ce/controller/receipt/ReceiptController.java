@@ -17,6 +17,7 @@ import kz.hts.ce.model.entity.*;
 import kz.hts.ce.service.*;
 import kz.hts.ce.util.javafx.EditingBigDecimalCell;
 import kz.hts.ce.util.javafx.EditingNumberCell;
+import kz.hts.ce.util.javafx.fields.IntegerTextField;
 import kz.hts.ce.util.spring.JsonUtil;
 import kz.hts.ce.util.spring.SpringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,9 +78,9 @@ public class ReceiptController implements Initializable {
     @FXML
     private TextField barcode;
     @FXML
-    private Spinner<Integer> amount;
-    @FXML
     private TextField price;
+    @FXML
+    private IntegerTextField amount;
     @FXML
     private ComboBox<String> unitOfMeasure;
     @FXML
@@ -143,7 +144,7 @@ public class ReceiptController implements Initializable {
         List<ShopProvider> shopProviders = shopProviderService.findByShopId(shopId);
         List<String> providerNames = shopProviders.stream().map(shopProvider -> shopProvider.getProvider().getCompanyName()).collect(Collectors.toList());
         providers.getItems().addAll(providerNames);
-        amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(ONE, 10000, ONE));
+//        amount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(ONE, 10000, ONE));
         List<Category> categoriesFromDB = categoryService.findAll();
         List<String> categoryNames = categoriesFromDB.stream().map(Category::getName).collect(Collectors.toList());
         categories.getItems().addAll(categoryNames);
@@ -207,7 +208,6 @@ public class ReceiptController implements Initializable {
         price.setDisable(false);
         amount.setDisable(false);
         add.setDisable(false);
-        price.setText(String.valueOf(ZERO));
 
         ComboBox<String> source = (ComboBox<String>) event.getSource();
         List<Product> products = productService.findByCategoryName(source.getValue());
@@ -654,7 +654,7 @@ public class ReceiptController implements Initializable {
         String productName = productComboBox.getEditor().getText();
         String unit = unitOfMeasure.getEditor().getText();
         BigDecimal price = new BigDecimal(this.price.getText());
-        Integer amount = this.amount.getValue();
+        Integer amount = Integer.valueOf(this.amount.getText());
         String barcode = this.barcode.getText();
         if (barcodes == null) barcodes = new HashSet<>();
         barcodes.clear();
@@ -678,7 +678,8 @@ public class ReceiptController implements Initializable {
             productComboBox.setValue("");
             this.barcode.setText("");
             this.unitOfMeasure.getEditor().setText("");
-            this.price.setText(String.valueOf(ZERO));
+            this.price.clear();
+            this.amount.clear();
         } else
             alert(Alert.AlertType.WARNING, "Ошибка добавления", null, "Пожалуйста, заполните все поля правильно.");
     }
