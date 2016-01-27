@@ -4,9 +4,11 @@ import org.hibernate.annotations.Proxy;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Entity
 @Audited
@@ -34,6 +36,10 @@ public class Shop extends BaseEntity {
     @JoinColumn(name = "area_id", nullable = false)
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Area area;
+
+    @Column(name = "lock_date")/*TODO nullable = false*/
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private Date lockDate;
 
     @Column(name = "is_blocked", nullable = false)
     private boolean blocked;
@@ -84,6 +90,14 @@ public class Shop extends BaseEntity {
 
     public void setIin(int iin) {
         this.iin = iin;
+    }
+
+    public Date getLockDate() {
+        return lockDate;
+    }
+
+    public void setLockDate(Date lockDate) {
+        this.lockDate = lockDate;
     }
 
     @Override

@@ -21,8 +21,6 @@ public interface InvoiceProductRepository extends JpaRepository<InvoiceProduct, 
 
     List<InvoiceProduct> findByInvoice_DateBetweenAndProduct_Barcode(Date start, Date end, String barcode);
 
-    InvoiceProduct findByVersion(int version);
-
     @Transactional
     @Modifying
     @Query("UPDATE InvoiceProduct p set p.amount = ?1 where p.id = ?2")

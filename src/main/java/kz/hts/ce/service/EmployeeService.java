@@ -1,6 +1,10 @@
 package kz.hts.ce.service;
 
+import javafx.scene.control.Alert;
+import javafx.stage.Stage;
+import kz.hts.ce.config.PagesConfiguration;
 import kz.hts.ce.model.entity.Employee;
+import kz.hts.ce.model.entity.Shift;
 import kz.hts.ce.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.history.Revision;
@@ -8,7 +12,14 @@ import org.springframework.data.history.Revisions;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
+import static kz.hts.ce.util.JavaUtil.checkConnection;
+import static kz.hts.ce.util.JavaUtil.getDateFromInternet;
+import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
+import static kz.hts.ce.util.spring.SpringFxmlLoader.getPagesConfiguration;
 
 @Service
 public class EmployeeService extends BaseService<Employee, EmployeeRepository> {
@@ -46,7 +57,11 @@ public class EmployeeService extends BaseService<Employee, EmployeeRepository> {
         return employees;
     }
 
-//    public void saveOrUpdateList(List<Employee> employees) {
-//        employees.forEach(this::save);
-//    }
+    public void lockById(UUID id) {
+        repository.lockById(id);
+    }
+
+    public void reestablishById(UUID id) {
+        repository.reestablishById(id);
+    }
 }

@@ -32,6 +32,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import static kz.hts.ce.util.JavaUtil.checkConnection;
+import static kz.hts.ce.util.JavaUtil.getDateFromInternet;
 import static kz.hts.ce.util.javafx.JavaFxUtil.alert;
 
 @Component
@@ -79,13 +80,13 @@ public class SpringHelper {
         List<Role> roles = roleService.findAll();
         roleMap = new HashMap<>();
         for (Role role : roles) roleMap.put(role.getName(), role);
-//        Timer timer = new Timer();
-//        timer.scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//                transmitAndReceiveData();
-//            }
-//        }, 2 * 60 * 1000, 60 * 1000);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                transmitAndReceiveData();
+            }
+        }, 2 * 60 * 1000, 60 * 1000);
     }
 
     public static String getPrincipal() {

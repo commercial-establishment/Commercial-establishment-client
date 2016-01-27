@@ -52,8 +52,8 @@ INSERT INTO unit (id, name, symbol) VALUES ('0000000000000001', 'Килогра�
 INSERT INTO unit (id, name, symbol) VALUES ('0000000000000002', 'Литр', 'л');
 INSERT INTO unit (id, name, symbol) VALUES ('0000000000000003', 'Штука', 'шт');
 
-INSERT INTO shop (id, address, is_blocked, name, AREA_ID, type_id, IIN)
-VALUES ('0000000000000001', 'Туркистан 8/2', FALSE, 'Gal Mart', '0000000000000001', '0000000000000001', 123456789);
+INSERT INTO shop (id, address, is_blocked, name, AREA_ID, type_id, IIN, LOCK_DATE)
+VALUES ('0000000000000001', 'Туркистан 8/2', FALSE, 'Gal Mart', '0000000000000001', '0000000000000001', 123456789, CURRENT_DATE);
 
 INSERT INTO WAREHOUSE (id, shop_id) VALUES ('0000000000000001', '0000000000000001');
 
