@@ -21,7 +21,7 @@ public class AuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Employee employee = employeeService.findByUsernameAndBlocked(username, false);
+        Employee employee = employeeService.findByUsername(username);
 
         GrantedAuthority authority;
         User user;

@@ -49,6 +49,8 @@ public class LoginController implements Initializable {
     private ShiftService shiftService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private ShopService shopService;
 
     @Autowired
     private SpringHelper springHelper;
@@ -73,20 +75,32 @@ public class LoginController implements Initializable {
             springHelper.authorize(username.getText(), password.getText());
 
             Employee employee = employeeService.findByUsername(getPrincipal());
+            springHelper.setPassword(password.getText());
+            springHelper.setEmployee(employee);
 
-            Shift shiftByLastEndDate = shiftService.findByLastEndDate();
-            Shift newShift = shiftService.openNewShift(employee);
+            springHelper.transmitAndReceiveData();
+            employee.setBlocked(employeeService.findById(employee.getId()).isBlocked());
+            if (!employee.getShop().isBlocked()) {
 
-            checkAndAuthorize(shiftByLastEndDate, newShift, employee);
+                Shift shiftByLastEndDate = shiftService.findByLastEndDate();
+                Shift newShift = shiftService.openNewShift(employee);
+
+                checkAndAuthorize(shiftByLastEndDate, newShift, employee);
+            } else {
+                alert(Alert.AlertType.WARNING, "Вы заблокированы", null, "Обратитесь в тех. поддержку.");
+            }
         } catch (NullPointerException | UsernameNotFoundException e) {
             message.setText("Неверное имя пользователя или пароль:");
         }
     }
 
     private boolean checkShopLockDateFromServer(Employee employee) {
-        Date lockDate = employee.getShop().getLockDate();
-        Date currentDateFromInternet = getDateFromInternet();
-        return currentDateFromInternet.after(lockDate);
+        if (checkConnection()) {
+            Date lockDate = employee.getShop().getLockDate();
+            Date currentDateFromInternet = getDateFromInternet();
+            return currentDateFromInternet.after(lockDate);
+        }
+        return false;
     }
 
     private boolean checkLocalShopLockDate(Employee employee) {
@@ -96,15 +110,17 @@ public class LoginController implements Initializable {
     }
 
     private void lockEmployeeAndShowAlertMessage(Employee employee, String title, String body) {
-        if (!employee.isBlocked()) employeeService.lockById(employee.getId());
+        if (!employee.isBlocked()) shopService.lockById(employee.getShop().getId());
         alert(Alert.AlertType.WARNING, title, null, body);
     }
 
     private void checkAndAuthorize(Shift shiftByLastEndDate, Shift newShift, Employee employee) {
-        if (newShift.getStart().before(shiftByLastEndDate.getEnd())) {
+        /*conn false*/
+        /*если нынешняя дата была до даты открытия последней смены*/
+        if (newShift.getStart().before(shiftByLastEndDate.getStart())) {
             lockEmployeeAndShowAlertMessage(employee, "Дата на вашем компьютере была изменена.",
                     "В целях корректности отчётов вы были заблокированы. Пожалуйста, обратитесь в службу поддержки.");
-        } else if (newShift.getStart().after(shiftByLastEndDate.getEnd()) && checkLocalShopLockDate(employee)) {
+        } else if (newShift.getStart().after(shiftByLastEndDate.getStart()) && checkLocalShopLockDate(employee)) {
             lockEmployeeAndShowAlertMessage(employee, "Срок действия окончен",
                     "Извините, срок действия программой закончен. Пожалуйста, обратитесь в службу поддержки.");
         } else {
@@ -116,14 +132,10 @@ public class LoginController implements Initializable {
                 Stage stage = new Stage();
                 screens.setPrimaryStage(stage);
                 Shift shift = shiftService.save(newShift);
-
-                springHelper.setPassword(password.getText());
-                springHelper.setEmployee(employee);
                 springHelper.setShift(shift);
 
                 screens.login().hide();
                 screens.main().show();
-                springHelper.transmitAndReceiveData();
                 message.setText("");
             }
         }

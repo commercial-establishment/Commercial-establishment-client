@@ -22,8 +22,8 @@ import java.util.TimeZone;
 
 public class JavaUtil {
 
-//    public static final String URL = "http://localhost:8080";
-    public static final String URL = "http://batys.pro";
+    public static final String URL = "http://localhost:8080";
+//    public static final String URL = "http://batys.pro";
 
     public static BigDecimal stringToBigDecimal(String value) {
         try {
@@ -161,7 +161,7 @@ public class JavaUtil {
 
     public static boolean checkConnection() {
         try {
-            URL url = new URL(URL);
+            URL url = new URL("http://batys.pro");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.connect();
             return con.getResponseCode() == 200;
