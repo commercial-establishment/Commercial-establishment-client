@@ -148,7 +148,7 @@ public class PagesConfiguration {
     @Scope("prototype")
     public Node reportSales() throws IOException {
         SpringFxmlLoader springFxmlLoader = new SpringFxmlLoader();
-        return (Node) springFxmlLoader.load("/view/report-by-sales.fxml");
+        return (Node) springFxmlLoader.load("/view/report-by-shifts.fxml");
     }
 
     @Bean

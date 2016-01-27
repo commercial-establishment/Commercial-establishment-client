@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.reports.SalesReportController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="595.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kz.hts.ce.controller.reports.ShiftReportController">
     <children>
         <Button fx:id="compile" layoutX="819.0" layoutY="57.0" mnemonicParsing="false" onAction="#showReport" prefHeight="25.0" prefWidth="150.0" text="Сформировать">
             <font>
@@ -27,7 +27,7 @@
                 <Font size="14.0" />
             </font>
         </Label>
-        <TreeTableView fx:id="salesReport" layoutX="27.0" layoutY="98.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="98.0">
+        <TreeTableView fx:id="shiftsReport" layoutX="27.0" layoutY="98.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="98.0">
             <columns>
                 <TreeTableColumn fx:id="fullName" prefWidth="271.0" text="ФИО продавца" />
                 <TreeTableColumn fx:id="openingDate" prefWidth="95.0" text="Дата открытия" />
@@ -43,7 +43,7 @@
                 <Font size="14.0" />
             </font>
         </Button>
-        <Label layoutX="40.0" layoutY="21.0" text="Отчеты по продажам">
+        <Label layoutX="40.0" layoutY="21.0" text="Отчеты по сменам">
             <font>
                 <Font name="System Bold" size="15.0" />
             </font>

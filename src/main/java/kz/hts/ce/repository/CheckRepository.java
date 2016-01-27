@@ -19,6 +19,13 @@ public interface CheckRepository extends JpaRepository<Check, UUID> {
 
     List<Check> findByEmployee_Username(String username);
 
+    List<Check> findByEmployee_Id(UUID uuid);
+
+//    List<Check> findByDateBetweenAndEmployee_Id(Date start, Date end, UUID uuid);
+
+    @Query("SELECT ch FROM Check ch WHERE ch.date > ?1 AND ch.date <= ?2 AND ch.employee.id = ?3")
+    List<Check> findByDatesBetweenAndEmployeeId(Date firstDate, Date secondDate, UUID uuid);
+
     @Query("SELECT c FROM Check c WHERE c.date IN (SELECT max(date) FROM Check)")
     Check findByLastDate();
 }

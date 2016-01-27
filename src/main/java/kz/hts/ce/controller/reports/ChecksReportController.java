@@ -67,7 +67,7 @@ public class ChecksReportController {
 
         Map<String, List<Check>> checkEmployeeMap = new HashMap<>();
         for (Employee employee : employees) {
-            List<Check> checkByEmployee = checkService.findByEmployeeUsername(employee.getUsername());
+            List<Check> checkByEmployee = checkService.findByEmployeeId(employee.getId());
             checkEmployeeMap.put(employee.getFirstName() + " " + employee.getSurname(), checkByEmployee);
         }
         CheckDto checkDto = new CheckDto();
