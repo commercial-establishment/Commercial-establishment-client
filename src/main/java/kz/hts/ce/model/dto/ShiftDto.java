@@ -5,7 +5,7 @@ import javafx.beans.property.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class SalesDto {
+public class ShiftDto {
 
     private StringProperty id;
     private StringProperty fullName;
