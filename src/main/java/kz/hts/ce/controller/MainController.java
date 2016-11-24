@@ -62,6 +62,7 @@ public class MainController implements Initializable {
                 flag = true;
             }
         });
+        //comment for informatica
         Employee employee = springHelper.getEmployee();
         role.setText(employee.getRole().getName());
     }
